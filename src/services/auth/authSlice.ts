@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck abcdefh
+// @ts-nocheck blah
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthResponse, AuthState } from '../types/types';
 

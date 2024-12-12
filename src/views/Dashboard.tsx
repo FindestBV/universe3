@@ -52,7 +52,7 @@ export const Dashboard = () => {
 
             <div  className="flex flex-col space-y-3 w-full max-sm:px-4 overflow-hidden">
                 <h2 className='overViewTitle'>Pick up where you left off...</h2>
-                <div className="flex flex-col items-start justify-start h-[350px] w-full gap-2 overflow-y-scroll">
+                <div className="flex flex-col items-start justify-start h-auto w-full gap-2 overflow-y-scroll">
                     {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                     {activityData && activityData.map((activity:any, idx:string) => (
                         <div key={idx} className="flex flex-col items-start w-full max-sm:px-4 bg-[#e5f7fe] rounded-sm px-4 py-2 cursor-pointer shadow-md" onClick={() => handleNavigateToEntities(activity.type, activity.id)}>
@@ -83,14 +83,14 @@ export const Dashboard = () => {
     
             <div  className="flex flex-col space-y-3 w-full max-sm:px-4">
                 <h2 className='overViewTitle'>Relations graph</h2>
-                <div className="flex items-center justify-center  animate-pulse bg-muted h-[350px] w-full rounded-xl">
+                <div className="flex items-center justify-center  animate-pulse h-auto w-full rounded-xl">
                   <DataChart />
                 </div>
             </div>
     
             <div  className="flex flex-col space-y-3 w-full max-sm:px-4 overflow-hidden">
                 <h2 className='overViewTitle'>What's happening at Findest?</h2>
-                <div className="flex flex-col items-start justify-start h-[350px] w-full rounded-xl gap-2 overflow-y-scroll">
+                <div className="flex flex-col items-start justify-start h-[300px] w-full rounded-xl gap-2 overflow-y-scroll">
                 
                     {[...Array(15)].map((_, index) => (
                         <div key={index} className="flex flex-row items-center w-full max-sm:px-4 rounded-md p-4">
@@ -109,7 +109,7 @@ export const Dashboard = () => {
             </div>
                 <div  className="flex flex-col space-y-3 w-full max-sm:px-4">
                     <h2 className='overViewTitle'>Page type breakdown</h2>
-                    <div className="flex items-center justify-center animate-pulse bg-muted h-[350px] w-full rounded-xl">
+                    <div className="flex items-center justify-center animate-pulse bg-muted h-[300px] w-full rounded-xl">
                     <h3 className="text-white">Panel</h3> 
                     </div>
                 </div>
