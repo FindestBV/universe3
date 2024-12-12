@@ -16,7 +16,7 @@ export const searchApi = createApi({
   }),
   endpoints: (builder) => ({
     searchItems: builder.mutation<SavedDocumentResponse, string>({
-      query: (query) => `searchbar?query=${query}&api-version=2.0`
+      query: (query) => `search/searchbar?query=${query}&api-version=2.0`
     }),
   }),
 });
