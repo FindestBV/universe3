@@ -46,7 +46,7 @@ export const Dashboard = () => {
     };
 
     return(
-        <div className="flex flex-col w-full h-screen max-sm:px-4">
+        <div className="flex flex-col w-full h-screen max-sm:px-4" style={{ padding: "16px 64px 0" }}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {/* TODO: add dynamic units later */}
     
