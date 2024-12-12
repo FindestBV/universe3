@@ -52,7 +52,7 @@ export const Dashboard = () => {
 
             <div  className="flex flex-col space-y-3 w-full max-sm:px-4 overflow-hidden">
                 <h2 className='overViewTitle'>Pick up where you left off...</h2>
-                <div className="flex flex-col items-start justify-start h-auto w-full gap-2 overflow-y-scroll">
+                <div className="flex flex-col items-start justify-start h-[350px] w-full gap-2 overflow-y-scroll">
                     {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                     {activityData && activityData.map((activity:any, idx:string) => (
                         <div key={idx} className="flex flex-col items-start w-full max-sm:px-4 bg-[#e5f7fe] rounded-sm px-4 py-2 cursor-pointer shadow-md" onClick={() => handleNavigateToEntities(activity.type, activity.id)}>
