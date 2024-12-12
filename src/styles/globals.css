@@ -228,8 +228,21 @@
   font-weight: 600;
   letter-spacing: .144px;
   line-height: 24px;
-  margin-bottom: 12px;
 }
+
+.overViewText{
+  line-height: 13px;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 500;
+  align-items: center;
+}
+
 
 /* Indicator */
 .indicator {
@@ -242,7 +255,7 @@
   justify-content: center;
   font-size: 9px;
   border-radius: 50%;
-  background-color: #395fa7;
+  background-color: #007aff;
   width: 18px;
   height: 18px;
   color: #fff;

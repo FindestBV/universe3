@@ -49,7 +49,7 @@ function AuthenticatedLayout() {
       <div className="app-canvas w-full">
         <DashboardHeader />
         <main className="pageContent">
-          <SidebarTrigger className="absolute z-10 top-0 left-0" />
+          {/* <SidebarTrigger className="absolute z-10 top-0 left-0" /> */}
           <TransitionGroup component={null}>
             <CSSTransition key={location.key} classNames="fade" timeout={1000} unmountOnExit>
               <Suspense fallback={<div>Loading...</div>}>
