@@ -78,12 +78,12 @@ export default function DashboardHeader() {
         <header className="dashBoardHeader">
             
             <div className="control-buttons">
-                <ul className="flex gap-1">
+                <ul className="flex gap-2">
                     <li>
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <Button aria-label="Recent"><Clock width={18} color="black" /></Button>
+                                    <Button aria-label="Recent" className="p-3"><Clock width={18} color="black" /></Button>
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>Recent Activity</p>
@@ -109,7 +109,7 @@ export default function DashboardHeader() {
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <Button aria-label="Pinned"><Pin width={18} color="black" /></Button>
+                                    <Button aria-label="Pinned" className="p-3"><Pin width={18} color="black" /></Button>
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>Pinned</p>
@@ -121,7 +121,7 @@ export default function DashboardHeader() {
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <Button aria-label="Network Explorer"><ChartNetwork width={18} color="black" /></Button>
+                                    <Button aria-label="Network Explorer" className="p-3"><ChartNetwork width={18} color="black" /></Button>
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>Network Explorer</p>
@@ -134,7 +134,7 @@ export default function DashboardHeader() {
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <Button className="relative" aria-label="Active queries"><span className="indicator">1</span><Search width={18} color="black" /></Button>
+                                    <Button className="relative p-2" aria-label="Active queries"><span className="indicator">1</span><Search width={18} color="black" /></Button>
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>No active queries</p>

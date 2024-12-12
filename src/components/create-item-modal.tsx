@@ -50,12 +50,12 @@ return (
         <Button className="createNewButton bg-blue-500 hover:bg-blue-600 uppercase" variant="secondary">Create New</Button>
       </div>
     </DialogTrigger>
-    <DialogContent className="max-w-6xl h-[80vh] bg-white" style={{ maxHeight: "75%", maxWidth: "80%"}}>
+    <DialogContent className="max-w-6xl h-[80vh] bg-white overflow-hidden" style={{ maxHeight: "70%", maxWidth: "80%"}}>
       <div className="w-full h-full flex flex-col gap-6 items-start">
         <div className="header">
           <h2 className="pl-2 font-black text-2xl">Create New</h2>
         </div>
-        <div className="flex w-full">
+        <div className="flex w-full gap-2">
           {createItems.map((item) => (
             <div key={item.type} className="createNewItemCard">
               <CreateNewItem 
