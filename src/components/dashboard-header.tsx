@@ -74,7 +74,7 @@ export default function DashboardHeader() {
     },[powerUserFlag, user])
 
     return (
-        <header className="flex flex-col gap-6 md:flex-row items-center justify-between bg-gray-150 p-6 w-full bg-gray-300 sticky top-0 z-10">
+        <header className="flex flex-col gap-6 md:flex-row items-center justify-between bg-gray-150 px-2 py-4 w-full bg-white sticky top-0 z-10 border-b border-gray-200">
             {/* <input type="text" value={name} onChange={(e) => setName(e.target.value)}/> */}
             
             <div className="control-buttons">
