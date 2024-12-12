@@ -1,5 +1,9 @@
 # Universe 3
-A React + Vite template powered by shadcn/ui.
+A React + Vite template powered by shadcn/ui. This repository will serve as a base for the Findest Universe, next version, implementing modern frontend technologies, development best practices, and a clean, modular, and scalable architecture.
+
+## DISCLAIMER: 
+This is a work in progress and is intended to achieve the result of a pixel-perfect replication of the current Findest Universe UI.
+The key objective is to implement a flow, featuring all of the required composite elements and functionality present in the existing universe, but implementing proper and robust state management, frontend architectural process and best practices, with the aim of minimising the impact on the business.
 
 ## 🎉 Features
 
@@ -27,13 +31,13 @@ Follow these steps to get started with the react-vite-ui template:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/RoOLeary/rvshad-ui
+   git clone https://github.com/FindestBV/universe3
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd react-vite-ui
+   cd universe3
    ```
 
 3. Install the dependencies:
@@ -60,16 +64,42 @@ Follow these steps to get started with the react-vite-ui template:
 The project structure follows a standard React application layout:
 
 ```python
-react-vite-ui/
+universe3/
   ├── node_modules/      # Project dependencies
   ├── public/            # Public assets
-  ├── src/               # Application source code
+  ├── src/
+  |   ├── assets    # React components
   │   ├── components/    # React components
   │   │   └── ui/        # shadcn/ui components
-  │   ├── styles/        # CSS stylesheets
-  │   ├── lib/           # Utility functions
+  │   ├── hooks/    # React components
+  │   ├── lib/    # React components
+  │   ├── routes/    # React components
+  │   ├── services/    # React components
+  |   |   └── api.ts    # Base 
+  │   |   └── auth/    # Auth API
+  │   |   └── documents/  # Documents
+  │   |   └── search/    # Search
+  │   |   └── entities/    # Entities
+  │   |   └── study/    # Study 
+  │   |   └── activity/  # Activity 
+  |   ├── styles/        # CSS stylesheets
+  │   ├── types           # Utility functions
+  │   ├── views/    # React components
+  |   |   └── Dashboard/    
+  │   |   └── Document/   
+  │   |   └── Documents/  
+  │   |   └── Entities/  
+  │   |   └── Entity/    
+  │   |   └── Inbox/   
+  │   |   └── LoginPage/  
+  │   |   └── NotFound/   
+  │   |   └── Queries/  
+  │   |   └── Studies/   
+  │   |   └── Study/  
+  │   |   └── Users/  
   │   ├── App.tsx        # Application entry point
-  │   └── index.tsx      # Main rendering file
+  │   └── main.tsx      # Main rendering file
+  |   └── store.ts       # Redux Store
   ├── eslint.config.js     # ESLint configuration
   ├── index.html         # HTML entry point
   ├── postcss.config.js  # PostCSS configuration

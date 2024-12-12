@@ -45,7 +45,6 @@ export const Dashboard = () => {
         return `${hours}:${minutes}`;
     };
 
-    // console.log('data', activityData);
     return(
         <div className="flex flex-col w-full h-screen max-sm:px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -107,15 +106,13 @@ export const Dashboard = () => {
                     </div>
             
             </div>
-    
-            <div  className="flex flex-col space-y-3 w-full max-sm:px-4">
-                <h2 className='font-black text-lg items-start'>Page Type Breakdown</h2>
-                <div className="flex items-center justify-center animate-pulse bg-muted h-[350px] w-full rounded-xl">
-                <h3 className="text-white">Panel</h3> 
+                <div  className="flex flex-col space-y-3 w-full max-sm:px-4">
+                    <h2 className='font-black text-lg items-start'>Page Type Breakdown</h2>
+                    <div className="flex items-center justify-center animate-pulse bg-muted h-[350px] w-full rounded-xl">
+                    <h3 className="text-white">Panel</h3> 
+                    </div>
                 </div>
             </div>
-        
-        </div>
         </div>
     );
 };

@@ -6,7 +6,6 @@ const SearchProgress = lazy(() => import("@/components/search-progress"));
 
 const Inbox = () => (
   <div className="flex flex-col gap-y-4 w-full h-screen">
-    {/* <CountBtn /> */}
     <SortableTable />
     <div className="w-full flex gap-10 p-6">
       <div className="w-1/2">

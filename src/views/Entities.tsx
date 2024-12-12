@@ -14,9 +14,7 @@ import {
 import { EntityCard } from '@/components/entity-card';
 import { Checkbox } from "@/components/ui/checkbox";
 
- 
-
-export const Entities: React.FC = () => {
+ export const Entities: React.FC = () => {
     const [selectedEntities, setSelectedEntities] = useState<Set<string>>(new Set());
     const [hasCachedData, setHasCachedData] = useState(false);
 
@@ -53,11 +51,7 @@ export const Entities: React.FC = () => {
         }
         setSelectedEntities(newSelected);
     };
-
-
-
-    // console.log('entities', entityData); 
-
+    
     // Render loading, error, or data states
     return (
         <div className="flex flex-col w-full h-full max-sm:px-4">

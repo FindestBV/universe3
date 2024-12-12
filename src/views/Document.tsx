@@ -4,18 +4,15 @@ import { useGetDocumentByIdQuery } from '@/services/documents/documentApi';
 
 export const Document: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    // const location = useLocation();
-    // const document = location.state as DocumentData;
-
+   
     // @ts-expect-error abd
     const { data: fetchedDocument } = useGetDocumentByIdQuery(id, {
       refetchOnMountOrArgChange: false, // Prevents automatic refetching
     });
 
-    console.log('fetched', fetchedDocument?.connectedObjects);
+    // console.log('fetched', fetchedDocument?.connectedObjects);
 
-    // it's because this isn't linked with useNavigate
-
+  
     const renderConnectedObjects = fetchedDocument && Object.entries(fetchedDocument?.connectedObjects).map((o, i) => {
       // @ts-expect-error ass
       return <div key={i}><a href={o[1].url}>{o[1]?.name}</a></div>;

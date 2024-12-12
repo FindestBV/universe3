@@ -51,7 +51,6 @@ export const Documents: React.FC = () => {
         setTempLoading(true);
         await new Promise((resolve) => setTimeout(resolve, 500));
         setTempLoading(false);
-
         refetch(); // Trigger re-fetch
     };
 
