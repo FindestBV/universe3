@@ -139,7 +139,7 @@ export const SearchBar = () => {
               onChange={handleInputChange}
               onPaste={handleInputPaste}
               onBlur={handleInputBlur}
-              className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Search the Universe"
               aria-label="Search input"
             />

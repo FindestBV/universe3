@@ -109,7 +109,7 @@ export default function DashboardHeader() {
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <Button aria-label="Pinned" className="p-2"><Pin width={20} color="black" /></Button>
+                                    <Button aria-label="Pinned" className="p-2"><Pin width={20} color="black" fill="black"/></Button>
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>Pinned</p>
@@ -121,7 +121,7 @@ export default function DashboardHeader() {
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <Button aria-label="Network Explorer" className="p-2"><ChartNetwork width={20} color="black" /></Button>
+                                    <Button aria-label="Network Explorer" className="p-2"><ChartNetwork width={20} color="black" strokeWidth={2}/></Button>
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>Network Explorer</p>

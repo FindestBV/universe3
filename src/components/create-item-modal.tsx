@@ -7,8 +7,8 @@ import { Button } from "./ui/button";
 import { CreateNewItem } from "@/components/create-new-item";
 
 import StudyIcon from '@/assets/study.svg';
-import Document from '@/assets/document.svg'
-import Entity from '@/assets/entity.svg'
+import DocumentIcon from '@/assets/document.svg'
+import EntityIcon from '@/assets/entity.svg'
 import QueryIcon from '@/assets/query.svg';
 
 // Define a type for your items
@@ -29,12 +29,12 @@ const createItems: CreateItemType[] = [
   {
     type: "Entity", 
     desc: "Create an encyclopedia-style page within your Universe, focusing on a specific entity like a technology, material, or company.",
-    icon: <img src={Entity} alt="Entity Icon" />
+    icon: <img src={EntityIcon} alt="Entity Icon" />
   },
   {
     type: "Document", 
     desc: "Manually add a scientific article, patent or webpage directly into your inbox by providing the DOI, patent number or URL.",
-    icon: <img src={Document} alt="Document Icon" />
+    icon: <img src={DocumentIcon} alt="Document Icon" />
   },
   {
     type: "Query", 

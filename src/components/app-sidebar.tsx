@@ -26,6 +26,11 @@ import {
 // Menu items.
 const items = [
   {
+    title: "Inbox",
+    url: "/inbox",
+    icon: Inbox,
+  },
+  {
     title: "Universe",
     url: "/library/overview",
     icon: Calendar,
@@ -34,12 +39,7 @@ const items = [
       { title: "Entities", url: "/entities", icon: Fingerprint },
       { title: "Studies", url: "/studies", icon: BookOpenCheck },
     ],
-  },
-  {
-    title: "Inbox",
-    url: "/inbox",
-    icon: Inbox,
-  },
+  }
 ];
 
 const advancedItems = [
