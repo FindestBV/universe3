@@ -20,7 +20,7 @@ import {
 export type NewItem = {
   type: string,
   desc: string,
-  icon?: React.ReactNode // Allow passing a custom icon
+  icon?: React.ReactNode
 }
   
   export const CreateNewItem = ({type, desc, icon}: NewItem) => {

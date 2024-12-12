@@ -77,18 +77,16 @@ export function AppSidebar() {
 
         <div className="group1 gap-10 p-4">
           <SidebarGroup>
-            <SidebarGroupLabel>
-
-            </SidebarGroupLabel>
+            
             <SidebarGroupContent>
-              <SidebarMenu>
+              <SidebarMenu className="gap-4 px-4">
                 {items.map((item) => (
                   <div key={item.title}>
                     <SidebarMenuItem>
                       <SidebarMenuButton asChild>
                         <a href={item.url}>
                           <item.icon />
-                          <span>{item.title}</span>
+                          <span className='font-bold'>{item.title}</span>
                         </a>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -119,7 +117,7 @@ export function AppSidebar() {
             </SidebarGroupLabel>
             <SidebarGroupContent>
 
-              <SidebarMenu className="ml-8 mt-1 space-y-1">
+            <SidebarMenu className="gap-4 px-4">
                 <AdvancedSearchModal />
                 {advancedItems.map((item) => (
                   <div key={item.title}>
@@ -127,7 +125,7 @@ export function AppSidebar() {
                       <SidebarMenuButton asChild>
                         <a href={item.url}>
                           <item.icon />
-                          <span>{item.title}</span>
+                          <span className='font-bold'>{item.title}</span>
                         </a>
                       </SidebarMenuButton>
                     </SidebarMenuItem>

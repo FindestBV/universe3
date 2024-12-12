@@ -149,10 +149,10 @@ export default function DashboardHeader() {
             
             <div className="flex items-center gap-2">
               
-                {user ? <div className="flex items-center gap-2 pr-2">
+                {/* {user ? <div className="flex items-center gap-2 pr-2">
                         <h3>Welcome back, {user}</h3>
                     
-                </div> : null}  
+                </div> : null}   */}
                 <div className="create-action flex items-center gap-2">
                     <CreateItemModal />
                     <Button name="Happiness" className="hover:bg-slate-300 text-white"><SmilePlus width={18} color="black" /></Button>
