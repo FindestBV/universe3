@@ -2,8 +2,13 @@
 A React + Vite template powered by shadcn/ui. This repository will serve as a base for the Findest Universe, next version, implementing modern frontend technologies, development best practices, and a clean, modular, and scalable architecture.
 
 ## DISCLAIMER: 
+
 This is a work in progress and is intended to achieve the result of a pixel-perfect replication of the current Findest Universe UI.
 The key objective is to implement a flow, featuring all of the required composite elements and functionality present in the existing universe, but implementing proper and robust state management, frontend architectural process and best practices, with the aim of minimising the impact on the business.
+
+## DISCUSSION: 
+
+Wide open for discussion, this is encouraged, as the whole team will need to have a say in the architecture and standards we'll be looking to implement.
 
 ## 🎉 Features
 
