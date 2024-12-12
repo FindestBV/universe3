@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { BookOpenCheck, Paperclip, Fingerprint, Image, Highlighter } from "lucide-react";
 import { usePrefetch, useLazyGetConnectedObjectsQuery } from "@/services/documents/documentApi";
+import { BookOpenCheck, Paperclip, Fingerprint, Image, Highlighter } from "lucide-react";
 
 // Mapping linkedCounts keys to tObjectTypeEnum values
 export const objectTypeMapping: { [key: string]: number } = {

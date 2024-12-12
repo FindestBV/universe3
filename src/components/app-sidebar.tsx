@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { currentUser, setCredentials, logout } from '../services/auth/authSlice';
+import { currentUser, setCredentials, logout } from '@/services/auth/authSlice';
 import { useDispatch } from 'react-redux'
 import { Calendar, Inbox, Settings, ChevronUp, UserRoundPen, Bot, FileText, BookOpenCheck, Fingerprint } from "lucide-react"
 import AdvancedSearchModal from "./advanced-search-modal";

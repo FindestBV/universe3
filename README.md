@@ -2,6 +2,9 @@
 
 A React + Vite template powered by shadcn/ui. This repository will serve as a base for the Findest Universe, next version, implementing modern frontend technologies, development best practices, and a clean, modular, and scalable architecture.
 
+[ShadCn](https://ui.shadcn.com/) is used as the base component library. See the [shadcn/ui](https://ui.shadcn.com/) documentation for more information.
+Component units install directly in to <pre>src/components/ui/</pre>. From here, they can be called in any component, and passed props/styling and configuration to extend and customise the primitive. 
+
 ## DISCLAIMER: 
 
 This is a work in progress and is intended to achieve the result of a pixel-perfect replication of the current Findest Universe UI.

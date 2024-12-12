@@ -1,4 +1,4 @@
-import { useGetMyRecentActivityQuery } from '../services/activity/activity';
+import { useGetMyRecentActivityQuery } from '@/services/activity/activity';
 import { Link, MoreHorizontal, SquareArrowOutUpRight, ScanEye, Network, List } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {

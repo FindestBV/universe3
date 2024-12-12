@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { useGetEntitiesQuery } from '../services/entities/entityApi';
+import { useGetEntitiesQuery } from '@/services/entities/entityApi';
 import { Filter, Loader } from "lucide-react";
 import { ListPagination } from "@/components/list-pagination";
 import {
@@ -51,7 +51,7 @@ import { Checkbox } from "@/components/ui/checkbox";
         }
         setSelectedEntities(newSelected);
     };
-    
+
     // Render loading, error, or data states
     return (
         <div className="flex flex-col w-full h-full max-sm:px-4">

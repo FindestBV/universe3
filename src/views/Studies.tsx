@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useGetStudiesQuery } from '../services/study/study';
+import { useGetStudiesQuery } from '@/services/study/study';
 import { Filter, Loader } from "lucide-react";
 import { ListPagination } from "@/components/list-pagination";
 

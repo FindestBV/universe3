@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { useParams, useLocation } from 'react-router';
-
 import { renderProseMirrorContent } from "@/lib/renderProseMirror";
 import { useSelector } from 'react-redux';
 import { currentUser } from '@/services/auth/authSlice';
