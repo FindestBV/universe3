@@ -191,3 +191,14 @@
   outline: none;
   width: 100%;
 }
+
+
+.overViewTitle{
+  color: #252525;
+  cursor: default;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: .144px;
+  line-height: 24px;
+  margin-bottom: 12px;
+}
