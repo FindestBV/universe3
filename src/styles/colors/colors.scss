@@ -1,0 +1,166 @@
+// general
+$main-background-color: #395FA7;
+$main-text-color: #252525;
+$light-text-color: #252525a6;
+$sidebar-hover-background-color: #758FC2;
+$group-chip-color: #A1E6AD;
+$highlightBackgroundHoverColor: #F7F8FA;
+
+// WHITE
+$white: #FFFFFF;
+$white-30: rgba(255, 255, 255, 0.3);
+$white-25: rgba(255, 255, 255, .25);
+
+// GREEN
+$main-light-green: #36BF31;
+$main-dark-green: #30A32C;
+$green-100: #E7F9EE;
+$green-400: #31BE6C;
+$green-500: #269253;
+
+// RED
+$main-light-red: #F05F5F;
+$main-dark-red: #C33939;
+$notification-red: #F24343;
+$notification-red-25: #FCD0D0;
+$findest-red: #FF3B30;
+$light-red-2: rgba(255, 59, 48, 0.231);
+$red-100: #FFEEEF;
+$red-400: #F24343;
+$red-500: #C33939;
+$red-600: #A0343A;
+
+// BLACK
+$main-black: #252525;
+
+// PURPLE
+$main-purple: #9F69D5;
+$main-purple-50: #9F69D550;
+$main-purple-hover: #8157AC;
+$main-purple-disabled: #EBE2F3;
+$purple-2: #7B35C1;
+$purple-3: #9f67d7;
+$purple-4: #D2D1F4;
+$violet-1: #252390;
+
+// GRAY
+$light-gray: #F2F4F8;
+$light-gray-2: #afb8c3;
+$light-gray-3: #00317117;
+$light-gray-4: #F2F2F2;
+$main-gray: #F2F4F8;
+$main-gray-transparent: #00317105;
+$grey-200: #F7F8FA;
+$grey-300: #F2F4F8;
+$grey-600: #252525;
+
+// PINK
+$light-pink: #E8BFDC;
+
+// BLUE
+$findest-blue: #007AFF;
+$navy-blue: #003171;
+$light-blue: #EBF5FF;
+$cyan: #00ADEF;
+
+$blue-100: #D3E5F9;
+$blue-100-50: #D3E5F980;
+$blue-400: #D3E5F9;
+
+// TURQUOISE
+$turquoise-200: #CCF1FF;
+
+// FUSCHIA
+$fuschia-100: #F8ECF5;
+
+// maturity radar steps
+$maturityRadarStep-1: #DEF2FC;
+$maturityRadarStep-2: #C2E8F9;
+$maturityRadarStep-3: #ABDFF7;
+$maturityRadarStep-4: #5EBBED;
+
+// YELLOW
+$findest-yellow: #FFCC00;
+$light-yellow: #fff0a9;
+$findest-warning-yellow: #fdd835;
+$findest-warning-background-yellow: #fff9db;
+
+
+// buttons
+$primaryButtonColorDefault: #007AFF;
+$primaryButtonColorHover: #006DE3;
+$primaryButtonColorDisabled: #D9EBFF;
+$secondaryButtonColorDefault: #F2F4F8;
+$secondaryButtonColorHover: #BFDDFF;
+$secondaryButtonColorHoverLight: #E2F0FF;
+$secondaryButtonColorSelected: #66AFFF;
+$buttonShadowColor: #00000025;
+
+// inputs
+$inputFocusBorderColor: #007AFF;
+
+// findest
+$findest-light-blue: #66AFFF;
+$findest-primary-purple: #A30076;
+$findest-purple: #5856D6;
+$findest-gray: #CCCCCC;
+$findest-dark-gray: #757575;
+$findest-text: #212121;
+$light-background-color: #F2F2F2;
+$findest-text-gray: #555;
+
+// menu colors
+$findest-background-01: #FCFCFD;
+$findest-background-02: #FAFBFC;
+$findest-background-03: #F7F8FA;
+$findest-background-04: #F2F4F7;
+$findest-background-05: #EFF1F6;
+
+// login screen colors
+$loginbox-background-color: #EDF5FF;
+$loginbox-box-shadow-color: #b7b8d8;
+$login-title-color: #003171;
+$login-next-button-background-color: #31BE6C;
+$login-next-button-background-hover-color: #109145;
+$login-magiclink-button-background-color: #7D31BE;
+$login-magiclink-button-background-hover-color: #500f88;
+$login-go-back-color: #707070;
+$login-go-back-arrow-color: #9092A3;
+
+// Object type colors
+$study-count-color: #5856D6;
+$entity-count-color: #00ADEF;
+$document-count-color: #003171;
+$highlight-count-color: #FF9500;
+$highlight-count-color-50: #FF950050;
+$attachment-count-color: #36BF31;
+$query-count-color: #A30076;
+
+$entity-color-10: #E5F7FE;
+$study-color-10: #EEEEFB;
+$attachment-color-10: #E5F7E5;
+$entity-color-15: rgba(0, 173, 239, 0.15);
+$study-color-15: rgba(88, 86, 214, 0.15);
+$table-header: #EBEFF4;
+$table-header-hover: #E0E6EE;
+
+//loading, progress indicators
+$file-upload-track-color: #E0E0E0;
+$file-upload-progress-color: #58B4F0;
+
+// box shadows
+$actions-box-shadow-color: rgba(0, 0, 0, 0.16);
+$general-shadow-color: rgba(0, 0, 0, 0.16);
+
+// new badge
+$new-badge-background-color: #b55efe;
+
+// more button
+$moreIconColor: #5F6367;
+
+// border
+$labelBorderColor: #D9E0EA;
+
+// ToggleButton
+$toggleButtonBlue: #007AFF;
+$toggleButtonBlueShading: #E5F1FF;

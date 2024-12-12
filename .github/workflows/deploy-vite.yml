@@ -1,0 +1,73 @@
+# .github/workflows/deploy-vite.yml
+name: CI/CD for Vite with Vercel
+
+on:
+  push:
+    branches:
+      - main  # Trigger only on pushes to the 'main' branch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'  # Ensure compatibility with pnpm and Vite
+
+      - name: Install pnpm
+        run: npm install -g pnpm  # Installs pnpm globally
+
+      - name: Install dependencies
+        run: pnpm install  # Installs dependencies using pnpm
+        
+      # - name: Run unit tests
+      #   run: pnpm run test  # This assumes you have a test script in your package.json
+
+      # - name: Archive test results
+      #   if: always()
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: test-results
+      #     path: /tests/coverage/  # Assuming your tests produce a coverage report
+
+  build:
+    runs-on: ubuntu-latest
+    # needs: test  # Build only if tests pass
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'  # Use Node.js v20 in build step
+
+      - name: Install pnpm
+        run: npm install -g pnpm  # Installs pnpm globally
+
+      - name: Install dependencies
+        run: pnpm install  # Installs dependencies using pnpm
+
+      - name: Build Vite application
+        run: pnpm run build  # Build Vite app using pnpm
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build  # Deploy only if the build is successful
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'  # Ensure Node.js v20 is used in deploy step
+
+      - name: Deploy to Vercel
+        run: vercel --prod  # Deploys the Vite app to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}  # Vercel authentication token
