@@ -1,7 +1,4 @@
-# React + Vite + TypeScript Template (react-vite-ui)
-
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Dan5py/react-vite-ui/blob/main/LICENSE)
-
+# Universe 3
 A React + Vite template powered by shadcn/ui.
 
 ## 🎉 Features
@@ -80,8 +77,3 @@ react-vite-ui/
   ├── tsconfig.json      # TypeScript configuration
   └── vite.config.ts     # Vite configuration
 ```
-
-## 📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](https://choosealicense.com/licenses/mit/) file for details.
-# rvshad-ui
