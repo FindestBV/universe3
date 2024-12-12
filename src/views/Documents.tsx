@@ -60,14 +60,14 @@ export const Documents: React.FC = () => {
             <div className="flex w-full justify-between items-center">
                 <h1 className="text-black font-black text-xl">Documents</h1>
                 <div className="w-full sm:w-1/2 md:w-1/4 flex flex-col items-end">
-                    <label htmlFor="documentsPerPage" className="block text-sm font-black text-gray-700 mb-2 text-right">
+                    <label htmlFor="documentsPerPage" className="block text-sm font-black text-gray-700 mb-2 text-right hidden">
                         Documents per Page
                     </label>
                     <select
                         id="documentsPerPage"
                         value={documentsPerPage}
                         onChange={handleDocumentsPerPageChange}
-                        className="border p-2 mb-2 rounded w-full sm:w-1/2 md:w-full focus:ring-blue-500 focus:border-blue-500"
+                        className="border p-2 mt-2 mb-2 rounded w-full sm:w-1/2 md:w-full focus:ring-blue-500 focus:border-blue-500"
                     >
                         <option value={25}>25</option>
                         <option value={20}>20</option>

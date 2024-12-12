@@ -43,14 +43,12 @@ const ProtectedRoute = ({ children }) => {
 // Authenticated Layout
 function AuthenticatedLayout() {
   const location = useLocation();
-
-
   return (
     <SidebarProvider>
       <AppSidebar />
       <div className="app-canvas w-full">
         <DashboardHeader />
-        <main className="flex flex-col items-center justify-start w-full h-full p-6">
+        <main className="pageContent">
           <SidebarTrigger className="absolute z-10 top-0 left-0" />
           <TransitionGroup component={null}>
             <CSSTransition key={location.key} classNames="fade" timeout={1000} unmountOnExit>

@@ -4,7 +4,7 @@ import { LoginImageSlider } from '@/components/login/login-image-slider';
 
 export const LoginPage = () => {
   return (
-    <div className="grid grid-cols-5 w-full h-full">
+    <div className="grid grid-cols-5 w-full h-screen overflow-hidden"> {/* Changed to h-screen and added overflow-hidden */}
       {/* Left Panel: 3/5 of the width */}
       <div className="col-span-3 bg-[#395fa7] flex items-center justify-center">
         <LoginImageSlider />

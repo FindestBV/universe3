@@ -1,0 +1,41 @@
+.createNewButton {
+  align-items: center;
+    background-color: #007aff;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    font-size: 14px;
+    font-weight: 500;
+    height: 32px!important;
+    letter-spacing: 1.246px;
+    line-height: 16px;
+    padding: 0 14px;
+    text-transform: uppercase;
+}
+
+.createNewItemCard{
+  border-radius: 4px;
+  box-shadow: -1px 1px 10px rgba(0, 0, 0, .145);
+  margin: 0 1rem;
+  border-radius: 4px;
+  box-shadow: -1px 1px 10px rgba(0, 0, 0, .145);
+  margin: 0 .5rem;
+  width: 25%;
+}
+
+.Study{
+  background-color: rgba(88, 86, 214, .082);
+}
+
+.Entity{
+  background-color: rgba(0, 173, 239, .082);
+}
+
+.Document{
+  background-color: rgba(0, 49, 113, .082);
+}
+
+.Query{
+  background-color: rgba(163, 0, 118, .082);
+}

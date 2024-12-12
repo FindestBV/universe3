@@ -75,11 +75,10 @@ export default function DashboardHeader() {
     },[powerUserFlag, user])
 
     return (
-        <header className="flex flex-col gap-6 md:flex-row items-center justify-between bg-gray-150 px-2 py-4 w-full bg-white sticky top-0 z-10 border-b border-gray-200">
-            {/* <input type="text" value={name} onChange={(e) => setName(e.target.value)}/> */}
+        <header className="dashBoardHeader">
             
             <div className="control-buttons">
-                <ul className="flex gap-2">
+                <ul className="flex gap-1">
                     <li>
                         <TooltipProvider>
                             <Tooltip>
@@ -135,7 +134,7 @@ export default function DashboardHeader() {
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <Button aria-label="Active queries"><Search width={18} color="black" /></Button>
+                                    <Button className="relative" aria-label="Active queries"><span className="indicator">1</span><Search width={18} color="black" /></Button>
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>No active queries</p>

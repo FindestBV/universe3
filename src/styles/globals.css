@@ -1,11 +1,39 @@
 /* Collect styling isolated to components and include here*/
 /* This will be more modular */
 
+@import './components/create-new-button.css';
 @import './components/document-card.css';
 @import './components/login-image-slider.css';
 
 @tailwind base;
 @tailwind components;
+
+.pageContent{
+  @apply flex flex-col items-center justify-start w-full h-full px-6;
+}
+
+.dashBoardHeader{
+  align-items: center;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  height: 4rem;
+  justify-content: space-between;
+  min-height: 4rem;
+  padding: 0 1rem;
+  position: relative;
+  width: 100%;
+  z-index: 4;
+}
+
+.mainSearchBar{
+  margin: 0 auto;
+  max-width: 80%;
+  position: relative;
+  transition: .3s ease-in-out;
+  width: 560px;
+}
+
 @tailwind utilities;
 
 @layer base {
@@ -201,4 +229,21 @@
   letter-spacing: .144px;
   line-height: 24px;
   margin-bottom: 12px;
+}
+
+/* Indicator */
+.indicator {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  border-radius: 50%;
+  background-color: #395fa7;
+  width: 18px;
+  height: 18px;
+  color: #fff;
 }

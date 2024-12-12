@@ -127,7 +127,7 @@ export const SearchBar = () => {
   const filteredResults = filterResults(data);
 
   return (
-    <div className="relative max-sm:w-full w-1/2 mx-auto">
+    <div className="mainSearchBar">
       {/* Search Input */}
       <form className="space-y-4">
         <div>
