@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useFeature } from 'use-feature';
 import { Clock, Pin, ChartNetwork, Search, SmilePlus, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import CreateItemModal from './create-item-modal';
 import {
     Tooltip,
     TooltipContent,
@@ -154,7 +155,7 @@ export default function DashboardHeader() {
                     
                 </div> : null}  
                 <div className="create-action flex items-center gap-2">
-                    <Button variant="secondary">Create New</Button>
+                    <CreateItemModal />
                     <Button name="Happiness" className="hover:bg-slate-300 text-white"><SmilePlus width={18} color="black" /></Button>
                 </div>
             </div>
