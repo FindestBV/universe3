@@ -118,14 +118,16 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   };
 
   return (
-    <div className="flex items-start space-x-4">
+    <div className="documentCard">
+      <div className="p-4">
       <Checkbox
         id={`doc-${id}`}
         checked={isSelected}
         onCheckedChange={(checked) => handleCheckboxChange(checked as boolean)}
         className="secondary"
       />
-      <Card key={id} className="documentCard">
+      </div>
+      <Card key={id} className="w-full">
         <div className="p-4 cursor-pointer" onClick={handleCardClick}>
           <h3 className="font-black text-lg text-black text-ellipsis overflow-hidden">{title}</h3>
           <div className="flex flex-col mt-2 text-sm">
