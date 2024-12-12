@@ -1,3 +1,4 @@
+@import './components/document-card.css';
 @import './components/login-image-slider.css';
 
 @tailwind base;

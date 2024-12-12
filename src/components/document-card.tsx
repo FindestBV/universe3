@@ -125,7 +125,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
         onCheckedChange={(checked) => handleCheckboxChange(checked as boolean)}
         className="secondary"
       />
-      <Card key={id} className="w-full bg-white text-black">
+      <Card key={id} className="documentCard">
         <div className="p-4 cursor-pointer" onClick={handleCardClick}>
           <h3 className="font-black text-lg text-black text-ellipsis overflow-hidden">{title}</h3>
           <div className="flex flex-col mt-2 text-sm">
