@@ -21,7 +21,12 @@ const LanguageSelector: React.FC = () => {
     { code: 'en', name: 'English' },
     { code: 'fr', name: 'Français' },
     { code: 'tr', name: 'Türkçe' },
-    { code: 'ie', name: 'Gaeilge' }
+    { code: 'ie', name: 'Gaeilge' },
+    { code: 'es', name: 'Español' },
+    { code: 'pt', name: 'Português' },
+    { code: 'de', name: 'Deutsch' },
+    { code: 'it', name: 'Italiano' },
+    { code: 'gr', name: 'Ελληνικά' },
   ];
 
   const changeLanguage = (languageCode: string) => {
