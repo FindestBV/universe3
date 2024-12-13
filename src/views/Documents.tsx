@@ -59,10 +59,7 @@ export const Documents: React.FC = () => {
 
     return (
         <div className="flex flex-col w-full h-full max-sm:px-4 py-[10px] px-12">
-            {/* <div className="flex w-full justify-between items-center">
-                <h1 className="text-black font-black text-xl">{t('documents')}</h1>
-            </div> */}
-
+    
             <div className="flex items-center justify-between gap-4 rounded-lg mb-2">
                 <div>
                     <Checkbox

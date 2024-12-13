@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { usePrefetch, useLazyGetConnectedObjectsQuery } from "@/services/documents/documentApi";
-import { BookOpenCheck, Paperclip, Fingerprint, Image, Highlighter } from "lucide-react";
+import { BookOpenCheck, Paperclip, Fingerprint, Image, Highlighter, ExternalLink } from "lucide-react";
+import { UserAvatar } from "@/components/user-avatar";
 
 // Mapping linkedCounts keys to tObjectTypeEnum values
 export const objectTypeMapping: { [key: string]: number } = {
@@ -91,6 +92,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   title,
   type,
   abstract,
+  createdByUsername,
   dateAdded,
   isSelected,
   onSelect,
@@ -113,7 +115,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
 
   const handleCardClick = () => {
     navigate(`/library/documents/${id}`, {
-      state: { id, url, title, type, abstract, dateAdded },
+      state: { id, url, title, type, abstract, createdByUsername, dateAdded },
     });
   };
 
@@ -131,10 +133,14 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
         <div>
           {type || "Webpage"}
         </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col flex-1">
             <div className="px-4 cursor-pointer w-auto" onClick={handleCardClick}>
-              <h3 className="font-bold text-black text-ellipsis overflow-hidden">{title}</h3>
-              
+              <div className="flex flex-row gap-2">
+                <h3 className="font-bold text-black text-ellipsis overflow-hidden">{title}</h3>
+                <a href={url} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink size={20} />
+                </a>
+              </div>
               <ul className="flex flex-row mt-2">
                 {Object.entries(linkedCounts)
                   .filter(([, value]) => value > 0)
@@ -159,15 +165,25 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
             </div>
          </div>
         
-      </Card>
-      <div className="flex flex-col mt-2 text-sm">       
+        <div className="flex flex-row gap-4 items-center">       
           <div>
-            {dateAdded ? new Date(dateAdded).toLocaleDateString('en-US', { 
-              month: 'short', 
-              day: 'numeric' 
-            }) : null}
+          {dateAdded 
+              ? new Date(dateAdded).toLocaleTimeString('en-US', {
+                  hour: 'numeric', 
+                  minute: '2-digit', 
+                  hour12: false
+                }).toLowerCase()
+              : '09:30'}
           </div>
+          <div><p className="bg-green-200 text-white p-1 rounded-full"><UserAvatar username={createdByUsername} /></p></div>
+          {/* <div>
+            {new Date(dateAdded) ? new Date(dateAdded).toLocaleDateString('en-US', { 
+              month: 'short',
+              day: 'numeric'
+            }) : null}
+          </div> */}
         </div>
+        </Card>
     </div>
   );
 };
