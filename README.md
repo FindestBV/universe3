@@ -6,7 +6,6 @@ A React + Vite template powered by shadcn/ui. This repository will serve as a ba
 Component units install directly in to <pre>src/components/ui/</pre>. From here, they can be called in any component, and passed props/styling and configuration to extend and customise the primitive. 
 
 ## DISCLAIMER: 
-
 This is a work in progress and is intended to achieve the result of a pixel-perfect replication of the current Findest Universe UI.
 The key objective is to implement a flow, featuring all of the required composite elements and functionality present in the existing universe, but implementing proper and robust state management, frontend architectural process and best practices, with the aim of minimising the impact on the business.
 
