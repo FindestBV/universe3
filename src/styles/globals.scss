@@ -1,12 +1,13 @@
 /* Collect styling isolated to components and include here*/
 /* This will be more modular */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @import './components/create-new-button.css';
 @import './components/document-card.css';
 @import './components/login-image-slider.css';
 
-@tailwind base;
-@tailwind components;
 
 .pageContent{
   @apply flex flex-col items-center justify-start w-full h-full px-6;
@@ -33,8 +34,6 @@
   transition: .3s ease-in-out;
   width: 560px;
 }
-
-@tailwind utilities;
 
 @layer base {
   * {
