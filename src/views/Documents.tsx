@@ -13,7 +13,7 @@ export const Documents: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [documentsPerPage, setDocumentsPerPage] = useState(12);
     const [tempLoading, setTempLoading] = useState(false); // Temporary loading state
-    
+
     // React Query fetch
     const { data, isLoading, isError, error, refetch } = useGetSavedDocumentsQuery(
         { page: currentPage, limit: documentsPerPage },
@@ -58,37 +58,44 @@ export const Documents: React.FC = () => {
 
 
     return (
-        <div className="flex flex-col w-full h-full max-sm:px-4">
-            <div className="flex w-full justify-between items-center">
+        <div className="flex flex-col w-full h-full max-sm:px-4 py-[10px] px-12">
+            {/* <div className="flex w-full justify-between items-center">
                 <h1 className="text-black font-black text-xl">{t('documents')}</h1>
-                <div className="w-full sm:w-1/2 md:w-1/4 flex flex-col items-end">
-                    <label htmlFor="documentsPerPage" className="block text-sm font-black text-gray-700 mb-2 text-right hidden">
-                        Documents per Page
-                    </label>
-                    <select
-                        id="documentsPerPage"
-                        value={documentsPerPage}
-                        onChange={handleDocumentsPerPageChange}
-                        className="border p-2 mt-2 mb-2 rounded w-full sm:w-1/2 md:w-full focus:ring-blue-500 focus:border-blue-500"
-                    >
-                        <option value={25}>25</option>
-                        <option value={20}>20</option>
-                        <option value={15}>15</option>
-                        <option value={10}>10</option>
-                        <option value={5}>5</option>
-                    </select>
-                </div>
-            </div>
+            </div> */}
 
-            <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-lg mb-4">
-                <Checkbox
-                    id="select-all"
-                    checked={data ? selectedDocs.size === data.documents.length : false}
-                    onCheckedChange={(checked) => handleSelectAll(checked as boolean)}
-                />
-                <label htmlFor="select-all" className="text-sm font-medium">
-                    Select All ({selectedDocs.size} of {documentsPerPage || 0} total)
-                </label>
+            <div className="flex items-center justify-between gap-4 px-4 bg-slate-50 rounded-lg mb-2">
+                <div>
+                    <Checkbox
+                        id="select-all"
+                        checked={data ? selectedDocs.size === data.documents.length : false}
+                        onCheckedChange={(checked) => handleSelectAll(checked as boolean)}
+                    />
+                    <label htmlFor="select-all" className="text-sm font-medium pl-4">
+                        Select All ({selectedDocs.size} of {documentsPerPage || 0} total)
+                    </label>
+                </div>
+
+                <div className="flex">
+                    <button type="button" id="radix-:r28:" aria-haspopup="menu" aria-expanded="false" data-state="closed" className="bg-gray p-4 rounded-md flex w-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-filter"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg> Add Filter</button><nav role="navigation" aria-label="pagination" className="mx-auto flex w-full justify-center"><ul className="flex flex-row items-center gap-1"><li className=""><a className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-1 pl-2.5" aria-label="Go to previous page" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-chevron-left h-4 w-4"><path d="m15 18-6-6 6-6"></path></svg><span>Previous</span></a></li><li className=""><a className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-1 pr-2.5" aria-label="Go to next page" href="#" disabled=""><span>Next</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-chevron-right h-4 w-4"><path d="m9 18 6-6-6-6"></path></svg></a></li></ul></nav>
+                        <div className="w-full sm:w-1/2 md:w-1/4 flex flex-col items-end">
+                            <label htmlFor="documentsPerPage" className="text-sm font-black text-gray-700 mb-2 text-right hidden">
+                                Documents per Page
+                            </label>
+                        <select
+                            id="documentsPerPage"
+                            value={documentsPerPage}
+                            onChange={handleDocumentsPerPageChange}
+                            className="border p-2 mt-2 mb-2 rounded width-[55%] focus:ring-blue-500 focus:border-blue-500"
+                        >
+                            <option value={25}>25</option>
+                            <option value={20}>20</option>
+                            <option value={15}>15</option>
+                            <option value={10}>10</option>
+                            <option value={5}>5</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             {tempLoading ?? <p>LOADING</p>}
             <CardContent className="p-0">
@@ -96,7 +103,7 @@ export const Documents: React.FC = () => {
                 {isLoading && <Loader className="animate-spin" />}
                 {data && (
                     <div>
-                        
+
                         {data.documents.slice(0, documentsPerPage).map((doc) => (
                             <DocumentCard
                                 key={doc.id}
@@ -105,7 +112,7 @@ export const Documents: React.FC = () => {
                                 onSelect={handleSelectDoc}
                             />
                         ))}
-                        
+
                         <ListPagination
                             currentPage={currentPage}
                             totalPages={totalPages}

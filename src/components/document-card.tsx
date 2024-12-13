@@ -118,7 +118,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   };
 
   return (
-    <div className="documentCard gap-4">
+    <div className="documentCard gap-4 hover:border-[#ccc]">
       
         <Checkbox
           id={`doc-${id}`}
@@ -135,7 +135,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
             <div className="px-4 cursor-pointer w-auto" onClick={handleCardClick}>
               <h3 className="font-bold text-black text-ellipsis overflow-hidden">{title}</h3>
               
-              <ul className="flex flex-row gap-2">
+              <ul className="flex flex-row mt-2">
                 {Object.entries(linkedCounts)
                   .filter(([, value]) => value > 0)
                   .map(([key, value], idx) => {
@@ -162,7 +162,10 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
       </Card>
       <div className="flex flex-col mt-2 text-sm">       
           <div>
-            {dateAdded ? new Date(dateAdded).toLocaleDateString() : "N/A"}
+            {dateAdded ? new Date(dateAdded).toLocaleDateString('en-US', { 
+              month: 'short', 
+              day: 'numeric' 
+            }) : null}
           </div>
         </div>
     </div>
