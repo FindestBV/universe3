@@ -118,70 +118,53 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   };
 
   return (
-    <div className="documentCard">
-      <div className="pt-4 pl-4">
-      <Checkbox
-        id={`doc-${id}`}
-        checked={isSelected}
-        onCheckedChange={(checked) => handleCheckboxChange(checked as boolean)}
-        className="secondary"
-      />
-      </div>
-      <Card key={id} className="w-full">
-        <div className="p-4 cursor-pointer" onClick={handleCardClick}>
-          <h3 className="font-black text-lg text-black text-ellipsis overflow-hidden">{title}</h3>
-          <div className="flex flex-col mt-2 text-sm">
-            <div>
-              <span className="font-black text-black">Type: </span>
-              {type || "Webpage"}
+    <div className="documentCard gap-4">
+      
+        <Checkbox
+          id={`doc-${id}`}
+          checked={isSelected}
+          onCheckedChange={(checked) => handleCheckboxChange(checked as boolean)}
+          className="secondary"
+        />
+      
+      <Card key={id} className="flex flex-row flex-1 gap-4">
+        <div>
+          {type || "Webpage"}
+        </div>
+          <div className="flex flex-col">
+            <div className="px-4 cursor-pointer w-auto" onClick={handleCardClick}>
+              <h3 className="font-bold text-black text-ellipsis overflow-hidden">{title}</h3>
+              
+              <ul className="flex flex-row gap-2">
+                {Object.entries(linkedCounts)
+                  .filter(([, value]) => value > 0)
+                  .map(([key, value], idx) => {
+                    const IconComponent = typeIcons[key as keyof typeof typeIcons] || null;
+                    return (
+                      <li
+                        key={idx}
+                        className="rounded-md bg-slate-100 text-black p-1 flex gap-2 items-center"
+                        onMouseEnter={() => handleMouseEnter(id, key)} // Use `key` for type lookup
+                        onClick={() => {
+                          setShowDialog(true);
+                          setDialogDocumentId(id);
+                        }}
+                      >
+                        {IconComponent && <IconComponent size={16} />}
+                        {value}
+                      </li>
+                    );
+                  })}
+              </ul>
             </div>
-            <div>
-              <span className="font-black text-black">Added: </span>
-              {dateAdded ? new Date(dateAdded).toLocaleDateString() : "N/A"}
-            </div>
-            <div className="col-span-2">
-              <span className="font-black text-black">URL: </span>
-              <a
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
-              >
-                {url}
-              </a>
-            </div>
+         </div>
+        
+      </Card>
+      <div className="flex flex-col mt-2 text-sm">       
+          <div>
+            {dateAdded ? new Date(dateAdded).toLocaleDateString() : "N/A"}
           </div>
         </div>
-        <div className="pl-4 pb-4">
-          <ul className="flex flex-row gap-2">
-            {Object.entries(linkedCounts)
-              .filter(([, value]) => value > 0)
-              .map(([key, value], idx) => {
-                const IconComponent = typeIcons[key as keyof typeof typeIcons] || null;
-                return (
-                  <li
-                    key={idx}
-                    className="rounded-md bg-slate-100 text-black p-1 flex gap-2 items-center"
-                    onMouseEnter={() => handleMouseEnter(id, key)} // Use `key` for type lookup
-                    onClick={() => {
-                      setShowDialog(true);
-                      setDialogDocumentId(id);
-                    }}
-                  >
-                    {IconComponent && <IconComponent size={16} />}
-                    {value}
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
-        {showDialog && dialogDocumentId && (
-          <ConnectedObjectsDialog
-            documentId={dialogDocumentId}
-            onClose={() => setShowDialog(false)}
-          />
-        )}
-      </Card>
     </div>
   );
 };

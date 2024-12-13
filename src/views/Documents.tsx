@@ -96,16 +96,16 @@ export const Documents: React.FC = () => {
                 {isLoading && <Loader className="animate-spin" />}
                 {data && (
                     <div>
-                        <div className="space-y-4 mb-8">
-                            {data.documents.slice(0, documentsPerPage).map((doc) => (
-                                <DocumentCard
-                                    key={doc.id}
-                                    {...doc}
-                                    isSelected={selectedDocs.has(doc.id)}
-                                    onSelect={handleSelectDoc}
-                                />
-                            ))}
-                        </div>
+                        
+                        {data.documents.slice(0, documentsPerPage).map((doc) => (
+                            <DocumentCard
+                                key={doc.id}
+                                {...doc}
+                                isSelected={selectedDocs.has(doc.id)}
+                                onSelect={handleSelectDoc}
+                            />
+                        ))}
+                        
                         <ListPagination
                             currentPage={currentPage}
                             totalPages={totalPages}
