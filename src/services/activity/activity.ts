@@ -23,4 +23,8 @@ export const activityApi = api.injectEndpoints({
   }),  
 });
 
-export const { useGetMyRecentActivityQuery, useGetMaxActivityQuery } = activityApi;
+export const { 
+  useGetMyRecentActivityQuery, 
+  useGetMaxActivityQuery, 
+  usePrefetch 
+} = activityApi;
