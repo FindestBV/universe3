@@ -49,4 +49,5 @@ export const {
   useGetEntityByIdQuery,
   useUpdateEntityTitleMutation,
   useDeleteEntityMutation,
+  usePrefetch
 } = entityApi;

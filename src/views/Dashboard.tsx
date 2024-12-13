@@ -56,7 +56,6 @@ export const Dashboard = () => {
                 <h2 className='overViewTitle'>{t('pickup')}</h2>
                 <div className="flex flex-col items-start justify-start h-[350px] w-full gap-2 overflow-y-scroll">
                     {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                    
                     {activityData && activityData.map((activity:any, idx:string) => (
                         <div 
                             key={idx} 
@@ -89,7 +88,7 @@ export const Dashboard = () => {
                             </div>
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button variant="rotated" className="h-8 w-8 p-0">
+                                    <Button variant="rotated" className="h-8 w-8 p-0 bg-transparent">
                                         <span className="sr-only">Open menu</span>
                                         <MoreHorizontal />
                                     </Button>

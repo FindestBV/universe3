@@ -9,4 +9,4 @@ export const searchApi = api.injectEndpoints({
   }),
 });
 
-export const { useSearchItemsMutation } = searchApi;
+export const { useSearchItemsMutation, usePrefetch } = searchApi;
