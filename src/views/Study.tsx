@@ -19,7 +19,7 @@ export const Study: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-full max-sm:px-4">
+    <div className="flex flex-col w-full h-full max-sm:px-4 p-12">
       <div className="flex flex-col w-auto h-screen">
         <h1 className="text-xl text-black font-black mb-2">
           {study?.title || "Study"}

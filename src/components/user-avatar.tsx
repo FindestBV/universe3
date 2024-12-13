@@ -1,9 +1,10 @@
-export const UserAvatar = ({ username }: { username: string }) => {
-    const getFirstLetter = (name: string): string => {
+export const UserAvatar = ({ username }) => {
+    const getFirstLetter = (name) => {
       return name ? name.charAt(0).toUpperCase() : '?';
     };
+  
     return (
-      <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">
+      <div className="user_avatar">
         {getFirstLetter(username)}
       </div>
     );

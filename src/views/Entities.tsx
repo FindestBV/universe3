@@ -54,7 +54,7 @@ export const Entities: React.FC = () => {
 
   // Render loading, error, or data states
   return (
-    <div className="flex flex-col w-full h-full max-sm:px-4">
+    <div className="flex flex-col w-full h-full max-sm:px-4 px-12">
       <div className="flex w-full justify-between items-center">
         <h1 className="text-black font-black text-xl">Entities</h1>
         <div className="flex">

@@ -9,9 +9,6 @@ export const Document: React.FC = () => {
     const { data: fetchedDocument } = useGetDocumentByIdQuery(id, {
       refetchOnMountOrArgChange: false, // Prevents automatic refetching
     });
-
-    // console.log('fetched', fetchedDocument?.connectedObjects);
-
   
     const renderConnectedObjects = fetchedDocument && Object.entries(fetchedDocument?.connectedObjects).map((o, i) => {
       // @ts-expect-error ass
@@ -20,7 +17,7 @@ export const Document: React.FC = () => {
 
     // Render the full document data if available
     return (
-        <div className="flex flex-col w-full h-full max-sm:px-4">
+        <div className="flex flex-col w-full h-full max-sm:px-4 p-12">
             <div className="flex flex-col w-auto h-screen">
                 <h1 className="text-xl text-black font-black mb-2"> {fetchedDocument?.title || "Document"}</h1>
                 <p><span className="text-black font-black">Document ID:</span> {id}</p>

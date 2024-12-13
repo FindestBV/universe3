@@ -141,7 +141,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                   <ExternalLink size={20} />
                 </a>
               </div>
-              <ul className="flex flex-row mt-2">
+              <ul className="linkedCounts">
                 {Object.entries(linkedCounts)
                   .filter(([, value]) => value > 0)
                   .map(([key, value], idx) => {
@@ -149,7 +149,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                     return (
                       <li
                         key={idx}
-                        className="rounded-md bg-slate-100 text-black p-1 flex gap-2 items-center"
+                        className="linkedCounts__item"
                         onMouseEnter={() => handleMouseEnter(id, key)} // Use `key` for type lookup
                         onClick={() => {
                           setShowDialog(true);
@@ -165,8 +165,8 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
             </div>
          </div>
         
-        <div className="flex flex-row gap-4 items-center">       
-          <div>
+        <div className="flex flex-row gap-2 items-start">       
+          <div className="time">
           {dateAdded 
               ? new Date(dateAdded).toLocaleTimeString('en-US', {
                   hour: 'numeric', 
@@ -175,7 +175,9 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                 }).toLowerCase()
               : '09:30'}
           </div>
-          <div><p className="bg-green-200 text-white p-1 rounded-full"><UserAvatar username={createdByUsername} /></p></div>
+          <div className="avatar">
+            <UserAvatar username={createdByUsername} />
+          </div>
           {/* <div>
             {new Date(dateAdded) ? new Date(dateAdded).toLocaleDateString('en-US', { 
               month: 'short',

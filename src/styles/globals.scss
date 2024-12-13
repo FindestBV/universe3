@@ -1,3 +1,5 @@
+@use './components/document-card.scss';
+@use './components/user-avatar.scss';
 /* Collect styling isolated to components and include here*/
 /* This will be more modular */
 @tailwind base;
@@ -5,7 +7,6 @@
 @tailwind utilities;
 
 @import './components/create-new-button.css';
-@import './components/document-card.css';
 @import './components/login-image-slider.css';
 
 

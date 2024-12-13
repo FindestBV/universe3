@@ -5,7 +5,7 @@ const DataChart = lazy(() => import("@/components/data-chart"));
 const SearchProgress = lazy(() => import("@/components/search-progress"));
 
 const Inbox = () => (
-  <div className="flex flex-col gap-y-4 w-full h-screen">
+  <div className="flex flex-col w-full h-full max-sm:px-4 px-12">
     <SortableTable />
     <div className="w-full flex gap-10 p-6">
       <div className="w-1/2">
