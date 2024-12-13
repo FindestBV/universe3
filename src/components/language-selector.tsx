@@ -17,6 +17,7 @@ const LanguageSelector: React.FC = () => {
   const { i18n } = useTranslation();
 
   const languages: Language[] = [
+    { code: 'al', name: 'Shqip' },
     { code: 'nl', name: 'Nederlands' },
     { code: 'en', name: 'English' },
     { code: 'fr', name: 'Français' },

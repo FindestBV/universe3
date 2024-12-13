@@ -6,5 +6,6 @@
     "searchPlaceholder": "Rechercher dans l'univers",
     "documents": "Documents",
     "happening": "Que se passe-t-il chez Findest ?",
-    "pageType": "Détail du type de page"
+    "pageType": "Détail du type de page",
+    "createNew": "Créer nouveau"
 }

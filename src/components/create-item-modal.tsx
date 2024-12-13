@@ -5,6 +5,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import { CreateNewItem } from "@/components/create-new-item";
+import { useTranslation } from "react-i18next";
 
 import StudyIcon from '@/assets/study.svg';
 import DocumentIcon from '@/assets/document.svg'
@@ -20,6 +21,7 @@ icon: string;
 
 const CreateItemModal: React.FC = () => {
 // Array of items with their details
+const { t } = useTranslation();
 const createItems: CreateItemType[] = [
   {
     type: "Study", 
@@ -53,7 +55,7 @@ return (
     <DialogContent className="max-w-6xl h-[80vh] bg-white overflow-hidden" style={{ maxHeight: "70%", maxWidth: "80%"}}>
       <div className="w-full h-full flex flex-col gap-6 items-start">
         <div className="header">
-          <h2 className="pl-2 font-black text-2xl">Create New</h2>
+          <h2 className="pl-2 font-black text-2xl">{t("createNew")}</h2>
         </div>
         <div className="flex w-full gap-2">
           {createItems.map((item) => (
