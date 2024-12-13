@@ -5,5 +5,6 @@
     "relationsGraph": "Grafico delle Relazioni", 
     "searchPlaceholder": "Cerca nell'universo",
     "documents": "Documenti",
-    "happening": "Cosa sta succedendo su Findest?"
+    "happening": "Cosa sta succedendo su Findest?",
+    "pageType": "Dettaglio del tipo di pagina"
 }

@@ -5,7 +5,7 @@ export const activityApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getMyRecentActivity: builder.query<SavedDocumentResponse, void>({
       query: () => ({
-        url: 'mysimplerecent',
+        url: 'activity/mysimplerecent',
         // url: 'my/',
         params: {
           orderBy: 2,
@@ -14,7 +14,13 @@ export const activityApi = api.injectEndpoints({
       }),
       providesTags: ['SavedDocument'],
     }),
+    getMaxActivity: builder.query<SavedDocumentResponse, void>({
+      query: () => ({
+        url: 'activity?maxActivity=10',
+      }),
+      providesTags: ['SavedDocument'],
+    }),
   }),  
 });
 
-export const { useGetMyRecentActivityQuery } = activityApi;
+export const { useGetMyRecentActivityQuery, useGetMaxActivityQuery } = activityApi;
