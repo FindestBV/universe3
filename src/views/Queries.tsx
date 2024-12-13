@@ -8,12 +8,24 @@ export const Queries = () => (
         <div className="flex w-full justify-between items-center">
             <h1 className="text-black font-black text-xl">Queries</h1>
             <div className="flex">
-            <ListPagination />   
+            <ListPagination 
+                currentPage={1}
+                totalPages={1} 
+                onPageChange={() => {}}
+                onNextPage={() => {}}
+                onPreviousPage={() => {}}
+            />   
             </div>  
         </div>
         <StudiesIndex />
         <div className="py-4 w-full">
-            <ListPagination />     
+            <ListPagination
+                currentPage={1}
+                totalPages={1}
+                onPageChange={() => {}}
+                onNextPage={() => {}}
+                onPreviousPage={() => {}}
+            />     
         </div>  
     </div>
 );

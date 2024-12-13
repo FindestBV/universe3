@@ -29,16 +29,12 @@ interface DashboardHeader {
 }
 
 export default function DashboardHeader() {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     // const dispatch = useDispatch();
     // const navigate = useNavigate(); 
     const user = useSelector(currentUser);
     const { data: activityData } = useGetMyRecentActivityQuery();
     
-    const changeLanguage = (lng: string) => {
-      i18n.changeLanguage(lng);
-    }
-
 
     const powerUserFlag = useFeature('power user only', true);
     // const [user, setUser] = useState('Ro');

@@ -157,7 +157,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
             {Object.entries(linkedCounts)
               .filter(([, value]) => value > 0)
               .map(([key, value], idx) => {
-                const IconComponent = typeIcons[key] || null;
+                const IconComponent = typeIcons[key as keyof typeof typeIcons] || null;
                 return (
                   <li
                     key={idx}
@@ -166,7 +166,6 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                     onClick={() => {
                       setShowDialog(true);
                       setDialogDocumentId(id);
-                      setDialogType(key);
                     }}
                   >
                     {IconComponent && <IconComponent size={16} />}

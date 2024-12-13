@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-ro
 import { useSelector, Provider as ReduxStoreProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import DashboardHeader from "@/components/dashboard-header";
 import { store, persistor } from "@/store";
