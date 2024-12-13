@@ -63,7 +63,7 @@ const ConnectedObjectsDialog = ({
 
   useEffect(() => {
     if (documentId) {
-      fetchConnectedObjects(documentId);
+      fetchConnectedObjects({ id: documentId, type: 'document' });
     }
   }, [documentId, fetchConnectedObjects]);
 
@@ -105,10 +105,10 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
     onSelect(id, checked);
   };
 
-  const handleMouseEnter = (id: string, key: string) => {
-    const objectType = objectTypeMapping[key] || 0; // Default to 0 (Unknown)
-    prefetchConnectedObjects({ id, type: objectType });
-    setDialogDocumentId(id);
+  const handleMouseEnter = (id: string | number, key: string) => {
+    const objectType = objectTypeMapping[key] || 'unknown'; // Default to 'unknown'
+    prefetchConnectedObjects({ id: id.toString(), type: objectType });
+    setDialogDocumentId(id.toString());
   };
 
   const handleCardClick = () => {
@@ -119,7 +119,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
 
   return (
     <div className="documentCard">
-      <div className="p-4">
+      <div className="pt-4 pl-4">
       <Checkbox
         id={`doc-${id}`}
         checked={isSelected}

@@ -65,6 +65,15 @@ importers:
       html-entities:
         specifier: ^2.5.2
         version: 2.5.2
+      i18next:
+        specifier: ^24.1.0
+        version: 24.1.0(typescript@5.6.3)
+      i18next-browser-languagedetector:
+        specifier: ^8.0.2
+        version: 8.0.2
+      i18next-http-backend:
+        specifier: ^3.0.1
+        version: 3.0.1
       install:
         specifier: ^0.13.0
         version: 0.13.0
@@ -86,6 +95,9 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      react-i18next:
+        specifier: ^15.2.0
+        version: 15.2.0(i18next@24.1.0(typescript@5.6.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-joyride:
         specifier: ^2.9.3
         version: 2.9.3(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1331,6 +1343,9 @@ packages:
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
 
+  cross-fetch@4.0.0:
+    resolution: {integrity: sha512-e4a5N8lVvuLgAWgnCrLr2PP0YyDOTHa9H/Rj54dirp61qXnNq46m82bRhNqIA5VccJtWBvPTFRV3TtvHUKPB1g==}
+
   cross-spawn@7.0.5:
     resolution: {integrity: sha512-ZVJrKKYunU38/76t0RMOulHOnUcbU9GbpWKAOZ0mhjr7CX6FVrH+4FrAapSOekrgFQ3f/8gwMEuIft0aKq6Hug==}
     engines: {node: '>= 8'}
@@ -1618,6 +1633,23 @@ packages:
   html-entities@2.5.2:
     resolution: {integrity: sha512-K//PSRMQk4FZ78Kyau+mZurHn3FH0Vwr+H36eE0rPbeYkRRi9YxceYPhuN60UwWorxyKHhqoAJl2OFKa4BVtaA==}
 
+  html-parse-stringify@3.0.1:
+    resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
+
+  i18next-browser-languagedetector@8.0.2:
+    resolution: {integrity: sha512-shBvPmnIyZeD2VU5jVGIOWP7u9qNG3Lj7mpaiPFpbJ3LVfHZJvVzKR4v1Cb91wAOFpNw442N+LGPzHOHsten2g==}
+
+  i18next-http-backend@3.0.1:
+    resolution: {integrity: sha512-XT2lYSkbAtDE55c6m7CtKxxrsfuRQO3rUfHzj8ZyRtY9CkIX3aRGwXGTkUhpGWce+J8n7sfu3J0f2wTzo7Lw0A==}
+
+  i18next@24.1.0:
+    resolution: {integrity: sha512-suKlX82AlptkMUO5YRfaAeH4FQyyKvR66jNaubTMiyPPMx7INU6PXAiy3PGULc0q6K+t9nxmDf/TRj9KjAivmw==}
+    peerDependencies:
+      typescript: ^5
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
@@ -1796,6 +1828,15 @@ packages:
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
+  node-fetch@2.7.0:
+    resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
+    engines: {node: 4.x || >=6.0.0}
+    peerDependencies:
+      encoding: ^0.1.0
+    peerDependenciesMeta:
+      encoding:
+        optional: true
+
   node-releases@2.0.18:
     resolution: {integrity: sha512-d9VeXT4SJ7ZeOqGX6R5EM022wpL+eWPooLI+5UpWn2jCT1aosUQEhQP214x33Wkwx3JQMvIm+tIoVOdodFS40g==}
 
@@ -1944,6 +1985,19 @@ packages:
     peerDependencies:
       react: 15 - 18
       react-dom: 15 - 18
+
+  react-i18next@15.2.0:
+    resolution: {integrity: sha512-iJNc8111EaDtVTVMKigvBtPHyrJV+KblWG73cUxqp+WmJCcwkzhWNFXmkAD5pwP2Z4woeDj/oXDdbjDsb3Gutg==}
+    peerDependencies:
+      i18next: '>= 23.2.3'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
 
   react-innertext@1.1.5:
     resolution: {integrity: sha512-PWAqdqhxhHIv80dT9znP2KvS+hfkbRovFp4zFYHFFlOoQLRiawIic81gKb3U1wEyJZgMwgs3JoLtwryASRWP3Q==}
@@ -2341,6 +2395,9 @@ packages:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
 
+  tr46@0.0.3:
+    resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
+
   tree-changes@0.11.2:
     resolution: {integrity: sha512-4gXlUthrl+RabZw6lLvcCDl6KfJOCmrC16BC5CRdut1EAH509Omgg0BfKLY+ViRlzrvYOTWR0FMS2SQTwzumrw==}
 
@@ -2466,6 +2523,16 @@ packages:
         optional: true
       terser:
         optional: true
+
+  void-elements@3.1.0:
+    resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
+    engines: {node: '>=0.10.0'}
+
+  webidl-conversions@3.0.1:
+    resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
+
+  whatwg-url@5.0.0:
+    resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
 
   which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
@@ -3581,6 +3648,12 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
+  cross-fetch@4.0.0:
+    dependencies:
+      node-fetch: 2.7.0
+    transitivePeerDependencies:
+      - encoding
+
   cross-spawn@7.0.5:
     dependencies:
       path-key: 3.1.1
@@ -3874,6 +3947,26 @@ snapshots:
 
   html-entities@2.5.2: {}
 
+  html-parse-stringify@3.0.1:
+    dependencies:
+      void-elements: 3.1.0
+
+  i18next-browser-languagedetector@8.0.2:
+    dependencies:
+      '@babel/runtime': 7.26.0
+
+  i18next-http-backend@3.0.1:
+    dependencies:
+      cross-fetch: 4.0.0
+    transitivePeerDependencies:
+      - encoding
+
+  i18next@24.1.0(typescript@5.6.3):
+    dependencies:
+      '@babel/runtime': 7.26.0
+    optionalDependencies:
+      typescript: 5.6.3
+
   ignore@5.3.2: {}
 
   immer@10.1.1: {}
@@ -4015,6 +4108,10 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
+  node-fetch@2.7.0:
+    dependencies:
+      whatwg-url: 5.0.0
+
   node-releases@2.0.18: {}
 
   normalize-path@3.0.0: {}
@@ -4142,6 +4239,15 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       tree-changes: 0.9.3
+
+  react-i18next@15.2.0(i18next@24.1.0(typescript@5.6.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      '@babel/runtime': 7.26.0
+      html-parse-stringify: 3.0.1
+      i18next: 24.1.0(typescript@5.6.3)
+      react: 18.3.1
+    optionalDependencies:
+      react-dom: 18.3.1(react@18.3.1)
 
   react-innertext@1.1.5(@types/react@18.3.12)(react@18.3.1):
     dependencies:
@@ -4541,6 +4647,8 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
+  tr46@0.0.3: {}
+
   tree-changes@0.11.2:
     dependencies:
       '@gilbarbara/deep-equal': 0.3.1
@@ -4645,6 +4753,15 @@ snapshots:
       '@types/node': 20.17.6
       fsevents: 2.3.3
       sass-embedded: 1.82.0
+
+  void-elements@3.1.0: {}
+
+  webidl-conversions@3.0.1: {}
+
+  whatwg-url@5.0.0:
+    dependencies:
+      tr46: 0.0.3
+      webidl-conversions: 3.0.1
 
   which@2.0.2:
     dependencies:

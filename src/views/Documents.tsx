@@ -5,8 +5,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DocumentCard } from '@/components/document-card';
 import { ListPagination } from "@/components/list-pagination";
 import { Loader } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const Documents: React.FC = () => {
+    const { t } = useTranslation();
     const [selectedDocs, setSelectedDocs] = useState<Set<string>>(new Set());
     const [currentPage, setCurrentPage] = useState(1);
     const [documentsPerPage, setDocumentsPerPage] = useState(12);
@@ -58,7 +60,7 @@ export const Documents: React.FC = () => {
     return (
         <div className="flex flex-col w-full h-full max-sm:px-4">
             <div className="flex w-full justify-between items-center">
-                <h1 className="text-black font-black text-xl">Documents</h1>
+                <h1 className="text-black font-black text-xl">{t('documents')}</h1>
                 <div className="w-full sm:w-1/2 md:w-1/4 flex flex-col items-end">
                     <label htmlFor="documentsPerPage" className="block text-sm font-black text-gray-700 mb-2 text-right hidden">
                         Documents per Page
@@ -89,7 +91,7 @@ export const Documents: React.FC = () => {
                 </label>
             </div>
             {tempLoading ?? <p>LOADING</p>}
-            <CardContent>
+            <CardContent className="p-0">
                 {isError && <div className="text-red-600">Error loading documents: {JSON.stringify(error)}</div>}
                 {isLoading && <Loader className="animate-spin" />}
                 {data && (

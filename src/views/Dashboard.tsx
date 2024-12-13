@@ -1,5 +1,5 @@
 import { useGetMyRecentActivityQuery } from '@/services/activity/activity';
-import { Link, MoreHorizontal, SquareArrowOutUpRight, ScanEye, Network, List } from 'lucide-react';
+import { MoreHorizontal, SquareArrowOutUpRight, ScanEye, Network, List } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     Avatar,
@@ -14,9 +14,11 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import DataChart from "@/components/data-chart";
+import { useTranslation } from 'react-i18next';
 // import { useSelector } from 'react-redux';
 // import { currentUser } from '@/services/auth/authSlice';
 export const Dashboard = () => {
+    const { t } = useTranslation();
 
     const { data: activityData } = useGetMyRecentActivityQuery();
     const navigate = useNavigate();
@@ -51,7 +53,7 @@ export const Dashboard = () => {
             {/* TODO: add dynamic units later */}
 
             <div  className="flex flex-col space-y-3 w-full max-sm:px-4 overflow-hidden">
-                <h2 className='overViewTitle'>Pick up where you left off...</h2>
+                <h2 className='overViewTitle'>{t('pickup')}</h2>
                 <div className="flex flex-col items-start justify-start h-[350px] w-full gap-2 overflow-y-scroll">
                     {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                     {activityData && activityData.map((activity:any, idx:string) => (
@@ -82,14 +84,14 @@ export const Dashboard = () => {
             </div>
     
             <div  className="flex flex-col space-y-3 w-full max-sm:px-4">
-                <h2 className='overViewTitle'>Relations graph</h2>
+                <h2 className='overViewTitle'>{t('relationsGraph')}</h2>
                 <div className="flex items-center justify-center  animate-pulse h-auto w-full rounded-xl">
                   <DataChart />
                 </div>
             </div>
     
             <div  className="flex flex-col space-y-3 w-full max-sm:px-4 overflow-hidden">
-                <h2 className='overViewTitle'>What's happening at Findest?</h2>
+                <h2 className='overViewTitle'>{t('happening')}</h2>
                 <div className="flex flex-col items-start justify-start h-[300px] w-full rounded-xl gap-2 overflow-y-scroll">
                 
                     {[...Array(15)].map((_, index) => (

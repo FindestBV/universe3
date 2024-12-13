@@ -57,7 +57,7 @@ export interface DocumentListResponse {
 
 // Define interfaces for the API response
 export interface SavedDocument {
-    linkedCounts: LinkedCounts;
+    linkedCounts: {[key: string]: number};
     id: string;
     title: string;
     url: string;
@@ -74,7 +74,10 @@ export interface SavedDocumentResponse {
 }
 
 export interface ConnectedObject {
-    connectedObject: [],
+    id: string | null | undefined;
+    name: string | React.ReactNode;
+    type: string | React.ReactNode; 
+    connectedObject: any[];
     onRemoveConnectionClickAsync: (connectedObjectToRemove: any) => Promise<void>
 }
 

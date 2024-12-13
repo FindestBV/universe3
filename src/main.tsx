@@ -1,7 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import AppWrapper from "./App.tsx";
+import AppWrapper from "./App";
 import "@/styles/globals.css";
+import "./i18n";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

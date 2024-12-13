@@ -10,10 +10,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from './ui/button';
-
+import { useTranslation } from 'react-i18next';
 const TABS = ['All', 'Entity', 'Document', 'Query', 'Study'];
 
 export const SearchBar = () => {
+  const { t } = useTranslation();
   const [filters, setFilters] = useState({
     keyword: '',
     type: '',
@@ -140,7 +141,7 @@ export const SearchBar = () => {
               onPaste={handleInputPaste}
               onBlur={handleInputBlur}
               className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Search the Universe"
+              placeholder={t('searchPlaceholder')}
               aria-label="Search input"
             />
             <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">

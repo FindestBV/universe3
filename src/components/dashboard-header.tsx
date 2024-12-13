@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from 'react';
 import { useFeature } from 'use-feature';
+import { useTranslation } from 'react-i18next';
 import { Clock, Pin, ChartNetwork, Search, SmilePlus, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CreateItemModal from './create-item-modal';
+import LanguageSelector from './language-selector';
 import {
     Tooltip,
     TooltipContent,
@@ -21,21 +23,23 @@ import SearchBar from './searchbar';
 import { currentUser } from '@/services/auth/authSlice';
 import { useSelector } from 'react-redux';
 import { useGetMyRecentActivityQuery } from '@/services/activity/activity';
-// import { useNavigate } from 'react-router-dom';
-
-// import { useWebSocket } from '../hooks/use-web-socket';
-// import { Permission, usePermissionsChecker } from '../hooks/use-permissions-checker';
 
 interface DashboardHeader {
     className?: string;
 }
 
 export default function DashboardHeader() {
+    const { t, i18n } = useTranslation();
     // const dispatch = useDispatch();
     // const navigate = useNavigate(); 
     const user = useSelector(currentUser);
     const { data: activityData } = useGetMyRecentActivityQuery();
     
+    const changeLanguage = (lng: string) => {
+      i18n.changeLanguage(lng);
+    }
+
+
     const powerUserFlag = useFeature('power user only', true);
     // const [user, setUser] = useState('Ro');
     // const { isConnected, sendMessage, lastMessage } = useWebSocket('ws://localhost:4000/chat', {
@@ -148,11 +152,8 @@ export default function DashboardHeader() {
             <SearchBar />
             
             <div className="flex items-center gap-2">
-              
-                {/* {user ? <div className="flex items-center gap-2 pr-2">
-                        <h3>Welcome back, {user}</h3>
-                    
-                </div> : null}   */}
+                {user ? <h3>{t('welcome')} {user}</h3> : null}
+                <LanguageSelector />
                 <div className="create-action flex items-center gap-2">
                     <CreateItemModal />
                     <Button name="Happiness" className="hover:bg-slate-300 text-white"><SmilePlus width={18} color="black" /></Button>
