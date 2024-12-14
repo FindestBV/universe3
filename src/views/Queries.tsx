@@ -4,7 +4,7 @@ import { ListPagination } from "@/components/list-pagination";
 
 
 export const Queries = () => (
-    <div className="flex flex-col w-full h-ful max-sm:px-4">
+    <div className="flex flex-col w-full h-full max-sm:px-4 px-12">
         <div className="flex w-full justify-between items-center">
             <h1 className="text-black font-black text-xl">Queries</h1>
             <div className="flex">

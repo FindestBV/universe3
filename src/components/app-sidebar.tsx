@@ -96,15 +96,14 @@ export function AppSidebar() {
                     {item.sublinks && (
                       <ul className="ml-8 mt-1 space-y-1">
                         {item.sublinks.map((sublink) => (
-                          <li key={sublink.title}>
-                            <a
-                              href={`/library${sublink.url}`}
-                              className="text-sm text-gray-300 hover:text-gray-500 py-1 flex gap-2"
-                            >
+                        <SidebarMenuItem>
+                          <SidebarMenuButton asChild>
+                            <a href={`/library${sublink.url}`}>
                               <sublink.icon width={12} />
-                              {sublink.title}
+                              <span className='font-bold'>{sublink.title}</span>
                             </a>
-                          </li>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
                         ))}
                       </ul>
                     )}
@@ -126,8 +125,8 @@ export function AppSidebar() {
                   <div key={item.title}>
                     <SidebarMenuItem>
                       <SidebarMenuButton asChild>
-                        <a href={item.url}>
-                          <item.icon />
+                        <a href={`${item.url}`}>
+                          <item.icon width={12} />
                           <span className='font-bold'>{item.title}</span>
                         </a>
                       </SidebarMenuButton>
