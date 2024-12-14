@@ -1,5 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@/store';
+import { setLanguage } from '@/services/utilities/languageSlice';
 import {
   Select,
   SelectContent,
@@ -8,15 +11,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-type Language = {
-  code: string;
-  name: string;
-};
-
 const LanguageSelector: React.FC = () => {
   const { i18n } = useTranslation();
+  const dispatch = useDispatch();
+  const selectedLanguage = useSelector((state: RootState) => state.language.selectedLanguage);
 
-  const languages: Language[] = [
+  const languages = [
     { code: 'al', name: 'Shqip' },
     { code: 'nl', name: 'Nederlands' },
     { code: 'en', name: 'English' },
@@ -32,14 +32,12 @@ const LanguageSelector: React.FC = () => {
 
   const changeLanguage = (languageCode: string) => {
     i18n.changeLanguage(languageCode);
+    dispatch(setLanguage(languageCode)); // Update Redux state
   };
 
   return (
-    <Select 
-      value={i18n.language} 
-      onValueChange={changeLanguage}
-    >
-     <SelectTrigger className="w-[70px] bg-white uppercase">
+    <Select value={selectedLanguage} onValueChange={changeLanguage}>
+      <SelectTrigger className="w-[70px] bg-white uppercase">
         <SelectValue placeholder="Select Language" />
       </SelectTrigger>
       <SelectContent className="bg-white text-black">

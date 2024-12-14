@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, Reducer } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { setupListeners } from "@reduxjs/toolkit/query";
@@ -7,18 +7,19 @@ import { combineReducers } from "redux";
 import { createReduxHistoryContext } from "redux-first-history";
 
 // Import feature reducers and APIs
-import { authApi } from "../src/services/auth/authApi";
-import authSlice from "./services/auth/authSlice";
-import { documentApi } from "./services/documents/documentApi";
-import documentSlice from "./services/documents/documentSlice";
-import { entityApi } from "./services/entities/entityApi";
-import entitySlice from "./services/entities/entitySlice";
-import { studyApi } from "./services/study/study";
-import studySlice from "./services/study/studySlice";
-import { activityApi } from "./services/activity/activity";
-import activitySlice from "./services/activity/activitySlice";
-import { searchApi } from "./services/search/search";
-import searchSlice from "./services/search/searchSlice";
+import { authApi } from "@/services/auth/authApi";
+import authSlice from "@/services/auth/authSlice";
+import { documentApi } from "@/services/documents/documentApi";
+import documentSlice from "@/services/documents/documentSlice";
+import { entityApi } from "@/services/entities/entityApi";
+import entitySlice from "@/services/entities/entitySlice";
+import { studyApi } from "@/services/study/study";
+import studySlice from "@/services/study/studySlice";
+import { activityApi } from "@/services/activity/activity";
+import activitySlice from "@/services/activity/activitySlice";
+import { searchApi } from "@/services/search/search";
+import searchSlice from "@/services/search/searchSlice";
+import languageReducer from '@/services/utilities/languageSlice';
 
 // Create the history context
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
@@ -29,9 +30,8 @@ const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHisto
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth"], // Persist only specific slices
+  whitelist: ["auth", "language"], // Persist only specific slices
 };
-
 // Combine reducers
 export const rootReducer = combineReducers({
   router: routerReducer,
@@ -41,13 +41,14 @@ export const rootReducer = combineReducers({
   search: searchSlice,
   studies: studySlice,
   documents: documentSlice,
+  language: languageReducer, // Add language reducer
   [authApi.reducerPath]: authApi.reducer,
   [documentApi.reducerPath]: documentApi.reducer,
   [entityApi.reducerPath]: entityApi.reducer,
   [activityApi.reducerPath]: activityApi.reducer,
   [searchApi.reducerPath]: searchApi.reducer,
   [studyApi.reducerPath]: studyApi.reducer,
-});
+}) as Reducer;
 
 // Persist the combined reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
