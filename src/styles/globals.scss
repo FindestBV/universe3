@@ -1,41 +1,16 @@
+@use './colors/colors.scss';
+@use './components/dashboard-header.scss';
 @use './components/document-card.scss';
 @use './components/user-avatar.scss';
 @use './components/create-new-button.scss';
 @use './components/login-image-slider.scss';
+@use './components/searchbar.scss';
 /* Collect styling isolated to components and include here*/
 /* This will be more modular */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
-
-
-.pageContent{
-  @apply flex flex-col items-center justify-start w-full h-full;
-}
-
-.dashBoardHeader{
-  align-items: center;
-  background-color: #fff;
-  border-bottom: 1px solid #ccc;
-  display: flex;
-  height: 4rem;
-  justify-content: space-between;
-  min-height: 4rem;
-  padding: 0 1rem;
-  position: relative;
-  width: 100%;
-  z-index: 4;
-}
-
-.mainSearchBar{
-  margin: 0 auto;
-  max-width: 80%;
-  position: relative;
-  transition: .3s ease-in-out;
-  width: 560px;
-}
 
 @layer base {
   * {
@@ -208,57 +183,4 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-}
-
-.loginInput {
-  background-color: #0000;
-  border: none;
-  border-bottom: 1px solid #003171;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  margin-bottom: 20px;
-  outline: none;
-  width: 100%;
-  margin: 30px 0;
-}
-
-
-.overViewTitle{
-  color: #252525;
-  cursor: default;
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: .144px;
-  line-height: 24px;
-}
-
-.overViewText{
-  line-height: 13px;
-  margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
-  text-transform: uppercase;
-  font-size: 10px;
-  font-weight: 500;
-  align-items: center;
-}
-
-
-/* Indicator */
-.indicator {
-  display: grid;
-  place-items: center;
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  align-items: center;
-  justify-content: center;
-  font-size: 9px;
-  border-radius: 50%;
-  background-color: #007aff;
-  width: 18px;
-  height: 18px;
-  color: #fff;
 }
