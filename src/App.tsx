@@ -6,11 +6,10 @@ import { PersistGate } from "redux-persist/integration/react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
-import DashboardHeader from "@/components/dashboard-header";
 import { store, persistor } from "@/store";
 import { currentUser } from '@/services/auth/authSlice';
 import { LoginPage } from "@/views/LoginPage";
-
+import { DashboardHeader } from "@/components/dashboard-header";
 
 // Lazy-loaded views (TEMP! Will sort this out with some proper Routing )
 const Queries = lazy(() => import("@/views/Queries"));

@@ -1,3 +1,6 @@
+/* Collect styling isolated to components and include here*/
+/* This will be more modular */
+
 @use './colors/colors.scss';
 @use './components/dashboard-header.scss';
 @use './components/document-card.scss';
@@ -5,12 +8,10 @@
 @use './components/create-new-button.scss';
 @use './components/login-image-slider.scss';
 @use './components/searchbar.scss';
-/* Collect styling isolated to components and include here*/
-/* This will be more modular */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 @layer base {
   * {

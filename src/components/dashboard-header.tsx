@@ -29,7 +29,7 @@ interface DashboardHeader {
     className?: string;
 }
 
-export default function DashboardHeader() {
+export const DashboardHeader = () => {
     const { t } = useTranslation();
     // const dispatch = useDispatch();
     // const navigate = useNavigate(); 
@@ -163,3 +163,5 @@ export default function DashboardHeader() {
         </header>
     );
 }
+
+export default DashboardHeader;
