@@ -57,7 +57,7 @@ return (
         <div className="header">
           <h2 className="pl-2 font-black text-2xl">{t("createNew")}</h2>
         </div>
-        <div className="flex w-full gap-2">
+        <div className="flex w-full gap-1">
           {createItems.map((item) => (
             <div key={item.type} className="createNewItemCard">
               <CreateNewItem 

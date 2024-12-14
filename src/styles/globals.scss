@@ -1,17 +1,18 @@
 @use './components/document-card.scss';
 @use './components/user-avatar.scss';
+@use './components/create-new-button.scss';
+@use './components/login-image-slider.scss';
 /* Collect styling isolated to components and include here*/
 /* This will be more modular */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import './components/create-new-button.css';
-@import './components/login-image-slider.css';
+
 
 
 .pageContent{
-  @apply flex flex-col items-center justify-start w-full h-full pr-6;
+  @apply flex flex-col items-center justify-start w-full h-full;
 }
 
 .dashBoardHeader{

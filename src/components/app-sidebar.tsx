@@ -57,7 +57,7 @@ export function AppSidebar() {
   const dispatch = useDispatch(); 
   const navigate = useNavigate(); 
   const user = useSelector(currentUser); 
-  // const selectedLanguage = useSelector((state: RootState) => state.language.selectedLanguage);
+  const selectedLanguage = useSelector((state: RootState) => state.language.selectedLanguage);
    
   const handleLogin = () => {
     dispatch(setCredentials("generic@email.com"))

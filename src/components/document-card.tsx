@@ -137,9 +137,12 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
             <div className="px-4 cursor-pointer w-auto" onClick={handleCardClick}>
               <div className="flex flex-row gap-2">
                 <h3 className="font-bold text-black text-ellipsis overflow-hidden">{title}</h3>
-                <a href={url} target="_blank" rel="noopener noreferrer">
-                  <ExternalLink size={20} />
-                </a>
+                <div className="group">
+                  
+                  <a href={url} target="_blank" rel="noopener noreferrer" className="opacity-25 transition-opacity group-hover:opacity-100">
+                    <ExternalLink size={20} />
+                  </a>
+                </div>
               </div>
               <ul className="linkedCounts">
                 {Object.entries(linkedCounts)
