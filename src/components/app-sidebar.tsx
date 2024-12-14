@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { currentUser, setCredentials, logout } from '@/services/auth/authSlice';
 import { useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next';
 import { Calendar, Inbox, Settings, ChevronUp, UserRoundPen, Bot, FileText, BookOpenCheck, Fingerprint } from "lucide-react"
 import AdvancedSearchModal from "./advanced-search-modal";
 import {
@@ -58,6 +59,7 @@ export function AppSidebar() {
   const navigate = useNavigate(); 
   const user = useSelector(currentUser); 
   const selectedLanguage = useSelector((state: RootState) => state.language.selectedLanguage);
+  const { t } = useTranslation();
    
   const handleLogin = () => {
     dispatch(setCredentials("generic@email.com"))
@@ -145,7 +147,7 @@ export function AppSidebar() {
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton>
                     <UserRoundPen width={'16'} color={'white'} />
-                    <h1 className="font-black text-md p-6">Profile</h1>
+                    <h1 className="font-black text-md p-6">{t('profile')}</h1>
                     <ChevronUp className="ml-auto" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
