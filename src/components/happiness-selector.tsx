@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { 
   DropdownMenu, 
@@ -9,7 +9,7 @@ import {
 import { SmilePlus } from 'lucide-react';
 
 const HappinessSelector = () => {
-  const [selectedHappiness, setSelectedHappiness] = useState(null);
+  // const [selectedHappiness, setSelectedHappiness] = useState(null);
 
   // Happiness levels with corresponding emojis
   const happinessLevels = [
