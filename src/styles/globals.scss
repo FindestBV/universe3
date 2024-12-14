@@ -181,15 +181,15 @@
 }
 .fade-enter-active {
   opacity: 1;
-  transition: all 250ms ease-in-out;
+  transition: all 500ms ease-in-out;
 }
 .fade-exit {
   opacity: 1;
-  transition: all 250ms ease-in-out;
+  transition: all 500ms ease-in-out;
 }
 .fade-exit-active {
   opacity: 0;
-  transition: all 250ms ease-in-out;
+  transition: all 500ms ease-in-out;
 }
 
 @layer base {
