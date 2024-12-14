@@ -19,7 +19,7 @@ export const Document: React.FC = () => {
     return (
         <div className="flex flex-col w-auto h-screen">
             <header className="documentCrud">
-              <div className="toolbar w-full p-2 bg-gray-100 border-b border-gray-300">
+              <div className="toolbar w-full py-2 px-4 bg-gray-100 border-b border-gray-300">
                 <div className="flex items-center justify-between">
                   {/* Left Section: Ask Igor Button */}
                   <div className="flex items-center space-x-2">
