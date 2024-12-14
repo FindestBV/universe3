@@ -13,11 +13,11 @@ const HappinessSelector = () => {
 
   // Happiness levels with corresponding emojis
   const happinessLevels = [
-    { level: 1, emoji: '😢', label: 'Very Sad' },
-    { level: 2, emoji: '🙁', label: 'Sad' },
-    { level: 3, emoji: '😐', label: 'Neutral' },
+    { level: 5, emoji: '😄', label: 'Very Happy' },
     { level: 4, emoji: '🙂', label: 'Happy' },
-    { level: 5, emoji: '😄', label: 'Very Happy' }
+    { level: 3, emoji: '😐', label: 'Neutral' },
+    { level: 2, emoji: '🙁', label: 'Sad' },
+    { level: 1, emoji: '😢', label: 'Very Sad' }
   ];
 
   const handleHappinessSelect = (level) => {
