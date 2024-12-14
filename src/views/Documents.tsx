@@ -5,6 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DocumentCard } from '@/components/document-card';
 import { ListPagination } from "@/components/list-pagination";
 import { Loader } from 'lucide-react';
+import DocumentsSkeleton from '@/components/documents-skeleton';
 // import { useTranslation } from 'react-i18next';
 
 export const Documents: React.FC = () => {
@@ -120,7 +121,7 @@ export const Documents: React.FC = () => {
             {tempLoading ?? <p>LOADING</p>}
             <CardContent className="p-0">
                 {isError && <div className="text-red-600">Error loading documents: {JSON.stringify(error)}</div>}
-                {isLoading && <Loader className="animate-spin" />}
+                {isLoading && <DocumentsSkeleton />}
                 {data && (
                     <div>
 

@@ -6,6 +6,7 @@ import { Clock, Pin, ChartNetwork, Search, SmilePlus, List } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import CreateItemModal from './create-item-modal';
 import LanguageSelector from './language-selector';
+import HappinessSelector from './happiness-selector';
 import {
     Tooltip,
     TooltipContent,
@@ -144,15 +145,19 @@ export default function DashboardHeader() {
                     </li>
                 </ul>
             </div>
-
-            <SearchBar />
+            <div className="hidden sm:block">
+                <SearchBar />
+            </div>
+           
             
             <div className="flex items-center gap-2">
+                <span className="hidden sm:block">
                 {user ? <h3>{t('welcome')} {user}</h3> : null}
+                </span>
                 <LanguageSelector />
-                <div className="create-action flex items-center gap-2">
+                <div className="create-action hidden sm:flex items-center gap-2">
                     <CreateItemModal />
-                    <Button name="Happiness" className="hover:bg-slate-300 text-white"><SmilePlus width={18} color="black" /></Button>
+                    <HappinessSelector />
                 </div>
             </div>
         </header>
