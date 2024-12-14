@@ -11,7 +11,7 @@ export const Toolbar = () => {
             Ask Igor
           </button>
           <button
-            className="py-2 px-4 text-slate-500 bg-gray-200 rounded-sm hover:bg-slate-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-400 py-2 px-4 text-slate-500 bg-gray-200 rounded-sm hover:bg-slate-500 hover:text-white outline"
+            className="py-2 px-4 text-slate-500 bg-white rounded-sm hover:bg-slate-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-400 py-2 px-4 text-slate-500 bg-gray-200 rounded-sm hover:bg-slate-500 hover:text-white outline"
             aria-label="Ask Igor"
           >
             Search

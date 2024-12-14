@@ -11,11 +11,11 @@ import {
 } from "@/components/ui/select";
 
 const languages = [
-  { code: 'al', name: 'Shqip' },
   { code: 'nl', name: 'Nederlands' },
   { code: 'en', name: 'English' },
   { code: 'fr', name: 'Français' },
   { code: 'tr', name: 'Türkçe' },
+  { code: 'al', name: 'Shqip' },
   { code: 'ie', name: 'Gaeilge' },
   { code: 'es', name: 'Español' },
   { code: 'pt', name: 'Português' },
@@ -36,7 +36,7 @@ const LanguageSelector: React.FC = () => {
   const changeLanguage = async (languageCode: string) => {
     try {
       await i18n.changeLanguage(languageCode);
-      dispatch(setLanguage(languageCode)); // Update Redux state
+      dispatch(setLanguage(languageCode)); // Update Redux state, could also be donw with Async local storage
     } catch (error) {
       console.error('Failed to change language:', error);
     }
@@ -50,7 +50,7 @@ const LanguageSelector: React.FC = () => {
       <SelectContent className="bg-white text-black">
         {languages.map((lang) => (
           <SelectItem key={lang.code} value={lang.code} className="uppercase">
-            {lang.code} {/* Display full language name */}
+            {lang.code}
           </SelectItem>
         ))}
       </SelectContent>

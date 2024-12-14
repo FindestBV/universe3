@@ -30,12 +30,12 @@ const HappinessSelector = () => {
       <DropdownMenuTrigger asChild>
         <Button name="Happiness" className="hover:bg-slate-300 text-white"><SmilePlus width={18} color="black" /></Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-white border-gray-200">
+      <DropdownMenuContent className="bg-white border-gray-200 mr-4">
         {happinessLevels.map((level) => (
           <DropdownMenuItem 
             key={level.level} 
             onSelect={() => handleHappinessSelect(level)}
-            className="cursor-pointer text-black hover:text-white hover:bg-[#3B82f6]"
+            className="cursor-pointer bg-white hover:bg-blue-500 text-black hover:text-white"
           >
             {level.emoji} {level.label}
           </DropdownMenuItem>
