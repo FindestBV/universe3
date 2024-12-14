@@ -148,9 +148,9 @@
 
     --sidebar-primary-foreground: 0 0% 100%;
 
-    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 3.7% 15.9%;
 
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-accent: 240 4.8% 95.9%;
 
     --sidebar-border: 240 3.7% 15.9%;
 
@@ -219,6 +219,7 @@
   margin-bottom: 20px;
   outline: none;
   width: 100%;
+  margin: 30px 0;
 }
 
 

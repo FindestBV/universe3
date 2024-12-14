@@ -29,8 +29,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-white">
-      <div className="w-full max-w-sm p-8 bg-[#edf5ff] shadow-lg rounded-lg">
+    <div className="flex justify-center items-center h-full bg-white">
+      <div className="bg-[#edf5ff] shadow-[0_1px_4px_#b7b8d8] text-[#003171] flex flex-col justify-between mb-[26px] max-w-[400px] p-[30px] w-full">
         {isLoading ? (
           <div className="flex justify-center items-center">
             {isLoading && 
@@ -40,12 +40,12 @@ const Login = () => {
               </>}
           </div>
         ) : (
-          <div className="flex flex-col justify-between mb-20 max-w-[400px] w-full text-[#003171]">
+          <div className="flex flex-col justify-between mb-0 max-w-[400px] w-full text-[#003171]">
 
 
             <h2 className="text-2xl font-normal text-left mb-6">Login</h2>
             <form onSubmit={handleLogin} className="space-y-4">
-              <div>
+             
                 <input
                   type="email"
                   id="email"
@@ -56,7 +56,7 @@ const Login = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-              </div>
+             
               
               <div>
                 <input type="checkbox" name="rememberMe" />

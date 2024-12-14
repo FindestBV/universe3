@@ -13,9 +13,9 @@ export const LoginPage = () => {
       {/* Right Panel: 2/5 of the width */}
       <div className="col-span-2 flex flex-col items-center justify-center">
         <div className="flex mx-auto w-full p-6 items-center justify-center">
-          <a href="/" rel="preload"><img src={logoUniverse} alt="Findest logo" width="130px" height="45px" className="items-center justify-center" /></a>
+          <a href="/" rel="preload"><img src={logoUniverse} alt="Findest logo" width="160px" height="50px" className="items-center justify-center" /></a>
         </div>
-        <div className="w-full max-w-md">
+        <div className="w-full h-full max-w-md">
           <Login />
         </div>
       </div>
