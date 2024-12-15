@@ -70,7 +70,30 @@ export const Studies: React.FC = () => {
         <div className="flex w-full justify-between items-center">
           <h1 className="text-black font-black text-xl">Studies {user ? `- ${user}` : null }</h1>
           <div className="flex">
-            <DropdownMenu>
+            <button
+              type="button"
+              id="add-filter"
+              className={`px-4 py-2 rounded-md flex items-center justify-center gap-2 group mt-2 mb-2 border shadow-sm text-gray-800 transition-all duration-150 bg-gray hover:bg-blue-50 hover:font-black'
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={`lucide lucide-filter fill-black`}
+              >
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+              </svg>
+              Add Filter
+            </button>
+            
+            {/* <DropdownMenu>
               <DropdownMenuTrigger className="bg-gray p-4 rounded-md flex w-full">
                 <Filter /> Add Filter
               </DropdownMenuTrigger>
@@ -86,7 +109,7 @@ export const Studies: React.FC = () => {
                 <DropdownMenuItem>Active</DropdownMenuItem>
                 <DropdownMenuItem>Closed</DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
           </div>
         </div>
         <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-lg mb-4">

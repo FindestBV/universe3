@@ -27,6 +27,7 @@ export const objectTypeMapping: { [key: string]: number } = {
 
 // Icons for types
 const typeIcons = {
+  documentCount: BookOpenCheck,
   studyCount: BookOpenCheck,
   entityCount: Fingerprint,
   imageCount: Image,
@@ -50,9 +51,8 @@ interface DocumentCardProps {
   onSelect: (id: string, checked: boolean) => void;
   linkedCounts: LinkedCounts;
 }
-
 // ConnectedObjectsDialog Component
-const ConnectedObjectsDialog = ({
+export const ConnectedObjectsDialog = ({
   documentId,
   onClose,
 }: {

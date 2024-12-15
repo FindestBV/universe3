@@ -117,7 +117,7 @@ export const Documents: React.FC = () => {
             >
               <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
             </svg>
-            Add Filter
+            Add Filters
           </button>
 
           <div className="w-full sm:w-1/2 md:w-1/4 flex flex-col items-end">
