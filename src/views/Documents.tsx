@@ -80,7 +80,7 @@ export const Documents: React.FC = () => {
         <div className="flex items-center gap-4 flex-grow mr-4">
           {/* Render filters dynamically */}
           {filters.length > 0 ? (
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               {filters.map((filter) => (
                 <div
                   key={filter}
