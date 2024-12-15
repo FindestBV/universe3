@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from './ui/button';
 import { useTranslation } from 'react-i18next';
+
 const TABS = ['All', 'Entity', 'Document', 'Query', 'Study'];
 
 export const SearchBar = () => {
@@ -26,6 +27,7 @@ export const SearchBar = () => {
 
   const [selectedTab, setSelectedTab] = useState(TABS[0]); // Default to "All"
   const [hasSearched, setHasSearched] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
 
   const [searchItems, { data, isLoading }] = useSearchItemsMutation();
 
@@ -38,7 +40,6 @@ export const SearchBar = () => {
       });
 
       const queryString = queryParams.toString();
-      // console.log('Triggering search with query:', queryString);
 
       searchItems(queryString)
         .unwrap()
@@ -50,6 +51,7 @@ export const SearchBar = () => {
         });
 
       setHasSearched(true);
+      setIsTyping(false); // Stop typing indicator after the search is triggered
     }
   }, 500);
 
@@ -60,6 +62,7 @@ export const SearchBar = () => {
         ...prev,
         [name]: value,
       }));
+      setIsTyping(true); // User is actively typing
       debouncedTriggerSearch();
     },
     [debouncedTriggerSearch]
@@ -72,6 +75,7 @@ export const SearchBar = () => {
         ...prev,
         keyword: pastedText,
       }));
+      setIsTyping(true);
       debouncedTriggerSearch();
     },
     [debouncedTriggerSearch]
@@ -103,8 +107,6 @@ export const SearchBar = () => {
 
   const filterResults = (data: any) => {
     if (!data) return [];
-
-    // console.log('Raw API Response:', data);
 
     const allResults = Object.keys(data)
       .filter((key) => Array.isArray(data[key]) && data[key].length > 0)
@@ -151,9 +153,12 @@ export const SearchBar = () => {
               <button
                 type="button"
                 onClick={handleReset}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 flex items-center focus:outline-none"
                 aria-label="Clear search"
               >
+                {isTyping || isLoading ? (
+                  <Loader size={20} className="animate-spin mr-2" />
+                ) : null}
                 <X size={20} />
               </button>
             )}
@@ -161,7 +166,7 @@ export const SearchBar = () => {
         </div>
       </form>
 
-      {/* Filter Tabs and Results as Absolute */}
+      {/* Filter Tabs and Results */}
       {(filteredResults.length > 0 || hasSearched) && (
         <div className="absolute top-full left-0 w-full bg-white shadow-lg z-20 mt-2 border border-gray-300 rounded-md py-4 px-2">
           {/* Filter Tabs */}
@@ -180,14 +185,7 @@ export const SearchBar = () => {
             ))}
           </div>
 
-          {/* Loading Spinner */}
-          {isLoading && (
-            <div className="flex justify-center items-center py-4">
-              <Loader className="animate-spin text-blue-500" size={32} />
-            </div>
-          )}
-
-          {/* Results or No Results */}
+          {/* Results */}
           <div className="overflow-y-scroll" style={{ maxHeight: '350px' }}>
             {filteredResults.length > 0 ? (
               <ul aria-live="polite" aria-busy={isLoading}>
@@ -207,31 +205,6 @@ export const SearchBar = () => {
                         {entity.name}
                       </a>
                     </div>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="rotated" className="h-10 w-10 p-0">
-                          <span className="sr-only">Open menu</span>
-                          <MoreHorizontal />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                          <SquareArrowOutUpRight /><a href={entity.url}
-                        target={entity.url.startsWith('http') ? '_blank' : '_self'}
-                        rel={entity.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                        className="text-blue-500 hover:underline"> Open Page</a>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <ScanEye /> Open Preview
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Network /> Open in Tree View
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <List /> Open in List View
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
                   </li>
                 ))}
               </ul>
