@@ -1,21 +1,18 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useGetSavedDocumentsQuery } from '../services/documents/documentApi';
 import { CardContent } from '@/components/ui/card';
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox } from '@/components/ui/checkbox';
 import { DocumentCard } from '@/components/document-card';
-import { ListPagination } from "@/components/list-pagination";
-// import { Loader } from 'lucide-react';
+import { ListPagination } from '@/components/list-pagination';
 import DocumentsSkeleton from '@/components/documents-skeleton';
-// import { useTranslation } from 'react-i18next';
 
 export const Documents: React.FC = () => {
-  // const { t } = useTranslation();
   const [selectedDocs, setSelectedDocs] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [documentsPerPage, setDocumentsPerPage] = useState(12);
   const [tempLoading, setTempLoading] = useState(false); // Temporary loading state
+  const [filters, setFilters] = useState<string[]>([]); // State for filters
 
-  // React Query fetch
   const { data, isLoading, isError, error, refetch } = useGetSavedDocumentsQuery(
     { page: currentPage, limit: documentsPerPage },
     { refetchOnMountOrArgChange: true }
@@ -50,17 +47,23 @@ export const Documents: React.FC = () => {
     setDocumentsPerPage(value);
     setCurrentPage(1); // Reset to first page
 
-    // Show the loader for at least 500ms
     setTempLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 500));
     setTempLoading(false);
-    refetch(); // Trigger re-fetch
+    refetch();
   };
 
+  const handleAddFilter = () => {
+    const newFilter = `Filter ${filters.length + 1}`;
+    setFilters([...filters, newFilter]);
+  };
+
+  const handleRemoveFilter = (filter: string) => {
+    setFilters(filters.filter((f) => f !== filter));
+  };
 
   return (
     <div className="flex flex-col w-full h-full max-sm:px-4 px-12">
-
       <div className="flex items-center justify-between gap-4 rounded-lg mb-2">
         <div>
           <Checkbox
@@ -74,40 +77,55 @@ export const Documents: React.FC = () => {
           </label>
         </div>
 
-        <div className="flex w-[30%]">
-          <button type="button" id="radix-:r28:" aria-haspopup="menu" aria-expanded="false" data-state="closed" className="bg-gray p-4 rounded-md flex w-full items-end justify-end">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-filter"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg> Add Filter</button>
-          <nav role="navigation" aria-label="pagination" className="mx-auto flex w-full justify-center">
-            <ul className="flex flex-row items-center gap-1">
-              <li className="">
-                <a className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-1 pl-2.5" aria-label="Go to previous page" href="#">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-left h-4 w-4">
-                    <path d="m15 18-6-6 6-6"></path>
-                  </svg>
-                </a>
-              </li>
-              <li className="">
-                <button
-                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-1 pr-2.5"
-                  aria-label="Go to next page"
-                  disabled
+        <div className="flex items-center gap-4 flex-grow mr-4">
+          {/* Render filters dynamically */}
+          {filters.length > 0 ? (
+            <div className="flex gap-2">
+              {filters.map((filter) => (
+                <div
+                  key={filter}
+                  onClick={() => handleRemoveFilter(filter)}
+                  className="px-4 py-2 rounded-md text-sm font-medium bg-blue-100 text-blue-800 hover:bg-red-100 hover:text-red-800 cursor-pointer transition"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right h-4 w-4">
-                    <path d="m9 18 6-6-6-6"></path>
-                  </svg>
-                </button>
-              </li>
-            </ul>
-          </nav>
+                  {filter} ×
+                </div>
+              ))}
+            </div>
+          ) : null}
+        </div>
+
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            id="add-filter"
+            onClick={handleAddFilter}
+            className={`px-4 py-2 rounded-md flex items-center justify-center gap-2 group mt-2 mb-2 border shadow-sm text-gray-800 transition-all duration-150 ${
+              filters.length > 0 ? 'bg-blue-50 font-black' : 'bg-gray hover:bg-blue-50 hover:font-black'
+            }`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`lucide lucide-filter ${filters.length > 0 ? 'fill-black' : 'group-hover:fill-black'}`}
+            >
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+            </svg>
+            Add Filter
+          </button>
+
           <div className="w-full sm:w-1/2 md:w-1/4 flex flex-col items-end">
-            <label htmlFor="documentsPerPage" className="text-sm font-black text-gray-700 mb-2 text-right hidden">
-              Documents per Page
-            </label>
             <select
               id="documentsPerPage"
               value={documentsPerPage}
               onChange={handleDocumentsPerPageChange}
-              className="border p-2 mt-2 mb-2 rounded width-[55%] focus:ring-blue-500 focus:border-blue-500"
+              className="border p-2 rounded-md focus:ring-blue-500 focus:border-blue-500"
             >
               <option value={25}>25</option>
               <option value={20}>20</option>
@@ -118,13 +136,13 @@ export const Documents: React.FC = () => {
           </div>
         </div>
       </div>
-      {tempLoading ?? <p>LOADING</p>}
+
+      {tempLoading && <p>LOADING</p>}
       <CardContent className="p-0">
         {isError && <div className="text-red-600">Error loading documents: {JSON.stringify(error)}</div>}
         {isLoading && <DocumentsSkeleton />}
         {data && (
           <div>
-
             {data.documents.slice(0, documentsPerPage).map((doc) => (
               <DocumentCard
                 key={doc.id}
@@ -133,7 +151,6 @@ export const Documents: React.FC = () => {
                 onSelect={handleSelectDoc}
               />
             ))}
-
             <ListPagination
               currentPage={currentPage}
               totalPages={totalPages}

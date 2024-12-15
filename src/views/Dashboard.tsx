@@ -1,5 +1,5 @@
 import { useGetMyRecentActivityQuery, useGetMaxActivityQuery } from '@/services/activity/activity';
-import { MoreHorizontal, SquareArrowOutUpRight, ScanEye, Network, List } from 'lucide-react';
+import { MoreHorizontal, SquareArrowOutUpRight, ScanEye, Network, List, Loader } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     Avatar,
@@ -21,7 +21,7 @@ export const Dashboard = () => {
     const { t } = useTranslation();
 
     const { data: activityData } = useGetMyRecentActivityQuery();
-    const { data: maxActivityData } = useGetMaxActivityQuery();
+    const { data: maxActivityData, isLoading: maxActivityLoading } = useGetMaxActivityQuery();
     const navigate = useNavigate();
     // const user = useSelector(currentUser);
 
@@ -49,7 +49,7 @@ export const Dashboard = () => {
     };
 
     return (
-        <div className="flex flex-col w-full h-screen max-sm:px-4" style={{ padding: "16px 45px 0" }}>
+        <div className="flex flex-col w-full h-full max-sm:px-4 pt-10 pr-5 pb-11 pl-10">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
                 <div className="flex flex-col space-y-3 w-full max-sm:px-4 overflow-hidden">
@@ -121,25 +121,43 @@ export const Dashboard = () => {
                 </div>
 
                 <div className="flex flex-col space-y-3 w-full max-sm:px-4 overflow-hidden">
-                    <h2 className='overViewTitle'>{t('happening')}</h2>
-                    <div className="flex flex-col items-start justify-start h-[300px] w-full rounded-xl gap-1 overflow-y-scroll">
-
-
-                        {maxActivityData && maxActivityData.map((maxActivity: object, idx: string) => (
-
-                            <div key={idx} className="flex flex-row items-center w-full max-sm:px-4 rounded-md py-2">
-                                <Avatar>
-                                    <AvatarImage src="https://avatars.githubusercontent.com/u/6318762?v=4&size=64" alt="@shadcn" />
-                                    <AvatarFallback>CN</AvatarFallback>
-                                </Avatar>
-                                <div className="flex justify-between w-full items-center">
-                                    <p className="pl-4 text-sm"><a href="mailto:{maxActivity.userEmail}" className="text-blue-500">{maxActivity.userEmail}</a> edited <strong>{maxActivity.name}</strong></p>
-                                    <span className="pl-4 text-gray-500 text-sm">{getRandomTime()}</span>
-                                </div>
+                    <h2 className="overViewTitle">{t('happening')}</h2>
+                    <div className="relative flex flex-col items-start justify-start h-[300px] w-full rounded-xl gap-1 overflow-y-scroll">
+                        {/* Show Loader */}
+                        {maxActivityLoading && (
+                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-white bg-opacity-50 z-10">
+                                <Loader className="animate-spin mx-auto mb-2" />
+                                <h3 className="text-black">Loading Recent Activity...</h3>
                             </div>
-                        ))}
-                    </div>
+                        )}
 
+                        {/* Render Content When Loaded */}
+                        {!maxActivityLoading &&
+                            maxActivityData &&
+                            maxActivityData.map((maxActivity: object, idx: number) => (
+                                <div key={idx} className="flex flex-row items-center w-full max-sm:px-4 rounded-md py-2">
+                                    <Avatar>
+                                        <AvatarImage
+                                            src="https://avatars.githubusercontent.com/u/6318762?v=4&size=64"
+                                            alt="@shadcn"
+                                        />
+                                        <AvatarFallback>CN</AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex justify-between w-full items-center">
+                                        <p className="pl-4 text-sm">
+                                            <a
+                                                href={`mailto:${maxActivity?.userEmail}`}
+                                                className="text-blue-500"
+                                            >
+                                                {maxActivity.userEmail}
+                                            </a>{' '}
+                                            edited <strong>{maxActivity?.name}</strong>
+                                        </p>
+                                        <span className="pl-4 text-gray-500 text-sm">{getRandomTime()}</span>
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
                 </div>
                 <div className="flex flex-col space-y-3 w-full max-sm:px-4">
                     <h2 className='overViewTitle'>{t('pageType')}</h2>

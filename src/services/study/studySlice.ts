@@ -11,21 +11,15 @@ const initialState: StudyState = {
       id: '',
       title: '',
       type: '',
-    },
-    pagination: {
-      page: 1,
-      totalPages: 1,
-      totalItems: 0,
-    },
+    }
   };
   
   const studySlice = createSlice({
     name: 'study',
     initialState,
     reducers: {
-      setStudies: (state, action: PayloadAction<{ studies: Study[]; pagination: StudyState['pagination'] }>) => {
+      setStudies: (state, action: PayloadAction<{ studies: Study[]; }>) => {
         state.studies = action.payload.studies;
-        state.pagination = action.payload.pagination;
         state.error = null;
       },
       setSelectedStudy: (state, action: PayloadAction<Study | null>) => {
@@ -51,11 +45,10 @@ const initialState: StudyState = {
         state.selectedStudy = null;
         state.filters = initialState.filters;
         state.error = null;
-        state.pagination = initialState.pagination;
       },
-      setPage: (state, action: PayloadAction<number>) => {
-        state.pagination.page = action.payload;
-      },
+      // setPage: (state, action: PayloadAction<number>) => {
+      //   state.pagination.page = action.payload;
+      // },
     },
     extraReducers: (builder) => {
       builder
@@ -64,11 +57,11 @@ const initialState: StudyState = {
           (state, action) => {
             state.isLoading = false;
             state.studies = action.payload.studies;
-            state.pagination = {
-              page: action.payload.page,
-              totalPages: action.payload.totalPages,
-              totalItems: action.payload.totalItems,
-            };
+            // state.pagination = {
+            //   page: action.payload.page,
+            //   totalPages: action.payload.totalPages,
+            //   totalItems: action.payload.totalItems,
+            // };
             state.error = null;
           }
         )
@@ -96,11 +89,11 @@ const initialState: StudyState = {
     setLoading,
     setError,
     clearStudies,
-    setPage,
+    // setPage,
   } = studySlice.actions;
   
   export const selectAllStudies = (state: { study: StudyState }) => state.study.studies;
-  export const selectPagination = (state: { study: StudyState }) => state.study.pagination;
+  // export const selectPagination = (state: { study: StudyState }) => state.study.pagination;
   export const selectStudyLoading = (state: { study: StudyState }) => state.study.isLoading;
   export const selectStudyError = (state: { study: StudyState }) => state.study.error;
   

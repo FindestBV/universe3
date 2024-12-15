@@ -10,6 +10,7 @@ import { store, persistor } from "@/store";
 import { currentUser } from '@/services/auth/authSlice';
 import { LoginPage } from "@/views/LoginPage";
 import { DashboardHeader } from "@/components/dashboard-header";
+import { Loader } from "lucide-react";
 
 // Lazy-loaded views (TEMP! Will sort this out with some proper Routing )
 const Queries = lazy(() => import("@/views/Queries"));
@@ -51,7 +52,10 @@ function AuthenticatedLayout() {
           {/* <SidebarTrigger className="absolute z-10 top-0 left-0" /> */}
           <TransitionGroup component={null}>
             <CSSTransition key={location.key} classNames="fade" timeout={1000} unmountOnExit>
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<div className="text-center flex flex-col items-center justify-center py-8">
+                  <Loader className="animate-spin mx-auto mb-2" />
+                  <p>Loading...</p>
+                </div>}>
                 <Routes location={location}>
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/library/queries" element={<Queries />} />
