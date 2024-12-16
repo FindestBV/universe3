@@ -31,8 +31,7 @@ export const Document: React.FC = () => {
       {isLoading ? (
         <DocumentSkeleton />
       ) : (
-        <div className="flex flex-col w-auto h-screen">
-
+        <div className="w-auto flex flex-col  h-screen">
           <>
             <header className="documentCrud">
               <Toolbar />
