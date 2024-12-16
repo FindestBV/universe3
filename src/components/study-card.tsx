@@ -187,7 +187,7 @@ export const StudyCard: React.FC<StudyCardProps> = ({
                     return (
                       <li
                         key={idx}
-                        className="linkedCounts__item"
+                        className={`linkedCounts__item ${key}`}
                         onMouseEnter={() => handleMouseEnter(id, key)}
                         onClick={() => {
                           setShowDialog(true);

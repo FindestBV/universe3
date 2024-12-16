@@ -4,14 +4,10 @@
     .innerCardMain{
         
         &__inbox{
-           @apply bg-slate-200
+           @apply bg-slate-200;
         }
     
-    
-        @apply flex w-full border border-[#f2f4f8] p-4 pr-6 pl-4 hover:border-[#ccc] rounded-sm transition-all duration-150
-    
-    
-    
+        @apply flex w-full border border-[#f2f4f8] p-4 pr-6 pl-4 hover:border-[#ccc] rounded-sm transition-all duration-150    
     }
 
     .time {
@@ -27,6 +23,21 @@
 
         &__item {
             @apply rounded-md bg-slate-100 text-black p-1 flex gap-1 items-center text-xs h-[1.5rem];
+        }
+
+        .entityCount{
+            background-color: #5856d6;
+            color: white; 
+        }
+        
+        .documentCount{
+            background-color: #5856d6;
+            color: white; 
+        }
+
+        .studyCount{
+            background-color: #00adef;
+            color: white; 
         }
     }
 

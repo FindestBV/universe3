@@ -169,7 +169,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                     return (
                       <li
                         key={idx}
-                        className="linkedCounts__item"
+                        className={`linkedCounts__item ${key}`}
                         onMouseEnter={() => handleMouseEnter(id, key)} // Use `key` for type lookup
                         onClick={() => {
                           setShowDialog(true);

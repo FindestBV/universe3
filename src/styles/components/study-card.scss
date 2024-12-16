@@ -27,6 +27,20 @@
             @apply rounded-md bg-slate-100 text-black p-1 flex gap-1 items-center text-xs h-[1.5rem];
         }
 
+        .entityCount{
+            background-color: lightpink;
+            color: white; 
+        }
+        
+        .documentCount{
+            background-color: #5856d6;
+            color: white; 
+        }
+
+        .studyCount{
+            background-color: #00adef;
+            color: white; 
+        }
        
     }
 
