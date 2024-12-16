@@ -65,7 +65,7 @@ export const Dashboard = () => {
               activityData.map((activity: any, idx: string) => (
                 <div
                   key={idx}
-                  className={`flex w-full cursor-pointer flex-row items-start rounded-sm bg-[#e5f7fe] px-4 py-2 max-sm:px-4 ${activity.type}`}
+                  className={`mb-2 flex w-full cursor-pointer flex-row items-start rounded-sm bg-[#e5f7fe] px-4 py-2 max-sm:px-4 ${activity.type}`}
                   onClick={() => handleNavigateToEntities(activity.type, activity.id)}
                 >
                   <div className="flex w-full flex-col items-start justify-between">
