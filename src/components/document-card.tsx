@@ -17,6 +17,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { LinkedCounts } from "./linked-counts";
 import { Button } from "./ui/button";
 
 // Mapping linkedCounts keys to tObjectTypeEnum values
@@ -116,16 +117,23 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   const [showDialog, setShowDialog] = useState(false);
   const [dialogDocumentId, setDialogDocumentId] = useState<string | null>(null);
   const navigate = useNavigate();
-  const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
 
   const handleCheckboxChange = (checked: boolean) => {
     onSelect(id, checked);
   };
 
-  const handleMouseEnter = (id: string | number, key: string) => {
-    const objectType = objectTypeMapping[key] || "unknown"; // Default to 'unknown'
-    prefetchConnectedObjects({ id: id.toString(), type: objectType });
-    setDialogDocumentId(id.toString());
+  // Use `usePrefetch` to get the prefetch function
+  const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
+
+  const handlePrefetch = ({ id, type }: { id: string; type: string }) => {
+    console.log(`Prefetching data for ID: ${id}, Type: ${type}`);
+    prefetchConnectedObjects({ id, type });
+  };
+
+  const handleItemClick = (id: string) => {
+    console.log(`Item clicked: ${id}`);
+    setDialogId(id);
+    setShowDialog(true);
   };
 
   const handleCardClick = () => {
@@ -161,27 +169,12 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                   </a>
                 </div>
               </div>
-              <ul className="linkedCounts">
-                {Object.entries(linkedCounts)
-                  .filter(([, value]) => value > 0)
-                  .map(([key, value], idx) => {
-                    const IconComponent = typeIcons[key as keyof typeof typeIcons] || null;
-                    return (
-                      <li
-                        key={idx}
-                        className={`linkedCounts__item ${key}`}
-                        onMouseEnter={() => handleMouseEnter(id, key)} // Use `key` for type lookup
-                        onClick={() => {
-                          setShowDialog(true);
-                          setDialogDocumentId(id);
-                        }}
-                      >
-                        {IconComponent && <IconComponent size={16} />}
-                        {value}
-                      </li>
-                    );
-                  })}
-              </ul>
+              <LinkedCounts
+                id={id}
+                linkedCounts={linkedCounts}
+                prefetch={handlePrefetch} // Pass the prefetch logic
+                onItemClick={handleItemClick}
+              />
             </div>
           </div>
 

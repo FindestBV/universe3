@@ -27,6 +27,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { LinkedCounts } from "./linked-counts";
 import { Button } from "./ui/button";
 
 // Mapping linkedCounts keys to objectTypeEnum values
@@ -127,16 +128,22 @@ export const EntityCard: React.FC<EntityCardProps> = ({
   const [showDialog, setShowDialog] = useState(false);
   const [dialogStudyId, setDialogStudyId] = useState<string | null>(null);
   const navigate = useNavigate();
-  const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
 
   const handleCheckboxChange = (checked: boolean) => {
     onSelect(id, checked);
   };
 
-  const handleMouseEnter = (id: string | number, key: string) => {
-    const objectType = objectTypeMapping[key] || "unknown"; // Default to 'unknown'
-    prefetchConnectedObjects({ id: id.toString(), type: objectType });
-    setDialogStudyId(id.toString());
+  const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
+
+  const handlePrefetch = ({ id, type }: { id: string; type: string }) => {
+    console.log(`Prefetching data for ID: ${id}, Type: ${type}`);
+    prefetchConnectedObjects({ id, type });
+  };
+
+  const handleItemClick = (id: string) => {
+    console.log(`Item clicked: ${id}`);
+    setDialogId(id);
+    setShowDialog(true);
   };
 
   const handleCardClick = () => {
@@ -181,27 +188,12 @@ export const EntityCard: React.FC<EntityCardProps> = ({
                   {title}
                 </h3>
               </div>
-              <ul className="linkedCounts gap-2">
-                {Object.entries(linkedCounts)
-                  .filter(([, value]) => value > 0)
-                  .map(([key, value], idx) => {
-                    const IconComponent = typeIcons[key as keyof typeof typeIcons] || null;
-                    return (
-                      <li
-                        key={idx}
-                        className={`linkedCounts__item ${key}`}
-                        onMouseEnter={() => handleMouseEnter(id, key)}
-                        onClick={() => {
-                          setShowDialog(true);
-                          setDialogStudyId(id);
-                        }}
-                      >
-                        {IconComponent && <IconComponent size={16} />}
-                        {value}
-                      </li>
-                    );
-                  })}
-              </ul>
+              <LinkedCounts
+                id={id}
+                linkedCounts={linkedCounts}
+                prefetch={handlePrefetch} // Pass the prefetch logic
+                onItemClick={handleItemClick}
+              />
             </div>
           </div>
           <div className="flex flex-row items-start gap-2">

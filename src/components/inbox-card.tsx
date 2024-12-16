@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { UserAvatar } from "@/components/user-avatar";
@@ -19,6 +20,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import openAccessLogo from "../assets/openAccessLogo.png";
+import { LinkedCounts } from "./linked-counts";
 import { Button } from "./ui/button";
 
 // Mapping linkedCounts keys to tObjectTypeEnum values
@@ -118,16 +120,22 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
   const [showDialog, setShowDialog] = useState(false);
   const [dialogDocumentId, setDialogDocumentId] = useState<string | null>(null);
   const navigate = useNavigate();
-  const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
 
   const handleCheckboxChange = (checked: boolean) => {
     onSelect(id, checked);
   };
 
-  const handleMouseEnter = (id: string | number, key: string) => {
-    const objectType = objectTypeMapping[key] || "unknown"; // Default to 'unknown'
-    prefetchConnectedObjects({ id: id.toString(), type: objectType });
-    setDialogDocumentId(id.toString());
+  const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
+
+  const handlePrefetch = ({ id, type }: { id: string; type: string }) => {
+    console.log(`Prefetching data for ID: ${id}, Type: ${type}`);
+    prefetchConnectedObjects({ id, type });
+  };
+
+  const handleItemClick = (id: string) => {
+    console.log(`Item clicked: ${id}`);
+    setDialogId(id);
+    setShowDialog(true);
   };
 
   const handleCardClick = () => {
@@ -172,27 +180,12 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
                   ) : null}
                 </h3>
               </div>
-              <ul className="linkedCounts">
-                {Object.entries(linkedCounts)
-                  .filter(([, value]) => value > 0)
-                  .map(([key, value], idx) => {
-                    const IconComponent = typeIcons[key as keyof typeof typeIcons] || null;
-                    return (
-                      <li
-                        key={idx}
-                        className={`linkedCounts__item ${key}`}
-                        onMouseEnter={() => handleMouseEnter(id, key)} // Use `key` for type lookup
-                        onClick={() => {
-                          setShowDialog(true);
-                          setDialogDocumentId(id);
-                        }}
-                      >
-                        {IconComponent && <IconComponent size={16} />}
-                        {value}
-                      </li>
-                    );
-                  })}
-              </ul>
+              <LinkedCounts
+                id={id}
+                linkedCounts={linkedCounts}
+                prefetch={handlePrefetch} // Pass the prefetch logic
+                onItemClick={handleItemClick}
+              />
             </div>
           </div>
 
