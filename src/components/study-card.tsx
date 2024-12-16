@@ -177,7 +177,9 @@ export const StudyCard: React.FC<StudyCardProps> = ({
                 Study
               </div>
               <div className="flex flex-row gap-2">
-                <h3 className="overflow-hidden text-ellipsis font-bold text-black">{title}</h3>
+                <h3 className="overflow-hidden text-ellipsis py-2 text-lg font-bold text-black">
+                  {title}
+                </h3>
               </div>
               <ul className="linkedCounts gap-2">
                 {Object.entries(linkedCounts)
