@@ -137,7 +137,7 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
 
   return (
     <div className="inboxCard">
-      <div className="innerCardMain items-start gap-4">
+      <div className="innerCardMain items-start gap-6">
         <Checkbox
           id={`doc-${id}`}
           checked={isSelected}
@@ -146,11 +146,11 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
         />
 
         <Card key={id} className="flex flex-1 flex-row gap-4">
-          <div>{type || "Webpage"}</div>
+          <div>{type || "Science"}</div>
           <div className="flex flex-1 flex-col">
             <div className="w-auto cursor-pointer px-4" onClick={handleCardClick}>
               <div className="flex flex-row gap-2">
-                <h3 className="overflow-hidden text-ellipsis font-bold text-black">{title}</h3>
+                <h3 className="title">{title}</h3>
                 <div className="group">
                   <a
                     href={url}
