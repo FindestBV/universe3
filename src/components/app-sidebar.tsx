@@ -1,28 +1,41 @@
-import { useSelector } from 'react-redux';
-import { currentUser, setCredentials, logout } from '@/services/auth/authSlice';
-import { useDispatch } from 'react-redux'
-import { useTranslation } from 'react-i18next';
-import { Calendar, Inbox, Settings, ChevronUp, UserRoundPen, Bot, FileText, BookOpenCheck, Fingerprint } from "lucide-react"
-import AdvancedSearchModal from "./advanced-search-modal";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarFooter,
-} from "@/components/ui/sidebar"
-import { Separator } from "@/components/ui/separator"
-
+} from "@/components/ui/sidebar";
+import { currentUser, logout, setCredentials } from "@/services/auth/authSlice";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+  BookOpenCheck,
+  Bot,
+  Calendar,
+  ChevronUp,
+  FileText,
+  Fingerprint,
+  Inbox,
+  Settings,
+  UserRoundPen,
+} from "lucide-react";
+
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+
+import logoUniverse from "../assets/universe_logo_white.png";
+import AdvancedSearchModal from "./advanced-search-modal";
 
 // Menu items.
 const items = [
@@ -40,7 +53,7 @@ const items = [
       { title: "Entities", url: "/entities", icon: Fingerprint },
       { title: "Studies", url: "/studies", icon: BookOpenCheck },
     ],
-  }
+  },
 ];
 
 const advancedItems = [
@@ -51,36 +64,40 @@ const advancedItems = [
   },
 ];
 
-import logoUniverse from '../assets/universe_logo_white.png';
-import { useNavigate } from 'react-router';
-
 export function AppSidebar() {
-  const dispatch = useDispatch(); 
-  const navigate = useNavigate(); 
-  const user = useSelector(currentUser); 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector(currentUser);
   const selectedLanguage = useSelector((state: RootState) => state.language.selectedLanguage);
   const { t } = useTranslation();
-   
+
   const handleLogin = () => {
-    dispatch(setCredentials("generic@email.com"))
-  }
+    dispatch(setCredentials("generic@email.com"));
+  };
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/');
-  }
+    navigate("/");
+  };
 
   return (
     <Sidebar className="bg-white">
-      <div className="flex mx-auto w-full p-4 items-center justify-center">
-        <a href="/dashboard" rel="preload"><img src={logoUniverse} alt="Findest logo" width="100px" height="25px" className="items-center justify-center" /></a>
+      <div className="mx-auto flex w-full items-center justify-center p-4">
+        <a href="/dashboard" rel="preload">
+          <img
+            src={logoUniverse}
+            alt="Findest logo"
+            width="100px"
+            height="25px"
+            className="items-center justify-center"
+          />
+        </a>
       </div>
 
       <SidebarContent className="justify-between">
         {/* <p className="text-white">{selectedLanguage}</p> */}
-        <div className="group1 gap-10 p-4">
+        <div className="group1 mt-9 gap-10 p-4">
           <SidebarGroup>
-            
             <SidebarGroupContent>
               <SidebarMenu className="gap-4 px-4">
                 {items.map((item) => (
@@ -89,23 +106,23 @@ export function AppSidebar() {
                       <SidebarMenuButton asChild>
                         <a href={item.url}>
                           <item.icon />
-                          <span className='font-bold'>{item.title}</span>
+                          <span className="font-bold">{item.title}</span>
                         </a>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                     {item.sublinks && (
                       <ul className="ml-8 mt-1 space-y-1">
                         {item.sublinks.map((sublink, idx) => (
-                        <div key={idx}>
-                          <SidebarMenuItem>
-                            <SidebarMenuButton asChild>
-                              <a href={`/library${sublink.url}`}>
-                                <sublink.icon width={12} />
-                                <span className='font-bold'>{sublink.title}</span>
-                              </a>
-                            </SidebarMenuButton>
-                          </SidebarMenuItem>
-                        </div>
+                          <div key={idx}>
+                            <SidebarMenuItem>
+                              <SidebarMenuButton asChild>
+                                <a href={`/library${sublink.url}`}>
+                                  <sublink.icon width={12} />
+                                  <span className="font-bold">{sublink.title}</span>
+                                </a>
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
+                          </div>
                         ))}
                       </ul>
                     )}
@@ -113,15 +130,15 @@ export function AppSidebar() {
                 ))}
               </SidebarMenu>
             </SidebarGroupContent>
-            
-           
+
             <SidebarGroupLabel className="my-4">
               <Bot width={18} color={"white"} />
-              <h1 className="font-black text-md ml-2">IGOR<sup>AI</sup>search</h1>
+              <h1 className="text-md ml-2 font-black">
+                IGOR<sup>AI</sup>search
+              </h1>
             </SidebarGroupLabel>
             <SidebarGroupContent>
-
-            <SidebarMenu className="gap-4 px-4">
+              <SidebarMenu className="gap-4 px-4">
                 <AdvancedSearchModal />
                 {advancedItems.map((item) => (
                   <div key={item.title}>
@@ -129,13 +146,12 @@ export function AppSidebar() {
                       <SidebarMenuButton asChild>
                         <a href={`${item.url}`}>
                           <item.icon width={12} />
-                          <span className='font-bold'>{item.title}</span>
+                          <span className="font-bold">{item.title}</span>
                         </a>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   </div>
                 ))}
-
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
@@ -147,21 +163,24 @@ export function AppSidebar() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton>
-                    <UserRoundPen width={'16'} color={'white'} />
-                    <h1 className="font-black text-md p-6">{t('profile')}</h1>
+                    <UserRoundPen width={"16"} color={"white"} />
+                    <h1 className="text-md p-6 font-black">{t("profile")}</h1>
                     <ChevronUp className="ml-auto" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  side="top"
-                  className="w-[--radix-popper-anchor-width]"
-                >
+                <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
                   <DropdownMenuItem>
-                    <span><a href="/inbox">{user ? `${user}'s` : ''} Inbox</a></span>
+                    <span>
+                      <a href="/inbox">{user ? `${user}'s` : ""} Inbox</a>
+                    </span>
                   </DropdownMenuItem>
                   <Separator />
                   <DropdownMenuItem>
-                    <span><a href="https://docs.findest.com" target="_blank">Resources</a></span>
+                    <span>
+                      <a href="https://docs.findest.com" target="_blank">
+                        Resources
+                      </a>
+                    </span>
                   </DropdownMenuItem>
                   <Separator />
                   <DropdownMenuItem>
@@ -171,18 +190,26 @@ export function AppSidebar() {
                     <span>Settings</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    {user ? <span><a href="#" onClick={handleLogout}>Log out</a></span> : 
-                    <span><a href="#" onClick={handleLogin}>Log In</a></span>
-                    }
+                    {user ? (
+                      <span>
+                        <a href="#" onClick={handleLogout}>
+                          Log out
+                        </a>
+                      </span>
+                    ) : (
+                      <span>
+                        <a href="#" onClick={handleLogin}>
+                          Log In
+                        </a>
+                      </span>
+                    )}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
-
       </SidebarContent>
-
     </Sidebar>
-  )
+  );
 }

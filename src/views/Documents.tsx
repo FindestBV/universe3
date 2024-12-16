@@ -157,13 +157,6 @@ export const Documents: React.FC = () => {
                 onSelect={handleSelectDoc}
               />
             ))}
-            <ListPagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-              onNextPage={handleNextPage}
-              onPreviousPage={handlePreviousPage}
-            />
           </div>
         )}
       </CardContent>

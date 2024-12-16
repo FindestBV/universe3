@@ -158,13 +158,6 @@ export const Studies: React.FC = () => {
                 onSelect={handleSelectStudy}
               />
             ))}
-            <ListPagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-              onNextPage={handleNextPage}
-              onPreviousPage={handlePreviousPage}
-            />
           </div>
         )}
       </CardContent>

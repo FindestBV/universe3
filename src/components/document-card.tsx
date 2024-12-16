@@ -2,6 +2,8 @@ import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { UserAvatar } from "@/components/user-avatar";
 import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/services/documents/documentApi";
+// import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import {
   BookOpenCheck,
   ExternalLink,
@@ -10,11 +12,12 @@ import {
   Image,
   Link,
   Paperclip,
-  Trash2,
 } from "lucide-react";
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { Button } from "./ui/button";
 
 // Mapping linkedCounts keys to tObjectTypeEnum values
 export const objectTypeMapping: { [key: string]: number } = {
@@ -138,7 +141,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
           id={`doc-${id}`}
           checked={isSelected}
           onCheckedChange={(checked) => handleCheckboxChange(checked as boolean)}
-          className="secondary"
+          className="secondary mt-1"
         />
 
         <Card key={id} className="flex flex-1 flex-row gap-4">
@@ -182,8 +185,8 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
             </div>
           </div>
 
-          <div className="flex flex-row items-center gap-2">
-            <div className="flex flex-row items-start gap-6">
+          <div className="flex flex-row items-start gap-2">
+            <div className="flex flex-row items-center gap-4">
               <div className="time">
                 {dateAdded
                   ? new Date(dateAdded).toLocaleDateString("en-US", {
@@ -192,11 +195,25 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                     })
                   : "Dec 16"}
               </div>
-              <div className="avatar">
-                <a href="mailto:user@findest.eu">
-                  <UserAvatar username={"Ro"} />
-                </a>
-              </div>
+
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button aria-label="createdbyUser" className="bg-transparent p-0">
+                      <UserAvatar username={"Ro"} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    className="-left-100 rounded-md bg-white p-2 shadow-lg"
+                    side="bottom"
+                    align="start"
+                    sideOffset={5} // Adjust vertical distance from trigger
+                    alignOffset={-20} // Adjust horizontal alignment
+                  >
+                    <p>Created by {createdByUsername}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
         </Card>

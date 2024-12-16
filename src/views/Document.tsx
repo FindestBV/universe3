@@ -1,19 +1,27 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { useGetDocumentByIdQuery } from '@/services/documents/documentApi';
-import { Toolbar } from '@/components/toolbar';
-import DocumentSkeleton from '@/components/document-skeleton';
+import DocumentSkeleton from "@/components/document-skeleton";
+import { Toolbar } from "@/components/toolbar";
+import { useGetDocumentByIdQuery } from "@/services/documents/documentApi";
+
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 
 export const Document: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [isLoading, setIsLoading] = useState(true);
+  const [isToolbarVisible, setIsToolbarVisible] = useState(false); // State for toolbar visibility
   const { data: fetchedDocument } = useGetDocumentByIdQuery(id, {
     refetchOnMountOrArgChange: false,
   });
 
-  const renderConnectedObjects = fetchedDocument && Object.entries(fetchedDocument?.connectedObjects).map((o, i) => {
-    return <div key={i}><a href={o[1].url}>{o[1]?.name}</a></div>;
-  });
+  const renderConnectedObjects =
+    fetchedDocument &&
+    Object.entries(fetchedDocument?.connectedObjects).map((o, i) => {
+      return (
+        <div key={i}>
+          <a href={o[1].url}>{o[1]?.name}</a>
+        </div>
+      );
+    });
 
   useEffect(() => {
     if (fetchedDocument) {
@@ -26,31 +34,48 @@ export const Document: React.FC = () => {
     }
   }, [fetchedDocument]);
 
+  const handleEditClick = () => {
+    setIsToolbarVisible((prev) => !prev); // Toggle toolbar visibility
+  };
+
   return (
     <>
       {isLoading ? (
         <DocumentSkeleton />
       ) : (
-        <div className="w-auto flex flex-col  h-screen">
+        <div className="flex h-screen w-auto flex-col">
           <>
             <header className="documentCrud">
-              <Toolbar />
+              <div className="flex items-center justify-between bg-gray-100 p-4">
+                <h1 className="text-lg font-bold">Document Viewer</h1>
+                <button
+                  onClick={handleEditClick}
+                  className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                >
+                  Edit
+                </button>
+              </div>
+              {isToolbarVisible && <Toolbar />} {/* Conditional rendering */}
             </header>
 
-            <div className="flex flex-col w-full h-full max-sm:px-4 p-12">
-              <h1 className="text-xl text-black font-black mb-2">
+            <div className="flex h-full w-full flex-col p-12 max-sm:px-4">
+              <h1 className="mb-2 text-xl font-black text-black">
                 {fetchedDocument?.title || "Document"}
               </h1>
-              <p><span className="text-black font-black">Document ID:</span> {id}</p>
-              <p><span className="text-black font-black">Type: </span> {fetchedDocument?.type || "Document"}</p>
+              <p>
+                <span className="font-black text-black">Document ID:</span> {id}
+              </p>
+              <p>
+                <span className="font-black text-black">Type: </span>{" "}
+                {fetchedDocument?.type || "Document"}
+              </p>
               <br />
               <p className="text-black">{fetchedDocument?.abstract}</p>
               <br />
-              <h4 className='font-black'>Connected Objects:</h4>
+              <h4 className="font-black">Connected Objects:</h4>
               {renderConnectedObjects}
             </div>
           </>
-
         </div>
       )}
     </>

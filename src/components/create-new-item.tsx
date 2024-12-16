@@ -1,11 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -16,6 +10,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { useTransition } from "react";
+
 export type NewItem = {
   type: string;
   desc: string;
@@ -23,11 +19,10 @@ export type NewItem = {
 };
 
 export const CreateNewItem = ({ type, desc, icon }: NewItem) => {
+  const { t } = useTransition();
   return (
     <Card className="w-auto">
-      <CardHeader
-        className={`flex flex-col justify-between space-y-2 p-8 min-h-[250px] ${type}`}
-      >
+      <CardHeader className={`flex min-h-[250px] flex-col justify-between space-y-2 p-8 ${type}`}>
         <div className="flex items-center gap-4">
           {/* Use the passed icon or fallback to default SVG */}
           {icon ? (
@@ -63,27 +58,24 @@ export const CreateNewItem = ({ type, desc, icon }: NewItem) => {
               <Input
                 id="name"
                 placeholder="Name of your project"
-                className="w-full py-2 pl-2 border border-gray-300 rounded-sm shadow-sm bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-sm border border-gray-300 bg-white py-2 pl-2 text-black shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             {type && (type === "study" || type === "entity") ? (
               <div className="flex flex-col space-y-1.5">
-                <Label
-                  htmlFor="framework"
-                  className="text-[11px] uppercase"
-                >
-                  {type} type
+                <Label htmlFor="framework" className="text-[11px] uppercase">
+                  {type}
                 </Label>
                 <Select>
                   <SelectTrigger
                     id="framework"
-                    className="bg-white text-black border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="rounded-sm border border-gray-300 bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent
                     position="popper"
-                    className="bg-white text-black border border-gray-300 rounded-md shadow-md"
+                    className="rounded-md border border-gray-300 bg-white text-black shadow-md"
                   >
                     <SelectItem value="next">Next.js</SelectItem>
                     <SelectItem value="sveltekit">SvelteKit</SelectItem>

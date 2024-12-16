@@ -1,14 +1,16 @@
-.documentCard {
+.inboxCard {
     @apply rounded-[4px] cursor-pointer mb-4 relative w-full flex items-start gap-2 transition-all duration-200 ease-in-out;
 
     .innerCardMain{
         
+        
         &__inbox{
-           @apply bg-slate-200
+           @apply bg-slate-200;
         }
     
     
-        @apply flex w-full border border-[#f2f4f8] p-4 pr-6 pl-4 hover:border-[#ccc] rounded-sm transition-all duration-150
+        @apply flex w-full border border-[#f2f4f8] bg-[#f7f8fa] border-[#f7f8fa]
+        p-4 pr-6 pl-4 hover:border-[#ccc] rounded-sm transition-all duration-150
     
     
     
