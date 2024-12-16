@@ -145,17 +145,19 @@ export const Inbox: React.FC = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="relative z-50 w-full bg-white shadow-lg">
               <DropdownMenuGroup>
-                {filterOptions
-                  .filter((option) => !filters.includes(option))
-                  .map((option) => (
-                    <DropdownMenuItem
-                      key={option}
-                      onClick={() => handleAddFilter(option)}
-                      className="w-full cursor-pointer px-8 py-2 hover:bg-gray-100"
-                    >
-                      {option}
-                    </DropdownMenuItem>
-                  ))}
+                {filterOptions.map((option) => (
+                  <DropdownMenuItem
+                    key={option}
+                    onClick={() => !filters.includes(option) && handleAddFilter(option)} // Prevent onClick if already selected
+                    className={`w-full px-8 py-2 ${
+                      filters.includes(option)
+                        ? "cursor-not-allowed bg-gray-200 text-gray-400" // Greyed out style for selected items
+                        : "cursor-pointer hover:bg-gray-100" // Default style for unselected items
+                    }`}
+                  >
+                    {option}
+                  </DropdownMenuItem>
+                ))}
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
