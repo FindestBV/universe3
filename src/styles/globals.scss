@@ -11,6 +11,7 @@
 @use './components/create-new-button.scss';
 @use './components/login-image-slider.scss';
 @use './components/searchbar.scss';
+@use './components/page.scss';
 
 @tailwind base;
 @tailwind components;
@@ -199,6 +200,12 @@
   width: 18px;
   height: 18px;
   color: #fff;
+}
+
+
+.Study{
+  background-color: #eeeefb;
+  border-color: #eeeefb;
 }
 
 
