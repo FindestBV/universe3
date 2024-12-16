@@ -1,12 +1,11 @@
-import { DocumentCard } from "@/components/document-card";
 import DocumentsSkeleton from "@/components/documents-skeleton";
-import { ListPagination } from "@/components/list-pagination";
+import { EntityCard } from "@/components/entity-card";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import React, { useState } from "react";
 
-import { useGetSavedDocumentsQuery } from "../services/documents/documentApi";
+import { useGetEntitiesQuery } from "../services/entities/entityApi";
 
 export const Entities: React.FC = () => {
   const [selectedDocs, setSelectedDocs] = useState<Set<string>>(new Set());
@@ -15,7 +14,7 @@ export const Entities: React.FC = () => {
   const [tempLoading, setTempLoading] = useState(false); // Temporary loading state
   const [filters, setFilters] = useState<string[]>([]); // State for filters
 
-  const { data, isLoading, isError, error, refetch } = useGetSavedDocumentsQuery(
+  const { data, isLoading, isError, error, refetch } = useGetEntitiesQuery(
     { page: currentPage, limit: documentsPerPage },
     { refetchOnMountOrArgChange: true },
   );
@@ -70,7 +69,7 @@ export const Entities: React.FC = () => {
         <div>
           <Checkbox
             id="select-all"
-            checked={data ? selectedDocs.size === data.documents.length : false}
+            checked={data ? selectedDocs.size === data.entities.length : false}
             onCheckedChange={(checked) => handleSelectAll(checked as boolean)}
             className="ml-4"
           />
@@ -149,11 +148,11 @@ export const Entities: React.FC = () => {
         {isLoading && <DocumentsSkeleton />}
         {data && (
           <div>
-            {data.documents.slice(0, documentsPerPage).map((doc) => (
-              <DocumentCard
-                key={doc.id}
-                {...doc}
-                isSelected={selectedDocs.has(doc.id)}
+            {data.entities.slice(0, documentsPerPage).map((ent) => (
+              <EntityCard
+                key={ent.id}
+                {...ent}
+                isSelected={selectedDocs.has(ent.id)}
                 onSelect={handleSelectDoc}
               />
             ))}
