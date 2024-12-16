@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import React, { useState } from "react";
 
-import { useGetSavedDocumentsQuery } from "../services/documents/documentApi";
+import { useGetMyDocumentInboxQuery } from "../services/documents/documentApi";
 
 export const Inbox: React.FC = () => {
   const [selectedDocs, setSelectedDocs] = useState<Set<string>>(new Set());
@@ -15,7 +15,7 @@ export const Inbox: React.FC = () => {
   const [tempLoading, setTempLoading] = useState(false); // Temporary loading state
   const [filters, setFilters] = useState<string[]>([]); // State for filters
 
-  const { data, isLoading, isError, error, refetch } = useGetSavedDocumentsQuery(
+  const { data, isLoading, isError, error, refetch } = useGetMyDocumentInboxQuery(
     { page: currentPage, limit: documentsPerPage },
     { refetchOnMountOrArgChange: true },
   );

@@ -1,6 +1,7 @@
 // src/features/documentApi.ts
-import { api } from '../api';
-import type { SavedDocumentResponse, ConnectedObject } from '@/types/types';
+import type { ConnectedObject, SavedDocumentResponse } from "@/types/types";
+
+import { api } from "../api";
 
 interface Document {
   id: string;
@@ -14,7 +15,7 @@ export const documentApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getSavedDocuments: builder.query<SavedDocumentResponse, { page: number; limit: number }>({
       query: ({ page, limit }) => ({
-        url: 'saveddocument',
+        url: "saveddocument",
         params: {
           orderBy: 2,
           doIncludePatents: true,
@@ -25,12 +26,12 @@ export const documentApi = api.injectEndpoints({
           limit,
         },
       }),
-      providesTags: ['SavedDocument'],
+      providesTags: ["SavedDocument"],
     }),
 
     getDocumentById: builder.query<SavedDocumentResponse, string>({
       query: (id) => `saveddocument/${id}`,
-      providesTags: (result, error, id) => [{ type: 'SavedDocument', id }],
+      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
     }),
 
     getConnectedObjects: builder.query<ConnectedObject[], { id: string; type: string }>({
@@ -39,19 +40,25 @@ export const documentApi = api.injectEndpoints({
 
     addDocument: builder.mutation<void, Document>({
       query: (newDocument) => ({
-        url: 'saveddocument',
-        method: 'POST',
+        url: "saveddocument",
+        method: "POST",
         body: newDocument,
       }),
-      invalidatesTags: ['SavedDocument'],
+      invalidatesTags: ["SavedDocument"],
     }),
 
     deleteDocument: builder.mutation<void, string>({
       query: (id) => ({
         url: `saveddocument/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
       }),
-      invalidatesTags: ['SavedDocument'],
+      invalidatesTags: ["SavedDocument"],
+    }),
+
+    getMyDocumentInbox: builder.query<SavedDocumentResponse, string>({
+      query: (id) =>
+        `saveddocument/my?orderBy=2&doIncludePatents=true&doIncludeScienceArticles=true&doIncludeWeblinks=true&doExcludeLinked=false`,
+      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
     }),
   }),
 });
@@ -59,8 +66,9 @@ export const documentApi = api.injectEndpoints({
 export const {
   useGetSavedDocumentsQuery,
   useGetDocumentByIdQuery,
+  useGetMyDocumentInboxQuery,
   useLazyGetConnectedObjectsQuery,
   useAddDocumentMutation,
   useDeleteDocumentMutation,
-  usePrefetch
+  usePrefetch,
 } = documentApi;
