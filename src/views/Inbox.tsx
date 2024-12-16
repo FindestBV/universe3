@@ -78,7 +78,7 @@ export const Inbox: React.FC = () => {
 
   return (
     <div className="flex h-full w-full flex-col px-12 max-sm:px-4">
-      <div className="mb-2 flex items-center justify-between gap-4 rounded-lg">
+      <div className="mb-2 flex items-center justify-between gap-1 rounded-lg">
         <div className="flex items-center gap-2">
           <Checkbox
             id="select-all"
@@ -114,7 +114,7 @@ export const Inbox: React.FC = () => {
           )}
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-1">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
@@ -162,7 +162,7 @@ export const Inbox: React.FC = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="">
+        <div className="mr-[1.5em]">
           <select
             id="studiesPerPage"
             value={documentsPerPage}
