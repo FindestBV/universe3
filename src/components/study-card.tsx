@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useLazyGetConnectedObjectsQuery } from "@/services/documents/documentApi";
-import { BookOpenCheck, Fingerprint, Highlighter, Paperclip } from "lucide-react";
 import { usePrefetch } from "@/services/entities/entityApi";
-
+import { BookOpenCheck, Paperclip, Fingerprint, Image, Highlighter, ExternalLink } from "lucide-react";
+import { UserAvatar } from "@/components/user-avatar";
 
 interface StudyCardProps {
     id: string;
@@ -90,56 +90,127 @@ export const StudyCard: React.FC<StudyCardProps> = ({ id, title, type, descripti
 
 
     return (
-      <div className="studyCard">
-        <div className="flex items-start space-x-4">
-            <div>
-                <Checkbox
-                    id={`entity-${id}`}
-                    checked={isSelected}
-                    onCheckedChange={(checked) => handleCheckboxChange(checked as boolean)}
-                    className="secondary"
-                />
+      // <div className="studyCard">
+      //   <div className="flex items-start space-x-4">
+      //       <div>
+      //           <Checkbox
+      //               id={`entity-${id}`}
+      //               checked={isSelected}
+      //               onCheckedChange={(checked) => handleCheckboxChange(checked as boolean)}
+      //               className="secondary"
+      //           />
+      //       </div>
+      //       <div>
+      //           <Card key={id} className="w-full bg-white text-black" onClick={handleCardClick}>
+      //               <div className="px-4 cursor-pointer">
+      //                   <h3 className="font-black text-lg text-black">{title}</h3>
+      //                   <div className="flex flex-col mt-2 text-sm">
+      //                       {/* <div>
+      //                           <span className="font-black text-black">Type: </span>
+      //                           Study
+      //                       </div>
+      //                       <div>
+      //                           <span className="font-black text-black">Added: </span>
+      //                           {dateAdded ? new Date(dateAdded).toLocaleDateString() : "N/A"}
+      //                       </div> */}
+      //                       <ul className="flex gap-2">
+      //                       {linkedCounts &&
+      //                           Object.entries(linkedCounts)
+      //                               .filter(([, value]) => value > 0)
+      //                               .map(([key, value], idx) => {
+      //                               const IconComponent = typeIcons[key as keyof typeof typeIcons] || null;
+      //                               return (
+      //                                   <li
+      //                                   key={idx}
+      //                                   className="linkedCounts__item"
+      //                                   onMouseEnter={() => handleMouseEnter(id, key)}
+      //                                   // onClick={() => {
+      //                                   //     setShowDialog(true);
+      //                                   //     setDialogDocumentId(id);
+      //                                   // }}
+      //                                   >
+      //                                   {IconComponent && <IconComponent size={16} />}
+      //                                   {value}
+      //                                   </li>
+      //                               );
+      //                           })}
+      //                       </ul>
+      //                   </div>
+      //               </div>
+      //           </Card>
+      //       </div>
+      //   </div>
+      // </div>
+
+      <div className="studyCard gap-4 hover:border-[#ccc]">
+            
+      <Checkbox
+        id={`entity-${id}`}
+        checked={isSelected}
+        onCheckedChange={(checked) => handleCheckboxChange(checked as boolean)}
+        className="secondary"
+      />
+
+      <Card key={id} className="flex flex-row flex-1 gap-4">
+      <div>
+        {type || "Webpage"}
+      </div>
+        <div className="flex flex-col flex-1">
+          <div className="px-4 cursor-pointer w-auto" onClick={handleCardClick}>
+            <div className="flex flex-row gap-2">
+              <h3 className="font-bold text-black text-ellipsis overflow-hidden">{title}</h3>
+              <div className="group">
+                
+                <a href={'#'} target="_blank" rel="noopener noreferrer" className="opacity-25 transition-opacity group-hover:opacity-100">
+                  <ExternalLink size={20} />
+                </a>
+              </div>
             </div>
-            <div>
-                <Card key={id} className="w-full bg-white text-black" onClick={handleCardClick}>
-                    <div className="px-4 cursor-pointer">
-                        <h3 className="font-black text-lg text-black">{title}</h3>
-                        <div className="flex flex-col mt-2 text-sm">
-                            {/* <div>
-                                <span className="font-black text-black">Type: </span>
-                                Study
-                            </div>
-                            <div>
-                                <span className="font-black text-black">Added: </span>
-                                {dateAdded ? new Date(dateAdded).toLocaleDateString() : "N/A"}
-                            </div> */}
-                            <ul className="flex gap-2">
-                            {linkedCounts &&
-                                Object.entries(linkedCounts)
-                                    .filter(([, value]) => value > 0)
-                                    .map(([key, value], idx) => {
-                                    const IconComponent = typeIcons[key as keyof typeof typeIcons] || null;
-                                    return (
-                                        <li
-                                        key={idx}
-                                        className="linkedCounts__item"
-                                        onMouseEnter={() => handleMouseEnter(id, key)}
-                                        // onClick={() => {
-                                        //     setShowDialog(true);
-                                        //     setDialogDocumentId(id);
-                                        // }}
-                                        >
-                                        {IconComponent && <IconComponent size={16} />}
-                                        {value}
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-                    </div>
-                </Card>
-            </div>
+            <ul className="linkedCounts">
+              {Object.entries(linkedCounts)
+                .filter(([, value]) => value > 0)
+                .map(([key, value], idx) => {
+                  const IconComponent = typeIcons[key as keyof typeof typeIcons] || null;
+                  return (
+                    <li
+                      key={idx}
+                      className="linkedCounts__item"
+                      onMouseEnter={() => handleMouseEnter(id, key)} // Use `key` for type lookup
+                      onClick={() => {
+                        setShowDialog(true);
+                        setDialogDocumentId(id);
+                      }}
+                    >
+                      {IconComponent && <IconComponent size={16} />}
+                      {value}
+                    </li>
+                  );
+                })}
+            </ul>
+          </div>
+      </div>
+
+      <div className="flex flex-row gap-2 items-start">       
+        <div className="time">
+        {dateAdded 
+            ? new Date(dateAdded).toLocaleTimeString('en-US', {
+                hour: 'numeric', 
+                minute: '2-digit', 
+                hour12: false
+              }).toLowerCase()
+            : '09:30'}
         </div>
+        <div className="avatar">
+          {/* <UserAvatar username={createdByUsername} /> */}
+        </div>
+        {/* <div>
+          {new Date(dateAdded) ? new Date(dateAdded).toLocaleDateString('en-US', { 
+            month: 'short',
+            day: 'numeric'
+          }) : null}
+        </div> */}
+      </div>
+      </Card>
       </div>
     );
 };

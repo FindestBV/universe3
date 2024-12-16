@@ -72,9 +72,9 @@ export const Documents: React.FC = () => {
             onCheckedChange={(checked) => handleSelectAll(checked as boolean)}
             className="ml-4"
           />
-          <label htmlFor="select-all" className="text-sm font-medium pl-4">
+          {/* <label htmlFor="select-all" className="text-sm font-medium pl-4">
             Select All ({selectedDocs.size} of {documentsPerPage || 0} total)
-          </label>
+          </label> */}
         </div>
 
         <div className="flex items-center gap-4 flex-grow mr-4">
