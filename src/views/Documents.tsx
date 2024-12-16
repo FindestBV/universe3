@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { useGetSavedDocumentsQuery } from '../services/documents/documentApi';
-import { CardContent } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { DocumentCard } from '@/components/document-card';
-import { ListPagination } from '@/components/list-pagination';
-import DocumentsSkeleton from '@/components/documents-skeleton';
+import { DocumentCard } from "@/components/document-card";
+import DocumentsSkeleton from "@/components/documents-skeleton";
+import { ListPagination } from "@/components/list-pagination";
+import { CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+
+import React, { useState } from "react";
+
+import { useGetSavedDocumentsQuery } from "../services/documents/documentApi";
 
 export const Documents: React.FC = () => {
   const [selectedDocs, setSelectedDocs] = useState<Set<string>>(new Set());
@@ -15,7 +17,7 @@ export const Documents: React.FC = () => {
 
   const { data, isLoading, isError, error, refetch } = useGetSavedDocumentsQuery(
     { page: currentPage, limit: documentsPerPage },
-    { refetchOnMountOrArgChange: true }
+    { refetchOnMountOrArgChange: true },
   );
 
   const totalPages = data ? Math.ceil(data.totalCount / documentsPerPage) : 1;
@@ -63,8 +65,8 @@ export const Documents: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-full max-sm:px-4 px-12">
-      <div className="flex items-center justify-between gap-4 rounded-lg mb-2">
+    <div className="flex h-full w-full flex-col px-12 max-sm:px-4">
+      <div className="mb-2 flex items-center justify-between gap-4 rounded-lg">
         <div>
           <Checkbox
             id="select-all"
@@ -77,15 +79,15 @@ export const Documents: React.FC = () => {
           </label> */}
         </div>
 
-        <div className="flex items-center gap-4 flex-grow mr-4">
+        <div className="mr-4 flex flex-grow items-center gap-4">
           {/* Render filters dynamically */}
           {filters.length > 0 ? (
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex flex-wrap gap-2">
               {filters.map((filter) => (
                 <div
                   key={filter}
                   onClick={() => handleRemoveFilter(filter)}
-                  className="px-4 py-2 rounded-md text-sm font-medium bg-blue-100 text-blue-800 hover:bg-red-100 hover:text-red-800 cursor-pointer transition"
+                  className="cursor-pointer rounded-md bg-blue-100 px-4 py-2 text-sm font-medium text-blue-800 transition hover:bg-red-100 hover:text-red-800"
                 >
                   {filter} ×
                 </div>
@@ -99,8 +101,10 @@ export const Documents: React.FC = () => {
             type="button"
             id="add-filter"
             onClick={handleAddFilter}
-            className={`px-4 py-2 rounded-md flex items-center justify-center gap-2 group mt-2 mb-2 border shadow-sm text-gray-800 transition-all duration-150 ${
-              filters.length > 0 ? 'bg-blue-50 font-black' : 'bg-gray hover:bg-blue-50 hover:font-black'
+            className={`group mb-2 mt-2 flex items-center justify-center gap-2 rounded-md border px-4 py-2 text-gray-800 shadow-sm transition-all duration-150 ${
+              filters.length > 0
+                ? "bg-blue-50 font-black"
+                : "bg-gray hover:bg-blue-50 hover:font-black"
             }`}
           >
             <svg
@@ -113,19 +117,19 @@ export const Documents: React.FC = () => {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className={`lucide lucide-filter ${filters.length > 0 ? 'fill-black' : 'group-hover:fill-black'}`}
+              className={`lucide lucide-filter ${filters.length > 0 ? "fill-black" : "group-hover:fill-black"}`}
             >
               <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
             </svg>
             Add Filters
           </button>
 
-          <div className="w-full sm:w-1/2 md:w-1/4 flex flex-col items-end">
+          <div className="flex w-full flex-col items-end sm:w-1/2 md:w-1/4">
             <select
               id="documentsPerPage"
               value={documentsPerPage}
               onChange={handleDocumentsPerPageChange}
-              className="border p-2 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="rounded-md border p-2 focus:border-blue-500 focus:ring-blue-500"
             >
               <option value={25}>25</option>
               <option value={20}>20</option>
@@ -139,7 +143,9 @@ export const Documents: React.FC = () => {
 
       {tempLoading && <p>LOADING</p>}
       <CardContent className="p-0">
-        {isError && <div className="text-red-600">Error loading documents: {JSON.stringify(error)}</div>}
+        {isError && (
+          <div className="text-red-600">Error loading documents: {JSON.stringify(error)}</div>
+        )}
         {isLoading && <DocumentsSkeleton />}
         {data && (
           <div>
