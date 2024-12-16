@@ -1,11 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { usePrefetch, useLazyGetConnectedObjectsQuery } from "@/services/study/studyApi";
-import { BookOpenCheck, Paperclip, Fingerprint, Image, Highlighter, List, MoreHorizontal, Network, ScanEye, SquareArrowOutUpRight } from "lucide-react";
 import { UserAvatar } from "@/components/user-avatar";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
+import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/services/study/studyApi";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
+import {
+  BookOpenCheck,
+  Fingerprint,
+  Highlighter,
+  Image,
+  Link,
+  List,
+  MoreHorizontal,
+  Network,
+  Paperclip,
+  ScanEye,
+  SquareArrowOutUpRight,
+  Trash2,
+} from "lucide-react";
+
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { Button } from "./ui/button";
 
 // Mapping linkedCounts keys to objectTypeEnum values
@@ -67,7 +87,7 @@ export const ConnectedObjectsDialog = ({
 
   useEffect(() => {
     if (studyId) {
-      fetchConnectedObjects({ id: studyId, type: 'study' });
+      fetchConnectedObjects({ id: studyId, type: "study" });
     }
   }, [studyId, fetchConnectedObjects]);
 
@@ -80,7 +100,9 @@ export const ConnectedObjectsDialog = ({
       <h4>Connected Objects</h4>
       <ul>
         {connectedObjects?.map((object) => (
-          <li key={object.id}>{object.name} - {object.type}</li>
+          <li key={object.id}>
+            {object.name} - {object.type}
+          </li>
         ))}
       </ul>
       <button onClick={onClose}>Close</button>
@@ -111,7 +133,7 @@ export const StudyCard: React.FC<StudyCardProps> = ({
   };
 
   const handleMouseEnter = (id: string | number, key: string) => {
-    const objectType = objectTypeMapping[key] || 'unknown'; // Default to 'unknown'
+    const objectType = objectTypeMapping[key] || "unknown"; // Default to 'unknown'
     prefetchConnectedObjects({ id: id.toString(), type: objectType });
     setDialogStudyId(id.toString());
   };
@@ -123,81 +145,103 @@ export const StudyCard: React.FC<StudyCardProps> = ({
   };
 
   return (
-    <div className="studyCard gap-4 hover:border-[#ccc]">
-      <Checkbox
-        id={`study-${id}`}
-        checked={isSelected}
-        onCheckedChange={(checked) => handleCheckboxChange(checked as boolean)}
-        className="secondary"
-      />
-      <Card key={id} className="flex flex-row flex-1 gap-4">
-        
-        <div className="flex flex-col flex-1">
-          <div className="px-4 cursor-pointer w-auto" onClick={handleCardClick}>
-            <div>{type || "Study"}</div>
-            <div className="flex flex-row gap-2">
-              <h3 className="font-bold text-black text-ellipsis overflow-hidden">{title}</h3>
+    <div className="studyCard items-start gap-4 hover:border-[#ccc]">
+      <div className="innerCardMain">
+        <Checkbox
+          id={`study-${id}`}
+          checked={isSelected}
+          onCheckedChange={(checked) => handleCheckboxChange(checked as boolean)}
+          className="secondary"
+        />
+        <Card key={id} className="flex flex-1 flex-row gap-4">
+          <div className="flex flex-1 flex-col">
+            <div className="w-auto cursor-pointer px-4" onClick={handleCardClick}>
+              <div className="flex gap-2">
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  data-prefix="fas"
+                  data-icon="dice-d6"
+                  className="svg-inline--fa fa-dice-d6 objectItem_objectIcon__xwkQs"
+                  width="12px"
+                  role="img"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 448 512"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M201 10.3c14.3-7.8 31.6-7.8 46 0L422.3 106c5.1 2.8 8.3 8.2 8.3 14s-3.2 11.2-8.3 14L231.7 238c-4.8 2.6-10.5 2.6-15.3 0L25.7 134c-5.1-2.8-8.3-8.2-8.3-14s3.2-11.2 8.3-14L201 10.3zM23.7 170l176 96c5.1 2.8 8.3 8.2 8.3 14l0 216c0 5.6-3 10.9-7.8 13.8s-10.9 3-15.8 .3L25 423.1C9.6 414.7 0 398.6 0 381L0 184c0-5.6 3-10.9 7.8-13.8s10.9-3 15.8-.3zm400.7 0c5-2.7 11-2.6 15.8 .3s7.8 8.1 7.8 13.8l0 197c0 17.6-9.6 33.7-25 42.1L263.7 510c-5 2.7-11 2.6-15.8-.3s-7.8-8.1-7.8-13.8l0-216c0-5.9 3.2-11.2 8.3-14l176-96z"
+                  ></path>
+                </svg>
+                {type || "Study"}
+              </div>
+              <div className="flex flex-row gap-2">
+                <h3 className="overflow-hidden text-ellipsis font-bold text-black">{title}</h3>
+              </div>
+              <ul className="linkedCounts">
+                {Object.entries(linkedCounts)
+                  .filter(([, value]) => value > 0)
+                  .map(([key, value], idx) => {
+                    const IconComponent = typeIcons[key as keyof typeof typeIcons] || null;
+                    return (
+                      <li
+                        key={idx}
+                        className="linkedCounts__item"
+                        onMouseEnter={() => handleMouseEnter(id, key)}
+                        onClick={() => {
+                          setShowDialog(true);
+                          setDialogStudyId(id);
+                        }}
+                      >
+                        {IconComponent && <IconComponent size={16} />}
+                        {value}
+                      </li>
+                    );
+                  })}
+              </ul>
             </div>
-            <ul className="linkedCounts">
-              {Object.entries(linkedCounts)
-                .filter(([, value]) => value > 0)
-                .map(([key, value], idx) => {
-                  const IconComponent = typeIcons[key as keyof typeof typeIcons] || null;
-                  return (
-                    <li
-                      key={idx}
-                      className="linkedCounts__item"
-                      onMouseEnter={() => handleMouseEnter(id, key)}
-                      onClick={() => {
-                        setShowDialog(true);
-                        setDialogStudyId(id);
-                      }}
-                    >
-                      {IconComponent && <IconComponent size={16} />}
-                      {value}
-                    </li>
-                  );
-                })}
-            </ul>
           </div>
-        </div>
-        <div className="flex flex-row gap-2 items-center">
-          <div className="time">
-          {
-              dateAdded
-                ? new Date(dateAdded).toLocaleDateString('en-US', {
-                    month: 'short', // Displays the abbreviated month name (e.g., "Dec")
-                    day: 'numeric', // Displays the day of the month (e.g., "16")
+          <div className="flex flex-row items-start gap-2">
+            <div className="time">
+              {dateAdded
+                ? new Date(dateAdded).toLocaleDateString("en-US", {
+                    month: "short", // Displays the abbreviated month name (e.g., "Dec")
+                    day: "numeric", // Displays the day of the month (e.g., "16")
                   })
-                : 'Dec 16'}
+                : "Dec 16"}
+            </div>
+            <div className="avatar">
+              <UserAvatar username={"Ro"} />
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="rotated" className="h-8 w-8 bg-transparent p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>
+                  <SquareArrowOutUpRight /> Open Page
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <ScanEye /> Open Preview
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Network /> Open in Tree View
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <List /> Open in List View
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-          <div className="avatar">
-            <UserAvatar username={'Ro'} />
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="rotated" className="h-8 w-8 p-0 bg-transparent">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>
-                <SquareArrowOutUpRight /> Open Page
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <ScanEye /> Open Preview
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Network /> Open in Tree View
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <List /> Open in List View
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
-        </div>
-      </Card>
+        </Card>
+      </div>
+      <div className="links flex flex-col">
+        <Link size={16} />
+        <Trash2 size={16} />
+      </div>
     </div>
   );
 };

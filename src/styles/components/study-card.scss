@@ -1,5 +1,9 @@
 .studyCard {
-    @apply border border-[#f2f4f8] rounded-[4px] cursor-pointer mb-4 relative w-full flex items-start p-4 pr-6 pl-4;
+    @apply rounded-[4px] cursor-pointer mb-4 relative w-full flex items-start;
+
+    .innerCardMain{
+        @apply flex w-full border border-[#f2f4f8] p-4 pr-6 pl-4;
+    }
 
     .time {
         @apply text-[#252525] flex-shrink-0 text-sm ml-auto pl-4 text-right -mt-1;
