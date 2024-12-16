@@ -141,7 +141,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
           id={`doc-${id}`}
           checked={isSelected}
           onCheckedChange={(checked) => handleCheckboxChange(checked as boolean)}
-          className="secondary mt-1"
+          className="secondary mr-4 mt-1"
         />
 
         <Card key={id} className="flex flex-1 flex-row gap-4">
