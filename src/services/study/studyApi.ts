@@ -1,5 +1,5 @@
 import { api } from '../api';
-import { Study } from '../../types/types'; // Adjust the import path as needed
+import { ConnectedObject, Study } from '../../types/types'; // Adjust the import path as needed
 
 
 export const studyApi = api.injectEndpoints({
@@ -27,6 +27,10 @@ export const studyApi = api.injectEndpoints({
       query: (id) => `/${id}`,
     }),
 
+    getConnectedObjects: builder.query<ConnectedObject[], { id: string; type: string }>({
+      query: ({ id, type }) => `linking/${id}?objectType[]=${type}`,
+    }),
+    
     updateStudyTitle: builder.mutation<Study, { id: number; title: string }>({
       query: ({ id, title }) => ({
         url: `/${id}/title`,
@@ -47,6 +51,8 @@ export const {
   useCreateStudyMutation,
   useGetStudiesQuery,
   useGetStudyByIdQuery,
+  useLazyGetConnectedObjectsQuery,
   useUpdateStudyTitleMutation,
   useDeleteStudyMutation,
+  usePrefetch
 } = studyApi;

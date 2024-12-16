@@ -100,6 +100,20 @@ export const Studies: React.FC = () => {
               filters.length > 0 ? 'bg-blue-50 font-black' : 'bg-gray hover:bg-blue-50 hover:font-black'
             }`}
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`lucide lucide-filter ${filters.length > 0 ? 'fill-black' : 'group-hover:fill-black'}`}
+            >
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+            </svg>
             Add Filters
           </button>
 
