@@ -1,4 +1,14 @@
 .user_avatar{
     @apply w-4 h-4 rounded-full bg-green-600 text-white flex items-center justify-center font-normal p-1;
+    border-radius: 50%;
+    color: #fff;
+    cursor: default;
+    display: flex;
+    flex-shrink: 0;
+    font-weight: 500;
+    height: 26px;
+    justify-content: center;
+    margin: 0 8px;
+    width: 26px;
 }
 

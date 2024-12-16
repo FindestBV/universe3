@@ -145,8 +145,8 @@ export const StudyCard: React.FC<StudyCardProps> = ({
   };
 
   return (
-    <div className="studyCard items-start gap-4 hover:border-[#ccc]">
-      <div className="innerCardMain">
+    <div className="studyCard">
+      <div className="innerCardMain items-start">
         <Checkbox
           id={`study-${id}`}
           checked={isSelected}
@@ -202,45 +202,62 @@ export const StudyCard: React.FC<StudyCardProps> = ({
             </div>
           </div>
           <div className="flex flex-row items-start gap-2">
-            <div className="time">
-              {dateAdded
-                ? new Date(dateAdded).toLocaleDateString("en-US", {
-                    month: "short", // Displays the abbreviated month name (e.g., "Dec")
-                    day: "numeric", // Displays the day of the month (e.g., "16")
-                  })
-                : "Dec 16"}
+            <div className="flex flex-row items-center gap-4">
+              <div className="time">
+                {dateAdded
+                  ? new Date(dateAdded).toLocaleDateString("en-US", {
+                      month: "short", // Displays the abbreviated month name (e.g., "Dec")
+                      day: "numeric", // Displays the day of the month (e.g., "16")
+                    })
+                  : "Dec 16"}
+              </div>
+              <div className="avatar">
+                <a href="mailto:user@findest.eu">
+                  <UserAvatar username={"Ro"} />
+                </a>
+              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="rotated" className="h-8 w-8 bg-transparent p-0">
+                    <span className="sr-only">Open menu</span>
+                    <MoreHorizontal />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem>
+                    <SquareArrowOutUpRight /> Open Page
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <ScanEye /> Open Preview
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Network /> Open in Tree View
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <List /> Open in List View
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
-            <div className="avatar">
-              <UserAvatar username={"Ro"} />
-            </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="rotated" className="h-8 w-8 bg-transparent p-0">
-                  <span className="sr-only">Open menu</span>
-                  <MoreHorizontal />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  <SquareArrowOutUpRight /> Open Page
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <ScanEye /> Open Preview
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Network /> Open in Tree View
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <List /> Open in List View
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
         </Card>
       </div>
-      <div className="links flex flex-col">
-        <Link size={16} />
-        <Trash2 size={16} />
+
+      <div className="relative flex h-auto w-[25px]">
+        <div className="links">
+          <a
+            href="#"
+            className="rounded-sm bg-[#9f69d5] px-[5px] py-[5px] text-white hover:bg-[#8157ac]"
+          >
+            <Link size={14} />
+          </a>
+          <a
+            href="#"
+            className="rounded-sm bg-[#f05f5f] px-[5px] py-[5px] text-white hover:bg-[#c33939]"
+          >
+            <Trash2 size={14} />
+          </a>
+        </div>
       </div>
     </div>
   );

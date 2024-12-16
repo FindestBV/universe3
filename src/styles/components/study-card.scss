@@ -1,16 +1,23 @@
 .studyCard {
-    @apply rounded-[4px] cursor-pointer mb-4 relative w-full flex items-start;
+    @apply rounded-[4px] cursor-pointer mb-4 relative w-full flex items-start gap-2 transition-all duration-200 ease-in-out;
 
     .innerCardMain{
-        @apply flex w-full border border-[#f2f4f8] p-4 pr-6 pl-4;
+        @apply flex w-full border border-[#f2f4f8] p-4 pr-6 pl-4 hover:border-[#ccc] rounded-sm transition-all duration-150
     }
 
     .time {
         @apply text-[#252525] flex-shrink-0 text-sm ml-auto pl-4 text-right -mt-1;
+        color: #252525;
+        flex-shrink: 0;
+        font-size: 14px;
+        margin-left: auto;
+        margin-top: 2px;
+        padding-left: 16px;
+        text-align: right;
     }
 
     .avatar {
-        @apply w-4 h-4 rounded-full bg-green-500 text-white flex items-center justify-center font-normal text-xs;
+        @apply w-4 h-4 rounded-full bg-green-500 text-white flex items-center justify-center font-normal text-xs p-2;
     }
 
     .linkedCounts {
@@ -18,6 +25,15 @@
 
         &__item {
             @apply rounded-md bg-slate-100 text-black p-1 flex gap-1 items-center text-xs h-[1.5rem];
+        }
+    }
+
+    .links{
+        @apply hidden transition-all duration-150 ease-in-out;
+    }
+    &:hover{
+        .links{
+            @apply flex flex-col justify-between gap-1 py-1;
         }
     }
 }
