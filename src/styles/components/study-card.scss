@@ -26,10 +26,20 @@
         &__item {
             @apply rounded-md bg-slate-100 text-black p-1 flex gap-1 items-center text-xs h-[1.5rem];
         }
+
+       
     }
 
     .links{
         @apply hidden transition-all duration-150 ease-in-out;
+
+        .linkedStudy{
+            @apply rounded-sm bg-[#9f69d5] px-[5px] py-[5px] text-white hover:bg-[#8157ac];
+        }
+
+        .trashCan{
+            @apply rounded-sm bg-[#f05f5f] px-[5px] py-[5px] text-white hover:bg-[#c33939];
+        }
     }
     &:hover{
         .links{

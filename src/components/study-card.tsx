@@ -245,16 +245,10 @@ export const StudyCard: React.FC<StudyCardProps> = ({
 
       <div className="relative flex h-auto w-[25px]">
         <div className="links">
-          <a
-            href="#"
-            className="rounded-sm bg-[#9f69d5] px-[5px] py-[5px] text-white hover:bg-[#8157ac]"
-          >
+          <a href="#" className="linkedStudy">
             <Link size={14} />
           </a>
-          <a
-            href="#"
-            className="rounded-sm bg-[#f05f5f] px-[5px] py-[5px] text-white hover:bg-[#c33939]"
-          >
+          <a href="#" className="trashCan">
             <Trash2 size={14} />
           </a>
         </div>

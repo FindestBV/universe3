@@ -1,10 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { usePrefetch, useLazyGetConnectedObjectsQuery } from "@/services/documents/documentApi";
-import { BookOpenCheck, Paperclip, Fingerprint, Image, Highlighter, ExternalLink } from "lucide-react";
 import { UserAvatar } from "@/components/user-avatar";
+import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/services/documents/documentApi";
+import {
+  BookOpenCheck,
+  ExternalLink,
+  Fingerprint,
+  Highlighter,
+  Image,
+  Link,
+  Paperclip,
+  Trash2,
+} from "lucide-react";
+
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Mapping linkedCounts keys to tObjectTypeEnum values
 export const objectTypeMapping: { [key: string]: number } = {
@@ -64,7 +74,7 @@ export const ConnectedObjectsDialog = ({
 
   useEffect(() => {
     if (documentId) {
-      fetchConnectedObjects({ id: documentId, type: 'document' });
+      fetchConnectedObjects({ id: documentId, type: "document" });
     }
   }, [documentId, fetchConnectedObjects]);
 
@@ -77,7 +87,9 @@ export const ConnectedObjectsDialog = ({
       <h4>Connected Objects</h4>
       <ul>
         {connectedObjects?.map((object) => (
-          <li key={object.id}>{object.name} - {object.type}</li>
+          <li key={object.id}>
+            {object.name} - {object.type}
+          </li>
         ))}
       </ul>
       <button onClick={onClose}>Close</button>
@@ -108,7 +120,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   };
 
   const handleMouseEnter = (id: string | number, key: string) => {
-    const objectType = objectTypeMapping[key] || 'unknown'; // Default to 'unknown'
+    const objectType = objectTypeMapping[key] || "unknown"; // Default to 'unknown'
     prefetchConnectedObjects({ id: id.toString(), type: objectType });
     setDialogDocumentId(id.toString());
   };
@@ -120,26 +132,28 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   };
 
   return (
-    <div className="documentCard gap-4 hover:border-[#ccc]">
-      
+    <div className="documentCard">
+      <div className="innerCardMain items-start gap-4">
         <Checkbox
           id={`doc-${id}`}
           checked={isSelected}
           onCheckedChange={(checked) => handleCheckboxChange(checked as boolean)}
           className="secondary"
         />
-      
-      <Card key={id} className="flex flex-row flex-1 gap-4">
-        <div>
-          {type || "Webpage"}
-        </div>
-          <div className="flex flex-col flex-1">
-            <div className="px-4 cursor-pointer w-auto" onClick={handleCardClick}>
+
+        <Card key={id} className="flex flex-1 flex-row gap-4">
+          <div>{type || "Webpage"}</div>
+          <div className="flex flex-1 flex-col">
+            <div className="w-auto cursor-pointer px-4" onClick={handleCardClick}>
               <div className="flex flex-row gap-2">
-                <h3 className="font-bold text-black text-ellipsis overflow-hidden">{title}</h3>
+                <h3 className="overflow-hidden text-ellipsis font-bold text-black">{title}</h3>
                 <div className="group">
-                  
-                  <a href={url} target="_blank" rel="noopener noreferrer" className="opacity-25 transition-opacity group-hover:opacity-100">
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="opacity-25 transition-opacity group-hover:opacity-100"
+                  >
                     <ExternalLink size={20} />
                   </a>
                 </div>
@@ -166,29 +180,40 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                   })}
               </ul>
             </div>
-         </div>
-        
-        <div className="flex flex-row gap-2 items-start">       
-          <div className="time">
-          {dateAdded 
-              ? new Date(dateAdded).toLocaleTimeString('en-US', {
-                  hour: 'numeric', 
-                  minute: '2-digit', 
-                  hour12: false
-                }).toLowerCase()
-              : '09:30'}
           </div>
-          <div className="avatar">
-            <UserAvatar username={createdByUsername} />
+
+          <div className="flex flex-row items-center gap-2">
+            <div className="flex flex-row items-start gap-6">
+              <div className="time">
+                {dateAdded
+                  ? new Date(dateAdded).toLocaleDateString("en-US", {
+                      month: "short", // Displays the abbreviated month name (e.g., "Dec")
+                      day: "numeric", // Displays the day of the month (e.g., "16")
+                    })
+                  : "Dec 16"}
+              </div>
+              <div className="avatar">
+                <a href="mailto:user@findest.eu">
+                  <UserAvatar username={"Ro"} />
+                </a>
+              </div>
+            </div>
           </div>
-          {/* <div>
-            {new Date(dateAdded) ? new Date(dateAdded).toLocaleDateString('en-US', { 
-              month: 'short',
-              day: 'numeric'
-            }) : null}
-          </div> */}
-        </div>
         </Card>
+      </div>
+      <div className="relative flex h-auto w-[25px]">
+        <div className="links">
+          <a href="#" className="linkedStudy">
+            <Link size={14} />
+          </a>
+          {/* <a
+            href="#"
+            className="trashCan"
+          >
+            <Trash2 size={14} />
+          </a> */}
+        </div>
+      </div>
     </div>
   );
 };
