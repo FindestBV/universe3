@@ -94,12 +94,6 @@
 }
 
 
-.Study{
-  background-color: #eeeefb;
-  border-color: #eeeefb;
-}
-
-
 /* ANIMATIONS */
 /* These will be moved to the correct location. Currently placeholder */
 
@@ -127,4 +121,9 @@
 
 .trashCan{
     @apply rounded-sm bg-[#f05f5f] px-[5px] py-[5px] text-white hover:bg-[#c33939];
+}
+
+.Study{
+  background-color: #eeeefb!important;
+  border-color: #eeeefb!important;
 }
