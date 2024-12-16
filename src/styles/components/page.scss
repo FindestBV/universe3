@@ -15,7 +15,30 @@
   margin: 30px 0;
 }
 
+
+
 .entityCount{
+  background-color: lightpink;
+  color: white; 
+}
+
+.documentCount{
   background-color: #5856d6;
   color: white; 
+}
+
+.studyCount{
+  background-color: #00adef;
+  color: white; 
+}
+
+.iconText{
+  color: #252525;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  line-height: 16px;
+  text-transform: uppercase;
+  display: flex;
+  gap: 1em;
 }

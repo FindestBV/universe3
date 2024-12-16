@@ -220,7 +220,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
       </div>
       <div className="relative flex h-auto w-[25px]">
         <div className="links">
-          <a href="#" className="linkedStudy">
+          <a href={url} className="linkedStudy">
             <Link size={14} />
           </a>
           {/* <a
