@@ -158,16 +158,18 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
                     alt="Open Access Logo"
                   ></img>
                   {title}
-                  <div className="group">
-                    <a
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="opacity-25 transition-opacity group-hover:opacity-100"
-                    >
-                      <ExternalLink size={20} />
-                    </a>
-                  </div>
+                  {url ? (
+                    <div className="group">
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="opacity-25 transition-opacity group-hover:opacity-100"
+                      >
+                        <ExternalLink size={20} />
+                      </a>
+                    </div>
+                  ) : null}
                 </h3>
               </div>
               <ul className="linkedCounts">
