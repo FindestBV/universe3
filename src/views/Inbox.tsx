@@ -1,8 +1,8 @@
 import DocumentsSkeleton from "@/components/documents-skeleton";
 import { InboxCard } from "@/components/inbox-card";
-import { ListPagination } from "@/components/list-pagination";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Link, Trash2 } from "lucide-react";
 
 import React, { useState } from "react";
 
@@ -14,6 +14,7 @@ export const Inbox: React.FC = () => {
   const [documentsPerPage, setDocumentsPerPage] = useState(12);
   const [tempLoading, setTempLoading] = useState(false); // Temporary loading state
   const [filters, setFilters] = useState<string[]>([]); // State for filters
+  const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const { data, isLoading, isError, error, refetch } = useGetMyDocumentInboxQuery(
     { page: currentPage, limit: documentsPerPage },
@@ -27,6 +28,7 @@ export const Inbox: React.FC = () => {
   const handlePreviousPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 
   const handleSelectAll = (checked: boolean) => {
+    setIsChecked(!isChecked);
     if (checked && data) {
       setSelectedDocs(new Set(data.documents.map((doc) => doc.id)));
     } else {
@@ -67,16 +69,23 @@ export const Inbox: React.FC = () => {
   return (
     <div className="flex h-full w-full flex-col px-12 max-sm:px-4">
       <div className="mb-2 flex items-center justify-between gap-4 rounded-lg">
-        <div>
+        <div className="flex items-center gap-2">
           <Checkbox
             id="select-all"
             checked={data ? selectedDocs.size === data.documents.length : false}
             onCheckedChange={(checked) => handleSelectAll(checked as boolean)}
             className="ml-4"
           />
-          {/* <label htmlFor="select-all" className="text-sm font-medium pl-4">
-            Select All ({selectedDocs.size} of {documentsPerPage || 0} total)
-          </label> */}
+          {isChecked && (
+            <div className="ml-4 flex gap-2">
+              <a href="#" className="linkedStudy">
+                <Link size={18} />
+              </a>
+              <a href="#" className="trashCan">
+                <Trash2 size={18} />
+              </a>
+            </div>
+          )}
         </div>
 
         <div className="mr-4 flex flex-grow items-center gap-4">

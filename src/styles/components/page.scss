@@ -119,3 +119,12 @@
   opacity: 0;
   transition: all 250ms ease-in-out;
 }
+
+
+.linkedStudy{
+    @apply rounded-sm bg-[#9f69d5] px-[5px] py-[5px] text-white hover:bg-[#8157ac];
+}
+
+.trashCan{
+    @apply rounded-sm bg-[#f05f5f] px-[5px] py-[5px] text-white hover:bg-[#c33939];
+}
