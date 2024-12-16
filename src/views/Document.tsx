@@ -11,7 +11,7 @@ import { useParams } from "react-router";
 export const Document: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [isLoading, setIsLoading] = useState(true);
-  const [isToolbarVisible, setIsToolbarVisible] = useState(false); // State for toolbar visibility
+  const [isToolbarVisible, setIsToolbarVisible] = useState<boolean>(false); // State for toolbar visibility
   const { data: fetchedDocument } = useGetDocumentByIdQuery(id, {
     refetchOnMountOrArgChange: false,
   });
@@ -19,8 +19,9 @@ export const Document: React.FC = () => {
   const renderConnectedObjects =
     fetchedDocument &&
     Object.entries(fetchedDocument?.connectedObjects).map((o, i) => {
+      // console.log('obj', o);
       return (
-        <div key={i}>
+        <div key={i} className={`connected-object ${o[1].type}`}>
           <a href={o[1].url}>{o[1]?.name}</a>
         </div>
       );
@@ -69,7 +70,7 @@ export const Document: React.FC = () => {
                   <div className="flex-2 flex flex-row items-center">
                     <button
                       onClick={handleEditClick}
-                      className="w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                      className="w-full rounded-md bg-blue-500 px-4 py-1 text-white hover:bg-blue-600"
                     >
                       Actions
                     </button>
@@ -82,18 +83,11 @@ export const Document: React.FC = () => {
                   </h1>
                 </div>
               </div>
-              <p>
-                <span className="font-black text-black">Document ID:</span> {id}
-              </p>
-              <p>
-                <span className="font-black text-black">Type: </span>{" "}
-                {fetchedDocument?.type || "Document"}
-              </p>
-              <br />
-              <p className="text-black">{fetchedDocument?.abstract}</p>
               <br />
               <h4 className="font-black">Connected Objects:</h4>
-              {renderConnectedObjects}
+              <div className="flex gap-4">{renderConnectedObjects}</div>
+              <br />
+              <p className="text-black">{fetchedDocument?.abstract}</p>
             </div>
           </>
         </div>

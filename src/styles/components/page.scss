@@ -128,3 +128,14 @@
   background-color: #eeeefb!important;
   border-color: #eeeefb!important;
 }
+
+.connected-object{
+  padding: .5em;
+  border-radius: 9%;
+  align-items: center;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  min-height: 32px;
+  min-width: 32px;
+}
