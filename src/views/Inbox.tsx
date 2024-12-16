@@ -2,6 +2,13 @@ import DocumentsSkeleton from "@/components/documents-skeleton";
 import { InboxCard } from "@/components/inbox-card";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
 import { Link, Trash2 } from "lucide-react";
 
 import React, { useState } from "react";
@@ -57,9 +64,12 @@ export const Inbox: React.FC = () => {
     refetch();
   };
 
-  const handleAddFilter = () => {
-    const newFilter = `Filter ${filters.length + 1}`;
-    setFilters([...filters, newFilter]);
+  const filterOptions = ["SCIENCE", "PATENT", "WEBPAGE", "NOT LINKED"];
+
+  const handleAddFilter = (filterType: string) => {
+    if (!filters.includes(filterType)) {
+      setFilters([...filters, filterType]);
+    }
   };
 
   const handleRemoveFilter = (filter: string) => {
@@ -89,9 +99,8 @@ export const Inbox: React.FC = () => {
         </div>
 
         <div className="mr-4 flex flex-grow items-center gap-4">
-          {/* Render filters dynamically */}
-          {filters.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
+          {filters.length > 0 && (
+            <div className="ml-auto flex flex-wrap gap-2">
               {filters.map((filter) => (
                 <div
                   key={filter}
@@ -102,55 +111,71 @@ export const Inbox: React.FC = () => {
                 </div>
               ))}
             </div>
-          ) : null}
+          )}
         </div>
 
         <div className="flex items-center gap-4">
-          <button
-            type="button"
-            id="add-filter"
-            onClick={handleAddFilter}
-            className={`group mb-2 mt-2 flex items-center justify-center gap-2 rounded-md border px-4 py-2 text-gray-800 shadow-sm transition-all duration-150 ${
-              filters.length > 0
-                ? "bg-blue-50 font-black"
-                : "bg-gray hover:bg-blue-50 hover:font-black"
-            }`}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                id="add-filter"
+                className={`group mb-2 mt-2 flex items-center justify-center gap-2 rounded-md border px-4 py-2 text-gray-800 shadow-sm transition-all duration-150 ${
+                  filters.length > 0
+                    ? "bg-blue-50 font-black"
+                    : "bg-gray hover:bg-blue-50 hover:font-black"
+                }`}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className={`lucide lucide-filter ${filters.length > 0 ? "fill-black" : "group-hover:fill-black"}`}
+                >
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                </svg>
+                Add Filters
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="relative z-50 w-full bg-white shadow-lg">
+              <DropdownMenuGroup>
+                {filterOptions
+                  .filter((option) => !filters.includes(option))
+                  .map((option) => (
+                    <DropdownMenuItem
+                      key={option}
+                      onClick={() => handleAddFilter(option)}
+                      className="w-full cursor-pointer px-8 py-2 hover:bg-gray-100"
+                    >
+                      {option}
+                    </DropdownMenuItem>
+                  ))}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <div className="">
+          <select
+            id="studiesPerPage"
+            value={documentsPerPage}
+            onChange={handleDocumentsPerPageChange}
+            className="rounded-md border p-2 focus:border-blue-500 focus:ring-blue-500"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className={`lucide lucide-filter ${filters.length > 0 ? "fill-black" : "group-hover:fill-black"}`}
-            >
-              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-            </svg>
-            Add Filters
-          </button>
-
-          <div className="flex w-full flex-col items-end sm:w-1/2 md:w-1/4">
-            <select
-              id="documentsPerPage"
-              value={documentsPerPage}
-              onChange={handleDocumentsPerPageChange}
-              className="rounded-md border p-2 focus:border-blue-500 focus:ring-blue-500"
-            >
-              <option value={25}>25</option>
-              <option value={20}>20</option>
-              <option value={15}>15</option>
-              <option value={10}>10</option>
-              <option value={5}>5</option>
-            </select>
-          </div>
+            <option value={25}>25</option>
+            <option value={20}>20</option>
+            <option value={15}>15</option>
+            <option value={10}>10</option>
+            <option value={5}>5</option>
+          </select>
         </div>
       </div>
 
-      {tempLoading && <p>LOADING</p>}
       <CardContent className="p-0">
         {isError && (
           <div className="text-red-600">Error loading documents: {JSON.stringify(error)}</div>
