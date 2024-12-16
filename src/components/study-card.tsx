@@ -146,7 +146,7 @@ export const StudyCard: React.FC<StudyCardProps> = ({
   };
 
   return (
-    <div className="studyCard">
+    <div className="itemCard">
       <div className="innerCardMain items-start">
         <Checkbox
           id={`study-${id}`}

@@ -146,7 +146,7 @@ export const EntityCard: React.FC<EntityCardProps> = ({
   };
 
   return (
-    <div className="entityCard">
+    <div className="itemCard">
       <div className="innerCardMain items-start">
         <Checkbox
           id={`study-${id}`}

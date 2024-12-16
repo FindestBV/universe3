@@ -135,7 +135,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   };
 
   return (
-    <div className="documentCard">
+    <div className="itemCard">
       <div className="innerCardMain items-start gap-4">
         <Checkbox
           id={`doc-${id}`}
