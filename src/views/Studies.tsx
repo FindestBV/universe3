@@ -1,12 +1,19 @@
 import DocumentSkeleton from "@/components/document-skeleton";
 // Use StudyCard instead of DocumentCard
-import { ListPagination } from "@/components/list-pagination";
 import { StudyCard } from "@/components/study-card";
 // Update the query hook to fetch studies
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
+import { Link, Trash2 } from "lucide-react";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { useGetStudiesQuery } from "../services/study/studyApi";
 
@@ -16,8 +23,8 @@ export const Studies: React.FC = () => {
   const [selectedStudies, setSelectedStudies] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [studiesPerPage, setStudiesPerPage] = useState(12);
-  const [tempLoading, setTempLoading] = useState(false); // Temporary loading state
   const [filters, setFilters] = useState<string[]>([]); // State for filters
+  const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const { data, isLoading, isError, error, refetch } = useGetStudiesQuery(
     { page: currentPage, limit: studiesPerPage },
@@ -31,6 +38,7 @@ export const Studies: React.FC = () => {
   const handlePreviousPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 
   const handleSelectAll = (checked: boolean) => {
+    setIsChecked(!isChecked);
     if (checked && data) {
       setSelectedStudies(new Set(data.studies.map((study) => study.id)));
     } else {
@@ -52,16 +60,16 @@ export const Studies: React.FC = () => {
     const value = parseInt(e.target.value, 10);
     setStudiesPerPage(value);
     setCurrentPage(1); // Reset to first page
-
-    setTempLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 500));
-    setTempLoading(false);
     refetch();
   };
 
-  const handleAddFilter = () => {
-    const newFilter = `Filter ${filters.length + 1}`;
-    setFilters([...filters, newFilter]);
+  const filterOptions = ["SCIENCE", "PATENT", "WEBPAGE"];
+
+  const handleAddFilter = (filterType: string) => {
+    if (!filters.includes(filterType)) {
+      setFilters([...filters, filterType]);
+    }
   };
 
   const handleRemoveFilter = (filter: string) => {
@@ -71,19 +79,28 @@ export const Studies: React.FC = () => {
   return (
     <div className="flex h-full w-full flex-col px-12 max-sm:px-4">
       <div className="mb-2 flex items-center justify-between gap-4 rounded-lg">
-        <div>
+        <div className="flex items-center gap-2">
           <Checkbox
             id="select-all"
             checked={data ? selectedStudies.size === data.studies.length : false}
             onCheckedChange={(checked) => handleSelectAll(checked as boolean)}
             className="ml-4"
           />
+          {isChecked && (
+            <div className="ml-4 flex gap-2">
+              <a href="#" className="linkedStudy">
+                <Link size={18} />
+              </a>
+              <a href="#" className="trashCan">
+                <Trash2 size={18} />
+              </a>
+            </div>
+          )}
         </div>
 
         <div className="mr-4 flex flex-grow items-center gap-4">
-          {/* Render filters dynamically */}
-          {filters.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
+          {filters.length > 0 && (
+            <div className="ml-auto flex flex-wrap gap-2">
               {filters.map((filter) => (
                 <div
                   key={filter}
@@ -94,55 +111,74 @@ export const Studies: React.FC = () => {
                 </div>
               ))}
             </div>
-          ) : null}
+          )}
         </div>
 
         <div className="flex items-center gap-4">
-          <button
-            type="button"
-            id="add-filter"
-            onClick={handleAddFilter}
-            className={`group mb-2 mt-2 flex items-center justify-center gap-2 rounded-md border px-4 py-2 text-gray-800 shadow-sm transition-all duration-150 ${
-              filters.length > 0
-                ? "bg-blue-50 font-black"
-                : "bg-gray hover:bg-blue-50 hover:font-black"
-            }`}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className={`lucide lucide-filter ${filters.length > 0 ? "fill-black" : "group-hover:fill-black"}`}
-            >
-              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-            </svg>
-            Add Filters
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                id="add-filter"
+                className={`group mb-2 mt-2 flex items-center justify-center gap-2 rounded-md border px-4 py-2 text-gray-800 shadow-sm transition-all duration-150 ${
+                  filters.length > 0
+                    ? "bg-blue-50 font-black"
+                    : "bg-gray hover:bg-blue-50 hover:font-black"
+                }`}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className={`lucide lucide-filter ${filters.length > 0 ? "fill-black" : "group-hover:fill-black"}`}
+                >
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                </svg>
+                Add Filters
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="relative z-50 w-full bg-white shadow-lg">
+              <DropdownMenuGroup>
+                {filterOptions.map((option) => (
+                  <DropdownMenuItem
+                    key={option}
+                    onClick={() => !filters.includes(option) && handleAddFilter(option)} // Prevent onClick if already selected
+                    className={`w-full px-8 py-2 ${
+                      filters.includes(option)
+                        ? "cursor-not-allowed bg-gray-200 text-gray-400" // Greyed out style for selected items
+                        : "cursor-pointer hover:bg-gray-100" // Default style for unselected items
+                    }`}
+                  >
+                    {option}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
 
-          <div className="flex w-full flex-col items-end sm:w-1/2 md:w-1/4">
-            <select
-              id="studiesPerPage"
-              value={studiesPerPage}
-              onChange={handleStudiesPerPageChange}
-              className="rounded-md border p-2 focus:border-blue-500 focus:ring-blue-500"
-            >
-              <option value={25}>25</option>
-              <option value={20}>20</option>
-              <option value={15}>15</option>
-              <option value={10}>10</option>
-              <option value={5}>5</option>
-            </select>
-          </div>
+        <div>
+          <select
+            id="studiesPerPage"
+            value={studiesPerPage}
+            onChange={handleStudiesPerPageChange}
+            className="rounded-md border p-2 focus:border-blue-500 focus:ring-blue-500"
+          >
+            <option value={25}>25</option>
+            <option value={20}>20</option>
+            <option value={15}>15</option>
+            <option value={10}>10</option>
+            <option value={5}>5</option>
+          </select>
         </div>
       </div>
 
-      {tempLoading && <p>LOADING</p>}
       <CardContent className="p-0">
         {isError && (
           <div className="text-red-600">Error loading studies: {JSON.stringify(error)}</div>

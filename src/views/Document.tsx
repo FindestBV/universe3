@@ -1,6 +1,9 @@
 import DocumentSkeleton from "@/components/document-skeleton";
 import { Toolbar } from "@/components/toolbar";
+import { Button } from "@/components/ui/button";
+import UserAvatar from "@/components/user-avatar";
 import { useGetDocumentByIdQuery } from "@/services/documents/documentApi";
+import { ExternalLink } from "lucide-react";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -22,6 +25,8 @@ export const Document: React.FC = () => {
         </div>
       );
     });
+
+  console.log("fetched", fetchedDocument);
 
   useEffect(() => {
     if (fetchedDocument) {
@@ -46,22 +51,37 @@ export const Document: React.FC = () => {
         <div className="flex h-screen w-auto flex-col">
           <>
             <header className="documentCrud">
-              <div className="flex items-center justify-between bg-gray-100 p-4">
-                <h1 className="text-lg font-bold">Document Viewer</h1>
-                <button
-                  onClick={handleEditClick}
-                  className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-                >
-                  Edit
-                </button>
-              </div>
               {isToolbarVisible && <Toolbar />} {/* Conditional rendering */}
             </header>
 
-            <div className="flex h-full w-full flex-col p-12 max-sm:px-4">
-              <h1 className="mb-2 text-xl font-black text-black">
-                {fetchedDocument?.title || "Document"}
-              </h1>
+            <div className="mx-auto flex h-full w-3/4 flex-col px-12 py-4 max-sm:px-4">
+              <div className="flex w-full flex-col justify-between">
+                <div className="flex w-full justify-between">
+                  <Button className="mb-2 border border-gray-300">
+                    <a
+                      href={fetchedDocument?.url}
+                      target="_blank"
+                      className="flex items-center gap-2"
+                    >
+                      OPEN ARTICLE <ExternalLink size={20} />
+                    </a>
+                  </Button>
+                  <div className="flex-2 flex flex-row items-center">
+                    <button
+                      onClick={handleEditClick}
+                      className="w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                    >
+                      Actions
+                    </button>
+                    <UserAvatar username={"Ro"} />
+                  </div>
+                </div>
+                <div className="flex">
+                  <h1 className="my-4 flex-1 text-3xl font-black text-black">
+                    {fetchedDocument?.title || "Document"}
+                  </h1>
+                </div>
+              </div>
               <p>
                 <span className="font-black text-black">Document ID:</span> {id}
               </p>

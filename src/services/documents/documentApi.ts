@@ -56,9 +56,18 @@ export const documentApi = api.injectEndpoints({
     }),
 
     getMyDocumentInbox: builder.query<SavedDocumentResponse, string>({
-      query: (id) =>
-        `saveddocument/my?orderBy=2&doIncludePatents=true&doIncludeScienceArticles=true&doIncludeWeblinks=true&doExcludeLinked=false`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+      query: () => ({
+        url: "saveddocument/my",
+        params: {
+          orderBy: 2,
+          doIncludePatents: true,
+          doIncludeScienceArticles: true,
+          doIncludeWeblinks: true,
+          doExcludeLinks: false,
+          createdByMe: true,
+        },
+      }),
+      providesTags: ["SavedDocument"],
     }),
   }),
 });

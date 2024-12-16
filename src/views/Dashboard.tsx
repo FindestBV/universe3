@@ -40,18 +40,20 @@ export const Dashboard = () => {
     navigate(`/library/${redirRoute}/${id}`, { state: { id } });
   };
 
+  console.log("maxActivity", maxActivityData);
   // const getRandomTitle = () => {
   //   const words = ["Random", "Sample", "Test", "Generated", "Dummy", "Title", "Example", "Content", "Headline"];
   //   const wordCount = Math.floor(Math.random() * 5) + 2; // Random title length between 2 and 6 words
   //   return Array.from({ length: wordCount }, () => words[Math.floor(Math.random() * words.length)]).join(" ");
   // };
 
-  const getRandomTime = () => {
-    const hours = (Math.floor(Math.random() * 10) + 8).toString().padStart(2, "0"); // Random hour from 08 to 17
-    const minutes = Math.floor(Math.random() * 60)
-      .toString()
-      .padStart(2, "0"); // Random minute from 00 to 59
-    return `${hours}:${minutes}`;
+  const formatTimeHHMM = (timestamp: string): string => {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
   };
 
   return (
@@ -159,7 +161,9 @@ export const Dashboard = () => {
                       </a>{" "}
                       edited <strong>{maxActivity?.name}</strong>
                     </p>
-                    <span className="pl-4 text-sm text-gray-500">{getRandomTime()}</span>
+                    <span className="pl-4 text-sm text-gray-500">
+                      {formatTimeHHMM(maxActivity.date)}
+                    </span>
                   </div>
                 </div>
               ))}
