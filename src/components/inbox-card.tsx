@@ -18,6 +18,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import openAccessLogo from "../assets/openAccessLogo.png";
 import { Button } from "./ui/button";
 
 // Mapping linkedCounts keys to tObjectTypeEnum values
@@ -153,7 +154,7 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
                 <h3 className="title items-center gap-2">
                   <img
                     className="openAccess_openAccessLogo__Q-5ld h-4"
-                    src="../src/assets/openAccessLogo.98558898ffd39a067fa3.png"
+                    src={openAccessLogo}
                     alt="Open Access Logo"
                   ></img>
                   {title}
