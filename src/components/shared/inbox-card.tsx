@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { UserAvatar } from "@/components/shared/user-avatar";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { UserAvatar } from "@/components/user-avatar";
 import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/services/documents/documentApi";
 // import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
@@ -19,9 +19,9 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import openAccessLogo from "../assets/openAccessLogo.png";
+import openAccessLogo from "../../assets/openAccessLogo.png";
+import { Button } from "../ui/button";
 import { LinkedCounts } from "./linked-counts";
-import { Button } from "./ui/button";
 
 // Mapping linkedCounts keys to tObjectTypeEnum values
 export const objectTypeMapping: { [key: string]: number } = {

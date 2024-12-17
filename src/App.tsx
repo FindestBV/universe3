@@ -1,16 +1,17 @@
 // Imports
-import { Suspense, lazy } from "react";
-import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { useSelector, Provider as ReduxStoreProvider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { AppSidebar } from "@/components/shared/app-sidebar";
+import { DashboardHeader } from "@/components/shared/dashboard-header";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import { store, persistor } from "@/store";
-import { currentUser } from '@/services/auth/authSlice';
+import { currentUser } from "@/services/auth/authSlice";
+import { persistor, store } from "@/store";
 import { LoginPage } from "@/views/LoginPage";
-import { DashboardHeader } from "@/components/dashboard-header";
 import { Loader } from "lucide-react";
+import { PersistGate } from "redux-persist/integration/react";
+
+import { lazy, Suspense } from "react";
+import { Provider as ReduxStoreProvider, useSelector } from "react-redux";
+import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 // Lazy-loaded views (TEMP! Will sort this out with some proper Routing )
 const Queries = lazy(() => import("@/views/Queries"));
@@ -23,7 +24,6 @@ const Entity = lazy(() => import("@/views/Entity"));
 const NotFoundPage = lazy(() => import("@/views/NotFound"));
 const Dashboard = lazy(() => import("@/views/Dashboard"));
 const Inbox = lazy(() => import("@/views/Inbox"));
-
 
 // Protected routes
 // @ts-expect-error blah
@@ -52,10 +52,14 @@ function AuthenticatedLayout() {
           {/* <SidebarTrigger className="absolute z-10 top-0 left-0" /> */}
           <TransitionGroup component={null}>
             <CSSTransition key={location.key} classNames="fade" timeout={1000} unmountOnExit>
-              <Suspense fallback={<div className="text-center flex flex-col items-center justify-center py-8">
-                  <Loader className="animate-spin mx-auto mb-2" />
-                  <p>Loading...</p>
-                </div>}>
+              <Suspense
+                fallback={
+                  <div className="flex flex-col items-center justify-center py-8 text-center">
+                    <Loader className="mx-auto mb-2 animate-spin" />
+                    <p>Loading...</p>
+                  </div>
+                }
+              >
                 <Routes location={location}>
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/library/queries" element={<Queries />} />

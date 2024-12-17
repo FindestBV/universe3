@@ -1,7 +1,3 @@
-import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useAppSelector, useAppDispatch } from '@/store';
-import { setLanguage } from '@/services/utilities/languageSlice';
 import {
   Select,
   SelectContent,
@@ -9,19 +5,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { setLanguage } from "@/services/utilities/languageSlice";
+import { useAppDispatch, useAppSelector } from "@/store";
+
+import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const languages = [
-  { code: 'nl', name: 'Nederlands' },
-  { code: 'en', name: 'English' },
-  { code: 'fr', name: 'Français' },
-  { code: 'tr', name: 'Türkçe' },
-  { code: 'al', name: 'Shqip' },
-  { code: 'ie', name: 'Gaeilge' },
-  { code: 'es', name: 'Español' },
-  { code: 'pt', name: 'Português' },
-  { code: 'de', name: 'Deutsch' },
-  { code: 'it', name: 'Italiano' },
-  { code: 'gr', name: 'Ελληνικά' },
+  { code: "nl", name: "Nederlands" },
+  { code: "en", name: "English" },
+  { code: "fr", name: "Français" },
+  { code: "tr", name: "Türkçe" },
+  { code: "al", name: "Shqip" },
+  { code: "ie", name: "Gaeilge" },
+  { code: "es", name: "Español" },
+  { code: "pt", name: "Português" },
+  { code: "de", name: "Deutsch" },
+  { code: "it", name: "Italiano" },
+  { code: "gr", name: "Ελληνικά" },
 ];
 
 const LanguageSelector: React.FC = () => {
@@ -38,7 +39,7 @@ const LanguageSelector: React.FC = () => {
       await i18n.changeLanguage(languageCode);
       dispatch(setLanguage(languageCode)); // Update Redux state, could also be donw with Async local storage
     } catch (error) {
-      console.error('Failed to change language:', error);
+      console.error("Failed to change language:", error);
     }
   };
 

@@ -4,8 +4,8 @@ import { Loader, Search, X } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useDebounce } from "../hooks/use-debounce";
-import { useSearchItemsMutation } from "../services/search/search";
+import { useDebounce } from "../../hooks/use-debounce";
+import { useSearchItemsMutation } from "../../services/search/search";
 
 const TABS = ["All", "Entity", "Document", "Query", "Study"];
 

@@ -1,4 +1,5 @@
 import DataChart from "@/components/data-chart";
+import UserAvatar from "@/components/shared/user-avatar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,7 +8,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import UserAvatar from "@/components/user-avatar";
 import {
   useGetLinkingQuery,
   useGetMaxActivityQuery,

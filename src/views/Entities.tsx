@@ -1,5 +1,5 @@
-import { EntityCard } from "@/components/entity-card";
-import DocumentsSkeleton from "@/components/skeletons/documents-skeleton";
+import DocumentsSkeleton from "@/components/loaders/documents-skeleton";
+import { EntityCard } from "@/components/shared/entity-card";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {

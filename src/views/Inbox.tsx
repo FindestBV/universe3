@@ -1,5 +1,5 @@
-import { InboxCard } from "@/components/inbox-card";
-import DocumentsSkeleton from "@/components/skeletons/documents-skeleton";
+import DocumentsSkeleton from "@/components/loaders/documents-skeleton";
+import { InboxCard } from "@/components/shared/inbox-card";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {

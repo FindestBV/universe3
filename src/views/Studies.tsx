@@ -1,6 +1,6 @@
-import DocumentSkeleton from "@/components/skeletons/document-skeleton";
+import DocumentSkeleton from "@/components/loaders/document-skeleton";
 // Use StudyCard instead of DocumentCard
-import { StudyCard } from "@/components/study-card";
+import { StudyCard } from "@/components/shared/study-card";
 // Update the query hook to fetch studies
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";

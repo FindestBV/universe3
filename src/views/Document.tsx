@@ -1,7 +1,7 @@
-import DocumentSkeleton from "@/components/skeletons/document-skeleton";
-import { Toolbar } from "@/components/toolbar";
+import DocumentSkeleton from "@/components/loaders/document-skeleton";
+import { Toolbar } from "@/components/shared/toolbar";
+import UserAvatar from "@/components/shared/user-avatar";
 import { Button } from "@/components/ui/button";
-import UserAvatar from "@/components/user-avatar";
 import { useGetDocumentByIdQuery } from "@/services/documents/documentApi";
 import { ExternalLink } from "lucide-react";
 
