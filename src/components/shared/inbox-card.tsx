@@ -117,8 +117,8 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
   onSelect,
   linkedCounts,
 }) => {
-  const [showDialog, setShowDialog] = useState(false);
-  const [dialogDocumentId, setDialogDocumentId] = useState<string | null>(null);
+  // const [showDialog, setShowDialog] = useState(false);
+  // const [dialogDocumentId, setDialogDocumentId] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleCheckboxChange = (checked: boolean) => {
@@ -134,8 +134,8 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
 
   const handleItemClick = (id: string) => {
     console.log(`Item clicked: ${id}`);
-    setDialogId(id);
-    setShowDialog(true);
+    // setDialogId(id);
+    // setShowDialog(true);
   };
 
   const handleCardClick = () => {
