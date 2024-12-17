@@ -1,27 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  List,
-  Loader,
-  MoreHorizontal,
-  Network,
-  ScanEye,
-  Search,
-  SquareArrowOutUpRight,
-  X,
-} from "lucide-react";
+import { Loader, Search, X } from "lucide-react";
 
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useDebounce } from "../hooks/use-debounce";
 import { useSearchItemsMutation } from "../services/search/search";
-import { Button } from "./ui/button";
 
 const TABS = ["All", "Entity", "Document", "Query", "Study"];
 
