@@ -131,6 +131,7 @@ export const Dashboard = () => {
         <div className="flex w-full flex-col space-y-3 max-sm:px-4">
           <h2 className="overViewTitle">{t("relationsGraph")}</h2>
           <div className="flex h-auto w-full animate-pulse flex-wrap items-start justify-start overflow-hidden rounded-xl">
+            <small>Note: dots correspond to the count of nodes from linkingData</small>
             {linkingData &&
               linkingData.map((type: { id: Key | null | undefined }) => {
                 return <span key={type.id}>.</span>;
@@ -140,7 +141,7 @@ export const Dashboard = () => {
 
         <div className="flex w-full flex-col space-y-3 overflow-hidden max-sm:px-4">
           <h2 className="overViewTitle">{t("happening")}</h2>
-          <div className="relative flex h-[300px] w-full flex-col items-start justify-start gap-1 overflow-y-scroll rounded-xl">
+          <div className="relative flex h-[320px] w-full flex-col items-start justify-start gap-1 overflow-y-scroll rounded-xl">
             {/* Show Loader */}
             {maxActivityLoading && (
               <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white bg-opacity-50">
