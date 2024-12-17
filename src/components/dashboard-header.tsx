@@ -7,10 +7,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useGetMyRecentActivityQuery } from "@/services/activity/activity";
+import { useGetMyRecentActivityDropdownQuery } from "@/services/activity/activityApi";
 // import { setCredentials } from '@/services/auth';
 import { currentUser } from "@/services/auth/authSlice";
-import { ChartNetwork, Clock, List, Pin, Search, SmilePlus } from "lucide-react";
+import {
+  ChartNetwork,
+  Clock,
+  List,
+  MoreHorizontal,
+  Network,
+  Pin,
+  ScanEye,
+  Search,
+  SmilePlus,
+  SquareArrowOutUpRight,
+} from "lucide-react";
 import { useFeature } from "use-feature";
 
 import { useEffect } from "react";
@@ -26,84 +37,89 @@ interface DashboardHeader {
   className?: string;
 }
 
+export enum ActivityTypeEnum {
+  Create = 1,
+  Update = 2,
+  Open = 3,
+  Delete = 4,
+}
+
+const activityTypeMapping: { [key: number]: string } = {
+  1: "Created",
+  2: "Edited",
+  3: "Viewed",
+  4: "Deleted",
+};
+
 export const DashboardHeader = () => {
   const { t } = useTranslation();
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  const user = useSelector(currentUser);
-  const { data: activityData } = useGetMyRecentActivityQuery();
-
-  const powerUserFlag = useFeature("power user only", true);
-  // const [user, setUser] = useState('Ro');
-  // const { isConnected, sendMessage, lastMessage } = useWebSocket('ws://localhost:4000/chat', {
-  //     reconnect: true,
-  //     reconnectInterval: 3000,
-  //     onOpen: () => console.log('Connected to WebSocket'),
-  //     onMessage: (event) => console.log('New message received:', event.data),
-  //     onClose: () => console.log('Disconnected from WebSocket'),
-  //   });
-
-  // console.log('from websocket hook', isConnected)
-  // console.log('sendMessage websocket hook', sendMessage)
-
-  // const handleLogIn = () => {
-  //   console.log('handle login');
-  //   const usr = {
-  //     email: 'generic@email.com',
-  //     password: 'p4ssw0rd',
-  //   }
-  //   dispatch(setCredentials(usr.email))
-  // }
-
-  // const handleLogOut = () => {
-  //   console.log(`log out ${user}`);
-  //   dispatch(logout());
-  //   navigate('/');
-  // }
-
-  useEffect(() => {
-    if (user === "Ro") {
-      console.log("feature flag", powerUserFlag);
-    } else if (user === "Javi") {
-      console.log("feature flag but only for Javi", powerUserFlag);
-    } else {
-      console.log("nothing to see here");
-    }
-  }, [powerUserFlag, user]);
+  const { data: activityData } = useGetMyRecentActivityDropdownQuery();
 
   return (
     <header className="dashBoardHeader">
       <div className="control-buttons">
         <ul className="flex gap-1">
           <li>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button aria-label="Recent" className="px-2">
-                    <Clock width={20} color="black" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Recent Activity</p>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="rotated" className="hidden h-8 w-8 p-0">
-                        <span className="sr-only">Open menu</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      {activityData &&
-                        activityData.map((activity: any, idx: string) => (
-                          <DropdownMenuItem key={idx}>{activity.name}</DropdownMenuItem>
-                        ))}
-                      <DropdownMenuItem>
-                        <List /> Open in List View
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  aria-label="Open dropdown"
+                  className="mt-1 h-8 w-8 p-0" // Align trigger with slight top margin
+                >
+                  <Clock width={20} color="black" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+
+              {/* Dropdown Content */}
+              <DropdownMenuContent
+                align="end"
+                side="right"
+                className="-ml-8 mt-12 w-fit rounded-md border border-gray-200 bg-white p-2 shadow-lg"
+              >
+                {activityData &&
+                  activityData.map((activity: any, idx: string) => (
+                    <DropdownMenuItem
+                      key={idx}
+                      className="cursor-pointer items-center justify-between rounded-md px-2 py-1 text-black hover:bg-gray-100"
+                    >
+                      <div className="flex w-full items-center justify-between">
+                        <p>{activity.name}</p>
+                        <Button className="py-1">
+                          {activityTypeMapping[activity.activityType] || "Unknown"}
+                        </Button>
+                      </div>
+
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="rotated" className="h-8 w-8 bg-transparent p-0">
+                            <span className="sr-only">Open menu</span>
+                            <MoreHorizontal />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem>
+                            <SquareArrowOutUpRight /> Open Page
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <ScanEye /> Open Preview
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <Network /> Open in Tree View
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <List /> Open in List View
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </DropdownMenuItem>
+                  ))}
+
+                {/* <DropdownMenuItem className="hover:bg-gray-100 cursor-pointer rounded-md px-2 py-1">
+                <List /> Open in List View
+              </DropdownMenuItem> */}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </li>
           <li>
             <TooltipProvider>
@@ -156,9 +172,6 @@ export const DashboardHeader = () => {
       </div>
 
       <div className="flex items-center gap-2">
-        {/* <span className="hidden sm:block">
-                {user ? <h3>{t('welcome')} {user}</h3> : null}
-                </span> */}
         <LanguageSelector />
         <div className="create-action hidden items-center gap-2 sm:flex">
           <CreateItemModal />

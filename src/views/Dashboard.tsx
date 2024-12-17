@@ -7,7 +7,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useGetMaxActivityQuery, useGetMyRecentActivityQuery } from "@/services/activity/activity";
+import {
+  useGetLinkingQuery,
+  useGetMaxActivityQuery,
+  useGetMyRecentActivityQuery,
+  useGetPageTypesQuery,
+} from "@/services/activity/activityApi";
 import {
   List,
   Loader,
@@ -17,6 +22,7 @@ import {
   SquareArrowOutUpRight,
 } from "lucide-react";
 
+import { Key } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -27,6 +33,8 @@ export const Dashboard = () => {
 
   const { data: activityData } = useGetMyRecentActivityQuery();
   const { data: maxActivityData, isLoading: maxActivityLoading } = useGetMaxActivityQuery();
+  const { data: linkingData } = useGetLinkingQuery();
+  const { data: typesData } = useGetPageTypesQuery();
   const navigate = useNavigate();
   // const user = useSelector(currentUser);
 
@@ -39,13 +47,6 @@ export const Dashboard = () => {
     }
     navigate(`/library/${redirRoute}/${id}`, { state: { id } });
   };
-
-  console.log("maxActivity", maxActivityData);
-  // const getRandomTitle = () => {
-  //   const words = ["Random", "Sample", "Test", "Generated", "Dummy", "Title", "Example", "Content", "Headline"];
-  //   const wordCount = Math.floor(Math.random() * 5) + 2; // Random title length between 2 and 6 words
-  //   return Array.from({ length: wordCount }, () => words[Math.floor(Math.random() * words.length)]).join(" ");
-  // };
 
   const formatTimeHHMM = (timestamp: string): string => {
     const date = new Date(timestamp);
@@ -64,9 +65,9 @@ export const Dashboard = () => {
           <div className="flex h-[350px] w-full flex-col items-start justify-start gap-2 overflow-y-scroll">
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {activityData &&
-              activityData.map((activity: any, idx: string) => (
+              activityData.map((activity: any) => (
                 <div
-                  key={idx}
+                  key={activity.id}
                   className={`mb-2 flex w-full cursor-pointer flex-row items-start rounded-sm bg-[#e5f7fe] px-4 py-2 max-sm:px-4 ${activity.type}`}
                   onClick={() => handleNavigateToEntities(activity.type, activity.id)}
                 >
@@ -123,8 +124,11 @@ export const Dashboard = () => {
 
         <div className="flex w-full flex-col space-y-3 max-sm:px-4">
           <h2 className="overViewTitle">{t("relationsGraph")}</h2>
-          <div className="flex h-auto w-full animate-pulse items-center justify-center rounded-xl">
-            <DataChart />
+          <div className="flex h-auto w-full animate-pulse flex-wrap items-start justify-start overflow-hidden rounded-xl">
+            {linkingData &&
+              linkingData.map((type: { id: Key | null | undefined }) => {
+                return <span key={type.id}>.</span>;
+              })}
           </div>
         </div>
 
@@ -171,8 +175,11 @@ export const Dashboard = () => {
         </div>
         <div className="flex w-full flex-col space-y-3 max-sm:px-4">
           <h2 className="overViewTitle">{t("pageType")}</h2>
-          <div className="flex h-[300px] w-full animate-pulse items-center justify-center rounded-xl bg-muted">
-            <h3 className="text-white">Panel</h3>
+          <div className="flex h-[300px] items-center justify-center rounded-xl">
+            {typesData &&
+              typesData.map((type: { id: Key | null | undefined }) => {
+                return <span key={type.id}>.</span>;
+              })}
           </div>
         </div>
       </div>

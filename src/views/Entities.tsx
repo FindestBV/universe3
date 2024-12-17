@@ -202,7 +202,6 @@ export const Entities: React.FC = () => {
         </div>
       </div>
 
-      {tempLoading && <p>LOADING</p>}
       <CardContent className="p-0">
         {isError && (
           <div className="text-red-600">Error loading documents: {JSON.stringify(error)}</div>
@@ -210,14 +209,16 @@ export const Entities: React.FC = () => {
         {isLoading && <DocumentsSkeleton />}
         {data && (
           <div>
-            {data.entities.slice(0, entitiesPerPage).map((ent) => (
-              <EntityCard
-                key={ent.id}
-                {...ent}
-                isSelected={selectedEntities.has(ent.id)}
-                onSelect={handleSelectDoc}
-              />
-            ))}
+            {data?.entities
+              .slice(0, entitiesPerPage)
+              .map((ent) => (
+                <EntityCard
+                  key={ent.id}
+                  {...ent}
+                  isSelected={selectedEntities.has(ent.id)}
+                  onSelect={handleSelectDoc}
+                />
+              ))}
           </div>
         )}
       </CardContent>

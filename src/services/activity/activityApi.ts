@@ -1,30 +1,60 @@
-import { api } from '../api'; // Import the centralized base API
-import type { SavedDocumentResponse } from '@/types/types';
+// Import the centralized base API
+import type { SavedDocumentResponse } from "@/types/types";
+
+import { api } from "../api";
 
 export const activityApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getMyRecentActivity: builder.query<SavedDocumentResponse, void>({
       query: () => ({
-        url: 'activity/mysimplerecent',
-        // url: 'my/',
+        url: "activity/mysimplerecent",
         params: {
           orderBy: 2,
-          createdByMe:true
-        }
+          createdByMe: true,
+        },
       }),
-      providesTags: ['SavedDocument'],
+      providesTags: ["SavedDocument"],
     }),
     getMaxActivity: builder.query<SavedDocumentResponse, void>({
       query: () => ({
-        url: 'activity?maxActivity=10',
+        url: "activity",
+        params: {
+          maxActivity: 10,
+        },
       }),
-      providesTags: ['SavedDocument'],
+      providesTags: ["SavedDocument"],
     }),
-  }),  
+    getLinking: builder.query<SavedDocumentResponse, void>({
+      query: () => ({
+        url: "linking",
+      }),
+      providesTags: ["SavedDocument"],
+    }),
+    getPageTypes: builder.query<SavedDocumentResponse, void>({
+      query: () => ({
+        url: "linking/types",
+      }),
+      providesTags: ["SavedDocument"],
+    }),
+    getMyRecentActivityDropdown: builder.query<SavedDocumentResponse, void>({
+      query: () => ({
+        url: "activity/my",
+        // url: 'my/',
+        params: {
+          orderBy: 2,
+          createdByMe: true,
+        },
+      }),
+      providesTags: ["SavedDocument"],
+    }),
+  }),
 });
 
-export const { 
-  useGetMyRecentActivityQuery, 
-  useGetMaxActivityQuery, 
-  usePrefetch 
+export const {
+  useGetMyRecentActivityQuery,
+  useGetMaxActivityQuery,
+  useGetLinkingQuery,
+  useGetPageTypesQuery,
+  useGetMyRecentActivityDropdownQuery,
+  usePrefetch,
 } = activityApi;

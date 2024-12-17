@@ -68,7 +68,6 @@ export function AppSidebar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(currentUser);
-  const selectedLanguage = useSelector((state: RootState) => state.language.selectedLanguage);
   const { t } = useTranslation();
 
   const handleLogin = () => {
@@ -95,7 +94,6 @@ export function AppSidebar() {
       </div>
 
       <SidebarContent className="justify-between">
-        {/* <p className="text-white">{selectedLanguage}</p> */}
         <div className="group1 mt-9 gap-10 p-4">
           <SidebarGroup>
             <SidebarGroupContent>
