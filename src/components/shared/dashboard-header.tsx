@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useGetMyRecentActivityDropdownQuery } from "@/services/activity/activityApi";
+import { useGetMyDocumentInboxQuery } from "@/services/documents/documentApi";
 // import { setCredentials } from '@/services/auth';
 import {
   Clock,
@@ -51,7 +52,9 @@ const activityTypeMapping: { [key: number]: string } = {
 export const DashboardHeader = () => {
   // const { t } = useTranslation();
   const { data: activityData } = useGetMyRecentActivityDropdownQuery();
+  const { data: documentInbox } = useGetMyDocumentInboxQuery();
 
+  console.log("documentInbox", documentInbox);
   return (
     <header className="dashBoardHeader">
       <div className="control-buttons">
@@ -162,7 +165,9 @@ export const DashboardHeader = () => {
                 <TooltipTrigger asChild>
                   <Button className="relative p-2" aria-label="Active queries">
                     <a href="/inbox">
-                      <span className="indicator">1</span>
+                      <span className="indicator">
+                        {documentInbox ? documentInbox.documents.length : 1}
+                      </span>
                       <Search width={20} color="black" />
                     </a>
                   </Button>
