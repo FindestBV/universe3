@@ -37,8 +37,8 @@ export const Dashboard = () => {
 
   const { data: activityData } = useGetMyRecentActivityQuery();
   const { data: maxActivityData, isLoading: maxActivityLoading } = useGetMaxActivityQuery();
-  const { data: linkingData, isLoading: linkingDataLoading } = useGetLinkingQuery();
-  const { data: typesData } = useGetPageTypesQuery();
+  const { data: linkingData } = useGetLinkingQuery();
+  const { data: typesData, isLoading: typesDataLoading } = useGetPageTypesQuery();
 
   const navigate = useNavigate();
   console.log("linkingData data", linkingData);
@@ -131,13 +131,6 @@ export const Dashboard = () => {
         <div className="flex w-full flex-col space-y-3 max-sm:px-4">
           <h2 className="overViewTitle">{t("relationsGraph")}</h2>
           <div className="flex h-auto w-full animate-pulse flex-wrap items-start justify-start overflow-hidden rounded-xl">
-            {linkingDataLoading && (
-              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white bg-opacity-50">
-                <Loader className="mx-auto mb-2 animate-spin" />
-                <h3 className="text-black">Loading Page Type Data</h3>
-              </div>
-            )}
-
             {linkingData &&
               linkingData.map((type: { id: Key | null | undefined }) => {
                 return <span key={type.id}>.</span>;
@@ -185,6 +178,12 @@ export const Dashboard = () => {
           <h2 className="overViewTitle">{t("pageType")}</h2>
           <div className="flex h-[500px] w-full items-center justify-center rounded-xl">
             <div className="pageTypeGraph">
+              {typesDataLoading && (
+                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white bg-opacity-50">
+                  <Loader className="mx-auto mb-2 animate-spin" />
+                  <h3 className="text-black">Loading Page Type Data</h3>
+                </div>
+              )}
               <PackGraphView data={typesData} searchKeyword={searchKeyword} />
             </div>
           </div>
