@@ -1,0 +1,21 @@
+/* ANIMATIONS */
+/* These will be moved to the correct location. Currently placeholder */
+
+.fade-enter {
+  opacity: 0;   
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: all 250ms ease-in-out;
+}
+
+.fade-exit {
+  opacity: 1;
+  transition: all 250ms ease-in-out;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: all 250ms ease-in-out;
+}

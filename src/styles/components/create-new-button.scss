@@ -1,17 +1,5 @@
 .createNewButton {
-  align-items: center;
-  background-color: #007aff;
-  border-radius: 4px;
-  color: #fff;
-  cursor: pointer;
-  display: flex;
-  font-size: 14px;
-  font-weight: 500;
-  height: 40px!important;
-  letter-spacing: 1.246px;
-  line-height: 16px;
-  padding: 0 14px;
-  text-transform: uppercase;
+  @apply flex items-center bg-[#007aff] rounded-[4px] text-white cursor-pointer text-[14px] font-medium h-[40px] tracking-[1.246px] leading-[16px] px-[14px] uppercase;
 }
 
 .createNewItemCard{

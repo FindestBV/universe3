@@ -78,42 +78,8 @@
 
 /* Indicator */
 .indicator {
-  display: grid;
-  place-items: center;
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  align-items: center;
-  justify-content: center;
-  font-size: 9px;
-  border-radius: 50%;
-  background-color: #007aff;
-  width: 18px;
-  height: 18px;
-  color: #fff;
+ @apply grid place-items-center absolute -top-1 -right-1 items-center justify-center text-[9px] rounded-full bg-[#007aff] w-[18px] h-[18px] text-white;
 }
-
-
-/* ANIMATIONS */
-/* These will be moved to the correct location. Currently placeholder */
-
-.fade-enter {
-  opacity: 0;
-
-}
-.fade-enter-active {
-  opacity: 1;
-  transition: all 250ms ease-in-out;
-}
-.fade-exit {
-  opacity: 1;
-  transition: all 250ms ease-in-out;
-}
-.fade-exit-active {
-  opacity: 0;
-  transition: all 250ms ease-in-out;
-}
-
 
 .linkedStudy{
     @apply rounded-sm bg-[#9f69d5] px-[5px] py-[5px] text-white hover:bg-[#8157ac];

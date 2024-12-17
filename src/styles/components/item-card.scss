@@ -73,8 +73,7 @@
     
      .links{
           @apply hidden transition-all duration-150 ease-in-out mx-1 my-0;
-          
-  
+        
           .linkedStudy{
               @apply rounded-sm bg-[#9f69d5] px-[5px] py-[5px] text-white hover:bg-[#8157ac];
           }

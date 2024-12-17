@@ -10,10 +10,12 @@
 @use './components/login-image-slider.scss';
 @use './components/searchbar.scss';
 @use './components/page.scss';
+@use './utilities/animations.scss';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 @layer base {
   * {
