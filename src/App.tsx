@@ -4,6 +4,7 @@ import { DashboardHeader } from "@/components/shared/dashboard-header";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { currentUser } from "@/services/auth/authSlice";
 import { persistor, store } from "@/store";
+import Dashboard from "@/views/Dashboard";
 import { LoginPage } from "@/views/LoginPage";
 import { Loader } from "lucide-react";
 import { PersistGate } from "redux-persist/integration/react";
@@ -22,7 +23,7 @@ const Study = lazy(() => import("@/views/Study"));
 const Entities = lazy(() => import("@/views/Entities"));
 const Entity = lazy(() => import("@/views/Entity"));
 const NotFoundPage = lazy(() => import("@/views/NotFound"));
-const Dashboard = lazy(() => import("@/views/Dashboard"));
+// const Dashboard = lazy(() => import("@/views/Dashboard"));
 const Inbox = lazy(() => import("@/views/Inbox"));
 
 // Protected routes

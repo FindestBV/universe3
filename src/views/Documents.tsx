@@ -1,5 +1,6 @@
 import DocumentsSkeleton from "@/components/loaders/documents-skeleton";
 import { DocumentCard } from "@/components/shared/document-card";
+import { GenericCard } from "@/components/shared/generic-card";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useGetSavedDocumentsQuery } from "@/services/documents/documentApi";

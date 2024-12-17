@@ -17,6 +17,8 @@ import { useState } from "react";
 
 import { useGetStudiesQuery } from "../services/study/studyApi";
 
+// import GenericCard from "@/components/shared/generic-card";
+
 // Use a skeleton loader specific to studies
 
 export const Studies: React.FC = () => {
@@ -193,6 +195,14 @@ export const Studies: React.FC = () => {
                 isSelected={selectedStudies.has(study.id)}
                 onSelect={handleSelectStudy}
               />
+
+              // <GenericCard
+              //   key={study.id}
+              //   {...study}
+              //   type="study"
+              //   isSelected={selectedStudies.has(study.id)}
+              //   onSelect={handleSelectStudy}
+              // />
             ))}
           </div>
         )}

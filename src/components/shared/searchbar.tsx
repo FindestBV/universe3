@@ -103,7 +103,6 @@ export const SearchBar = () => {
   const filterResults = (data: any) => {
     if (!data) return [];
 
-    // Step 1: Transform data into a flat array of items
     const allResults = Object.keys(data)
       .filter((key) => Array.isArray(data[key]) && data[key].length > 0)
       .flatMap((key) =>
@@ -124,7 +123,6 @@ export const SearchBar = () => {
       )
       .filter((item) => item.id && item.name);
 
-    // Step 2: Group results by type
     const groupedResults = allResults.reduce((groups: Record<string, any[]>, item) => {
       if (!groups[item.type]) {
         groups[item.type] = [];
@@ -133,7 +131,6 @@ export const SearchBar = () => {
       return groups;
     }, {});
 
-    // Step 3: Filter or return results based on selectedTab
     if (selectedTab === "All") {
       return allResults;
     }

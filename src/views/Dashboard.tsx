@@ -1,7 +1,7 @@
 // // import { PackGraphView } from "@/components/dashboard/pack-graph";
 // import PackGraphView from "@/components/dashboard/pack-graph";
 // import LinePlot from "@/components/dashboard/line-plot";
-import PackGraphView from "@/components/dashboard/pack-graph";
+import PackGraphView from "@/components/shared/pack-graph";
 import UserAvatar from "@/components/shared/user-avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -177,7 +177,7 @@ export const Dashboard = () => {
 
         <div className="flex w-full flex-col space-y-3 max-sm:px-4">
           <h2 className="overViewTitle">{t("pageType")}</h2>
-          <div className="flex h-[350px] w-full items-center justify-center rounded-xl">
+          <div className="relative flex h-full w-full items-center justify-center rounded-xl">
             <div className="pageTypeGraph">
               {typesDataLoading && (
                 <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white bg-opacity-50">

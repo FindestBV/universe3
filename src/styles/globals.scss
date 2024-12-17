@@ -169,22 +169,22 @@
 
 .directedGraphNodeTooltip {
 	width: 300px;
-    min-height: 50px;
-    position: absolute;
-    background: white;
-    border-radius: 4px;
+  min-height: 50px;
+  position: absolute;
+  background: white;
+  border-radius: 4px;
 	font-weight: 500;
 	padding: 16px 32px;
 	box-shadow: -1px 1px 4px rgba(0, 0, 0, 0.16);
 	word-break: break-word;
-  }
+}
 
-  .graphContainer {
-	overflow: hidden;
-	display: flex;
-	justify-content: center;
-	height: 100%;
-	width: 100%;
+.graphContainer {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
 }
 
 .packGraphContainer {
@@ -195,8 +195,7 @@
   padding: 0 0 5em 0;
   align-items: center;
   justify-content: center;
-  display: flex
-;
+  display: flex;
 }
 
 .fitToView svg {
@@ -307,6 +306,7 @@
 .pageTypeGraph {
   width: 100%;
   height: 100%;
-  position: relative;
-  overflow: hidden; /* Prevent overflow */
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
 }

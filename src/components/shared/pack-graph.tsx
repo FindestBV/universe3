@@ -7,10 +7,9 @@ import { useNavigate } from "react-router-dom";
 type TTypeGraphViewProps = {
   data?: TTypeGraphNodeDTO[];
   searchKeyword?: string;
-  extraClassName?: string;
 };
 
-export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword, extraClassName }) => {
+export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -32,7 +31,7 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword, ex
     // Clear previous SVG
     select(container).selectAll("svg").remove();
 
-    // Filtered data based on search keyword
+    // Filtered keywrod search
     const filteredData = data.map((node) => ({
       ...node,
       children: node.children?.filter((child) =>
@@ -46,14 +45,15 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword, ex
 
     // Create hierarchical data with D3
     const root = pack<TTypeGraphNodeDTO>().size([width, height]).padding(8)(
+      // @ts-ignore Expelliarmus
       hierarchy({ name: "root", children: filteredData }).sum((d) => d.size || 1),
     );
 
     // Create SVG with dynamic viewBox
     const svg = select(container)
       .append("svg")
-      .style("width", "100%")
-      .style("height", "100%")
+      .style("width", "80%")
+      .style("height", "80%")
       .attr("viewBox", `${-width / 2} ${-height / 2} ${width} ${height}`)
       .style("display", "block");
 
@@ -76,7 +76,7 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword, ex
     // Add labels
     svg
       .selectAll("text")
-      .data(root.descendants().filter((d) => d.depth === 1)) // Top-level nodes
+      .data(root.descendants().filter((d) => d.depth === 1)) // Top-level nodes, although possibly causing funk
       .enter()
       .append("text")
       .attr("x", (d) => d.x - width / 2)
@@ -88,11 +88,22 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword, ex
   }, [data, searchKeyword, navigate]);
 
   return (
-    <div
-      ref={containerRef}
-      className={`packGraphContainer fitToWidth`}
-      style={{ width: "100%", height: "350px", position: "relative", overflow: "hidden" }}
-    />
+    <div className="packGraphDashboard">
+      <div className="overlayPanel group">
+        <div ref={containerRef} className="packGraphContainer p-4" />
+        <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 hover:bg-opacity-50">
+          {/* Will do for the moment */}
+          <div className="hidden text-center group-hover:block">
+            <button
+              className="rounded bg-white px-8 py-2 text-slate-600 transition hover:bg-blue-700 hover:text-white"
+              onClick={() => navigate("/library/documents")}
+            >
+              VIEW PAGE TYPE DATA
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
