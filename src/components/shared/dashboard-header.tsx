@@ -164,9 +164,11 @@ export const DashboardHeader = () => {
                 <TooltipTrigger asChild>
                   <Button className="relative p-2" aria-label="Active queries">
                     <a href="/inbox">
-                      <span className="indicator">
-                        {documentInbox ? documentInbox.documents.length : 1}
-                      </span>
+                      {documentInbox && documentInbox.documents.length > 0 ? (
+                        <span className="indicator">
+                          {documentInbox ? documentInbox.documents.length : 1}
+                        </span>
+                      ) : null}
                       <Search width={20} color="black" />
                     </a>
                   </Button>
