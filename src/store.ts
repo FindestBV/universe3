@@ -5,8 +5,7 @@ import authSlice from "@/services/auth/authSlice";
 import { documentApi } from "@/services/documents/documentApi";
 import { entityApi } from "@/services/entities/entityApi";
 import { searchApi } from "@/services/search/searchApi";
-import { studyApi } from "@/services/study/study";
-import studySlice from "@/services/study/studySlice";
+import { studyApi } from "@/services/study/studyApi";
 import languageReducer from "@/services/utilities/languageSlice";
 import { configureStore, Reducer } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
@@ -38,7 +37,7 @@ export const rootReducer = combineReducers({
   entities: entityApi,
   activities: activityApi,
   search: searchApi,
-  studies: studySlice,
+  studies: studyApi,
   documents: documentApi,
   language: languageReducer,
   [authApi.reducerPath]: authApi.reducer,

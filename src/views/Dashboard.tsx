@@ -1,6 +1,3 @@
-// // import { PackGraphView } from "@/components/dashboard/pack-graph";
-// import PackGraphView from "@/components/dashboard/pack-graph";
-// import LinePlot from "@/components/dashboard/line-plot";
 import PackGraphView from "@/components/shared/pack-graph";
 import UserAvatar from "@/components/shared/user-avatar";
 import { Button } from "@/components/ui/button";
