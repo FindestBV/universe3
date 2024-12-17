@@ -41,7 +41,6 @@ export const rootReducer = combineReducers({
   documents: documentApi,
   language: languageReducer,
   [authApi.reducerPath]: authApi.reducer,
-  [studyApi.reducerPath]: studyApi.reducer,
 }) as Reducer;
 
 // Persist the combined reducer
