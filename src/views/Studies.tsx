@@ -1,7 +1,5 @@
 import DocumentSkeleton from "@/components/loaders/document-skeleton";
-// Use StudyCard instead of DocumentCard
 import { StudyCard } from "@/components/shared/study-card";
-// Update the query hook to fetch studies
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -16,10 +14,6 @@ import { Link, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { useGetStudiesQuery } from "../services/study/studyApi";
-
-// import GenericCard from "@/components/shared/generic-card";
-
-// Use a skeleton loader specific to studies
 
 export const Studies: React.FC = () => {
   const [selectedStudies, setSelectedStudies] = useState<Set<string>>(new Set());
