@@ -5,7 +5,7 @@ import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useDebounce } from "../../hooks/use-debounce";
-import { useSearchItemsMutation } from "../../services/search/search";
+import { useSearchItemsMutation } from "../../services/search/searchApi";
 
 const TABS = ["All", "Entity", "Document", "Query", "Study"];
 

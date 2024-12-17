@@ -7,7 +7,7 @@ import { documentApi } from "@/services/documents/documentApi";
 import documentSlice from "@/services/documents/documentSlice";
 import { entityApi } from "@/services/entities/entityApi";
 import entitySlice from "@/services/entities/entitySlice";
-import { searchApi } from "@/services/search/search";
+import { searchApi } from "@/services/search/searchApi";
 import searchSlice from "@/services/search/searchSlice";
 import { studyApi } from "@/services/study/study";
 import studySlice from "@/services/study/studySlice";
