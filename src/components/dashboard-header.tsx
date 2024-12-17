@@ -9,7 +9,6 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useGetMyRecentActivityDropdownQuery } from "@/services/activity/activityApi";
 // import { setCredentials } from '@/services/auth';
-import { currentUser } from "@/services/auth/authSlice";
 import {
   ChartNetwork,
   Clock,
@@ -19,14 +18,12 @@ import {
   Pin,
   ScanEye,
   Search,
-  SmilePlus,
   SquareArrowOutUpRight,
 } from "lucide-react";
-import { useFeature } from "use-feature";
 
-import { useEffect } from "react";
+// import { useFeature } from "use-feature";
+
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 
 import CreateItemModal from "./create-item-modal";
 import HappinessSelector from "./happiness-selector";
@@ -52,7 +49,7 @@ const activityTypeMapping: { [key: number]: string } = {
 };
 
 export const DashboardHeader = () => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const { data: activityData } = useGetMyRecentActivityDropdownQuery();
 
   return (
