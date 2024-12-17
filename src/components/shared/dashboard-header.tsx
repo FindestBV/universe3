@@ -10,7 +10,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useGetMyRecentActivityDropdownQuery } from "@/services/activity/activityApi";
 // import { setCredentials } from '@/services/auth';
 import {
-  ChartNetwork,
   Clock,
   List,
   MoreHorizontal,
@@ -23,9 +22,10 @@ import {
 
 // import { useFeature } from "use-feature";
 
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 
 import CreateItemModal from "./create-item-modal";
+import ExplorerModal from "./explorer-modal";
 import HappinessSelector from "./happiness-selector";
 import LanguageSelector from "./language-selector";
 import SearchBar from "./searchbar";
@@ -153,18 +153,7 @@ export const DashboardHeader = () => {
             </TooltipProvider>
           </li>
           <li>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button aria-label="Network Explorer" className="p-2">
-                    <ChartNetwork width={20} color="black" strokeWidth={2} />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Network Explorer</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <ExplorerModal />
           </li>
 
           <li>
@@ -172,8 +161,10 @@ export const DashboardHeader = () => {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button className="relative p-2" aria-label="Active queries">
-                    <span className="indicator">1</span>
-                    <Search width={20} color="black" />
+                    <a href="/inbox">
+                      <span className="indicator">1</span>
+                      <Search width={20} color="black" />
+                    </a>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
