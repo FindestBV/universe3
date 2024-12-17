@@ -9,14 +9,12 @@ export const UserAvatar = React.forwardRef(({ username }: UserAvatarProps, ref) 
   const getFirstLetter = (name: string | undefined) => {
     return name ? name.charAt(0).toUpperCase() : "?";
   };
-
   return (
-    <div ref={ref} className="user_avatar">
+    <div ref={ref as React.RefObject<HTMLDivElement>} className="user_avatar">
       {getFirstLetter(username)}
     </div>
   );
 });
 
-UserAvatar.displayName = "UserAvatar"; // Helpful for debugging
-
+UserAvatar.displayName = "UserAvatar";
 export default UserAvatar;
