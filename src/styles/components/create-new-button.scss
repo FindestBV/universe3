@@ -3,13 +3,8 @@
 }
 
 .createNewItemCard{
-  border-radius: 4px;
+  @apply rounded-[4px] mx-2 w-[25%];
   box-shadow: -1px 1px 10px rgba(0, 0, 0, .145);
-  margin: 0 1rem;
-  border-radius: 4px;
-  box-shadow: -1px 1px 10px rgba(0, 0, 0, .145);
-  margin: 0 .5rem;
-  width: 25%;
 }
 
 .Study{

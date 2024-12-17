@@ -159,7 +159,7 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
           <div className="flex flex-1 flex-col">
             <div className="w-auto cursor-pointer px-4" onClick={handleCardClick}>
               <div className="flex flex-row gap-2">
-                <h3 className="title items-center gap-2">
+                <h3 className="title">
                   <img
                     className="openAccess_openAccessLogo__Q-5ld h-4"
                     src={openAccessLogo}

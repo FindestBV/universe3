@@ -17,15 +17,7 @@
     }
 
     .title{
-        color: #252525;
-        display: flex;
-        font-size: 1rem;
-        font-weight: 500;
-        letter-spacing: .144px;
-        line-height: 2;
-        margin-right: auto;
-        max-width: 100%;
-        text-decoration: inherit;
+       @apply text-[#252525] flex text-[1rem] font-medium tracking-[0.144px] leading-[2] mr-auto max-w-full no-underline items-center gap-2;
     }
 
     .time {
