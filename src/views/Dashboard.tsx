@@ -1,6 +1,8 @@
-import DataChart from "@/components/data-chart";
+// // import { PackGraphView } from "@/components/dashboard/pack-graph";
+// import PackGraphView from "@/components/dashboard/pack-graph";
+// import LinePlot from "@/components/dashboard/line-plot";
+import PackGraphView from "@/components/dashboard/pack-graph";
 import UserAvatar from "@/components/shared/user-avatar";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -23,7 +25,7 @@ import {
   SquareArrowOutUpRight,
 } from "lucide-react";
 
-import { Key } from "react";
+import { Key, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -31,13 +33,16 @@ import { useNavigate } from "react-router-dom";
 // import { currentUser } from '@/services/auth/authSlice';
 export const Dashboard = () => {
   const { t } = useTranslation();
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
 
   const { data: activityData } = useGetMyRecentActivityQuery();
   const { data: maxActivityData, isLoading: maxActivityLoading } = useGetMaxActivityQuery();
-  const { data: linkingData } = useGetLinkingQuery();
+  const { data: linkingData, isLoading: linkingDataLoading } = useGetLinkingQuery();
   const { data: typesData } = useGetPageTypesQuery();
+
   const navigate = useNavigate();
-  // const user = useSelector(currentUser);
+  console.log("linkingData data", linkingData);
+  console.log("typesData data", typesData);
 
   const handleNavigateToEntities = (type: string, id: string) => {
     let redirRoute;
@@ -64,8 +69,8 @@ export const Dashboard = () => {
         <div className="flex w-full flex-col space-y-3 overflow-hidden max-sm:px-4">
           <h2 className="overViewTitle">{t("pickup")}</h2>
           <div className="flex h-[350px] w-full flex-col items-start justify-start gap-2 overflow-y-scroll">
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {activityData &&
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               activityData.map((activity: any) => (
                 <div
                   key={activity.id}
@@ -126,6 +131,13 @@ export const Dashboard = () => {
         <div className="flex w-full flex-col space-y-3 max-sm:px-4">
           <h2 className="overViewTitle">{t("relationsGraph")}</h2>
           <div className="flex h-auto w-full animate-pulse flex-wrap items-start justify-start overflow-hidden rounded-xl">
+            {linkingDataLoading && (
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white bg-opacity-50">
+                <Loader className="mx-auto mb-2 animate-spin" />
+                <h3 className="text-black">Loading Page Type Data</h3>
+              </div>
+            )}
+
             {linkingData &&
               linkingData.map((type: { id: Key | null | undefined }) => {
                 return <span key={type.id}>.</span>;
@@ -168,13 +180,13 @@ export const Dashboard = () => {
               ))}
           </div>
         </div>
+
         <div className="flex w-full flex-col space-y-3 max-sm:px-4">
           <h2 className="overViewTitle">{t("pageType")}</h2>
-          <div className="flex h-[300px] items-center justify-center rounded-xl">
-            {typesData &&
-              typesData.map((type: { id: Key | null | undefined }) => {
-                return <span key={type.id}>.</span>;
-              })}
+          <div className="flex h-[500px] w-full items-center justify-center rounded-xl">
+            <div className="pageTypeGraph">
+              <PackGraphView data={typesData} searchKeyword={searchKeyword} />
+            </div>
           </div>
         </div>
       </div>
