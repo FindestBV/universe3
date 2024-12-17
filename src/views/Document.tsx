@@ -1,4 +1,4 @@
-import DocumentSkeleton from "@/components/document-skeleton";
+import DocumentSkeleton from "@/components/skeletons/document-skeleton";
 import { Toolbar } from "@/components/toolbar";
 import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/user-avatar";
