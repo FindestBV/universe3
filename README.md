@@ -3,13 +3,14 @@
 A React + Vite template powered by shadcn/ui. This repository will serve as a base for the Findest Universe, next version, implementing modern frontend technologies, development best practices, and a clean, modular, and scalable architecture.
 
 [ShadCn](https://ui.shadcn.com/) is used as the base component library. See the [shadcn/ui](https://ui.shadcn.com/) documentation for more information.
-Component units install directly in to <pre>src/components/ui/</pre>. From here, they can be called in any component, and passed props/styling and configuration to extend and customise the primitive. 
+Component units install directly in to <pre>src/components/ui/</pre>. From here, they can be called in any component, and passed props/styling and configuration to extend and customise the primitive.
 
-## DISCLAIMER: 
+## DISCLAIMER:
+
 This is a work in progress and is intended to achieve the result of a pixel-perfect replication of the current Findest Universe UI.
 The key objective is to implement a flow, featuring all of the required composite elements and functionality present in the existing universe, but implementing proper and robust state management, frontend architectural process and best practices, with the aim of minimising the impact on the business.
 
-## DISCUSSION: 
+## DISCUSSION:
 
 Wide open for discussion, this is encouraged, as the whole team will need to have a say in the architecture and standards we'll be looking to implement.
 
@@ -24,6 +25,7 @@ Wide open for discussion, this is encouraged, as the whole team will need to hav
 - **PostCSS** - A tool for transforming CSS with JavaScript.
 - **Autoprefixer** - A PostCSS plugin to parse CSS and add vendor prefixes.
 - **shadcn/ui** - Beautifully designed components that you can copy and paste into your apps.
+- **i18n Support** - Supports mutlilingual labels and routing.
 
 ## ⚙️ Prerequisites
 
@@ -71,7 +73,7 @@ Follow these steps to get started with the react-vite-ui template:
 
 The project structure follows a standard React application layout:
 
-```python
+```
 universe3/
   ├── node_modules/      # Project dependencies
   ├── public/            # Public assets
@@ -83,28 +85,28 @@ universe3/
   │   ├── lib/    # React components
   │   ├── routes/    # React components
   │   ├── services/    # React components
-  |   |   └── api.ts    # Base 
+  |   |   └── api.ts    # Base
   │   |   └── auth/    # Auth API
   │   |   └── documents/  # Documents
   │   |   └── search/    # Search
   │   |   └── entities/    # Entities
-  │   |   └── study/    # Study 
-  │   |   └── activity/  # Activity 
+  │   |   └── study/    # Study
+  │   |   └── activity/  # Activity
   |   ├── styles/        # CSS stylesheets
   │   ├── types           # Utility functions
   │   ├── views/    # React components
-  |   |   └── Dashboard/    
-  │   |   └── Document/   
-  │   |   └── Documents/  
-  │   |   └── Entities/  
-  │   |   └── Entity/    
-  │   |   └── Inbox/   
-  │   |   └── LoginPage/  
-  │   |   └── NotFound/   
-  │   |   └── Queries/  
-  │   |   └── Studies/   
-  │   |   └── Study/  
-  │   |   └── Users/  
+  |   |   └── Dashboard/
+  │   |   └── Document/
+  │   |   └── Documents/
+  │   |   └── Entities/
+  │   |   └── Entity/
+  │   |   └── Inbox/
+  │   |   └── LoginPage/
+  │   |   └── NotFound/
+  │   |   └── Queries/
+  │   |   └── Studies/
+  │   |   └── Study/
+  │   |   └── Users/
   │   ├── App.tsx        # Application entry point
   │   └── main.tsx      # Main rendering file
   |   └── store.ts       # Redux Store
