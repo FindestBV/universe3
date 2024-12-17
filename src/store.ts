@@ -1,14 +1,10 @@
 import { activityApi } from "@/services/activity/activityApi";
-import activitySlice from "@/services/activity/activitySlice";
 // Import feature reducers and APIs
 import { authApi } from "@/services/auth/authApi";
 import authSlice from "@/services/auth/authSlice";
 import { documentApi } from "@/services/documents/documentApi";
-import documentSlice from "@/services/documents/documentSlice";
 import { entityApi } from "@/services/entities/entityApi";
-import entitySlice from "@/services/entities/entitySlice";
 import { searchApi } from "@/services/search/searchApi";
-import searchSlice from "@/services/search/searchSlice";
 import { studyApi } from "@/services/study/study";
 import studySlice from "@/services/study/studySlice";
 import languageReducer from "@/services/utilities/languageSlice";
@@ -39,17 +35,13 @@ const persistConfig = {
 export const rootReducer = combineReducers({
   router: routerReducer,
   auth: authSlice,
-  entities: entitySlice,
-  activities: activitySlice,
-  search: searchSlice,
+  entities: entityApi,
+  activities: activityApi,
+  search: searchApi,
   studies: studySlice,
-  documents: documentSlice,
+  documents: documentApi,
   language: languageReducer,
   [authApi.reducerPath]: authApi.reducer,
-  [documentApi.reducerPath]: documentApi.reducer,
-  [entityApi.reducerPath]: entityApi.reducer,
-  [activityApi.reducerPath]: activityApi.reducer,
-  [searchApi.reducerPath]: searchApi.reducer,
   [studyApi.reducerPath]: studyApi.reducer,
 }) as Reducer;
 

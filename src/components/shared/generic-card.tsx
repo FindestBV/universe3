@@ -98,6 +98,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
                 {Object.entries(linkedCounts)
                   .filter(([, value]) => value > 0)
                   .map(([key, value], idx) => {
+                    // @ts-ignore
                     const IconComponent = typeIcons[key] || null;
                     return (
                       <div key={idx} className="linkedCounts__item">

@@ -65,9 +65,9 @@ interface LinkedCounts {
 }
 
 interface StudyCardProps {
-  id: string;
-  url: string;
-  title: string;
+  id?: string;
+  url?: string;
+  title?: string;
   type: string;
   abstract?: string;
   dateAdded?: string;
