@@ -143,7 +143,7 @@ export const Dashboard = () => {
         <div className="flex w-full flex-col space-y-3 max-sm:px-4">
           <h2 className="overViewTitle">{t("relationsGraph")}</h2>
           <div className="relative flex h-full w-full items-center justify-center rounded-xl">
-            <div className="pageTypeGraph">
+            <div className="forceDirectionGraph">
               {!linkingData && (
                 <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white bg-opacity-50">
                   <Loader className="mx-auto mb-2 animate-spin" />

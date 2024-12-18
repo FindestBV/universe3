@@ -49,10 +49,10 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
     const svg = select(containerRef.current);
     svg.selectAll("*").remove(); // Clear previous SVG content
 
-    const width = 500;
-    const height = 500;
-
+    const width = 1000;
+    const height = 1000;
     svg.attr("width", width).attr("height", height);
+    svg.attr("viewBox", `0 0 ${width} ${height}`).style("width", "100%").style("height", "100%");
 
     const simulation = forceSimulation(nodes)
       .force(
@@ -70,7 +70,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
       svgGroup.attr("transform", event.transform);
     });
 
-    const svgGroup = svg.append("g").call(zoomBehavior);
+    const svgGroup = svg.append("g").call(zoomBehavior as any);
 
     const link = svgGroup
       .append("g")
@@ -90,7 +90,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
       .attr("r", 10)
       .attr("fill", "#000000")
       .call(
-        d3Drag()
+        d3Drag<SVGCircleElement, Node>()
           .on("start", (event, d) => {
             if (!event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
@@ -122,7 +122,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
 
   return (
     <div className="forceDirectedGraphContainer">
-      <svg ref={containerRef} className="w-full p-4" id="forcedDirectedGraph" />
+      <svg ref={containerRef} preserveAspectRatio="xMidYMid meet" />
     </div>
   );
 };
