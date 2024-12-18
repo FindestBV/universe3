@@ -107,7 +107,7 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
           <div className="hidden text-center group-hover:block">
             <FindestButton
               extraClassName={
-                "rounded bg-white px-8 py-2 text-black transition hover:bg-blue-700 group-hover:text-white"
+                "rounded bg-white px-8 py-2 text-black transition hover:bg-blue-700 hover:text-white"
               }
               onClick={() => navigate("/dataview")}
             >

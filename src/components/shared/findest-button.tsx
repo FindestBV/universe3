@@ -81,7 +81,7 @@ export const FindestButton: FC<TFindestButtonProps> = ({
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     >
-      <ArrowLeft icon={leftIconName} className={"leftIcon"} />
+      {/* <ArrowLeft icon={leftIconName} className={"leftIcon"} /> */}
       {title}
       {children}
       <ArrowRight icon={rightIconName} className={"rightIcon"} />
