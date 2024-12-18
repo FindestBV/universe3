@@ -13,18 +13,21 @@ import {
 import { FC, useEffect, useRef } from "react";
 
 type TForceDirectedGraphViewProps = {
-  linkingData: any[];
+  linkingData: { id: string; name: string; type: string; lowerLevelNodes?: { id: string }[] }[];
 };
 
 export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linkingData }) => {
   const containerRef = useRef<SVGSVGElement | null>(null);
 
+  console.log("linking data", linkingData);
+
   useEffect(() => {
     if (!Array.isArray(linkingData) || linkingData.length === 0) {
-      console.warn("linkingData is empty or not an array");
+      console.warn("Invalid or empty linkingData.");
       return;
     }
 
+    // Transform linkingData to nodes and links
     const nodes = linkingData.map((data) => ({
       id: data.id,
       name: data.name,
@@ -38,19 +41,16 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
       })),
     );
 
-    console.log("Nodes:", nodes);
-    console.log("Links:", links);
-
     if (!nodes.length || !links.length) {
-      console.warn("Transformed nodes or links are empty");
+      console.warn("Nodes or links data is empty.");
       return;
     }
 
     const svg = select(containerRef.current);
-    svg.selectAll("*").remove();
+    svg.selectAll("*").remove(); // Clear previous SVG content
 
-    const width = 800;
-    const height = 800;
+    const width = 500;
+    const height = 500;
 
     svg.attr("width", width).attr("height", height);
 
@@ -111,18 +111,18 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
 
     simulation.on("tick", () => {
       link
-        .attr("x1", (d) => d.source?.x || 0)
-        .attr("y1", (d) => d.source?.y || 0)
-        .attr("x2", (d) => d.target?.x || 0)
-        .attr("y2", (d) => d.target?.y || 0);
+        .attr("x1", (d) => d.source.x)
+        .attr("y1", (d) => d.source.y)
+        .attr("x2", (d) => d.target.x)
+        .attr("y2", (d) => d.target.y);
 
-      node.attr("cx", (d) => d.x || 0).attr("cy", (d) => d.y || 0);
+      node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
     });
   }, [linkingData]);
 
   return (
-    <div className="forceDirectionGraph">
-      <svg ref={containerRef} style={{ width: "100%", height: "100%" }} />
+    <div className="forceDirectedGraphContainer">
+      <svg ref={containerRef} className="w-full p-4" id="forcedDirectedGraph" />
     </div>
   );
 };
