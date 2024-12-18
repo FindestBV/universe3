@@ -11,6 +11,9 @@ import {
 } from "d3";
 
 import { FC, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { FindestButton } from "./findest-button";
 
 type TForceDirectedGraphViewProps = {
   linkingData: { id: string; name: string; type: string; lowerLevelNodes?: { id: string }[] }[];
@@ -18,8 +21,7 @@ type TForceDirectedGraphViewProps = {
 
 export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linkingData }) => {
   const containerRef = useRef<SVGSVGElement | null>(null);
-
-  console.log("linking data", linkingData);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!Array.isArray(linkingData) || linkingData.length === 0) {
@@ -27,7 +29,6 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
       return;
     }
 
-    // Transform linkingData to nodes and links
     const nodes = linkingData.map((data) => ({
       id: data.id,
       name: data.name,
@@ -89,6 +90,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
       .append("circle")
       .attr("r", 10)
       .attr("fill", "#000000")
+      .style("cursor", "pointer")
       .call(
         d3Drag<SVGCircleElement, Node>()
           .on("start", (event, d) => {
@@ -107,7 +109,18 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
           }),
       );
 
-    node.append("title").text((d) => d.name);
+    node
+      .append("title")
+      .text((d) => d.name)
+      .on("click", (event, d) => {
+        navigate(`/details/${d.id}`);
+      })
+      .on("mouseover", function () {
+        select(this).attr("stroke", "yellow").attr("stroke-width", 2);
+      })
+      .on("mouseout", function () {
+        select(this).attr("stroke", "white").attr("stroke-width", 1);
+      });
 
     simulation.on("tick", () => {
       link
@@ -118,11 +131,23 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
 
       node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
     });
-  }, [linkingData]);
+  }, [linkingData, navigate]);
 
   return (
     <div className="forceDirectedGraphContainer">
-      <svg ref={containerRef} preserveAspectRatio="xMidYMid meet" />
+      <div className="overlayPanel group">
+        <svg ref={containerRef} preserveAspectRatio="xMidYMid meet" />
+        <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 hover:bg-opacity-50">
+          <div className="hidden text-center group-hover:block">
+            <FindestButton
+              className="rounded bg-white px-8 py-2 text-slate-600 transition hover:bg-blue-700 hover:text-white"
+              onClick={() => navigate("/library/documents")}
+            >
+              SEE NETWORK DETAILS
+            </FindestButton>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
