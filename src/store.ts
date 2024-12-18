@@ -1,4 +1,3 @@
-// Auth
 // Slices
 import { activityApi } from "@/services/activity/activityApi";
 import { authApi } from "@/services/auth/authApi";
