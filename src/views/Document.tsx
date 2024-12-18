@@ -12,7 +12,7 @@ export const Document: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [isLoading, setIsLoading] = useState(true);
   const [isToolbarVisible, setIsToolbarVisible] = useState<boolean>(false); // State for toolbar visibility
-  const { data: fetchedDocument } = useGetDocumentByIdQuery(id, {
+  const { data: fetchedDocument } = useGetDocumentByIdQuery(id!, {
     refetchOnMountOrArgChange: false,
   });
 

@@ -1,5 +1,5 @@
 import DocumentsSkeleton from "@/components/loaders/documents-skeleton";
-import { DocumentCard } from "@/components/shared/document-card";
+// import { DocumentCard } from "@/components/shared/document-card";
 import { GenericCard } from "@/components/shared/generic-card";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -190,7 +190,14 @@ export const Documents: React.FC = () => {
         {data && (
           <div>
             {data.documents.slice(0, documentsPerPage).map((doc) => (
-              <DocumentCard
+              // <DocumentCard
+              //   key={doc.id}
+              //   {...doc}
+              //   isSelected={selectedDocs.has(doc.id)}
+              //   onSelect={handleSelectDoc}
+              // />
+              <GenericCard
+                type="document"
                 key={doc.id}
                 {...doc}
                 isSelected={selectedDocs.has(doc.id)}

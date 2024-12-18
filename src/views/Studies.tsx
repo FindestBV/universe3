@@ -1,4 +1,5 @@
 import DocumentSkeleton from "@/components/loaders/document-skeleton";
+import GenericCard from "@/components/shared/generic-card";
 import { StudyCard } from "@/components/shared/study-card";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -187,7 +188,13 @@ export const Studies: React.FC = () => {
         {data && (
           <div>
             {data.studies.slice(0, studiesPerPage).map((study) => (
-              <StudyCard
+              // <StudyCard
+              //   key={study.id}
+              //   {...study}
+              //   isSelected={selectedStudies.has(study.id)}
+              //   onSelect={handleSelectStudy}
+              <GenericCard
+                type={"study"}
                 key={study.id}
                 {...study}
                 isSelected={selectedStudies.has(study.id)}
