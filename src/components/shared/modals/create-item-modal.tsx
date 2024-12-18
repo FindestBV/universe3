@@ -2,12 +2,11 @@ import DocumentIcon from "@/assets/document.svg";
 import EntityIcon from "@/assets/entity.svg";
 import QueryIcon from "@/assets/query.svg";
 import StudyIcon from "@/assets/study.svg";
-import { CreateNewItem } from "@/components/shared/create-new-item";
+import { CreateNewItem } from "@/components/shared/cards/create-new-item";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 import { useTranslation } from "react-i18next";
-
-import { Button } from "../ui/button";
 
 // Define a type for your items
 type CreateItemType = {

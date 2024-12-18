@@ -1,3 +1,4 @@
+import logoUniverse from "@/assets/universe_logo_white.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,8 +35,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 
-import logoUniverse from "../../assets/universe_logo_white.png";
-import AdvancedSearchModal from "./advanced-search-modal";
+import AdvancedSearchModal from "../modals/advanced-search-modal";
 
 // Menu items.
 const items = [

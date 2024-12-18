@@ -1,6 +1,6 @@
 // Imports
-import { AppSidebar } from "@/components/shared/app-sidebar";
-import { DashboardHeader } from "@/components/shared/dashboard-header";
+import { DashboardHeader } from "@/components/shared/layout/dashboard-header";
+import { AppSidebar } from "@/components/shared/sidebar/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { currentUser } from "@/services/auth/authSlice";
 import { persistor, store } from "@/store";
@@ -50,7 +50,6 @@ function AuthenticatedLayout() {
       <div className="app-canvas w-full">
         <DashboardHeader />
         <main className="pageContent">
-          {/* <SidebarTrigger className="absolute z-10 top-0 left-0" /> */}
           <TransitionGroup component={null}>
             <CSSTransition key={location.key} classNames="fade" timeout={1000} unmountOnExit>
               <Suspense
@@ -62,6 +61,7 @@ function AuthenticatedLayout() {
                 }
               >
                 <Routes location={location}>
+                  {/* TEMP!! THIS WILL BE REFACTORED */}
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/library/queries" element={<Queries />} />
                   <Route path="/library/overview" element={<Documents />} />

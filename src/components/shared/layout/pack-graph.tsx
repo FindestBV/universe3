@@ -1,10 +1,10 @@
 import { ObjectTypeEnum, TTypeGraphNodeDTO } from "@/types/types";
-import { hierarchy, HierarchyCircularNode, hsl, pack, scaleOrdinal, select, zoom } from "d3";
+import { hierarchy, HierarchyCircularNode, pack, scaleOrdinal, select, zoom } from "d3";
 
 import { FC, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { FindestButton } from "./findest-button";
+import { FindestButton } from "../utilities/findest-button";
 
 type TTypeGraphViewProps = {
   data?: TTypeGraphNodeDTO[];

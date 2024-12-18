@@ -1,10 +1,9 @@
 // Types
+import { Button } from "@/components/ui/button";
 import { TButtonType } from "@/types/types";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { FC, LegacyRef } from "react";
-
-import { Button } from "../ui/button";
 
 type TFindestButtonProps = {
   id?: string;

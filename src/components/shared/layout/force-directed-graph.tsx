@@ -13,7 +13,7 @@ import {
 import { FC, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { FindestButton } from "./findest-button";
+import { FindestButton } from "../utilities/findest-button";
 
 type TForceDirectedGraphViewProps = {
   linkingData: { id: string; name: string; type: string; lowerLevelNodes?: { id: string }[] }[];

@@ -1,13 +1,12 @@
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ChartNetwork } from "lucide-react";
-
-import { Button } from "../ui/button";
 
 const ExplorerModal: React.FC = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button aria-label="Pinned" className="p-2">
+        <Button aria-label="Explore">
           <ChartNetwork width={20} color="black" />
         </Button>
       </DialogTrigger>

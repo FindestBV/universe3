@@ -6,6 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useGetMyRecentActivityDropdownQuery } from "@/services/activity/activityApi";
 import { useGetMyDocumentInboxQuery } from "@/services/documents/documentApi";
@@ -24,11 +25,11 @@ import {
 // import { useFeature } from "use-feature";
 // import { useTranslation } from "react-i18next";
 
-import CreateItemModal from "./create-item-modal";
-import ExplorerModal from "./explorer-modal";
+import CreateItemModal from "../modals/create-item-modal";
+import ExplorerModal from "../modals/explorer-modal";
+import SearchBar from "../search/searchbar";
 import HappinessSelector from "./happiness-selector";
 import LanguageSelector from "./language-selector";
-import SearchBar from "./searchbar";
 
 interface DashboardHeader {
   className?: string;
@@ -58,12 +59,15 @@ export const DashboardHeader = () => {
     <header className="dashBoardHeader">
       <div className="control-buttons">
         <ul className="flex gap-1">
+          <li className="flex self-center">
+            <SidebarTrigger className="text-black" />
+          </li>
           <li>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   aria-label="Open dropdown"
-                  className="mt-1 h-8 w-8 p-0" // Align trigger with slight top margin
+                  className="h-10 w-10" // Align trigger with slight top margin
                 >
                   <Clock width={20} color="black" />
                   <span className="sr-only">Open menu</span>
@@ -104,7 +108,7 @@ export const DashboardHeader = () => {
 
                           <p>{activity.name}</p>
                         </div>
-                        <Button className="py-1">
+                        <Button className="">
                           {activityTypeMapping[activity.activityType] || "Unknown"}
                         </Button>
                       </div>
@@ -140,12 +144,12 @@ export const DashboardHeader = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </li>
-          <li>
+          {/* <li>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button aria-label="Pinned" className="p-2">
-                    <Pin width={20} color="black" fill="black" />
+                  <Button aria-label="Pinned">
+                    <Pin width={19} color="black" fill="black" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -153,7 +157,7 @@ export const DashboardHeader = () => {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-          </li>
+          </li> */}
           <li>
             <ExplorerModal />
           </li>
@@ -162,7 +166,7 @@ export const DashboardHeader = () => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button className="relative p-2" aria-label="Active queries">
+                  <Button className="relative" aria-label="Active queries">
                     <a href="/inbox">
                       {documentInbox && documentInbox.documents.length > 0 ? (
                         <span className="indicator">

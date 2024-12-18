@@ -1,6 +1,6 @@
-import ForceDirectedGraphView from "@/components/shared/force-directed-graph";
-import PackGraphView from "@/components/shared/pack-graph";
-import UserAvatar from "@/components/shared/user-avatar";
+import ForceDirectedGraphView from "@/components/shared/layout/force-directed-graph";
+import PackGraphView from "@/components/shared/layout/pack-graph";
+import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

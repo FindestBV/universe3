@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { UserAvatar } from "@/components/shared/user-avatar";
+import { UserAvatar } from "@/components/shared/utilities/user-avatar";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/services/documents/documentApi";
-// import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import {
   BookOpenCheck,
@@ -16,35 +15,13 @@ import {
   Trash2,
 } from "lucide-react";
 
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import openAccessLogo from "../../assets/openAccessLogo.png";
-import { Button } from "../ui/button";
-import { LinkedCounts } from "./linked-counts";
+import LinkedCounts from "./linked-counts";
 
-// Mapping linkedCounts keys to tObjectTypeEnum values
-export const objectTypeMapping: { [key: string]: number } = {
-  entityCount: 1,
-  documentCount: 2,
-  highlightCount: 3,
-  studyCount: 4,
-  imageCount: 5,
-  scienceArticleCount: 6,
-  usPatentCount: 7,
-  weblinkCount: 8,
-  magPatentCount: 9,
-  commentCount: 10,
-  fileCount: 11,
-  tenantCount: 12,
-  organizationCount: 13,
-  caseCount: 14,
-  queryCount: 15,
-};
-
-// Icons for types
+// Icons for linked counts
 const typeIcons = {
-  documentCount: BookOpenCheck,
   studyCount: BookOpenCheck,
   entityCount: Fingerprint,
   imageCount: Image,
@@ -52,23 +29,26 @@ const typeIcons = {
   highlightCount: Highlighter,
 };
 
-// Props for LinkedCounts and DocumentCard
+// GenericCard Props
 interface LinkedCounts {
   [key: string]: number;
 }
 
-interface DocumentCardProps {
+interface GenericCardProps {
   id: string;
-  url: string;
-  title: string;
-  type: string;
+  title?: string;
+  type: "study" | "document" | "entity" | "StudyTypeUndefined";
+  description?: string;
+  dateAdded?: any;
+  url?: string;
   abstract?: string;
-  dateAdded?: string;
   isSelected: boolean;
   onSelect: (id: string, checked: boolean) => void;
-  linkedCounts: LinkedCounts;
+  linkedCounts?: LinkedCounts;
+  prefetch?: void;
+  createdByUsername?: string;
 }
-// ConnectedObjectsDialog Component
+
 export const ConnectedObjectsDialog = ({
   documentId,
   onClose,
@@ -104,27 +84,22 @@ export const ConnectedObjectsDialog = ({
   );
 };
 
-// DocumentCard Component
-export const InboxCard: React.FC<DocumentCardProps> = ({
+export const GenericCard: React.FC<GenericCardProps> = ({
   id,
-  url,
   title,
   type,
-  abstract,
-  createdByUsername,
+  description,
   dateAdded,
+  createdByUsername,
+  url,
+  abstract,
   isSelected,
   onSelect,
-  linkedCounts,
+  linkedCounts = {},
 }) => {
-  // const [showDialog, setShowDialog] = useState(false);
-  // const [dialogDocumentId, setDialogDocumentId] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleCheckboxChange = (checked: boolean) => {
-    onSelect(id, checked);
-  };
-
+  const handleCheckboxChange = (checked: boolean) => onSelect(id, checked);
   const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
 
   const handlePrefetch = ({ id, type }: { id: string; type: string }) => {
@@ -139,47 +114,73 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
   };
 
   const handleCardClick = () => {
-    navigate(`/library/documents/${id}`, {
-      state: { id, url, title, type, abstract, createdByUsername, dateAdded },
-    });
+    const routes = {
+      study: `/library/studies/${id}`,
+      document: `/library/documents/${id}`,
+      entity: `/library/entities/${id}`,
+    };
+    navigate(routes[type], { state: { id, title, description, dateAdded, url, abstract } });
   };
 
   return (
-    <div className="inboxCard">
-      <div className="innerCardMain items-start gap-6">
+    <div className="itemCard">
+      <div className={`innerCardMain items-start ${type == "document" ? "gap-4" : ""}`}>
+        {/* Checkbox */}
         <Checkbox
-          id={`doc-${id}`}
+          id={`card-${id}`}
           checked={isSelected}
           onCheckedChange={(checked) => handleCheckboxChange(checked as boolean)}
           className="secondary mr-4 mt-1"
         />
 
-        <Card key={id} className="flex flex-1 flex-row gap-4">
-          <div>{type || "Science"}</div>
-          <div className="flex flex-1 flex-col">
-            <div className="w-auto cursor-pointer px-4" onClick={handleCardClick}>
-              <div className="flex flex-row gap-2">
-                <h3 className="title">
-                  <img
-                    className="openAccess_openAccessLogo__Q-5ld h-4"
-                    src={openAccessLogo}
-                    alt="Open Access Logo"
-                  ></img>
-                  {title}
-                  {url ? (
-                    <div className="group">
-                      <a
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="opacity-25 transition-opacity group-hover:opacity-100"
-                      >
-                        <ExternalLink size={20} />
-                      </a>
-                    </div>
-                  ) : null}
-                </h3>
-              </div>
+        {/* Main Card */}
+        <Card key={id} className="flex flex-1 flex-row gap-4" onClick={handleCardClick}>
+          {type == "document" && <div>Webpage</div>}
+          <div className="flex flex-1 flex-col px-4">
+            <div className="w-auto cursor-pointer">
+              {type != "document" && (
+                <div className="iconText">
+                  <svg
+                    aria-hidden="true"
+                    focusable="false"
+                    data-prefix="fas"
+                    data-icon="dice-d6"
+                    className="svg-inline--fa fa-dice-d6 objectItem_objectIcon__xwkQs"
+                    width="12px"
+                    role="img"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M201 10.3c14.3-7.8 31.6-7.8 46 0L422.3 106c5.1 2.8 8.3 8.2 8.3 14s-3.2 11.2-8.3 14L231.7 238c-4.8 2.6-10.5 2.6-15.3 0L25.7 134c-5.1-2.8-8.3-8.2-8.3-14s3.2-11.2 8.3-14L201 10.3zM23.7 170l176 96c5.1 2.8 8.3 8.2 8.3 14l0 216c0 5.6-3 10.9-7.8 13.8s-10.9 3-15.8 .3L25 423.1C9.6 414.7 0 398.6 0 381L0 184c0-5.6 3-10.9 7.8-13.8s10.9-3 15.8-.3zm400.7 0c5-2.7 11-2.6 15.8 .3s7.8 8.1 7.8 13.8l0 197c0 17.6-9.6 33.7-25 42.1L263.7 510c-5 2.7-11 2.6-15.8-.3s-7.8-8.1-7.8-13.8l0-216c0-5.9 3.2-11.2 8.3-14l176-96z"
+                    ></path>
+                  </svg>
+                  {type == "StudyTypeUndefined" ? "Study" : "Entity"}
+                </div>
+              )}
+            </div>
+            <div className="flex flex-row gap-2">
+              <h3
+                className={`overflow-hidden text-ellipsis font-bold text-black ${type != "document" ? "py-2" : ""}`}
+              >
+                {title}
+              </h3>
+              {type == "document" && (
+                <div className="group">
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="opacity-25 transition-opacity group-hover:opacity-100"
+                  >
+                    <ExternalLink size={20} />
+                  </a>
+                </div>
+              )}
+            </div>
+            {/* {type !== "entity" && type !== "document" && <p className="mt-1 text-sm">{renderProseMirrorContent(description) || renderProseMirrorContent(abstract)}</p>} */}
+            <div className="flex flex-row items-center gap-4">
               <LinkedCounts
                 id={id}
                 linkedCounts={linkedCounts}
@@ -188,7 +189,6 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
               />
             </div>
           </div>
-
           <div className="flex flex-row items-start gap-2">
             <div className="flex flex-row items-center gap-4">
               <div className="time">
@@ -223,17 +223,20 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
         </Card>
       </div>
       <div className="relative flex h-auto w-[25px]">
+        {/* Hoverable Actions */}
         <div className="links">
-          <a href="#" className="linkedStudy">
+          <a href={url || "#"} className="linkedStudy">
             <Link size={14} />
           </a>
-          <a href="#" className="trashCan">
-            <Trash2 size={14} />
-          </a>
+          {type != "document" && (
+            <a href="#" className="trashCan">
+              <Trash2 size={14} />
+            </a>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default InboxCard;
+export default GenericCard;

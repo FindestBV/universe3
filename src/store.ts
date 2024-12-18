@@ -1,7 +1,7 @@
-// Api's
+// Auth
+// Slices
 import { activityApi } from "@/services/activity/activityApi";
 import { authApi } from "@/services/auth/authApi";
-// Slices
 import authSlice from "@/services/auth/authSlice";
 import { documentApi } from "@/services/documents/documentApi";
 import { entityApi } from "@/services/entities/entityApi";

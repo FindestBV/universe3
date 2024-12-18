@@ -1,4 +1,4 @@
-import { Toolbar } from "@/components/shared/toolbar";
+import { Toolbar } from "@/components/shared/layout/toolbar";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface DocumentSkeletonProps {
