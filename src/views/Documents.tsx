@@ -166,12 +166,13 @@ export const Documents: React.FC = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="mr-[1.5em]">
+        <div className="mr-[1em]">
           <select
             id="studiesPerPage"
             value={documentsPerPage}
             onChange={handleDocumentsPerPageChange}
             className="rounded-md border p-2 focus:border-blue-500 focus:ring-blue-500"
+            style={{ padding: ".6em" }}
           >
             <option value={25}>25</option>
             <option value={20}>20</option>
