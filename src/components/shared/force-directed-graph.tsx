@@ -9,30 +9,50 @@ import {
   select,
   zoom,
 } from "d3";
-import { ILink, INode } from "Types";
 
 import { FC, useEffect, useRef } from "react";
 
 type TForceDirectedGraphViewProps = {
-  initialNodes: INode[];
-  initialLinks: ILink[];
+  linkingData: any[];
 };
 
-export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
-  initialNodes,
-  initialLinks,
-}) => {
+export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linkingData }) => {
   const containerRef = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
-    // Render force-directed graph
+    if (!Array.isArray(linkingData) || linkingData.length === 0) {
+      console.warn("linkingData is empty or not an array");
+      return;
+    }
+
+    const nodes = linkingData.map((data) => ({
+      id: data.id,
+      name: data.name,
+      type: data.type,
+    }));
+
+    const links = linkingData.flatMap((data) =>
+      (data.lowerLevelNodes || []).map((child) => ({
+        source: data.id,
+        target: child.id,
+      })),
+    );
+
+    console.log("Nodes:", nodes);
+    console.log("Links:", links);
+
+    if (!nodes.length || !links.length) {
+      console.warn("Transformed nodes or links are empty");
+      return;
+    }
+
     const svg = select(containerRef.current);
-    svg.selectAll("*").remove(); // Clear previous renders
+    svg.selectAll("*").remove();
 
     const width = 800;
     const height = 800;
-    const nodes = [...initialNodes];
-    const links = [...initialLinks];
+
+    svg.attr("width", width).attr("height", height);
 
     const simulation = forceSimulation(nodes)
       .force(
@@ -50,10 +70,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
       svgGroup.attr("transform", event.transform);
     });
 
-    const svgGroup = svg
-      .attr("viewBox", [0, 0, width, height].join(" "))
-      .call(zoomBehavior)
-      .append("g");
+    const svgGroup = svg.append("g").call(zoomBehavior);
 
     const link = svgGroup
       .append("g")
@@ -74,38 +91,38 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
       .attr("fill", "#000000")
       .call(
         d3Drag()
-          .on("start", (event, d: INode) => {
+          .on("start", (event, d) => {
             if (!event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
             d.fy = d.y;
           })
-          .on("drag", (event, d: INode) => {
+          .on("drag", (event, d) => {
             d.fx = event.x;
             d.fy = event.y;
           })
-          .on("end", (event, d: INode) => {
+          .on("end", (event, d) => {
             if (!event.active) simulation.alphaTarget(0);
             d.fx = null;
             d.fy = null;
           }),
       );
 
-    node.append("title").text((d: INode) => d.data.text);
+    node.append("title").text((d) => d.name);
 
     simulation.on("tick", () => {
       link
-        .attr("x1", (d: ILink) => (d.source as INode).x!)
-        .attr("y1", (d: ILink) => (d.source as INode).y!)
-        .attr("x2", (d: ILink) => (d.target as INode).x!)
-        .attr("y2", (d: ILink) => (d.target as INode).y!);
+        .attr("x1", (d) => d.source?.x || 0)
+        .attr("y1", (d) => d.source?.y || 0)
+        .attr("x2", (d) => d.target?.x || 0)
+        .attr("y2", (d) => d.target?.y || 0);
 
-      node.attr("cx", (d: INode) => d.x!).attr("cy", (d: INode) => d.y!);
+      node.attr("cx", (d) => d.x || 0).attr("cy", (d) => d.y || 0);
     });
-  }, [initialNodes, initialLinks]);
+  }, [linkingData]);
 
   return (
     <div className="forceDirectionGraph">
-      <svg ref={containerRef} style={{ width: "100%", height: "600px" }} />
+      <svg ref={containerRef} style={{ width: "100%", height: "100%" }} />
     </div>
   );
 };

@@ -43,7 +43,14 @@ export const Dashboard = () => {
     { id: "2", data: { objectTypeEnum: "type2", text: "Node 2" }, x: 100, y: 100 },
   ];
 
-  const links = [{ source: "1", target: "2" }];
+  const defaultLinks = [{ source: "1", target: "2" }];
+
+  const links = linkingData
+    ? linkingData.map((item) => ({
+        source: item.id,
+        target: item.lowerLevelNodes[0]?.id || null, // Ensure `target` exists
+      }))
+    : defaultLinks;
 
   const navigate = useNavigate();
   console.log("linkingData data", linkingData);
@@ -137,12 +144,13 @@ export const Dashboard = () => {
           <h2 className="overViewTitle">{t("relationsGraph")}</h2>
           <div className="relative flex h-full w-full items-center justify-center rounded-xl">
             <div className="pageTypeGraph">
+              {!linkingData && (
+                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white bg-opacity-50">
+                  <Loader className="mx-auto mb-2 animate-spin" />
+                  <h3 className="text-black">Loading Page Linking Data...</h3>
+                </div>
+              )}
               <ForceDirectedGraphView initialNodes={nodes} initialLinks={links} />
-              {/* <small>Note: dots correspond to the count of nodes from linkingData</small>
-              {linkingData &&
-                linkingData.map((type: { id: Key | null | undefined }) => {
-                  return <span key={type.id}>.</span>;
-                })} */}
             </div>
           </div>
         </div>
