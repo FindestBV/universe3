@@ -18,24 +18,19 @@ export const Document: React.FC = () => {
 
   const renderConnectedObjects =
     fetchedDocument &&
-    Object.entries(fetchedDocument?.connectedObjects).map((o, i) => {
-      // console.log('obj', o);
-      return (
-        <div key={i} className={`connected-object ${o[1].type}`}>
-          <a href={o[1].url}>{o[1]?.name}</a>
-        </div>
-      );
-    });
-
-  console.log("fetched", fetchedDocument);
+    Object.entries(fetchedDocument?.connectedObjects).map((o, i) => (
+      <div key={i} className={`connected-object ${o[1].type}`}>
+        <a href={o[1].url}>{o[1]?.name}</a>
+      </div>
+    ));
 
   useEffect(() => {
     if (fetchedDocument) {
       const timer = setTimeout(() => {
         setIsLoading(false);
-      }, 250); // 2.5 seconds
+      }, 250); // Simulate loading delay
 
-      // Clean up the timer to prevent memory leaks
+      // Cleanup the timer to prevent memory leaks
       return () => clearTimeout(timer);
     }
   }, [fetchedDocument]);
@@ -54,46 +49,45 @@ export const Document: React.FC = () => {
         <DocumentSkeleton />
       ) : (
         <div className="flex h-screen w-auto flex-col">
-          <>
-            <header className="documentCrud">
-              {isToolbarVisible && <Toolbar />} {/* Conditional rendering */}
-            </header>
-
-            <div className="mx-auto flex h-full w-3/4 flex-col px-12 py-4 max-sm:px-4">
-              <div className="flex w-full flex-col justify-between">
-                <div className="flex w-full justify-between">
-                  <Button className="mb-2 border border-gray-300">
-                    <a
-                      href={fetchedDocument?.url}
-                      target="_blank"
-                      className="flex items-center gap-2"
-                    >
-                      OPEN ARTICLE <ExternalLink size={20} />
-                    </a>
-                  </Button>
-                  <div className="flex-2 flex flex-row items-center">
-                    <button
-                      onClick={handleEditClick}
-                      className="w-full rounded-md bg-blue-500 px-4 py-1 text-white hover:bg-blue-600"
-                    >
-                      Actions
-                    </button>
-                    <UserAvatar username={"Ro"} />
-                  </div>
-                </div>
-                <div className="flex">
-                  <h1 className="my-4 flex-1 text-3xl font-black text-black">
-                    {fetchedDocument?.title || "Document"}
-                  </h1>
+          <div className="mx-auto flex h-full w-3/4 flex-col px-12 py-4 max-sm:px-4">
+            <div className="flex w-full flex-col justify-between">
+              <div className="flex w-full justify-between">
+                <Button className="mb-2 border border-gray-300">
+                  <a
+                    href={fetchedDocument?.url}
+                    target="_blank"
+                    className="flex items-center gap-2"
+                  >
+                    OPEN ARTICLE <ExternalLink size={20} />
+                  </a>
+                </Button>
+                <div className="flex-2 flex flex-row items-center">
+                  <button
+                    onClick={handleEditClick}
+                    className="w-full rounded-md bg-blue-500 px-4 py-1 text-white hover:bg-blue-600"
+                  >
+                    Actions
+                  </button>
+                  <UserAvatar username={"Ro"} />
                 </div>
               </div>
-              <br />
-              <h4 className="font-black">Connected Objects:</h4>
-              <div className="flex gap-4">{renderConnectedObjects}</div>
-              <br />
-              <p className="text-black">{fetchedDocument?.abstract}</p>
+              <div className="flex">
+                <h1 className="my-4 flex-1 text-3xl font-black text-black">
+                  {fetchedDocument?.title || "Document"}
+                </h1>
+              </div>
             </div>
-          </>
+            <br />
+            {isToolbarVisible === true && (
+              <header className="documentCrud">
+                <Toolbar />
+              </header>
+            )}
+            <h4 className="font-black">Connected Objects:</h4>
+            <div className="flex gap-4">{renderConnectedObjects}</div>
+            <br />
+            <p className="text-black">{fetchedDocument?.abstract}</p>
+          </div>
         </div>
       )}
     </>

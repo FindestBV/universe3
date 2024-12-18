@@ -1,0 +1,142 @@
+@use '../colors/colors.scss';
+
+.findestButton {
+    height: 32px;
+    padding: 0 16px;
+    border-radius: 0.25rem;
+    font-size: 14px;
+    line-height: 16px;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 1.246px;
+    cursor: pointer;
+    border: 0;
+    font-family: 'IBM Plex Sans', sans-serif;
+    outline: none;
+    background-color: colors.$primaryButtonColorDefault;
+    color: colors.$white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    white-space: nowrap;
+
+    &.hasLeftIcon {
+        padding-left: 13px;
+    }
+
+    &.hasRightIcon {
+        padding-right: 13px;
+    }
+
+    &:hover {
+        background-color: colors.$primaryButtonColorHover;
+    }
+
+    &.disabled {
+        opacity: .15;
+        cursor: not-allowed;
+        &:hover {
+            background-color: colors.$primaryButtonColorDefault;
+        }
+    }
+
+    &.colorless {
+        color: colors.$findest-text;
+        background-color: white;
+    
+        &:hover {
+            box-shadow: -2px 2px 6px rgba(0, 0, 0, 0.05);
+            border-color: colors.$findest-text;
+        }
+    }
+    &.cancel {
+        color: colors.$primaryButtonColorDefault;
+        background-color: white;
+        &:hover {
+            background-color: colors.$primaryButtonColorDisabled;
+        }
+    }
+
+    &.secondary {
+        color: colors.$main-text-color;
+        background-color: colors.$secondaryButtonColorDefault;
+        &.disabled {
+            opacity: .3;
+            &:hover {
+                background-color: colors.$secondaryButtonColorDefault;
+            }
+        }
+        &:hover {
+            background-color: colors.$secondaryButtonColorHover;
+        }
+    }
+
+    &.tertiary {
+        color: colors.$main-text-color;
+        background-color: white;
+        &:hover {
+            background-color: colors.$secondaryButtonColorDefault;
+        }
+    }
+
+    &.quarternary {
+        color: colors.$main-text-color;
+        background-color: white;
+        padding: 0;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    &.danger {
+        color: colors.$white;
+        background-color: colors.$red-500;
+        &:hover {
+            background-color: colors.$red-600;
+        }
+    }
+
+    &.noWrap {
+        white-space: nowrap;
+    }
+    &.textTransformNone {
+        text-transform: none;
+    }
+    &.iconOnly {
+        padding: 0 10px;
+        font-size: 1rem;
+        svg {
+            margin: 0;
+        }
+    }
+
+    &.isLoading {
+        width: 102px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: colors.$light-gray;
+        pointer-events: none;
+    }
+
+    &.noPadding {
+        padding: 0;
+    }
+
+    &.fullWidth {
+        width: 100%
+    }
+
+    &.justifyCenter {
+        justify-content: center;
+    }
+
+    .leftIcon {
+        margin-right: 9.3px;        
+    }
+
+    .rightIcon {
+        margin-left: 9.3px;
+    }
+}
