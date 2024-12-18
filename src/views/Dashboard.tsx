@@ -1,3 +1,4 @@
+import ForceDirectedGraphView from "@/components/shared/force-directed-graph";
 import PackGraphView from "@/components/shared/pack-graph";
 import UserAvatar from "@/components/shared/user-avatar";
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,13 @@ export const Dashboard = () => {
   const { data: maxActivityData, isLoading: maxActivityLoading } = useGetMaxActivityQuery();
   const { data: linkingData } = useGetLinkingQuery();
   const { data: typesData, isLoading: typesDataLoading } = useGetPageTypesQuery();
+
+  const nodes = [
+    { id: "1", data: { objectTypeEnum: "type1", text: "Node 1" }, x: 0, y: 0 },
+    { id: "2", data: { objectTypeEnum: "type2", text: "Node 2" }, x: 100, y: 100 },
+  ];
+
+  const links = [{ source: "1", target: "2" }];
 
   const navigate = useNavigate();
   console.log("linkingData data", linkingData);
@@ -127,12 +135,15 @@ export const Dashboard = () => {
 
         <div className="flex w-full flex-col space-y-3 max-sm:px-4">
           <h2 className="overViewTitle">{t("relationsGraph")}</h2>
-          <div className="flex h-auto w-full animate-pulse flex-wrap items-start justify-start overflow-hidden rounded-xl">
-            <small>Note: dots correspond to the count of nodes from linkingData</small>
-            {linkingData &&
-              linkingData.map((type: { id: Key | null | undefined }) => {
-                return <span key={type.id}>.</span>;
-              })}
+          <div className="relative flex h-full w-full items-center justify-center rounded-xl">
+            <div className="pageTypeGraph">
+              <ForceDirectedGraphView initialNodes={nodes} initialLinks={links} />
+              {/* <small>Note: dots correspond to the count of nodes from linkingData</small>
+              {linkingData &&
+                linkingData.map((type: { id: Key | null | undefined }) => {
+                  return <span key={type.id}>.</span>;
+                })} */}
+            </div>
           </div>
         </div>
 
