@@ -16,7 +16,6 @@ import {
   List,
   MoreHorizontal,
   Network,
-  Pin,
   ScanEye,
   Search,
   SquareArrowOutUpRight,
