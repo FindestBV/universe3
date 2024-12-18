@@ -23,7 +23,7 @@ const Study = lazy(() => import("@/views/Study"));
 const Entities = lazy(() => import("@/views/Entities"));
 const Entity = lazy(() => import("@/views/Entity"));
 const NotFoundPage = lazy(() => import("@/views/NotFound"));
-// const Dashboard = lazy(() => import("@/views/Dashboard"));
+const DataView = lazy(() => import("@/views/DataView"));
 const Inbox = lazy(() => import("@/views/Inbox"));
 
 // Protected routes
@@ -55,9 +55,9 @@ function AuthenticatedLayout() {
             <CSSTransition key={location.key} classNames="fade" timeout={1000} unmountOnExit>
               <Suspense
                 fallback={
-                  <div className="flex flex-col items-center justify-center py-8 text-center">
+                  <div className="flex h-screen flex-col items-center justify-center py-8 text-center">
                     <Loader className="mx-auto mb-2 animate-spin" />
-                    <p>Loading...</p>
+                    <h3 className="text2-xl font-black">Loading</h3>
                   </div>
                 }
               >
@@ -71,6 +71,7 @@ function AuthenticatedLayout() {
                   <Route path="/library/documents/:id" element={<Document />} />
                   <Route path="/library/entities" element={<Entities />} />
                   <Route path="/library/entities/:id" element={<Entity />} />
+                  <Route path="/dataview" element={<DataView />} />
                   <Route path="/inbox" element={<Inbox />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
