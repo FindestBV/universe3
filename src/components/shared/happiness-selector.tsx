@@ -30,8 +30,11 @@ const HappinessSelector = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button name="Happiness" className="text-white hover:bg-slate-300">
-          <SmilePlus width={18} color="black" />
+        <Button name="Happiness" className="h-auto p-0 text-white hover:bg-slate-400">
+          <img
+            src="https://pendo-eu-static-5039704319590400.storage.googleapis.com/_4TtT8pHBjAa_iSMSCg6AYM1EWE/guide-media-726e985d-0f53-4bd4-b72f-3f5f5b77c8ab"
+            className="h-[40px] object-cover p-[2px]"
+          />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mr-4 border-gray-200 bg-white">
