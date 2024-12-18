@@ -53,8 +53,8 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
     const width = 1000;
     const height = 1000;
     svg.attr("width", width).attr("height", height);
-    svg.attr("viewBox", `0 0 ${width} ${height}`).style("width", "100%").style("height", "100%");
-
+    svg.attr("viewBox", `0 0 ${width} ${height}`);
+    svg.style("width", "40%").style("height", "90%").style("margin", "0 auto");
     const simulation = forceSimulation(nodes)
       .force(
         "link",
