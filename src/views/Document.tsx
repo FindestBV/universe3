@@ -49,6 +49,11 @@ export const Document: React.FC = () => {
         <DocumentSkeleton />
       ) : (
         <div className="flex h-screen w-auto flex-col">
+          {isToolbarVisible === true && (
+            <header className="documentCrud">
+              <Toolbar />
+            </header>
+          )}
           <div className="mx-auto flex h-full w-3/4 flex-col px-12 py-4 max-sm:px-4">
             <div className="flex w-full flex-col justify-between">
               <div className="flex w-full justify-between">
@@ -78,11 +83,7 @@ export const Document: React.FC = () => {
               </div>
             </div>
             <br />
-            {isToolbarVisible === true && (
-              <header className="documentCrud">
-                <Toolbar />
-              </header>
-            )}
+
             <h4 className="font-black">Connected Objects:</h4>
             <div className="flex gap-4">{renderConnectedObjects}</div>
             <br />
