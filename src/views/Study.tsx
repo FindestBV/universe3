@@ -1,5 +1,7 @@
-import { useParams, useLocation } from "react-router";
 import { renderProseMirrorContent } from "@/lib/renderProseMirror";
+
+import { useEffect } from "react";
+import { useLocation, useParams } from "react-router";
 
 export const Study: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,18 +20,19 @@ export const Study: React.FC = () => {
     }
   }
 
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
+
   return (
-    <div className="flex flex-col w-full h-full max-sm:px-4 p-12">
-      <div className="flex flex-col w-auto h-screen">
-        <h1 className="text-xl text-black font-black mb-2">
-          {study?.title || "Study"}
-        </h1>
+    <div className="flex h-full w-full flex-col p-12 max-sm:px-4">
+      <div className="flex h-screen w-auto flex-col">
+        <h1 className="mb-2 text-xl font-black text-black">{study?.title || "Study"}</h1>
         <p>
-          <span className="text-black font-black">Study ID:</span> {id}
+          <span className="font-black text-black">Study ID:</span> {id}
         </p>
         <p>
-          <span className="text-black font-black">Type:</span>{" "}
-          Study
+          <span className="font-black text-black">Type:</span> Study
         </p>
         <br />
         <div className="text-black">
@@ -42,5 +45,4 @@ export const Study: React.FC = () => {
   );
 };
 
-
-export default Study; 
+export default Study;

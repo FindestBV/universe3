@@ -11,7 +11,7 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { Link, Trash2 } from "lucide-react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useGetStudiesQuery } from "../services/study/studyApi";
 
@@ -71,6 +71,10 @@ export const Studies: React.FC = () => {
   const handleRemoveFilter = (filter: string) => {
     setFilters(filters.filter((f) => f !== filter));
   };
+
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
 
   return (
     <div className="flex h-full w-full flex-col px-12 max-sm:px-4">

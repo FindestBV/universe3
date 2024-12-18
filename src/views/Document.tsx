@@ -44,6 +44,10 @@ export const Document: React.FC = () => {
     setIsToolbarVisible((prev) => !prev); // Toggle toolbar visibility
   };
 
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
+
   return (
     <>
       {isLoading ? (
