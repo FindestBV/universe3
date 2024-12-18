@@ -78,7 +78,7 @@ export const DashboardHeader = () => {
               <DropdownMenuContent
                 align="end"
                 side="right"
-                className="-ml-8 mt-12 w-fit rounded-md border border-gray-200 bg-white p-2 shadow-lg"
+                className="-ml-10 mt-14 w-fit rounded-md border border-gray-200 bg-white p-2 shadow-lg"
               >
                 {activityData &&
                   activityData.map((activity: any, idx: string) => (

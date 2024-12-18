@@ -161,7 +161,7 @@ export function AppSidebar() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton>
-                    <UserRoundPen width={"16"} color={"white"} />
+                    <UserRoundPen width={"16"} color={"white"} className="hover:text-black" />
                     <h1 className="text-md p-6 font-black">{t("profile")}</h1>
                     <ChevronUp className="ml-auto" />
                   </SidebarMenuButton>
