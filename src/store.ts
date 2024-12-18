@@ -1,12 +1,14 @@
+// Api's
 import { activityApi } from "@/services/activity/activityApi";
-// Import feature reducers and APIs
 import { authApi } from "@/services/auth/authApi";
+// Slices
 import authSlice from "@/services/auth/authSlice";
 import { documentApi } from "@/services/documents/documentApi";
 import { entityApi } from "@/services/entities/entityApi";
 import { searchApi } from "@/services/search/searchApi";
 import { studyApi } from "@/services/study/studyApi";
 import languageReducer from "@/services/utilities/languageSlice";
+// Configure Store and Persistance
 import { configureStore, Reducer } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { createBrowserHistory } from "history";
