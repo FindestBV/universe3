@@ -1,4 +1,5 @@
 import ForceDirectedGraphView from "@/components/shared/layout/force-directed-graph";
+import { OverlayPanel } from "@/components/shared/layout/overlay-panel";
 import PackGraphView from "@/components/shared/layout/pack-graph";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
@@ -201,7 +202,9 @@ export const Dashboard = () => {
                   <h3 className="text-black">Loading Page Type Data...</h3>
                 </div>
               )}
-              <PackGraphView data={typesData} searchKeyword={searchKeyword} />
+              <OverlayPanel>
+                <PackGraphView data={typesData} searchKeyword={searchKeyword} />
+              </OverlayPanel>
             </div>
           </div>
         </div>

@@ -11,7 +11,7 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { Link, Trash2 } from "lucide-react";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { useGetMyDocumentInboxQuery } from "../services/documents/documentApi";
 
@@ -57,7 +57,6 @@ export const Inbox: React.FC = () => {
     const value = parseInt(e.target.value, 10);
     setDocumentsPerPage(value);
     setCurrentPage(1); // Reset to first page
-
     setTempLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 500));
     setTempLoading(false);
