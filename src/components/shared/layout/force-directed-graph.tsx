@@ -15,13 +15,50 @@ import { useNavigate } from "react-router-dom";
 
 import { FindestButton } from "../utilities/findest-button";
 
+export enum ObjectTypeEnum {
+  Unknown = 0,
+  Entity = 1,
+  Document = 2,
+  Highlight = 3,
+  Study = 4,
+  Image = 5,
+  ScienceArticle = 6,
+  UsPatent = 7,
+  Weblink = 8,
+  MagPatent = 9,
+  Comment = 10,
+  File = 11,
+  Tenant = 12,
+  Organization = 13,
+  Case = 14,
+  Query = 15,
+}
+
 type TForceDirectedGraphViewProps = {
-  linkingData: { id: string; name: string; type: string; lowerLevelNodes?: { id: string }[] }[];
+  linkingData: {
+    id: string;
+    name: string;
+    type: string;
+    objectType: number;
+    lowerLevelNodes?: { id: string }[];
+  }[];
 };
 
 export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linkingData }) => {
   const containerRef = useRef<SVGSVGElement | null>(null);
   const navigate = useNavigate();
+
+  const colorMap: Record<number, string> = {
+    [ObjectTypeEnum.Entity]: "#0099CC", // Blue
+    [ObjectTypeEnum.Study]: "#800080", // Purple
+    [ObjectTypeEnum.Unknown]: "#CCCCCC", // Gray for unknown
+  };
+
+  const typeLabels: Record<number, string> = {
+    [ObjectTypeEnum.Entity]: "Entity",
+    [ObjectTypeEnum.Study]: "Study",
+    [ObjectTypeEnum.Unknown]: "Unknown",
+  };
 
   useEffect(() => {
     if (!Array.isArray(linkingData) || linkingData.length === 0) {
@@ -33,6 +70,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
       id: data.id,
       name: data.name,
       type: data.type,
+      objectType: data.objectType,
     }));
 
     const links = linkingData.flatMap((data) =>
@@ -85,30 +123,26 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
       ) // Apply transform
       .call(zoomBehavior as any);
 
+    // Render Links
     const link = svgGroup
       .append("g")
       .selectAll("line")
       .data(links)
       .enter()
       .append("line")
-      .attr("stroke", (d) =>
-        (d.source as any).type === "study" || (d.target as any).type === "study"
-          ? "#007AFF"
-          : "#CCCCCC",
-      )
-      .attr("stroke-width", (d) =>
-        (d.source as any).type === "study" || (d.target as any).type === "study" ? 6 : 2,
-      )
+      .attr("stroke", "#CCCCCC")
+      .attr("stroke-width", 2)
       .attr("stroke-linecap", "round");
 
+    // Render Nodes
     const node = svgGroup
       .append("g")
       .selectAll("circle")
       .data(nodes)
       .enter()
       .append("circle")
-      .attr("r", (d) => (d.type === "entity" ? 30 : 10))
-      .attr("fill", (d) => (d.type === "entity" ? "#0099CC" : "#000000"))
+      .attr("r", 10)
+      .attr("fill", (d) => colorMap[d.objectType] || "#000000")
       .style("cursor", "pointer")
       .call(
         d3Drag<SVGCircleElement, Node>()
@@ -154,6 +188,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
 
   return (
     <>
+      {/* Your Existing Legend */}
       <div className="absolute left-0 top-0 p-4">
         <ul className="flex flex-col">
           <li className="flex flex-row items-center gap-2 text-sm text-gray-500">
@@ -164,6 +199,8 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
           </li>
         </ul>
       </div>
+
+      {/* Graph Container */}
       <div className="forceDirectedGraphContainer">
         <div className="overlayPanel group">
           <svg ref={containerRef} />
@@ -172,7 +209,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
               <FindestButton
                 align="right"
                 extraClassName={
-                  "rounded bg-white px-8 py-2 text-white transition hover:bg-blue-700"
+                  "rounded bg-white px-8 py-2 text-white transition hover:bg-[#3ce9f0]"
                 }
                 onClick={() => navigate("/dataview")}
               >
