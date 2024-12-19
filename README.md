@@ -32,7 +32,7 @@ Wide open for discussion, this is encouraged, as the whole team will need to hav
 Make sure you have the following installed on your development machine:
 
 - Node.js (version 18 or above)
-- pnpm (package manager)
+- [pnpm](https://pnpm.io/) pnpm (package manager), why? [here's why](https://peerlist.io/blog/engineering/what-is-pnpm-and-why-you-should-use-it)
 
 ## 🚀 Getting Started
 
