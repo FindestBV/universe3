@@ -1,6 +1,7 @@
 import { useGetDocumentByIdQuery } from "@/api/documents/documentApi";
 import { Toolbar } from "@/components/shared/layout/toolbar";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
+import { FindestButton } from "@/components/shared/utilities/findest-button";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
