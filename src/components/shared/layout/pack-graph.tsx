@@ -228,7 +228,7 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
     <div className="packGraphDashboard">
       <div className="overlayPanel group">
         <div ref={containerRef} className="packGraphContainer p-4" id="packGraph" />
-        <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 hover:bg-opacity-50">
+        <div className="duration-50 absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all hover:bg-opacity-50">
           <div className="hidden text-center group-hover:block">
             <FindestButton
               align="right"

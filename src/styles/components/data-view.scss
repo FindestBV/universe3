@@ -1,6 +1,6 @@
 .dataView{
-    @apply flex h-screen w-full flex-col items-center justify-center gap-4;
-
+    
+    @apply relative flex h-full w-full items-center justify-center bg-white text-slate-400;
 
     .blueDot__indicator{
         @apply grid h-[8px] w-[8px] place-items-center items-center justify-center rounded-full text-[9px] bg-[#0099CC];

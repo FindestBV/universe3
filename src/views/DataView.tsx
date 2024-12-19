@@ -8,7 +8,7 @@ export const DataView = () => {
 
   return (
     <motion.div
-      className="dataView relative flex h-full w-full items-center justify-center bg-white text-slate-400"
+      className="dataView"
       initial={{ opacity: 0 }} // Slide in from the right
       animate={{ opacity: 1 }} // Animate to final position
       exit={{ opacity: 0 }} // Slide out to the right
