@@ -52,9 +52,15 @@ export const DataViewPanel: FC<TForceDirectedGraphViewProps> = ({ linkingData })
 
     const width = 1000;
     const height = 1000;
-    svg.attr("width", width).attr("height", height);
-    svg.attr("viewBox", `0 0 ${width} ${height}`);
-    svg.style("width", "40%").style("height", "90%").style("margin", "0 auto");
+
+    svg
+      .attr("width", width)
+      .attr("height", height)
+      .attr("viewBox", `0 0 565 206`)
+      .style("width", "100%")
+      .style("height", "100%")
+      .style("margin", "0 auto");
+
     const simulation = forceSimulation(nodes)
       .force(
         "link",
@@ -71,7 +77,13 @@ export const DataViewPanel: FC<TForceDirectedGraphViewProps> = ({ linkingData })
       svgGroup.attr("transform", event.transform);
     });
 
-    const svgGroup = svg.append("g").call(zoomBehavior as any);
+    const svgGroup = svg
+      .append("g")
+      .attr(
+        "transform",
+        "translate(601.5884617278166,216.87221557475047) scale(0.04674671197096185)",
+      ) // Apply transform
+      .call(zoomBehavior as any);
 
     const link = svgGroup
       .append("g")
@@ -79,8 +91,15 @@ export const DataViewPanel: FC<TForceDirectedGraphViewProps> = ({ linkingData })
       .data(links)
       .enter()
       .append("line")
-      .attr("stroke", "#999")
-      .attr("stroke-width", 2);
+      .attr("stroke", (d) =>
+        (d.source as any).type === "study" || (d.target as any).type === "study"
+          ? "#007AFF"
+          : "#CCCCCC",
+      )
+      .attr("stroke-width", (d) =>
+        (d.source as any).type === "study" || (d.target as any).type === "study" ? 6 : 2,
+      )
+      .attr("stroke-linecap", "round");
 
     const node = svgGroup
       .append("g")
@@ -88,8 +107,8 @@ export const DataViewPanel: FC<TForceDirectedGraphViewProps> = ({ linkingData })
       .data(nodes)
       .enter()
       .append("circle")
-      .attr("r", 10)
-      .attr("fill", "#000000")
+      .attr("r", (d) => (d.type === "entity" ? 30 : 10))
+      .attr("fill", (d) => (d.type === "entity" ? "#0099CC" : "#000000"))
       .style("cursor", "pointer")
       .call(
         d3Drag<SVGCircleElement, Node>()
@@ -110,8 +129,6 @@ export const DataViewPanel: FC<TForceDirectedGraphViewProps> = ({ linkingData })
       );
 
     node
-      .append("title")
-      .text((d) => d.name)
       .on("click", (event, d) => {
         navigate(`/details/${d.id}`);
       })
@@ -119,8 +136,10 @@ export const DataViewPanel: FC<TForceDirectedGraphViewProps> = ({ linkingData })
         select(this).attr("stroke", "yellow").attr("stroke-width", 2);
       })
       .on("mouseout", function () {
-        select(this).attr("stroke", "white").attr("stroke-width", 1);
+        select(this).attr("stroke", null).attr("stroke-width", null);
       });
+
+    node.append("title").text((d) => d.name);
 
     simulation.on("tick", () => {
       link
