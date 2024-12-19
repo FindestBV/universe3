@@ -90,7 +90,11 @@ export const DashboardHeader = () => {
                       key={idx}
                       className="cursor-pointer items-center justify-between rounded-md px-2 py-1 text-black hover:bg-gray-100"
                       onClick={() =>
-                        navigate(`/library/${activity.fullType.toLowerCase()}/${activity.id}`)
+                        // THIS IS A TEMPORARY PATCH.
+                        // {activity.fullType === "StudyTypeUndefined" ? "studies" : "entities"}
+                        navigate(
+                          `/library/${activity.fullType === "StudyTypeUndefined" ? "studies" : "entities"}/${activity.id}`,
+                        )
                       }
                     >
                       <div className="flex w-full items-center justify-between gap-4">
