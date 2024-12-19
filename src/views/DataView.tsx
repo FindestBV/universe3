@@ -1,6 +1,6 @@
+import { useGetLinkingQuery } from "@/api/activity/activityApi";
 import DataViewPanel from "@/components/shared/layout/data-view-panel";
 import DataViewToolbar from "@/components/shared/utilities/data-view-toolbar";
-import { useGetLinkingQuery } from "@/services/activity/activityApi";
 import { motion } from "framer-motion";
 
 export const DataView = () => {

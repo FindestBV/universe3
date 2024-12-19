@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useGetMyRecentActivityDropdownQuery } from "@/api/activity/activityApi";
+import { currentUser } from "@/api/auth/authSlice";
+import { useGetMyDocumentInboxQuery } from "@/api/documents/documentApi";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,9 +11,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useGetMyRecentActivityDropdownQuery } from "@/services/activity/activityApi";
-import { useGetMyDocumentInboxQuery } from "@/services/documents/documentApi";
-// import { setCredentials } from '@/services/auth';
 import {
   Clock,
   List,
@@ -21,6 +21,7 @@ import {
   SquareArrowOutUpRight,
 } from "lucide-react";
 
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 // import { useFeature } from "use-feature";
@@ -52,8 +53,10 @@ const activityTypeMapping: { [key: number]: string } = {
 
 export const DashboardHeader = () => {
   // const { t } = useTranslation();
+  const user = useSelector(currentUser);
   const { data: activityData } = useGetMyRecentActivityDropdownQuery();
   const { data: documentInbox } = useGetMyDocumentInboxQuery();
+
   const navigate = useNavigate();
 
   return (
@@ -194,6 +197,7 @@ export const DashboardHeader = () => {
       </div>
 
       <div className="flex items-center gap-2">
+        {user ? <p>Welcome, {`${user}`}</p> : null}
         <LanguageSelector />
         <div className="create-action hidden items-center gap-2 sm:flex">
           <CreateItemModal />

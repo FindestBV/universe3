@@ -14,7 +14,7 @@ import { Link, Trash2 } from "lucide-react";
 
 import { useEffect, useState } from "react";
 
-import { useGetStudiesQuery } from "../services/study/studyApi";
+import { useGetStudiesQuery } from "../api/study/studyApi";
 
 export const Studies: React.FC = () => {
   const [selectedStudies, setSelectedStudies] = useState<Set<string>>(new Set());

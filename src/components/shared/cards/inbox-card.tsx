@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/api/documents/documentApi";
 import openAccessLogo from "@/assets/openAccessLogo.png";
 import { UserAvatar } from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/services/documents/documentApi";
 // import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import {

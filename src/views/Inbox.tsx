@@ -13,7 +13,7 @@ import { Link, Trash2 } from "lucide-react";
 
 import { useState } from "react";
 
-import { useGetMyDocumentInboxQuery } from "../services/documents/documentApi";
+import { useGetMyDocumentInboxQuery } from "../api/documents/documentApi";
 
 export const Inbox: React.FC = () => {
   const [selectedDocs, setSelectedDocs] = useState<Set<string>>(new Set());

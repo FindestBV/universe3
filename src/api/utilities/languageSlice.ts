@@ -1,20 +1,20 @@
 // store/languageSlice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type LanguageState = {
   selectedLanguage: string;
 };
 
 const initialState: LanguageState = {
-  selectedLanguage: 'en', // Default language
+  selectedLanguage: "en", // Default language
 };
 
 const languageSlice = createSlice({
-  name: 'language',
+  name: "language",
   initialState,
   reducers: {
     setLanguage(state, action: PayloadAction<string>) {
-      console.log('setting language on state', action.payload);
+      console.log("setting language on state", action.payload);
       state.selectedLanguage = action.payload;
     },
   },

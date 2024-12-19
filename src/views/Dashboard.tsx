@@ -1,3 +1,9 @@
+import {
+  useGetLinkingQuery,
+  useGetMaxActivityQuery,
+  useGetMyRecentActivityQuery,
+  useGetPageTypesQuery,
+} from "@/api/activity/activityApi";
 import ForceDirectedGraphView from "@/components/shared/layout/force-directed-graph";
 import { OverlayPanel } from "@/components/shared/layout/overlay-panel";
 import PackGraphView from "@/components/shared/layout/pack-graph";
@@ -9,12 +15,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  useGetLinkingQuery,
-  useGetMaxActivityQuery,
-  useGetMyRecentActivityQuery,
-  useGetPageTypesQuery,
-} from "@/services/activity/activityApi";
 import {
   List,
   Loader,

@@ -1,34 +1,35 @@
-import { api } from '../api'; // Import the centralized base API
-import type { User, LoginRequest, AuthResponse } from "../../types/types";
+// Import the centralized base API
+import type { AuthResponse, LoginRequest, User } from "../../types/types";
+import { api } from "../api";
 
 export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<AuthResponse, LoginRequest>({
       query: (body) => ({
-        url: 'authentication/verify',
-        method: 'POST',
+        url: "authentication/verify",
+        method: "POST",
         body,
       }),
-      invalidatesTags: ['Auth'],
+      invalidatesTags: ["Auth"],
     }),
 
     getProfile: builder.query<User, void>({
-      query: () => 'authentication/profile',
-      providesTags: ['Auth'],
+      query: () => "authentication/profile",
+      providesTags: ["Auth"],
     }),
 
     logout: builder.mutation<void, void>({
       query: () => ({
-        url: 'authentication/logout',
-        method: 'GET',
+        url: "authentication/logout",
+        method: "GET",
       }),
-      invalidatesTags: ['Auth'],
+      invalidatesTags: ["Auth"],
     }),
 
     checkIsObjectSharedToUser: builder.query<void, { email: string; objectId: string }>({
       query: ({ email, objectId }) => ({
         url: `object/shared/${objectId}`,
-        method: 'POST',
+        method: "POST",
         body: { email },
       }),
     }),
@@ -36,8 +37,8 @@ export const authApi = api.injectEndpoints({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     verifyAuth: builder.mutation<AuthResponse, { sharedToSettings: any }>({
       query: (body) => ({
-        url: 'authentication/verify',
-        method: 'POST',
+        url: "authentication/verify",
+        method: "POST",
         body,
       }),
     }),

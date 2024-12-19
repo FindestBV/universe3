@@ -3,18 +3,6 @@
     @apply flex flex-col items-center justify-start w-full;
 }  
 
-.loginInput {
-  background-color: #0000;
-  border: none;
-  border-bottom: 1px solid #003171;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  margin-bottom: 20px;
-  outline: none;
-  width: 100%;
-  margin: 30px 0;
-}
-
 
 
 .entityCount{
@@ -51,7 +39,7 @@
   margin-bottom: 20px;
   outline: none;
   width: 100%;
-  margin: 30px 0;
+  margin: 30px 0 0 0;
 }
 
 .overViewTitle{

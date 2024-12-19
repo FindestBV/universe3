@@ -1,12 +1,12 @@
 // Slices
-import { activityApi } from "@/services/activity/activityApi";
-import { authApi } from "@/services/auth/authApi";
-import authSlice from "@/services/auth/authSlice";
-import { documentApi } from "@/services/documents/documentApi";
-import { entityApi } from "@/services/entities/entityApi";
-import { searchApi } from "@/services/search/searchApi";
-import { studyApi } from "@/services/study/studyApi";
-import languageReducer from "@/services/utilities/languageSlice";
+import { activityApi } from "@/api/activity/activityApi";
+import { authApi } from "@/api/auth/authApi";
+import authSlice from "@/api/auth/authSlice";
+import { documentApi } from "@/api/documents/documentApi";
+import { entityApi } from "@/api/entities/entityApi";
+import { searchApi } from "@/api/search/searchApi";
+import { studyApi } from "@/api/study/studyApi";
+import languageReducer from "@/api/utilities/languageSlice";
 // Configure Store and Persistance
 import { configureStore, Reducer } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";

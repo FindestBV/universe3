@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { currentUser } from "@/api/auth/authSlice";
+import { useGetEntityByIdQuery } from "@/api/entities/entityApi";
 import { renderProseMirrorContent } from "@/lib/renderProseMirror";
-import { currentUser } from "@/services/auth/authSlice";
-import { useGetEntityByIdQuery } from "@/services/entities/entityApi";
 
 import React from "react";
 import { useSelector } from "react-redux";

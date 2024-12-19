@@ -1,3 +1,4 @@
+import { setLanguage } from "@/api/utilities/languageSlice";
 import {
   Select,
   SelectContent,
@@ -5,7 +6,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { setLanguage } from "@/services/utilities/languageSlice";
 import { useAppDispatch, useAppSelector } from "@/store";
 
 import React, { useEffect } from "react";

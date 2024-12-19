@@ -14,7 +14,7 @@ import { Link, Trash2 } from "lucide-react";
 
 import React, { useState } from "react";
 
-import { useGetEntitiesQuery } from "../services/entities/entityApi";
+import { useGetEntitiesQuery } from "../api/entities/entityApi";
 
 export const Entities: React.FC = () => {
   const [selectedEntities, setSelectedEntities] = useState<Set<string>>(new Set());

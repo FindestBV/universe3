@@ -1,9 +1,9 @@
 // import { DocumentCard } from "@/components/shared/document-card";
+import { useGetSavedDocumentsQuery } from "@/api/documents/documentApi";
 import { GenericCard } from "@/components/shared/cards/generic-card";
 import DocumentsSkeleton from "@/components/shared/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useGetSavedDocumentsQuery } from "@/services/documents/documentApi";
 import {
   DropdownMenu,
   DropdownMenuContent,

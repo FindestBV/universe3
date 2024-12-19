@@ -1,3 +1,4 @@
+import { currentUser, logout, setCredentials } from "@/api/auth/authSlice";
 import logoUniverse from "@/assets/universe_logo_white.png";
 import {
   DropdownMenu,
@@ -17,7 +18,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { currentUser, logout, setCredentials } from "@/services/auth/authSlice";
 import {
   BookOpenCheck,
   Bot,

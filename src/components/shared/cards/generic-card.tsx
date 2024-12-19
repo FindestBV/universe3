@@ -1,8 +1,8 @@
+import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/api/documents/documentApi";
 import { UserAvatar } from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/services/documents/documentApi";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { ExternalLink, Link, Trash2 } from "lucide-react";
 

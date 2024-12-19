@@ -1,8 +1,8 @@
+import { useGetDocumentByIdQuery } from "@/api/documents/documentApi";
 import { Toolbar } from "@/components/shared/layout/toolbar";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
-import { useGetDocumentByIdQuery } from "@/services/documents/documentApi";
 import { ExternalLink } from "lucide-react";
 
 import { useEffect, useState } from "react";
