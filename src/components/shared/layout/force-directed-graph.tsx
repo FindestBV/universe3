@@ -201,12 +201,12 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
       <div className="forceDirectedGraphContainer">
         <div className="overlayPanel group h-full">
           <svg ref={containerRef} />
-          <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-150 hover:bg-opacity-50">
+          <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 ease-in-out hover:bg-opacity-50">
             <div className="hidden text-center group-hover:block">
               <FindestButton
                 align="right"
                 extraClassName={
-                  "rounded bg-[#3ce9f0] hover:bg-[#3ce9f0] px-8 py-2 text-black transition-all duration-150"
+                  "rounded bg-[#3ce9f0] group-hover:bg-[#3ce9f0] px-8 py-2 text-black transition-all duration-300 ease-in-out"
                 }
                 onClick={() => navigate("/dataview")}
               >
