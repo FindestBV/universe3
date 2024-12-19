@@ -110,8 +110,8 @@ universe3/
   │   |   └── typography/
   │   |   └── utilities
   │   |   └── universe.scss
-  │   ├── types # Utility functions
-  │   ├── views    # React components
+  │   ├── types            # Utility functions
+  │   ├── views            # React views - please note: will be (significantly) reduced further
   |   |   └── Dashboard/
   |   |   └── DataView/
   │   |   └── Document/
