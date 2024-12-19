@@ -121,9 +121,9 @@ universe3/
   │   |   └── Queries/
   │   |   └── Studies
   │   ├── App.tsx        # Application entry point
-  │   └── main.tsx      # Main rendering file
+  │   └── main.tsx       # Main rendering file
   |   └── store.ts       # Redux Store
-  ├── eslint.config.js     # ESLint configuration
+  ├── eslint.config.js   # ESLint configuration
   ├── index.html         # HTML entry point
   ├── postcss.config.js  # PostCSS configuration
   ├── tailwind.config.ts # Tailwind CSS configuration
