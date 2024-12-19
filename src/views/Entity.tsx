@@ -3,7 +3,7 @@ import { currentUser } from "@/api/auth/authSlice";
 import { useGetEntityByIdQuery } from "@/api/entities/entityApi";
 import { renderProseMirrorContent } from "@/lib/renderProseMirror";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router";
 
@@ -28,13 +28,14 @@ export const Entity: React.FC = () => {
     refetchOnMountOrArgChange: false, // Prevents automatic refetching
   });
 
-  console.log("fetched entity", fetchedEntity);
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
 
   return (
     <div className="flex h-full w-full flex-col p-12 max-sm:px-4">
       <div className="flex h-screen w-auto flex-col">
         <h1 className="mb-2 text-xl font-black text-black">{entity?.title || "Entity"}</h1>
-        <p>{user ? `User: ${user}` : null}</p>
         <p>
           <span className="font-black text-black">Entity ID:</span> {id}
         </p>

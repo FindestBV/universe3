@@ -210,21 +210,17 @@ export const Entities: React.FC = () => {
         {isLoading && <DocumentsSkeleton />}
         {data && (
           <div>
-            {data?.entities.slice(0, entitiesPerPage).map((ent) => (
-              // <EntityCard
-              //   key={ent.id}
-              //   {...ent}
-              //   isSelected={selectedEntities.has(ent.id)}
-              //   onSelect={handleSelectDoc}
-              // />
-              <GenericCard
-                type="Entity"
-                key={ent.id}
-                {...ent}
-                isSelected={selectedEntities.has(ent.id)}
-                onSelect={handleSelectDoc}
-              />
-            ))}
+            {data?.entities
+              .slice(0, entitiesPerPage)
+              .map((ent) => (
+                <GenericCard
+                  itemType="entity"
+                  key={ent.id}
+                  {...ent}
+                  isSelected={selectedEntities.has(ent.id)}
+                  onSelect={handleSelectDoc}
+                />
+              ))}
           </div>
         )}
       </CardContent>

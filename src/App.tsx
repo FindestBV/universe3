@@ -20,9 +20,9 @@ const Queries = lazy(() => import("@/views/Queries"));
 const Documents = lazy(() => import("@/views/Documents"));
 const Document = lazy(() => import("@/views/Document"));
 const Studies = lazy(() => import("@/views/Studies"));
-// const Study = lazy(() => import("@/views/__Study"));
+const Study = lazy(() => import("@/views/Study"));
 const Entities = lazy(() => import("@/views/Entities"));
-// const Entity = lazy(() => import("@/views/__Entity"));
+const Entity = lazy(() => import("@/views/Entity"));
 const NotFoundPage = lazy(() => import("@/views/NotFound"));
 const DataView = lazy(() => import("@/views/DataView"));
 const Inbox = lazy(() => import("@/views/Inbox"));
@@ -72,11 +72,11 @@ function AuthenticatedLayout() {
                   <Route path="/library/queries" element={<Queries />} />
                   <Route path="/library/overview" element={<Documents />} />
                   <Route path="/library/studies" element={<Studies />} />
-                  {/* <Route path="/library/studies/:id" element={<Study />} /> */}
+                  <Route path="/library/studies/:id" element={<Study />} />
                   <Route path="/library/documents" element={<Documents />} />
                   <Route path="/library/documents/:id" element={<Document />} />
                   <Route path="/library/entities" element={<Entities />} />
-                  {/* <Route path="/library/entities/:id" element={<Entity />} /> */}
+                  <Route path="/library/entities/:id" element={<Entity />} />
                   <Route path="/dataview" element={<DataView />} />
                   <Route path="/inbox" element={<Inbox />} />
                   <Route path="*" element={<NotFoundPage />} />

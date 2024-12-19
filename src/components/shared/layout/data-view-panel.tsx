@@ -153,7 +153,20 @@ export const DataViewPanel: FC<TForceDirectedGraphViewProps> = ({ linkingData })
     node
       .on("click", (event, d) => {
         console.log(`Node clicked: ${d.name} (${d.id})`);
-        navigate(`/${d.type}/${d.id}`);
+
+        // Check the type and build the appropriate URL
+        const url =
+          d.type === "Study"
+            ? `/library/studies/${d.id}`
+            : d.type === "Entity"
+              ? `/library/entities/${d.id}`
+              : null; // You can handle invalid types if necessary
+
+        if (url) {
+          navigate(url);
+        } else {
+          console.error("Invalid type:", d.type);
+        }
       })
       .on("mouseover", function () {
         select(this).attr("stroke", "yellow").attr("stroke-width", 2);

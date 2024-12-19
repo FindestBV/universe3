@@ -28,11 +28,11 @@ export const Studies: React.FC = () => {
     { refetchOnMountOrArgChange: true },
   );
 
-  const totalPages = data ? Math.ceil(data.totalCount / studiesPerPage) : 1;
+  // const totalPages = data ? Math.ceil(data.totalCount / studiesPerPage) : 1;
 
-  const handlePageChange = (page: number) => setCurrentPage(page);
-  const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-  const handlePreviousPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+  // const handlePageChange = (page: number) => setCurrentPage(page);
+  // const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  // const handlePreviousPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 
   const handleSelectAll = (checked: boolean) => {
     setIsChecked(!isChecked);
@@ -194,7 +194,7 @@ export const Studies: React.FC = () => {
               //   isSelected={selectedStudies.has(study.id)}
               //   onSelect={handleSelectStudy}
               <GenericCard
-                type={"study"}
+                itemType="study"
                 key={study.id}
                 {...study}
                 isSelected={selectedStudies.has(study.id)}

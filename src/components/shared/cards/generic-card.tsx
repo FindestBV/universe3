@@ -89,6 +89,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   id,
   title,
   type,
+  itemType,
   description,
   dateAdded,
   createdByUsername,
@@ -108,8 +109,10 @@ export const GenericCard: React.FC<GenericCardProps> = ({
       document: `/library/documents/${id}`,
       entity: `/library/entities/${id}`,
     };
-    navigate(routes[type], { state: { id, title, description, dateAdded, url, abstract } });
+    navigate(routes[itemType], { state: { id, title, description, dateAdded, url, abstract } });
   };
+
+  console.log("type", itemType);
 
   return (
     <div className="itemCard">

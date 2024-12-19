@@ -198,7 +198,7 @@ export const Documents: React.FC = () => {
               //   onSelect={handleSelectDoc}
               // />
               <GenericCard
-                type="document"
+                itemType="document"
                 key={doc.id}
                 {...doc}
                 isSelected={selectedDocs.has(doc.id)}
