@@ -137,10 +137,8 @@ export const DataViewSearchBar = () => {
     return groupedResults[selectedTab] || [];
   };
 
-  const filteredResults = filterResults(data);
-
   return (
-    <div className="mainSearchBar">
+    <div className="dataViewSearchBar">
       {/* Search Input */}
       <form className="space-y-4">
         <div>
