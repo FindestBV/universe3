@@ -21,6 +21,8 @@ import {
   SquareArrowOutUpRight,
 } from "lucide-react";
 
+import { useNavigate } from "react-router-dom";
+
 // import { useFeature } from "use-feature";
 // import { useTranslation } from "react-i18next";
 
@@ -52,6 +54,7 @@ export const DashboardHeader = () => {
   // const { t } = useTranslation();
   const { data: activityData } = useGetMyRecentActivityDropdownQuery();
   const { data: documentInbox } = useGetMyDocumentInboxQuery();
+  const navigate = useNavigate();
 
   return (
     <header className="dashBoardHeader">
@@ -83,6 +86,9 @@ export const DashboardHeader = () => {
                     <DropdownMenuItem
                       key={idx}
                       className="cursor-pointer items-center justify-between rounded-md px-2 py-1 text-black hover:bg-gray-100"
+                      onClick={() =>
+                        navigate(`/library/${activity.fullType.toLowerCase()}/${activity.id}`)
+                      }
                     >
                       <div className="flex w-full items-center justify-between gap-4">
                         <div className="flex items-center gap-4 px-1">
