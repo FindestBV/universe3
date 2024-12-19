@@ -1,7 +1,7 @@
 import { useGetDocumentByIdQuery } from "@/api/documents/documentApi";
 import { Toolbar } from "@/components/shared/layout/toolbar";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
-import { FindestButton } from "@/components/shared/utilities/findest-button";
+// import { FindestButton } from "@/components/shared/utilities/findest-button";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
@@ -85,8 +85,8 @@ export const Document: React.FC = () => {
             </div>
             <br />
 
-            <h4 className="font-black">Connected Objects:</h4>
-            <div className="flex gap-4">{renderConnectedObjects}</div>
+            <h4 className="pb-2 font-black">Connected Objects:</h4>
+            <div className="mt-2 flex gap-4">{renderConnectedObjects}</div>
             <br />
             <p className="text-black">{fetchedDocument?.abstract}</p>
           </div>
