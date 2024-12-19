@@ -9,6 +9,7 @@ import { LoginPage } from "@/views/LoginPage";
 import { Loader } from "lucide-react";
 import { PersistGate } from "redux-persist/integration/react";
 
+import { useEffect } from "react";
 import { lazy, Suspense } from "react";
 import { Provider as ReduxStoreProvider, useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
@@ -33,8 +34,13 @@ const ProtectedRoute = ({ children }) => {
   const isAuthenticated = !!user; // Check if user exists
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
+
   if (!isAuthenticated) {
-    navigate("/");
     return null;
   }
 
