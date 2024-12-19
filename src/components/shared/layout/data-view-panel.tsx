@@ -14,6 +14,7 @@ import { FC, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { FindestButton } from "../utilities/findest-button";
+import Toolbar from "./toolbar";
 
 type TForceDirectedGraphViewProps = {
   linkingData: { id: string; name: string; type: string; lowerLevelNodes?: { id: string }[] }[];
@@ -154,6 +155,16 @@ export const DataViewPanel: FC<TForceDirectedGraphViewProps> = ({ linkingData })
 
   return (
     <div className="forceDirectedGraphContainer">
+      <div className="absolute left-0 top-[5em] p-4">
+        <ul className="flex flex-col">
+          <li className="flex flex-row items-center gap-2 text-sm text-gray-500">
+            <span className="blueDot__indicator"></span>Entity
+          </li>
+          <li className="flex flex-row items-center gap-2 text-sm text-gray-500">
+            <span className="purpleDot__indicator"></span>Study
+          </li>
+        </ul>
+      </div>
       <svg ref={containerRef} preserveAspectRatio="xMidYMid meet" />
     </div>
   );

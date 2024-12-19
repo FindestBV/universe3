@@ -24,6 +24,7 @@ type TFindestButtonProps = {
   onMouseOver?: () => void;
   onMouseOut?: () => void;
   isLoading?: boolean;
+  align?: string;
 };
 
 export const FindestButton: FC<TFindestButtonProps> = ({
@@ -45,6 +46,7 @@ export const FindestButton: FC<TFindestButtonProps> = ({
   onMouseOver,
   onMouseOut,
   isLoading,
+  align,
 }: TFindestButtonProps) => {
   const getClassName = (): string => {
     const classNameList = ["findestButton py-4"];
@@ -80,10 +82,10 @@ export const FindestButton: FC<TFindestButtonProps> = ({
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     >
-      {/* <ArrowLeft icon={leftIconName} className={"leftIcon"} /> */}
+      {align === "left" && <ArrowLeft icon={leftIconName} className={"leftIcon"} />}
       {title}
       {children}
-      <ArrowRight icon={rightIconName} className={"rightIcon"} />
+      {align === "right" && <ArrowRight icon={rightIconName} className={"rightIcon"} />}
     </Button>
   );
 };
