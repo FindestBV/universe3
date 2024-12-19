@@ -4,6 +4,7 @@
     "pickup": "Pick up where you left off...",
     "relationsGraph": "Relations Graph", 
     "searchPlaceholder": "Search the universe",
+    "dataViewSearchPlaceholder": "Search in the graph...",
     "documents": "Documents",
     "happening": "What's happening at Findest?",
     "pageType": "Page type breakdown",

@@ -9,7 +9,7 @@ import {
 import { FC, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import SearchBar from "../search/searchbar";
+import DataViewSearchBar from "../search/data-view-searchbar";
 import { FindestButton } from "./findest-button";
 
 interface DataViewToolbarProps {
@@ -87,7 +87,7 @@ export const DataViewToolbar: FC<DataViewToolbarProps> = () => {
         {/* Right Section: Formatting and Alignment Options */}
         <div className="flex items-center space-x-2">
           {/* Bold Button */}
-          <SearchBar />
+          <DataViewSearchBar />
 
           <div className="flex items-center gap-4">
             <DropdownMenu>

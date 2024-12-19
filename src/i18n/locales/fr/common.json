@@ -4,6 +4,7 @@
     "pickup": "Reprendre là où vous vous êtes arrêté...",
     "relationsGraph": "Graphe des Relations", 
     "searchPlaceholder": "Rechercher dans l'univers",
+    "dataViewSearchPlaceholder": "Rechercher dans le graphe...",
     "documents": "Documents",
     "happening": "Que se passe-t-il chez Findest ?",
     "pageType": "Détail du type de page",
