@@ -18,7 +18,6 @@ export const DataView = () => {
       }}
     >
       <DataViewToolbar />
-
       <div className="text-center">
         <div className="absolute left-0 top-[5em] p-4">
           <ul className="flex flex-col">

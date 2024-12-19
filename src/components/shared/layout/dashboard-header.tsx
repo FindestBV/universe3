@@ -53,7 +53,7 @@ export const DashboardHeader = () => {
   const { data: activityData } = useGetMyRecentActivityDropdownQuery();
   const { data: documentInbox } = useGetMyDocumentInboxQuery();
 
-  console.log("documentInbox", documentInbox);
+  console.log("activityData", activityData);
   return (
     <header className="dashBoardHeader">
       <div className="control-buttons">

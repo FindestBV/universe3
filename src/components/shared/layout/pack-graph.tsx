@@ -1,10 +1,37 @@
-import { ObjectTypeEnum, TTypeGraphNodeDTO } from "@/types/types";
-import { hierarchy, HierarchyCircularNode, pack, scaleOrdinal, select, zoom } from "d3";
+import { TTypeGraphNodeDTO } from "@/types/types";
+import {
+  hsl as d3Hsl,
+  hierarchy,
+  HierarchyCircularNode,
+  pack,
+  scaleOrdinal,
+  select,
+  zoom,
+} from "d3";
 
 import { FC, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { FindestButton } from "../utilities/findest-button";
+
+export enum ObjectTypeEnum {
+  Unknown = 0,
+  Entity = 1,
+  Document = 2,
+  Highlight = 3,
+  Study = 4,
+  Image = 5,
+  ScienceArticle = 6,
+  UsPatent = 7,
+  Weblink = 8,
+  MagPatent = 9,
+  Comment = 10,
+  File = 11,
+  Tenant = 12,
+  Organization = 13,
+  Case = 14,
+  Query = 15,
+}
 
 type TTypeGraphViewProps = {
   data?: TTypeGraphNodeDTO[];
@@ -23,6 +50,75 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
     }
   };
 
+  const getModifiedDataForTypeGraph = (typeData: TTypeGraphNodeDTO[]) => {
+    const test = typeData.map((a) => {
+      return {
+        ...a,
+        name: a.type,
+        children: a.children.map((c) => ({
+          ...c,
+          objectType: a.objectType,
+          size: a.children.length,
+        })),
+      };
+    });
+
+    const entitygroups = test
+      .filter((d) => d.objectType === ObjectTypeEnum.Entity && d.name !== "Entity")
+      .map((a) => {
+        return {
+          ...a,
+          children: a.children.map((c) => ({ ...c, size: a.children.length })),
+        };
+      });
+
+    const singleEntities = test
+      .find((d) => d.name === "Entity")
+      ?.children?.map((a) => {
+        return {
+          ...a,
+          size: 1,
+        };
+      });
+
+    const entityGroup = {
+      name: "ENTITY",
+      children: [...entitygroups, ...(singleEntities ?? [])],
+    };
+
+    const studyGroups = test
+      .filter((d) => d.objectType === ObjectTypeEnum.Study && d.name !== "Study")
+      .map((a) => {
+        return {
+          ...a,
+          children: a.children.map((c) => ({ ...c, size: a.children.length })),
+        };
+      });
+
+    const singleStudies = test
+      .find((d) => d.name === "Study")
+      ?.children?.map((a) => {
+        return {
+          ...a,
+          size: 1,
+        };
+      });
+
+    const studyGroup = {
+      name: "STUDY",
+      children: [...studyGroups, ...(singleStudies ?? [])],
+    };
+
+    return {
+      name: "PackData",
+      size: 1,
+      children: [
+        entityGroup.children.length > 0 ? entityGroup : null,
+        studyGroup.children.length > 0 ? studyGroup : null,
+      ].filter((a) => a),
+    };
+  };
+
   useEffect(() => {
     if (!data || !data.length) return;
 
@@ -32,18 +128,13 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
     // Clear previous SVG
     select(container).selectAll("svg").remove();
 
-    const filteredData = data.map((node) => ({
-      ...node,
-      children: node.children?.filter((child) =>
-        searchKeyword ? child.name.toLowerCase().includes(searchKeyword.toLowerCase()) : true,
-      ),
-    }));
+    const modifiedData = getModifiedDataForTypeGraph(data);
 
     const width = container.clientWidth || 500;
     const height = container.clientHeight || 500;
 
     const root = pack<TTypeGraphNodeDTO>().size([width, height]).padding(8)(
-      hierarchy({ name: "root", children: filteredData }).sum((d) => d.size || 1),
+      hierarchy(modifiedData).sum((d) => d.size || 1),
     );
 
     const svg = select(container)
@@ -59,9 +150,32 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
 
     const svgGroup = svg.append("g");
 
-    const color = scaleOrdinal<number, string>()
-      .domain([0, 1, 2, 3])
-      .range(["#ff4d4d", "#0099cc", "#33cc33", "#ffcc00"]);
+    const color = scaleOrdinal<string>()
+      .domain(["ENTITY", "STUDY", "PackData"])
+      .range(["#0099CC", "#800080", "rgb(242, 244, 248)"]); // Updated first circle color
+
+    const calculateColor = (d: HierarchyCircularNode<TTypeGraphNodeDTO>) => {
+      const depth = d.depth;
+      while (d.depth > 1 && d.parent) {
+        d = d.parent;
+      }
+      const baseColor = color(d.data.name) || "#0099cc";
+      const modifiedColor = d3Hsl(baseColor);
+      modifiedColor.l += depth === 1 ? 0 : depth * 0.1;
+      return modifiedColor.toString();
+    };
+
+    // Tooltip
+    const tooltip = select(container)
+      .append("div")
+      .attr("class", "tooltip")
+      .style("position", "absolute")
+      .style("visibility", "hidden")
+      .style("background-color", "white")
+      .style("padding", "5px")
+      .style("border-radius", "4px")
+      .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)")
+      .style("z-index", "10");
 
     // Draw circles
     svgGroup
@@ -69,7 +183,7 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
       .data(root.descendants())
       .enter()
       .append("circle")
-      .attr("fill", (d, i) => (d.children ? color(i % 4) : "#ddd"))
+      .attr("fill", (d) => calculateColor(d))
       .attr("stroke", "white")
       .attr("cx", (d) => d.x)
       .attr("cy", (d) => d.y)
@@ -78,31 +192,42 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
       .on("click", (_, d: HierarchyCircularNode<TTypeGraphNodeDTO>) => {
         if (d.data.id) navigateToObject({ objectType: d.data.objectType, id: d.data.id });
       })
-      .on("mouseover", function () {
+      .on("mouseover", function (event, d) {
+        tooltip
+          .text(d.data.name)
+          .style("top", `${event.pageY - 10}px`)
+          .style("left", `${event.pageX + 10}px`)
+          .style("visibility", "visible");
         select(this).attr("stroke", "yellow").attr("stroke-width", 2);
       })
+      .on("mousemove", (event) => {
+        tooltip.style("top", `${event.pageY - 10}px`).style("left", `${event.pageX + 10}px`);
+      })
       .on("mouseout", function () {
+        tooltip.style("visibility", "hidden");
         select(this).attr("stroke", "white").attr("stroke-width", 1);
       });
 
-    // Add labels
+    // Add labels for ENTITY and STUDY only
     svgGroup
       .selectAll("text")
-      .data(root.descendants().filter((d) => d.depth === 1))
+      .data(root.descendants().filter((d) => d.data.name === "ENTITY" || d.data.name === "STUDY"))
       .enter()
       .append("text")
       .attr("x", (d) => d.x)
       .attr("y", (d) => d.y)
       .attr("text-anchor", "middle")
-      .style("font-size", "12px")
-      .style("fill", "black")
+      .style("font-size", "16px")
+      .style("fill", "#252525")
+      .style("font-family", "IBM Plex Sans, sans-serif")
+      .style("font-weight", "bold")
       .text((d) => d.data?.name);
   }, [data, searchKeyword, navigate]);
 
   return (
     <div className="packGraphDashboard">
       <div className="overlayPanel group">
-        <div ref={containerRef} className="packGraphContainer p-4" />
+        <div ref={containerRef} className="packGraphContainer p-4" id="packGraph" />
         <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 hover:bg-opacity-50">
           <div className="hidden text-center group-hover:block">
             <FindestButton

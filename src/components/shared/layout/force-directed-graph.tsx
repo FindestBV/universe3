@@ -198,7 +198,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
       </div>
 
       {/* Graph Container */}
-      <div className="forceDirectedGraphContainer absolute inset-0">
+      <div className="forceDirectedGraphContainer">
         <div className="overlayPanel group h-full">
           <svg ref={containerRef} />
           <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 hover:bg-opacity-50">

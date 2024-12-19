@@ -1,34 +1,23 @@
 .dataView{
     @apply flex h-screen w-full flex-col items-center justify-center gap-4;
+
+
+    .blueDot__indicator{
+        @apply grid h-[8px] w-[8px] place-items-center items-center justify-center rounded-full text-[9px] bg-[#0099CC];
+    }
+     
+     .purpleDot__indicator{
+        @apply grid h-[8px] w-[8px] place-items-center items-center justify-center rounded-full text-[9px] bg-purple-500;
+    }
+     
 }
 
+// TODO: handle this better. Could work as either nested or a standalone utility.
 
 .blueDot__indicator{
-    display: grid;
-    height: 8px;
-    width: 8px;
-    place-items: center;
-    align-items: center;
-    justify-content: center;
-    border-radius: 9999px;
-    --tw-bg-opacity: 1;
-    background-color: rgb(0 122 255);
-    font-size: 9px;
-    --tw-text-opacity: 1;
-    color: rgb(255 255 255);
+   @apply grid h-[8px] w-[8px] place-items-center items-center justify-center rounded-full text-[9px] bg-[#0099CC];
 }
 
 .purpleDot__indicator{
-    display: grid;
-    height: 8px;
-    width: 8px;
-    place-items: center;
-    align-items: center;
-    justify-content: center;
-    border-radius: 9999px;
-    --tw-bg-opacity: 1;
-    background-color: rgb(88, 86, 214);
-    font-size: 9px;
-    --tw-text-opacity: 1;
-    color: rgb(88, 86, 214);
+    @apply grid h-[8px] w-[8px] place-items-center items-center justify-center rounded-full text-[9px] bg-purple-500;
 }
