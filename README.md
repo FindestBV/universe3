@@ -75,11 +75,11 @@ The project structure follows a standard React application layout:
 
 ```
 universe3/
-  ├── node_modules/      # Project dependencies
-  ├── public/            # Public assets
+  ├── node_modules/        # Project dependencies
+  ├── public/              # Public
   ├── src/
-  |   ├── assets    # React components
-  │   ├── components/    # React components
+  |   ├── assets           # assets
+  │   ├── components/      # React components
   │   │   └── login/
   |   |   └── shared/
   |   |   |     └── cards/
@@ -89,20 +89,22 @@ universe3/
   |   |   |     └── search/
   |   |   |     └── sidebar/
   |   |   |     └── utilities/
-  |   |   └── ui/  # shadcn/ui primatives/compos
-  │   ├── hooks/   # Misc hooks
-  │   ├── i18n/    # Support for i18n
-  │   ├── lib/     # Lib & Utils
-  │   ├── services/    # React components
-  |   |   └── api.ts    # Base
-  │   |   └── auth/    # Auth API
-  │   |   └── documents/  # Documents
-  │   |   └── search/    # Search
+  |   |   |
+  |   |   └── ui/          # shadcn/ui primatives/components
+  |   |
+  │   ├── hooks/           # Misc hooks
+  │   ├── i18n/            # Support for i18n
+  │   ├── lib/             # Lib & Utils
+  │   ├── services/        # React components
+  |   |   └── api.ts       # Base
+  │   |   └── auth/        # Auth API
+  │   |   └── documents/   # Documents
+  │   |   └── search/      # Search
   │   |   └── entities/    # Entities
-  │   |   └── study/    # Study
-  │   |   └── activity/  # Activity
-  │   |   └── utilities/  # Utility - it does something, but probably best stored separately
-  |   ├── styles/        # CSS stylesheets
+  │   |   └── study/       # Study
+  │   |   └── activity/    # Activity
+  │   |   └── utilities/   # Utility - it does something, but probably best stored separately
+  |   ├── styles/          # CSS stylesheets
   │   |   └── colors/
   │   |   └── components/
   │   |   └── typography/
@@ -120,13 +122,13 @@ universe3/
   │   |   └── NotFound/
   │   |   └── Queries/
   │   |   └── Studies
-  │   ├── App.tsx        # Application entry point
-  │   └── main.tsx       # Main rendering file
-  |   └── store.ts       # Redux Store
-  ├── eslint.config.js   # ESLint configuration
-  ├── index.html         # HTML entry point
-  ├── postcss.config.js  # PostCSS configuration
-  ├── tailwind.config.ts # Tailwind CSS configuration
-  ├── tsconfig.json      # TypeScript configuration
-  └── vite.config.ts     # Vite configuration
+  │   ├── App.tsx          # Application entry point
+  │   └── main.tsx         # Main rendering file
+  |   └── store.ts         # Redux Store
+  ├── eslint.config.js     # ESLint configuration
+  ├── index.html           # HTML entry point
+  ├── postcss.config.js    # PostCSS configuration
+  ├── tailwind.config.ts   # Tailwind CSS configuration
+  ├── tsconfig.json        # TypeScript configuration
+  └── vite.config.ts       # Vite configuration
 ```
