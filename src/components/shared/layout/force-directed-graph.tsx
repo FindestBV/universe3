@@ -92,12 +92,12 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
       .enter()
       .append("line")
       .attr("stroke", (d) =>
-        (d.source as any).type === "highlight" || (d.target as any).type === "highlight"
+        (d.source as any).type === "study" || (d.target as any).type === "study"
           ? "#007AFF"
           : "#CCCCCC",
       )
       .attr("stroke-width", (d) =>
-        (d.source as any).type === "highlight" || (d.target as any).type === "highlight" ? 6 : 2,
+        (d.source as any).type === "study" || (d.target as any).type === "study" ? 6 : 2,
       )
       .attr("stroke-linecap", "round");
 
@@ -107,8 +107,8 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
       .data(nodes)
       .enter()
       .append("circle")
-      .attr("r", (d) => (d.type === "highlight" ? 30 : 10))
-      .attr("fill", (d) => (d.type === "highlight" ? "#0099CC" : "#000000"))
+      .attr("r", (d) => (d.type === "entity" ? 30 : 10))
+      .attr("fill", (d) => (d.type === "entity" ? "#0099CC" : "#000000"))
       .style("cursor", "pointer")
       .call(
         d3Drag<SVGCircleElement, Node>()
@@ -130,7 +130,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
 
     node
       .on("click", (event, d) => {
-        navigate(`/details/${d.id}`);
+        navigate(`/${d.type}/${d.id}`);
       })
       .on("mouseover", function () {
         select(this).attr("stroke", "yellow").attr("stroke-width", 2);
@@ -153,23 +153,35 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
   }, [linkingData, navigate]);
 
   return (
-    <div className="forceDirectedGraphContainer">
-      <div className="overlayPanel group">
-        <svg ref={containerRef} preserveAspectRatio="xMidYMid meet" />
-        <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 hover:bg-opacity-50">
-          <div className="hidden text-center group-hover:block">
-            <FindestButton
-              extraClassName={
-                "rounded bg-white px-8 py-2 text-black transition hover:bg-blue-700 hover:text-white"
-              }
-              onClick={() => navigate("/dataview")}
-            >
-              SEE NETWORK DETAILS
-            </FindestButton>
+    <>
+      <div className="absolute left-0 top-0 p-4">
+        <ul className="flex flex-col">
+          <li className="flex flex-row items-center gap-2 text-sm text-gray-500">
+            <span className="blueDot__indicator"></span>Entity
+          </li>
+          <li className="flex flex-row items-center gap-2 text-sm text-gray-500">
+            <span className="purpleDot__indicator"></span>Study
+          </li>
+        </ul>
+      </div>
+      <div className="forceDirectedGraphContainer">
+        <div className="overlayPanel group">
+          <svg ref={containerRef} />
+          <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 hover:bg-opacity-50">
+            <div className="hidden text-center group-hover:block">
+              <FindestButton
+                extraClassName={
+                  "rounded bg-white px-8 py-2 text-black transition hover:bg-blue-700 hover:text-white"
+                }
+                onClick={() => navigate("/dataview")}
+              >
+                SEE RELATIONS GRAPH
+              </FindestButton>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
