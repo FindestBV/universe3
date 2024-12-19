@@ -7,7 +7,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix
 import { ExternalLink, Link, Trash2 } from "lucide-react";
 
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import LinkedCounts from "./linked-counts";
 
@@ -102,6 +102,10 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   const navigate = useNavigate();
   const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
 
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const isDocument = currentPath.includes("document");
+
   const handleCheckboxChange = (checked: boolean) => onSelect(id, checked);
   const handleCardClick = () => {
     const routes = {
@@ -112,11 +116,11 @@ export const GenericCard: React.FC<GenericCardProps> = ({
     navigate(routes[itemType], { state: { id, title, description, dateAdded, url, abstract } });
   };
 
-  console.log("type", itemType);
+  console.log("isDocument", isDocument);
 
   return (
     <div className="itemCard">
-      <div className={`innerCardMain items-start ${type === "document" ? "gap-4" : ""}`}>
+      <div className={`innerCardMain items-start ${isDocument ? "gap-4" : ""}`}>
         {/* Checkbox */}
         <Checkbox
           id={`card-${id}`}
@@ -127,22 +131,22 @@ export const GenericCard: React.FC<GenericCardProps> = ({
 
         {/* Main Card */}
         <Card key={id} className="flex flex-1 flex-row gap-4" onClick={handleCardClick}>
-          {type === "document" && <div>Webpage</div>}
+          {isDocument && <div>Webpage</div>}
           <div className="flex flex-1 flex-col px-4">
             <div className="w-auto cursor-pointer">
-              {type !== "document" && (
+              {!isDocument && (
                 <div className="iconText">{type === "StudyTypeUndefined" ? "Study" : "Entity"}</div>
               )}
             </div>
             <div className="flex flex-row gap-2">
               <h3
                 className={`overflow-hidden text-ellipsis font-bold text-black ${
-                  type !== "document" ? "py-2" : ""
+                  !isDocument ? "py-2" : ""
                 }`}
               >
                 {title}
               </h3>
-              {type === "document" && <DocumentLink url={url} />}
+              {isDocument && <DocumentLink url={url} />}
             </div>
             <div className="flex flex-row items-center gap-4">
               <LinkedCounts
