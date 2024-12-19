@@ -6,17 +6,13 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import DataViewSearchBar from "../search/data-view-searchbar";
 import { FindestButton } from "./findest-button";
 
-interface DataViewToolbarProps {
-  children: ReactNode;
-}
-
-export const DataViewToolbar: FC<DataViewToolbarProps> = () => {
+export const DataViewToolbar: FC = () => {
   const [filters, setFilters] = useState<string[]>([]);
   const filterOptions = ["RELATIONS GRAPH", "PAGE TYPE BREAKDOWN"];
   const navigate = useNavigate();

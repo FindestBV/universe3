@@ -24,7 +24,7 @@ import {
   SquareArrowOutUpRight,
 } from "lucide-react";
 
-import { Key, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -34,9 +34,9 @@ export const Dashboard = () => {
   const { t } = useTranslation();
   const [searchKeyword, setSearchKeyword] = useState<string>("");
 
-  const { data: activityData } = useGetMyRecentActivityQuery();
+  const { data: activityData, isLoading: activityDataIsLoading } = useGetMyRecentActivityQuery();
   const { data: maxActivityData, isLoading: maxActivityLoading } = useGetMaxActivityQuery();
-  const { data: linkingData } = useGetLinkingQuery();
+  const { data: linkingData, isLoading: linkingDataIsLoading } = useGetLinkingQuery();
   const { data: typesData, isLoading: typesDataLoading } = useGetPageTypesQuery();
 
   const nodes = [
@@ -44,18 +44,7 @@ export const Dashboard = () => {
     { id: "2", data: { objectTypeEnum: "type2", text: "Node 2" }, x: 100, y: 100 },
   ];
 
-  const defaultLinks = [{ source: "1", target: "2" }];
-
-  const links = linkingData
-    ? linkingData.map((item) => ({
-        source: item.id,
-        target: item.lowerLevelNodes[0]?.id || null, // Ensure `target` exists
-      }))
-    : defaultLinks;
-
   const navigate = useNavigate();
-  console.log("linkingData data", linkingData);
-  console.log("typesData data", typesData);
 
   const handleNavigateToEntities = (type: string, id: string) => {
     let redirRoute;
@@ -79,9 +68,15 @@ export const Dashboard = () => {
   return (
     <div className="flex h-full w-full flex-col pb-11 pl-10 pr-5 pt-10 max-sm:px-4">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div className="flex w-full flex-col space-y-3 overflow-hidden max-sm:px-4">
+        <div className="relative flex w-full flex-col space-y-3 overflow-hidden max-sm:px-4">
           <h2 className="overViewTitle">{t("pickup")}</h2>
           <div className="flex h-[350px] w-full flex-col items-start justify-start gap-2 overflow-y-scroll">
+            {activityDataIsLoading && (
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white bg-opacity-50">
+                <Loader className="mx-auto mb-2 animate-spin" />
+                <h3 className="font-bold text-black">Loading Activity Data</h3>
+              </div>
+            )}
             {activityData &&
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               activityData.map((activity: any) => (
@@ -145,13 +140,14 @@ export const Dashboard = () => {
           <h2 className="overViewTitle">{t("relationsGraph")}</h2>
           <div className="relative flex h-[320px] w-full items-center justify-center rounded-xl">
             <div className="forceDirectionGraph">
-              {!linkingData && (
+              {linkingDataIsLoading ? (
                 <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white bg-opacity-50">
                   <Loader className="mx-auto mb-2 animate-spin" />
                   <h3 className="font-bold text-black">Loading Relations Data</h3>
                 </div>
+              ) : (
+                <ForceDirectedGraphView initialNodes={nodes} linkingData={linkingData} />
               )}
-              <ForceDirectedGraphView initialNodes={nodes} linkingData={linkingData} />
             </div>
           </div>
         </div>
