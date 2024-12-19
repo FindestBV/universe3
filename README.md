@@ -80,10 +80,19 @@ universe3/
   ├── src/
   |   ├── assets    # React components
   │   ├── components/    # React components
-  │   │   └── ui/        # shadcn/ui components
-  │   ├── hooks/    # React components
-  │   ├── lib/    # React components
-  │   ├── routes/    # React components
+  │   │   └── login/
+  |   |   └── shared/
+  |   |   |     └── cards/
+  |   |   |     └── layout/
+  |   |   |     └── loaders/
+  |   |   |     └── modals/
+  |   |   |     └── search/
+  |   |   |     └── sidebar/
+  |   |   |     └── utilities/
+  |   |   └── ui/  # shadcn/ui primatives/compos
+  │   ├── hooks/   # Misc hooks
+  │   ├── i18n/    # Support for i18n
+  │   ├── lib/     # Lib & Utils
   │   ├── services/    # React components
   |   |   └── api.ts    # Base
   │   |   └── auth/    # Auth API
@@ -92,21 +101,25 @@ universe3/
   │   |   └── entities/    # Entities
   │   |   └── study/    # Study
   │   |   └── activity/  # Activity
+  │   |   └── utilities/  # Utility - it does something, but probably best stored separately
   |   ├── styles/        # CSS stylesheets
-  │   ├── types           # Utility functions
-  │   ├── views/    # React components
+  │   |   └── colors/
+  │   |   └── components/
+  │   |   └── typography/
+  │   |   └── utilities
+  │   |   └── universe.scss
+  │   ├── types # Utility functions
+  │   ├── views    # React components
   |   |   └── Dashboard/
+  |   |   └── DataView/
   │   |   └── Document/
   │   |   └── Documents/
   │   |   └── Entities/
-  │   |   └── Entity/
   │   |   └── Inbox/
   │   |   └── LoginPage/
   │   |   └── NotFound/
   │   |   └── Queries/
-  │   |   └── Studies/
-  │   |   └── Study/
-  │   |   └── Users/
+  │   |   └── Studies
   │   ├── App.tsx        # Application entry point
   │   └── main.tsx      # Main rendering file
   |   └── store.ts       # Redux Store
