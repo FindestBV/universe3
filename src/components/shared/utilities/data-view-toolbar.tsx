@@ -32,15 +32,13 @@ export const DataViewToolbar: FC = () => {
   }, []);
 
   return (
-    <div className="toolbar absolute top-0 w-full border-b border-gray-300 bg-gray-100 px-4 py-2">
+    <div className="toolbar absolute top-0 w-full bg-white px-4 py-2">
       <div className="flex items-center justify-between">
         {/* Left Section: Ask Igor Button */}
         <div className="flex flex-nowrap items-center space-x-2">
           <FindestButton
             align="left"
-            extraClassName={
-              "rounded bg-white px-8 py-2 text-white transition hover:bg-blue-700 hover:text-white"
-            }
+            extraClassName={"rounded border-0"}
             onClick={() => navigate("/dashboard")}
           >
             BACK TO OVERVIEW

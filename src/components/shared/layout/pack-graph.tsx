@@ -232,7 +232,7 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
           <div className="hidden text-center group-hover:block">
             <FindestButton
               align="right"
-              extraClassName={"rounded bg-white px-8 py-2 text-white transition hover:bg-blue-700"}
+              extraClassName={"rounded bg-white hover:bg-white px-8 py-2 text-black transition"}
               onClick={() => navigate("/dataview")}
             >
               SEE PAGE TYPE BREAKDOWN

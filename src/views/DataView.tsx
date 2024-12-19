@@ -19,7 +19,7 @@ export const DataView = () => {
     >
       <DataViewToolbar />
       <div className="text-center">
-        <div className="absolute left-0 top-[5em] p-4">
+        <div className="absolute left-5 top-[5em] p-4">
           <ul className="flex flex-col">
             <li className="flex flex-row items-center gap-2 text-sm text-gray-500">
               <span className="blueDot__indicator"></span>Entity

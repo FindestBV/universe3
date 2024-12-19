@@ -206,7 +206,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
               <FindestButton
                 align="right"
                 extraClassName={
-                  "rounded bg-white px-8 py-2 text-white transition hover:bg-[#3ce9f0]"
+                  "rounded bg-[#3ce9f0] hover:bg-[#3ce9f0] px-8 py-2 text-black transition"
                 }
                 onClick={() => navigate("/dataview")}
               >
