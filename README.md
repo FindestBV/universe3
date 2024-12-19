@@ -62,6 +62,16 @@ Follow these steps to get started with the react-vite-ui template:
    pnpm dev
    ```
 
+Development server will start on
+
+```bash
+   localhost:5173
+```
+
+### Login
+
+To log in, use your findest email.
+
 ## 📜 Available Scripts
 
 - pnpm dev - Starts the development server.
@@ -95,7 +105,7 @@ universe3/
   │   ├── hooks/           # Misc hooks
   │   ├── i18n/            # Support for i18n
   │   ├── lib/             # Lib & Utils
-  │   ├── services/        # React components
+  │   ├── api/             # RTKQuery API Slices
   |   |   └── api.ts       # Base
   │   |   └── auth/        # Auth API
   │   |   └── documents/   # Documents
