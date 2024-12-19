@@ -56,7 +56,7 @@ export const DataViewPanel: FC<TForceDirectedGraphViewProps> = ({ linkingData })
     svg
       .attr("width", width)
       .attr("height", height)
-      .attr("viewBox", `0 0 565 206`)
+      .attr("viewBox", `0 0 1205 362`)
       .style("width", "100%")
       .style("height", "100%")
       .style("margin", "0 auto");
@@ -81,7 +81,7 @@ export const DataViewPanel: FC<TForceDirectedGraphViewProps> = ({ linkingData })
       .append("g")
       .attr(
         "transform",
-        "translate(601.5884617278166,216.87221557475047) scale(0.04674671197096185)",
+        "translate(601.7406264847162,180.4767437749673) scale(0.03888504014419537)",
       ) // Apply transform
       .call(zoomBehavior as any);
 

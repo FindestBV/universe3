@@ -148,7 +148,7 @@ export const Dashboard = () => {
               {!linkingData && (
                 <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white bg-opacity-50">
                   <Loader className="mx-auto mb-2 animate-spin" />
-                  <h3 className="font-bold text-black">Loading Page Linking Data...</h3>
+                  <h3 className="font-bold text-black">Loading Relations Data</h3>
                 </div>
               )}
               <ForceDirectedGraphView initialNodes={nodes} linkingData={linkingData} />
