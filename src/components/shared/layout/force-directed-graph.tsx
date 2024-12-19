@@ -94,7 +94,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
     svg
       .attr("width", width)
       .attr("height", height)
-      .attr("viewBox", `0 0 565 206`)
+      .attr("viewBox", `0 0 600 250`)
       .style("width", "100%")
       .style("height", "100%")
       .style("margin", "0 auto");
@@ -117,10 +117,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
 
     const svgGroup = svg
       .append("g")
-      .attr(
-        "transform",
-        "translate(282.0683290021384,102.7027043871232) scale(0.022137523370156644)",
-      ) // Apply transform
+      .attr("transform", "translate(282.0683290021384,102.7027043871232) scale(0.05)") // Apply transform
       .call(zoomBehavior as any);
 
     // Render Links
@@ -201,8 +198,8 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
       </div>
 
       {/* Graph Container */}
-      <div className="forceDirectedGraphContainer">
-        <div className="overlayPanel group">
+      <div className="forceDirectedGraphContainer absolute inset-0">
+        <div className="overlayPanel group h-full">
           <svg ref={containerRef} />
           <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 hover:bg-opacity-50">
             <div className="hidden text-center group-hover:block">
