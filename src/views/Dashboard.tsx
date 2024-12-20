@@ -72,7 +72,7 @@ export const Dashboard = () => {
   return (
     <div className="max-sm:px- flex h-full w-full flex-col pb-11 pl-10 pr-5 pt-10">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div className="relative flex w-full flex-col space-y-3 overflow-hidden rounded-sm bg-blue-300 p-4 max-sm:px-4">
+        <div className="relative flex w-full flex-col space-y-3 overflow-hidden rounded-sm bg-blue-100 p-4 max-sm:px-4">
           <h2 className="overViewTitle">
             {t("welcome")} {`${user}`}
           </h2>
