@@ -70,7 +70,7 @@ export const DataView = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
-      <div className="toolbar absolute top-0 w-full bg-white px-4 py-2">
+      <div className="toolbar absolute top-0 z-10 w-full bg-white px-4 py-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <FindestButton

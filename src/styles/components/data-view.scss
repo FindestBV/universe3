@@ -11,15 +11,14 @@
     }
     
     .packGraphContainer{
-        width: 1000px;
-        max-height: 1000px;
+        width: 800px;
         position: relative;
-        overflow: hidden;
-        padding: 5em 0;
+        // overflow: hidden;
+        padding: 2em 0;
         align-items: center;
         justify-content: center;
         display: flex;
-        height: 800px;
+        height: 900px;
     }
 
 }
