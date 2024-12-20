@@ -8,6 +8,7 @@ import { currentUser } from "@/api/auth/authSlice";
 import ForceDirectedGraphView from "@/components/shared/layout/force-directed-graph";
 import { OverlayPanel } from "@/components/shared/layout/overlay-panel";
 import PackGraphView from "@/components/shared/layout/pack-graph";
+import { FindestButton } from "@/components/shared/utilities/findest-button";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -71,7 +72,7 @@ export const Dashboard = () => {
   return (
     <div className="max-sm:px- flex h-full w-full flex-col pb-11 pl-10 pr-5 pt-10">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div className="relative flex w-full flex-col space-y-3 overflow-hidden rounded-md bg-gray-100 px-4 py-2 pt-4 max-sm:px-4">
+        <div className="relative flex w-full flex-col space-y-3 overflow-hidden rounded-sm bg-blue-300 p-4 max-sm:px-4">
           <h2 className="overViewTitle">
             {t("welcome")} {`${user}`}
           </h2>
@@ -151,7 +152,22 @@ export const Dashboard = () => {
                   <h3 className="font-bold text-black">Loading Relations Data</h3>
                 </div>
               ) : (
-                <ForceDirectedGraphView initialNodes={nodes} linkingData={linkingData} />
+                <OverlayPanel>
+                  <ForceDirectedGraphView initialNodes={nodes} linkingData={linkingData} />
+                  <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 ease-in-out hover:bg-opacity-50">
+                    <div className="hidden text-center group-hover:block">
+                      <FindestButton
+                        align="right"
+                        extraClassName={
+                          "rounded bg-[#3ce9f0] group-hover:bg-[#3ce9f0] px-8 py-2 text-black transition-all duration-300 ease-in-out"
+                        }
+                        onClick={() => navigate("/dataview", { state: { graphType: "link" } })}
+                      >
+                        SEE RELATIONS GRAPH
+                      </FindestButton>
+                    </div>
+                  </div>
+                </OverlayPanel>
               )}
             </div>
           </div>
@@ -162,8 +178,8 @@ export const Dashboard = () => {
           <div className="relative flex h-[320px] w-full flex-col items-start justify-start gap-1 overflow-y-scroll rounded-xl">
             {/* Show Loader */}
             {maxActivityLoading && (
-              <Skeleton className="muted relative flex h-[320px] w-full animate-pulse flex-col items-start justify-start gap-1 overflow-y-scroll rounded-xl">
-                {/* <Loader className="mx-auto mb-2 animate-spin items-center justify-center text-white" /> */}
+              <Skeleton className="relative flex h-[320px] w-full flex-col items-start justify-start gap-1 overflow-y-scroll rounded-xl">
+                <Loader className="mx-auto mb-2 animate-spin items-center justify-center text-white" />
               </Skeleton>
             )}
 
@@ -204,6 +220,19 @@ export const Dashboard = () => {
               )}
               <OverlayPanel>
                 <PackGraphView data={typesData} searchKeyword={searchKeyword} />
+                <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 ease-in-out hover:bg-opacity-50">
+                  <div className="hidden text-center group-hover:block">
+                    <FindestButton
+                      align="right"
+                      extraClassName={
+                        "rounded bg-white group-hover:bg-white px-8 py-2 text-black transition-all duration-300 ease-in-out"
+                      }
+                      onClick={() => navigate("/dataview", { state: { graphType: "pack" } })}
+                    >
+                      SEE PAGE TYPE BREAKDOWN
+                    </FindestButton>
+                  </div>
+                </div>
               </OverlayPanel>
             </div>
           </div>

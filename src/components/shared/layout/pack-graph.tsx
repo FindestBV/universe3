@@ -226,22 +226,7 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
 
   return (
     <div className="packGraphDashboard">
-      <div className="overlayPanel group">
-        <div ref={containerRef} className="packGraphContainer p-4" id="packGraph" />
-        <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 ease-in-out hover:bg-opacity-50">
-          <div className="hidden text-center group-hover:block">
-            <FindestButton
-              align="right"
-              extraClassName={
-                "rounded bg-white group-hover:bg-white px-8 py-2 text-black transition-all duration-300 ease-in-out"
-              }
-              onClick={() => navigate("/dataview")}
-            >
-              SEE PAGE TYPE BREAKDOWN
-            </FindestButton>
-          </div>
-        </div>
-      </div>
+      <div ref={containerRef} className="packGraphContainer p-4" id="packGraph" />
     </div>
   );
 };

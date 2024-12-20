@@ -186,7 +186,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
   return (
     <>
       {/* Your Existing Legend */}
-      <div className="absolute left-0 top-0 p-4">
+      <div className="absolute left-[2em] top-[5em] p-4">
         <ul className="flex flex-col">
           <li className="flex flex-row items-center gap-2 text-sm text-gray-500">
             <span className="blueDot__indicator"></span>Entity
@@ -199,22 +199,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
 
       {/* Graph Container */}
       <div className="forceDirectedGraphContainer">
-        <div className="overlayPanel group h-full">
-          <svg ref={containerRef} />
-          <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 ease-in-out hover:bg-opacity-50">
-            <div className="hidden text-center group-hover:block">
-              <FindestButton
-                align="right"
-                extraClassName={
-                  "rounded bg-[#3ce9f0] group-hover:bg-[#3ce9f0] px-8 py-2 text-black transition-all duration-300 ease-in-out"
-                }
-                onClick={() => navigate("/dataview")}
-              >
-                SEE RELATIONS GRAPH
-              </FindestButton>
-            </div>
-          </div>
-        </div>
+        <svg ref={containerRef} />
       </div>
     </>
   );
