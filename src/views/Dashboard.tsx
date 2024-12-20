@@ -71,7 +71,7 @@ export const Dashboard = () => {
   return (
     <div className="max-sm:px- flex h-full w-full flex-col pb-11 pl-10 pr-5 pt-10">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div className="relative flex w-full flex-col space-y-3 overflow-hidden rounded-sm bg-blue-300 p-4 max-sm:px-4">
+        <div className="relative flex w-full flex-col space-y-3 overflow-hidden rounded-md bg-gray-100 px-4 py-2 pt-4 max-sm:px-4">
           <h2 className="overViewTitle">
             {t("welcome")} {`${user}`}
           </h2>
@@ -162,8 +162,8 @@ export const Dashboard = () => {
           <div className="relative flex h-[320px] w-full flex-col items-start justify-start gap-1 overflow-y-scroll rounded-xl">
             {/* Show Loader */}
             {maxActivityLoading && (
-              <Skeleton className="relative flex h-[320px] w-full flex-col items-start justify-start gap-1 overflow-y-scroll rounded-xl">
-                <Loader className="mx-auto mb-2 animate-spin items-center justify-center text-white" />
+              <Skeleton className="muted relative flex h-[320px] w-full animate-pulse flex-col items-start justify-start gap-1 overflow-y-scroll rounded-xl">
+                {/* <Loader className="mx-auto mb-2 animate-spin items-center justify-center text-white" /> */}
               </Skeleton>
             )}
 

@@ -53,7 +53,6 @@ const items = [
       { title: "Documents", url: "/documents", icon: FileText },
       { title: "Entities", url: "/entities", icon: Fingerprint },
       { title: "Studies", url: "/studies", icon: BookOpenCheck },
-      { title: "Generate Report", url: "/generate-report", icon: BookOpenCheck },
     ],
   },
 ];
@@ -124,6 +123,9 @@ export function AppSidebar() {
                             </SidebarMenuItem>
                           </div>
                         ))}
+                        <SidebarMenuItem>
+                          <GenerateReport />
+                        </SidebarMenuItem>
                       </ul>
                     )}
                   </div>
@@ -152,7 +154,6 @@ export function AppSidebar() {
                     </SidebarMenuItem>
                   </div>
                 ))}
-                <GenerateReport />
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>

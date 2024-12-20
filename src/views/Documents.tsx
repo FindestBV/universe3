@@ -191,12 +191,6 @@ export const Documents: React.FC = () => {
         {data && (
           <div>
             {data.documents.slice(0, documentsPerPage).map((doc) => (
-              // <DocumentCard
-              //   key={doc.id}
-              //   {...doc}
-              //   isSelected={selectedDocs.has(doc.id)}
-              //   onSelect={handleSelectDoc}
-              // />
               <GenericCard
                 itemType="document"
                 key={doc.id}
