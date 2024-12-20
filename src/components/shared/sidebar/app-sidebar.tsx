@@ -36,6 +36,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 
 import AdvancedSearchModal from "../modals/advanced-search-modal";
+import GenerateReport from "../modals/generate-report-modal";
 
 // Menu items.
 const items = [
@@ -151,6 +152,7 @@ export function AppSidebar() {
                     </SidebarMenuItem>
                   </div>
                 ))}
+                <GenerateReport />
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>

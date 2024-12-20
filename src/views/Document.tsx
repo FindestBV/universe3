@@ -28,7 +28,7 @@ export const Document: React.FC = () => {
   useEffect(() => {
     if (fetchedDocument) {
       const timer = setTimeout(() => {
-        // setIsLoading(false);
+        setIsLoading(false);
       }, 250); // Simulate loading delay
 
       // Cleanup the timer to prevent memory leaks
