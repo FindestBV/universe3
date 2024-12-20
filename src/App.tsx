@@ -56,17 +56,18 @@ function AuthenticatedLayout() {
       <AppSidebar />
       <div className="app-canvas w-full">
         <DashboardHeader />
-        <main className="pageContent">
-          <TransitionGroup component={null}>
-            <CSSTransition key={location.key} classNames="fade" timeout={1000} nodeRef={nodeRef}>
-              <Suspense
-                fallback={
-                  <div className="flex h-screen flex-col items-center justify-center py-8 text-center">
-                    <Loader className="mx-auto mb-2 animate-spin" />
-                    <h3 className="text2-xl font-black">Loading</h3>
-                  </div>
-                }
-              >
+
+        <TransitionGroup component={null}>
+          <CSSTransition key={location.key} classNames="fade" timeout={1000} nodeRef={nodeRef}>
+            <Suspense
+              fallback={
+                <div className="flex h-screen flex-col items-center justify-center py-8 text-center">
+                  <Loader className="mx-auto mb-2 animate-spin" />
+                  <h3 className="text2-xl font-black">Loading</h3>
+                </div>
+              }
+            >
+              <main className="pageContent">
                 <Routes location={location}>
                   {/* TEMP!! THIS WILL BE REFACTORED */}
                   <Route path="/dashboard" element={<Dashboard />} />
@@ -82,10 +83,10 @@ function AuthenticatedLayout() {
                   <Route path="/inbox" element={<Inbox />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
-              </Suspense>
-            </CSSTransition>
-          </TransitionGroup>
-        </main>
+              </main>
+            </Suspense>
+          </CSSTransition>
+        </TransitionGroup>
       </div>
     </SidebarProvider>
   );

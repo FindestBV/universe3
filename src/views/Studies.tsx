@@ -1,5 +1,6 @@
 import GenericCard from "@/components/shared/cards/generic-card";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
+import { DocumentsSkeleton } from "@/components/shared/loaders/documents-skeleton";
 // import { StudyCard } from "@/components/shared/study-card";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -184,7 +185,7 @@ export const Studies: React.FC = () => {
         {isError && (
           <div className="text-red-600">Error loading studies: {JSON.stringify(error)}</div>
         )}
-        {isLoading && <DocumentSkeleton />}
+        {isLoading && <DocumentsSkeleton />}
         {data && (
           <div>
             {data.studies.slice(0, studiesPerPage).map((study) => (

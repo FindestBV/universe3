@@ -3,13 +3,10 @@ import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 import { renderProseMirrorContent } from "@/lib/renderProseMirror";
 
 import { useEffect } from "react";
-import { useLocation, useParams } from "react-router";
+import { useParams } from "react-router";
 
 export const Study: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const location = useLocation();
-  const loading = true;
-
   // Parse description
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let parsedDescription: any = null;
@@ -35,7 +32,7 @@ export const Study: React.FC = () => {
 
   return (
     <>
-      {loading ? (
+      {fetchedStudyIsLoading ? (
         <DocumentSkeleton />
       ) : (
         <div className="flex h-full w-full flex-col p-12 max-sm:px-4">
