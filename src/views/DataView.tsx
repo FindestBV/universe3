@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 export const DataView = () => {
   const [filters, setFilters] = useState<string[]>([]);
   const filterOptions = ["Link", "Pack"];
-  const defaultView = "Pack";
+  const defaultView = "Link";
   const navigate = useNavigate();
 
   const { data: linkingData } = useGetLinkingQuery();
