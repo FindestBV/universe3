@@ -108,10 +108,8 @@ universe3/
   │   ├── api/             # RTKQuery API Slices
   |   |   └── api.ts       # Base
   │   |   └── auth/        # Auth API
-  │   |   └── documents/   # Documents
+  │   |   └── documents/   # Documents, Entities & Studies - API queries/mutations all live here
   │   |   └── search/      # Search
-  │   |   └── entities/    # Entities
-  │   |   └── study/       # Study
   │   |   └── activity/    # Activity
   │   |   └── utilities/   # Utility - it does something, but probably best stored separately
   |   ├── styles/          # CSS stylesheets
