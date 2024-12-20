@@ -53,7 +53,7 @@ const activityTypeMapping: { [key: number]: string } = {
 
 export const DashboardHeader = () => {
   // const { t } = useTranslation();
-  const user = useSelector(currentUser);
+  // const user = useSelector(currentUser);
   const { data: activityData } = useGetMyRecentActivityDropdownQuery();
   const { data: documentInbox } = useGetMyDocumentInboxQuery();
 
@@ -201,7 +201,7 @@ export const DashboardHeader = () => {
       </div>
 
       <div className="flex items-center gap-2">
-        {user ? <p>Welcome, {`${user}`}</p> : null}
+        {/* {user ? <p>Welcome, {`${user}`}</p> : null} */}
         <LanguageSelector />
         <div className="create-action hidden items-center gap-2 sm:flex">
           <CreateItemModal />

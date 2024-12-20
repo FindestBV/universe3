@@ -52,7 +52,7 @@ const items = [
       { title: "Documents", url: "/documents", icon: FileText },
       { title: "Entities", url: "/entities", icon: Fingerprint },
       { title: "Studies", url: "/studies", icon: BookOpenCheck },
-      { title: "Generate Report", url: "/report", icon: BookOpenCheck },
+      { title: "Generate Report", url: "/generate-report", icon: BookOpenCheck },
     ],
   },
 ];

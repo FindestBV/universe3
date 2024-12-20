@@ -4,6 +4,7 @@ import {
   useGetMyRecentActivityQuery,
   useGetPageTypesQuery,
 } from "@/api/activity/activityApi";
+import { currentUser } from "@/api/auth/authSlice";
 import ForceDirectedGraphView from "@/components/shared/layout/force-directed-graph";
 import { OverlayPanel } from "@/components/shared/layout/overlay-panel";
 import PackGraphView from "@/components/shared/layout/pack-graph";
@@ -26,10 +27,9 @@ import {
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-// import { useSelector } from 'react-redux';
-// import { currentUser } from '@/services/auth/authSlice';
 export const Dashboard = () => {
   const { t } = useTranslation();
   const [searchKeyword, setSearchKeyword] = useState<string>("");
@@ -65,11 +65,13 @@ export const Dashboard = () => {
     });
   };
 
+  const user = useSelector(currentUser);
+
   return (
-    <div className="flex h-full w-full flex-col pb-11 pl-10 pr-5 pt-10 max-sm:px-4">
+    <div className="max-sm:px- flex h-full w-full flex-col pb-11 pl-10 pr-5 pt-10">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div className="relative flex w-full flex-col space-y-3 overflow-hidden max-sm:px-4">
-          <h2 className="overViewTitle">{t("pickup")}</h2>
+        <div className="relative flex w-full flex-col space-y-3 overflow-hidden rounded-sm bg-blue-100 p-4 max-sm:px-4">
+          <h2 className="overViewTitle">{`Welcome ${user}`}</h2>
           <div className="flex h-[350px] w-full flex-col items-start justify-start gap-2 overflow-y-scroll">
             {activityDataIsLoading && (
               <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white bg-opacity-50">
