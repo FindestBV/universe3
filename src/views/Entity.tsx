@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { currentUser } from "@/api/auth/authSlice";
 import { useGetEntityByIdQuery } from "@/api/documents/documentApi";
+import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 import { renderProseMirrorContent } from "@/lib/renderProseMirror";
 import { Loader } from "lucide-react";
 
@@ -37,28 +38,27 @@ export const Entity: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex h-full w-full flex-col p-12 max-sm:px-4">
-      <div className="max-sm:px-4l mx-auto flex h-full w-3/4 flex-col px-12 py-4">
-        {fetchedEntityIsLoading ? (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white bg-opacity-50">
-            <Loader className="mx-auto mb-2 animate-spin" />
-            <h3 className="font-bold text-black">Loading...</h3>
+    <>
+      {fetchedEntityIsLoading ? (
+        <DocumentSkeleton />
+      ) : (
+        <div className="flex h-full w-full flex-col p-12 max-sm:px-4">
+          <div className="max-sm:px-4l mx-auto flex h-full w-3/4 flex-col px-12 py-4">
+            <>
+              <h1 className="mb-2 text-xl font-black text-black">
+                {fetchedEntity?.title || "Entity"}
+              </h1>
+              <span className="font-black text-black">Entity ID: {id}</span>
+              <div className="text-black">
+                {parsedDescription
+                  ? renderProseMirrorContent(parsedDescription)
+                  : "Lorem ipsum dolor sit amet consectetur."}
+              </div>
+            </>
           </div>
-        ) : (
-          <>
-            <h1 className="mb-2 text-xl font-black text-black">
-              {fetchedEntity?.title || "Entity"}
-            </h1>
-            <span className="font-black text-black">Entity ID: {id}</span>
-            <div className="text-black">
-              {parsedDescription
-                ? renderProseMirrorContent(parsedDescription)
-                : "Lorem ipsum dolor sit amet consectetur."}
-            </div>
-          </>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 };
 

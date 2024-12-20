@@ -7,10 +7,10 @@ interface DocumentSkeletonProps {
 
 export const DocumentSkeleton: React.FC<DocumentSkeletonProps> = () => {
   return (
-    <div className="flex h-screen w-full flex-col">
-      <header className="documentCrud">
+    <div className="mx-auto flex h-full w-full flex-col px-12 py-4 max-sm:px-4">
+      {/* <header className="documentCrud">
         <Toolbar />
-      </header>
+      </header> */}
 
       <div className="flex h-full w-full flex-col p-12 max-sm:px-4">
         {/* Title Skeleton */}
@@ -32,6 +32,9 @@ export const DocumentSkeleton: React.FC<DocumentSkeletonProps> = () => {
         <div className="mb-4 space-y-2">
           <Skeleton className="h-4 w-full animate-pulse bg-gray-100" />
           <Skeleton className="h-4 w-5/6 animate-pulse bg-gray-100" />
+          <Skeleton className="h-4 w-4/5 animate-pulse bg-gray-100" />
+          <Skeleton className="h-4 w-4/5 animate-pulse bg-gray-100" />
+          <Skeleton className="h-4 w-4/5 animate-pulse bg-gray-100" />
           <Skeleton className="h-4 w-4/5 animate-pulse bg-gray-100" />
         </div>
 

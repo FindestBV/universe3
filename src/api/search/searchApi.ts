@@ -7,8 +7,11 @@ export const searchApi = api.injectEndpoints({
     searchItems: builder.mutation<SavedDocumentResponse, string>({
       query: (query) => `search/searchbar?query=${query}&api-version=2.0`,
     }),
+    searchDataPageItems: builder.mutation<SavedDocumentResponse, string>({
+      query: (query) => `search/searchbar?query=${query}&api-version=2.0`,
+    }),
   }),
   overrideExisting: process.env.NODE_ENV === "development", // This allows overrides only in development mode.
 });
 
-export const { useSearchItemsMutation, usePrefetch } = searchApi;
+export const { useSearchItemsMutation, useSearchDataPageItemsMutation, usePrefetch } = searchApi;

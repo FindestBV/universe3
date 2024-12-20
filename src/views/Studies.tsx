@@ -188,11 +188,6 @@ export const Studies: React.FC = () => {
         {data && (
           <div>
             {data.studies.slice(0, studiesPerPage).map((study) => (
-              // <StudyCard
-              //   key={study.id}
-              //   {...study}
-              //   isSelected={selectedStudies.has(study.id)}
-              //   onSelect={handleSelectStudy}
               <GenericCard
                 id={study.id}
                 itemType="study"
