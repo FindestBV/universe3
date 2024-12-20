@@ -107,7 +107,7 @@ export const DataView = () => {
         </div>
       </div>
 
-      <div className="mt-4 text-center">
+      <div className="flex items-center justify-center">
         {selectedView === "link" ? (
           <ForceDirectedGraphView linkingData={searchResults} />
         ) : (
