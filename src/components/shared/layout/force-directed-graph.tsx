@@ -186,7 +186,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
   return (
     <>
       {/* Your Existing Legend */}
-      <div className="absolute left-[2em] top-[5em] p-4">
+      <div className="absolute left-[1em] top-[3em] p-4">
         <ul className="flex flex-col">
           <li className="flex flex-row items-center gap-2 text-sm text-gray-500">
             <span className="blueDot__indicator"></span>Entity

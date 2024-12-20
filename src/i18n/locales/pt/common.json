@@ -8,5 +8,7 @@
     "documents": "Documentos",
     "happening": "O que está acontecendo na Findest?",
     "pageType": "Detalhamento do tipo de página",
-    "createNew": "Criar novo"
+    "createNew": "Criar novo",
+    "profile": "Perfil",
+    "generateReport": "Gerar relatório"
 }
