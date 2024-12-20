@@ -3,9 +3,7 @@ import { activityApi } from "@/api/activity/activityApi";
 import { authApi } from "@/api/auth/authApi";
 import authSlice from "@/api/auth/authSlice";
 import { documentApi } from "@/api/documents/documentApi";
-import { entityApi } from "@/api/entities/entityApi";
 import { searchApi } from "@/api/search/searchApi";
-import { studyApi } from "@/api/study/studyApi";
 import languageReducer from "@/api/utilities/languageSlice";
 // Configure Store and Persistance
 import { configureStore, Reducer } from "@reduxjs/toolkit";
@@ -35,10 +33,8 @@ const persistConfig = {
 export const rootReducer = combineReducers({
   router: routerReducer,
   auth: authSlice,
-  entities: entityApi,
   activities: activityApi,
   search: searchApi,
-  studies: studyApi,
   documents: documentApi,
   language: languageReducer,
   [authApi.reducerPath]: authApi.reducer,
@@ -59,10 +55,8 @@ export const store = configureStore({
     }).concat(
       authApi.middleware,
       documentApi.middleware,
-      entityApi.middleware,
       activityApi.middleware,
       searchApi.middleware,
-      studyApi.middleware,
       routerMiddleware,
     ),
 });

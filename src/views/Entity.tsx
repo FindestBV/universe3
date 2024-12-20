@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { currentUser } from "@/api/auth/authSlice";
-import { useGetEntityByIdQuery } from "@/api/entities/entityApi";
+import { useGetEntityByIdQuery } from "@/api/documents/documentApi";
 import { renderProseMirrorContent } from "@/lib/renderProseMirror";
 
 import React, { useEffect } from "react";
@@ -36,15 +36,12 @@ export const Entity: React.FC = () => {
     <div className="flex h-full w-full flex-col p-12 max-sm:px-4">
       <div className="max-sm:px-4l mx-auto flex h-full w-3/4 flex-col px-12 py-4">
         <h1 className="mb-2 text-xl font-black text-black">{entity?.title || "Entity"}</h1>
-        <p>
-          <span className="font-black text-black">Entity ID:</span> {id}
-        </p>
-        <br />
-        <p className="text-black">
+        <span className="font-black text-black">Entity ID: {id}</span>
+        <div className="text-black">
           {parsedDescription
             ? renderProseMirrorContent(parsedDescription)
             : "Lorem ipsum dolor sit amet consectetur."}
-        </p>
+        </div>
       </div>
     </div>
   );

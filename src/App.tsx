@@ -9,7 +9,7 @@ import { LoginPage } from "@/views/LoginPage";
 import { Loader } from "lucide-react";
 import { PersistGate } from "redux-persist/integration/react";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { lazy, Suspense } from "react";
 import { Provider as ReduxStoreProvider, useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
@@ -50,6 +50,7 @@ const ProtectedRoute = ({ children }) => {
 // Authenticated Layout
 function AuthenticatedLayout() {
   const location = useLocation();
+  const nodeRef = useRef();
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -57,7 +58,7 @@ function AuthenticatedLayout() {
         <DashboardHeader />
         <main className="pageContent">
           <TransitionGroup component={null}>
-            <CSSTransition key={location.key} classNames="fade" timeout={1000} unmountOnExit>
+            <CSSTransition key={location.key} classNames="fade" timeout={1000} nodeRef={nodeRef}>
               <Suspense
                 fallback={
                   <div className="flex h-screen flex-col items-center justify-center py-8 text-center">
