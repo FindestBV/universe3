@@ -12,160 +12,67 @@ import {
 import { FC, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { FindestButton } from "../utilities/findest-button";
-
-export enum ObjectTypeEnum {
-  Unknown = 0,
-  Entity = 1,
-  Document = 2,
-  Highlight = 3,
-  Study = 4,
-  Image = 5,
-  ScienceArticle = 6,
-  UsPatent = 7,
-  Weblink = 8,
-  MagPatent = 9,
-  Comment = 10,
-  File = 11,
-  Tenant = 12,
-  Organization = 13,
-  Case = 14,
-  Query = 15,
-}
-
-type TTypeGraphViewProps = {
-  data?: TTypeGraphNodeDTO[];
-  searchKeyword?: string;
-};
-
-export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) => {
+export const PackGraphView: FC<{ data?: TTypeGraphNodeDTO[]; searchKeyword?: string }> = ({
+  data,
+  searchKeyword,
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  const navigateToObject = (object: { objectType: ObjectTypeEnum; id: string }) => {
-    if (object.objectType === ObjectTypeEnum.Entity) {
-      navigate(`/library/entities/${object.id}`);
-    } else if (object.objectType === ObjectTypeEnum.Study) {
-      navigate(`/library/studies/${object.id}`);
-    }
+  const navigateToObject = (object: { objectType: number; id: string }) => {
+    navigate(`/library/${object.objectType === 1 ? "entities" : "studies"}/${object.id}`);
   };
 
   const getModifiedDataForTypeGraph = (typeData: TTypeGraphNodeDTO[]) => {
-    const test = typeData.map((a) => {
-      return {
-        ...a,
-        name: a.type,
-        children: a.children.map((c) => ({
-          ...c,
-          objectType: a.objectType,
-          size: a.children.length,
-        })),
-      };
-    });
-
-    const entitygroups = test
-      .filter((d) => d.objectType === ObjectTypeEnum.Entity && d.name !== "Entity")
-      .map((a) => {
-        return {
-          ...a,
-          children: a.children.map((c) => ({ ...c, size: a.children.length })),
-        };
-      });
-
-    const singleEntities = test
-      .find((d) => d.name === "Entity")
-      ?.children?.map((a) => {
-        return {
-          ...a,
-          size: 1,
-        };
-      });
-
-    const entityGroup = {
-      name: "ENTITY",
-      children: [...entitygroups, ...(singleEntities ?? [])],
-    };
-
-    const studyGroups = test
-      .filter((d) => d.objectType === ObjectTypeEnum.Study && d.name !== "Study")
-      .map((a) => {
-        return {
-          ...a,
-          children: a.children.map((c) => ({ ...c, size: a.children.length })),
-        };
-      });
-
-    const singleStudies = test
-      .find((d) => d.name === "Study")
-      ?.children?.map((a) => {
-        return {
-          ...a,
-          size: 1,
-        };
-      });
-
-    const studyGroup = {
-      name: "STUDY",
-      children: [...studyGroups, ...(singleStudies ?? [])],
-    };
-
+    const entities = typeData.filter((d) => d.objectType === 1);
+    const studies = typeData.filter((d) => d.objectType === 4);
     return {
       name: "PackData",
-      size: 1,
       children: [
-        entityGroup.children.length > 0 ? entityGroup : null,
-        studyGroup.children.length > 0 ? studyGroup : null,
-      ].filter((a) => a),
+        { name: "ENTITY", children: entities },
+        { name: "STUDY", children: studies },
+      ],
     };
   };
 
   useEffect(() => {
-    if (!data || !data.length) return;
+    if (!data?.length) return;
 
     const container = containerRef.current;
     if (!container) return;
 
-    // Clear previous SVG
+    // Clear existing SVG
     select(container).selectAll("svg").remove();
 
+    // Dimensions and data preparation
+    const width = container.offsetWidth || 800;
+    const height = container.offsetHeight || 600;
+
     const modifiedData = getModifiedDataForTypeGraph(data);
-
-    const width = container.clientWidth || 500;
-    const height = container.clientHeight || 500;
-
-    const root = pack<TTypeGraphNodeDTO>().size([width, height]).padding(8)(
+    const root = pack<TTypeGraphNodeDTO>().size([width, height]).padding(10)(
       hierarchy(modifiedData).sum((d) => d.size || 1),
     );
 
+    // Create the SVG with full width and height
     const svg = select(container)
       .append("svg")
       .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("preserveAspectRatio", "xMidYMid meet")
       .style("width", "100%")
-      .style("height", "100%")
-      .call(
-        zoom().on("zoom", (event) => {
-          svgGroup.attr("transform", event.transform);
-        }),
-      );
+      .style("height", "100%");
 
+    // Zoom behavior
+    const zoomBehavior = zoom().on("zoom", (event) => {
+      svgGroup.attr("transform", event.transform);
+    });
+    svg.call(zoomBehavior);
+
+    // Add group for zoomable elements
     const svgGroup = svg.append("g");
 
-    const color = scaleOrdinal<string>()
-      .domain(["ENTITY", "STUDY", "PackData"])
-      .range(["#0099CC", "#800080", "rgb(242, 244, 248)"]); // Updated first circle color
+    const color = scaleOrdinal<string>().domain(["ENTITY", "STUDY"]).range(["#0099CC", "#800080"]);
 
-    const calculateColor = (d: HierarchyCircularNode<TTypeGraphNodeDTO>) => {
-      const depth = d.depth;
-      while (d.depth > 1 && d.parent) {
-        d = d.parent;
-      }
-      const baseColor = color(d.data.name) || "#0099cc";
-      const modifiedColor = d3Hsl(baseColor);
-      modifiedColor.l += depth === 1 ? 0 : depth * 0.1;
-      return modifiedColor.toString();
-    };
-
-    // Tooltip
+    // Tooltip setup
     const tooltip = select(container)
       .append("div")
       .attr("class", "tooltip")
@@ -174,7 +81,7 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
       .style("background-color", "white")
       .style("padding", "5px")
       .style("border-radius", "4px")
-      .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)")
+      .style("box-shadow", "0 0 5px rgba(0, 0, 0, 0.3)")
       .style("z-index", "10");
 
     // Draw circles
@@ -183,7 +90,7 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
       .data(root.descendants())
       .enter()
       .append("circle")
-      .attr("fill", (d) => calculateColor(d))
+      .attr("fill", (d) => color(d.depth === 1 ? d.data.name : "ENTITY") || "#000")
       .attr("stroke", "white")
       .attr("cx", (d) => d.x)
       .attr("cy", (d) => d.y)
@@ -208,41 +115,35 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
         select(this).attr("stroke", "white").attr("stroke-width", 1);
       });
 
-    // Add labels for ENTITY and STUDY only
+    // Add labels for top-level nodes
     svgGroup
       .selectAll("text")
-      .data(root.descendants().filter((d) => d.data.name === "ENTITY" || d.data.name === "STUDY"))
+      .data(root.descendants().filter((d) => d.depth === 1))
       .enter()
       .append("text")
       .attr("x", (d) => d.x)
       .attr("y", (d) => d.y)
+      .attr("dy", "0.35em")
       .attr("text-anchor", "middle")
       .style("font-size", "16px")
       .style("fill", "#252525")
       .style("font-family", "IBM Plex Sans, sans-serif")
       .style("font-weight", "bold")
       .text((d) => d.data?.name);
-  }, [data, searchKeyword, navigate]);
+  }, [data]);
 
   return (
-    <div className="packGraphDashboard">
-      <div className="overlayPanel group">
-        <div ref={containerRef} className="packGraphContainer p-4" id="packGraph" />
-        <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 ease-in-out hover:bg-opacity-50">
-          <div className="hidden text-center group-hover:block">
-            <FindestButton
-              align="right"
-              extraClassName={
-                "rounded bg-white group-hover:bg-white px-8 py-2 text-black transition-all duration-300 ease-in-out"
-              }
-              onClick={() => navigate("/dataview")}
-            >
-              SEE PAGE TYPE BREAKDOWN
-            </FindestButton>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div
+      className="packGraphContainer"
+      ref={containerRef}
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    />
   );
 };
 
