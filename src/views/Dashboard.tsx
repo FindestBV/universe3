@@ -16,6 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   List,
   Loader,
@@ -70,8 +71,10 @@ export const Dashboard = () => {
   return (
     <div className="max-sm:px- flex h-full w-full flex-col pb-11 pl-10 pr-5 pt-10">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div className="relative flex w-full flex-col space-y-3 overflow-hidden rounded-sm bg-blue-100 p-4 max-sm:px-4">
-          <h2 className="overViewTitle">{`Welcome ${user}`}</h2>
+        <div className="relative flex w-full flex-col space-y-3 overflow-hidden rounded-sm bg-blue-300 p-4 max-sm:px-4">
+          <h2 className="overViewTitle">
+            {t("welcome")} {`${user}`}
+          </h2>
           <div className="flex h-[350px] w-full flex-col items-start justify-start gap-2 overflow-y-scroll">
             {activityDataIsLoading && (
               <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white bg-opacity-50">
@@ -159,10 +162,9 @@ export const Dashboard = () => {
           <div className="relative flex h-[320px] w-full flex-col items-start justify-start gap-1 overflow-y-scroll rounded-xl">
             {/* Show Loader */}
             {maxActivityLoading && (
-              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white bg-opacity-50">
-                <Loader className="mx-auto mb-2 animate-spin" />
-                <h3 className="font-bold text-black">Loading Recent Activity...</h3>
-              </div>
+              <Skeleton className="relative flex h-[320px] w-full flex-col items-start justify-start gap-1 overflow-y-scroll rounded-xl">
+                <Loader className="mx-auto mb-2 animate-spin items-center justify-center text-white" />
+              </Skeleton>
             )}
 
             {/* Render Content When Loaded */}
@@ -173,7 +175,7 @@ export const Dashboard = () => {
                   key={idx}
                   className="flex w-full flex-row items-center rounded-md py-2 max-sm:px-4"
                 >
-                  <UserAvatar username="Ro" />
+                  <UserAvatar username={user ? user : "User"} />
                   <div className="flex w-full items-center justify-between">
                     <p className="pl-4 text-sm">
                       <a href={`mailto:${maxActivity?.userEmail}`} className="text-blue-500">
