@@ -110,8 +110,10 @@ export const documentApi = api.injectEndpoints({
         },
       }),
     }),
-    getStudyById: builder.query<Study, number>({
-      query: (id) => `/${id}`,
+    getStudyById: builder.query<Study, void>({
+      query: (id) => ({
+        url: `study/${id}`,
+      }),
     }),
   }),
 });

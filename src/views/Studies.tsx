@@ -194,6 +194,7 @@ export const Studies: React.FC = () => {
               //   isSelected={selectedStudies.has(study.id)}
               //   onSelect={handleSelectStudy}
               <GenericCard
+                id={study.id}
                 itemType="study"
                 key={study.id}
                 {...study}
