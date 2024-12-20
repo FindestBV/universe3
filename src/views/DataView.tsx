@@ -82,7 +82,7 @@ export const DataView = () => {
             </FindestButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="group flex items-center px-4 py-2 text-gray-800">
+                <button className="group flex items-center bg-gray-100 px-4 py-2 text-gray-800">
                   {optionLabels.find((label) => viewOptions[label] === selectedView)}
                 </button>
               </DropdownMenuTrigger>
@@ -92,7 +92,7 @@ export const DataView = () => {
                     <DropdownMenuItem
                       key={label}
                       onClick={() => handleOptionSelect(label)}
-                      className={`px-4 py-2 ${
+                      className={`cursor-pointer px-4 py-2 ${
                         viewOptions[label] === selectedView ? "font-bold" : ""
                       }`}
                     >
