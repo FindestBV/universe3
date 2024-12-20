@@ -28,12 +28,10 @@ export const Study: React.FC = () => {
     <div className="flex h-full w-full flex-col p-12 max-sm:px-4">
       <div className="mx-auto flex h-full w-3/4 flex-col px-12 py-4 max-sm:px-4">
         <h1 className="mb-2 text-xl font-black text-black">{study?.title || "Study"}</h1>
-        <p>
-          <span className="font-black text-black">Study ID:</span> {id}
-        </p>
-        <p>
+        <span className="font-black text-black">Study ID: {id}</span>
+        <div>
           <span className="font-black text-black">Type:</span> Study
-        </p>
+        </div>
         <br />
         <div className="text-black">
           {parsedDescription

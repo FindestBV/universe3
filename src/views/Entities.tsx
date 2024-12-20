@@ -1,5 +1,5 @@
 import GenericCard from "@/components/shared/cards/generic-card";
-import { EntityCard } from "@/components/shared/entity-card";
+// import { EntityCard } from "@/components/shared/entity-card";
 import DocumentsSkeleton from "@/components/shared/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -14,7 +14,7 @@ import { Link, Trash2 } from "lucide-react";
 
 import React, { useState } from "react";
 
-import { useGetEntitiesQuery } from "../api/entities/entityApi";
+import { useGetEntitiesQuery } from "../api/documents/documentApi";
 
 export const Entities: React.FC = () => {
   const [selectedEntities, setSelectedEntities] = useState<Set<string>>(new Set());

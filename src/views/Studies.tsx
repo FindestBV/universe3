@@ -1,6 +1,6 @@
 import GenericCard from "@/components/shared/cards/generic-card";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
-import { StudyCard } from "@/components/shared/study-card";
+// import { StudyCard } from "@/components/shared/study-card";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -14,7 +14,7 @@ import { Link, Trash2 } from "lucide-react";
 
 import { useEffect, useState } from "react";
 
-import { useGetStudiesQuery } from "../api/study/studyApi";
+import { useGetStudiesQuery } from "../api/documents/documentApi";
 
 export const Studies: React.FC = () => {
   const [selectedStudies, setSelectedStudies] = useState<Set<string>>(new Set());

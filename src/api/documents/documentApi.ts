@@ -1,5 +1,5 @@
 // src/features/documentApi.ts
-import type { ConnectedObject, SavedDocumentResponse } from "@/types/types";
+import type { ConnectedObject, Entity, SavedDocumentResponse, Study } from "@/types/types";
 
 import { api } from "../api";
 
@@ -69,6 +69,50 @@ export const documentApi = api.injectEndpoints({
       }),
       providesTags: ["SavedDocument"],
     }),
+
+    // Entities
+
+    getEntities: builder.query<Entity[], void>({
+      query: () => ({
+        url: "entity",
+        params: {
+          orderBy: 2,
+          createdByMe: false,
+        },
+      }),
+    }),
+
+    getEntityById: builder.query<SavedDocumentResponse, void>({
+      query: (id) => ({
+        url: `entity/${id}`,
+      }),
+    }),
+
+    updateEntityTitle: builder.mutation<Entity, { id: number; title: string }>({
+      query: ({ id, title }) => ({
+        url: `/${id}/title`,
+        method: "PUT",
+        body: { title },
+      }),
+    }),
+
+    getStudies: builder.query<
+      { studies: Study[]; totalItems: number; totalPages: number; page: number },
+      { page?: number; limit?: number }
+    >({
+      query: ({ page = 1, limit = 10 }) => ({
+        url: "study",
+        params: {
+          orderBy: 2,
+          createdByMe: false,
+          page,
+          limit,
+        },
+      }),
+    }),
+    getStudyById: builder.query<Study, number>({
+      query: (id) => `/${id}`,
+    }),
   }),
 });
 
@@ -79,5 +123,9 @@ export const {
   useLazyGetConnectedObjectsQuery,
   useAddDocumentMutation,
   useDeleteDocumentMutation,
+  useGetEntitiesQuery,
+  useGetEntityByIdQuery,
+  useGetStudiesQuery,
+  useGetStudyByIdQuery,
   usePrefetch,
 } = documentApi;
