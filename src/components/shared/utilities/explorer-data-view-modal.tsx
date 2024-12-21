@@ -2,114 +2,126 @@ import { useGetLinkingQuery, useGetPageTypesQuery } from "@/api/activity/activit
 import ForceDirectedGraphView from "@/components/shared/layout/force-directed-graph";
 import PackGraphView from "@/components/shared/layout/pack-graph";
 import DataViewSearchBar from "@/components/shared/search/data-view-searchbar";
-import { FindestButton } from "@/components/shared/utilities/findest-button";
 import { useDebounce } from "@/hooks/use-debounce";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
 import { motion } from "framer-motion";
 
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-export const ExplorerDataViewModal = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-
+const ExplorerDataViewModal = () => {
   const viewOptions = {
     "RELATIONS GRAPH": "link",
     "PAGE TYPE BREAKDOWN": "pack",
   };
 
   const optionLabels = Object.keys(viewOptions);
-  const initialGraphType = location.state?.graphType?.toLowerCase() || "link";
+  const [selectedView, setSelectedView] = useState<string>("link");
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
+  const [filteredResults, setFilteredResults] = useState<any[]>([]);
 
-  const [selectedView, setSelectedView] = useState<string>(initialGraphType);
-  const [searchKeyword, setSearchKeyword] = useState<string>(""); // Initialize as string
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  // Ensure debouncedSearchKeyword is always a string
+  const debouncedSearchKeyword = useDebounce(searchKeyword, 500) || "";
 
-  const debouncedSearchKeyword = useDebounce(searchKeyword, 500);
   const { data: linkingData } = useGetLinkingQuery();
   const { data: typesData } = useGetPageTypesQuery();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchKeyword(e.target.value || ""); // Ensure a string
-  };
+  const currentData = useMemo(() => {
+    return selectedView === "link" ? linkingData : typesData;
+  }, [selectedView, linkingData, typesData]);
 
-  const handleOptionSelect = (label: string) => {
-    const graphType = viewOptions[label];
-    setSelectedView(graphType); // Update view
-    setSearchKeyword(""); // Reset search input
-    setSearchResults([]); // Clear results
-  };
+  const previousResultsRef = useRef<any[]>([]);
 
+  // Filter the data when the debounced search keyword changes
   useEffect(() => {
-    const currentKeyword =
-      typeof debouncedSearchKeyword === "string" ? debouncedSearchKeyword.trim() : ""; // Safeguard
-    const dataToFilter = selectedView === "link" ? linkingData : typesData;
-
-    if (currentKeyword) {
-      const filteredResults = dataToFilter?.filter((item) =>
-        item.name.toLowerCase().includes(currentKeyword.toLowerCase()),
-      );
-      setSearchResults(filteredResults || []);
-    } else {
-      setSearchResults(dataToFilter || []);
+    if (!currentData) {
+      setFilteredResults([]);
+      return;
     }
-  }, [debouncedSearchKeyword, selectedView, linkingData, typesData]);
+
+    if (!debouncedSearchKeyword) {
+      // Reset to the full dataset if the search keyword is empty
+      setFilteredResults(currentData);
+      previousResultsRef.current = currentData;
+      return;
+    }
+
+    const lowerKeyword =
+      typeof debouncedSearchKeyword === "string" ? debouncedSearchKeyword.toLowerCase() : "";
+
+    const results = currentData.reduce((acc: any[], node: any) => {
+      const childrenKey = selectedView === "link" ? "lowerLevelNodes" : "children";
+
+      const matchingChildren = (node[childrenKey] || []).filter((child: any) =>
+        child.name?.toLowerCase().includes(lowerKeyword),
+      );
+
+      if (node.name?.toLowerCase().includes(lowerKeyword) || matchingChildren.length > 0) {
+        acc.push({ ...node, [childrenKey]: matchingChildren });
+      }
+
+      return acc;
+    }, []);
+
+    // Only update if the results actually change
+    if (JSON.stringify(results) !== JSON.stringify(previousResultsRef.current)) {
+      setFilteredResults(results);
+      previousResultsRef.current = results;
+    }
+  }, [debouncedSearchKeyword, currentData, selectedView]);
+
+  const handleSearchChange = useCallback((keyword: string) => {
+    setSearchKeyword(keyword || ""); // Ensure keyword is always a string
+  }, []);
+
+  const handleOptionSelect = useCallback((label: string) => {
+    setSelectedView(viewOptions[label]);
+    setSearchKeyword(""); // Clear search on view change
+    setFilteredResults([]); // Reset filtered results
+  }, []);
 
   return (
-    <motion.div
-      className="dataView"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.35, ease: "easeInOut" }}
-    >
-      <div className="toolbar absolute top-0 z-10 w-full bg-white px-4 py-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="group flex items-center bg-gray-100 px-4 py-2 text-gray-800">
-                  {optionLabels.find((label) => viewOptions[label] === selectedView)}
+    <div className="d-view-modal flex flex-col">
+      <motion.div
+        className="expModal"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+      >
+        {/* Toolbar with Tabs */}
+        <div className="toolbar w-full bg-white px-4 py-2">
+          <div className="flex items-center justify-between">
+            {/* View Selection Tabs */}
+            <div className="flex space-x-4">
+              {optionLabels.map((label) => (
+                <button
+                  key={label}
+                  onClick={() => handleOptionSelect(label)}
+                  className={`rounded px-4 py-2 ${
+                    viewOptions[label] === selectedView
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200 text-gray-800"
+                  }`}
+                >
+                  {label}
                 </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="relative z-50 w-full bg-slate-200 shadow-lg">
-                <DropdownMenuGroup>
-                  {optionLabels.map((label) => (
-                    <DropdownMenuItem
-                      key={label}
-                      onClick={() => handleOptionSelect(label)}
-                      className={`cursor-pointer px-4 py-2 ${
-                        viewOptions[label] === selectedView ? "font-bold" : ""
-                      }`}
-                    >
-                      {label}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          <DataViewSearchBar onChange={handleInputChange} />
-        </div>
-      </div>
+              ))}
+            </div>
 
-      <div className="flex items-center justify-center">
-        <div className="d-view-modal">
+            {/* Search Bar */}
+            <DataViewSearchBar onSearch={handleSearchChange} />
+          </div>
+        </div>
+
+        {/* Graph View */}
+        <div className="mt-4 flex items-center justify-center">
           {selectedView === "link" ? (
-            <ForceDirectedGraphView linkingData={searchResults} />
+            <ForceDirectedGraphView linkingData={filteredResults} />
           ) : (
-            <PackGraphView data={searchResults} />
+            <PackGraphView data={filteredResults} />
           )}
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 };
 

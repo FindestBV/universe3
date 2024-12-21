@@ -120,8 +120,6 @@ export const GenericCard: React.FC<GenericCardProps> = ({
     });
   };
 
-  console.log("isDocument", isDocument);
-
   return (
     <div className="itemCard">
       <div className={`innerCardMain items-start ${isDocument ? "gap-4" : ""}`}>

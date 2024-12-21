@@ -159,7 +159,9 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
 
     node
       .on("click", (event, d) => {
-        navigate(`/${d.type}/${d.id}`);
+        const rewrite = d.type == "Study" ? "studies" : "entities";
+        // console.log(`/library/${rewrite}/${d.id}`);
+        navigate(`/library/${rewrite}/${d.id}`);
       })
       .on("mouseover", function () {
         select(this).attr("stroke", "yellow").attr("stroke-width", 2);
