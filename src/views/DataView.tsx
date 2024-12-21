@@ -13,7 +13,7 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { motion } from "framer-motion";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const DataView = () => {
@@ -30,16 +30,12 @@ export const DataView = () => {
 
   const [selectedView, setSelectedView] = useState<string>(initialGraphType);
   const [searchKeyword, setSearchKeyword] = useState<string>(""); // Controlled state for search
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [filteredData, setFilteredData] = useState<any[]>([]);
 
   // Debounce the search keyword
   const debouncedSearchKeyword = useDebounceDataView(searchKeyword, 500);
   const trimmedKeyword =
     typeof debouncedSearchKeyword === "string" ? debouncedSearchKeyword.trim() : "";
-
-  console.log("Search Keyword:", searchKeyword);
-  console.log("Debounced Search Keyword:", debouncedSearchKeyword);
-  console.log("Trimmed Keyword:", trimmedKeyword);
 
   // Fetch data from APIs
   const {
@@ -49,35 +45,36 @@ export const DataView = () => {
   } = useGetLinkingQuery();
   const { data: typesData, isLoading: typesLoading, error: typesError } = useGetPageTypesQuery();
 
-  console.log("Linking Data:", linkingData);
-  console.log("Types Data:", typesData);
-  console.log("Errors:", { linkingError, typesError });
-
   // Handle filtering based on search and view
+  const handleSearch = useCallback(
+    (keyword: string) => {
+      console.log("Search Keyword:", keyword); // Debugging: Log keyword
+      const dataToFilter = selectedView === "link" ? linkingData : typesData;
+      console.log("dataToFilter:", dataToFilter); // Debugging: Log keyword
+      if (!dataToFilter) return; // No data to filter
+
+      // Filter data based on the search keyword
+      const lowerKeyword = keyword.toLowerCase();
+      const filtered = dataToFilter.reduce((acc: any[], node: any) => {
+        const newChildren = (node.children || []).filter((child: any) =>
+          child.name?.toLowerCase().includes(lowerKeyword),
+        );
+        if (newChildren.length > 0) {
+          acc.push({ ...node, children: newChildren });
+        }
+        return acc;
+      }, []);
+
+      setFilteredData(filtered); // Update filtered results
+    },
+    [selectedView, linkingData, typesData],
+  );
+
+  // Watch for changes to debounced search keyword and trigger filtering
   useEffect(() => {
-    console.log("Selected View for Filtering:", selectedView);
-
-    const dataToFilter = selectedView === "link" ? linkingData : typesData;
-
-    console.log("Raw Data to Filter:", dataToFilter);
-
-    if (trimmedKeyword) {
-      const filteredResults = dataToFilter?.filter((item) =>
-        item.name.toLowerCase().includes(trimmedKeyword.toLowerCase()),
-      );
-      console.log("Filtered Results:", filteredResults);
-      setSearchResults(filteredResults || []);
-    } else {
-      console.log("No keyword; using full data.");
-      setSearchResults(dataToFilter || []);
-    }
-  }, [trimmedKeyword, selectedView, linkingData, typesData]);
-
-  useEffect(() => {
-    console.log("DataView mounted");
-  }, []);
-
-  console.log("Search Results in DataView:", searchResults);
+    console.log("filtered:", filteredData); // Debugging: Log keyword
+    handleSearch(trimmedKeyword);
+  }, [trimmedKeyword, handleSearch]);
 
   return (
     <motion.div
@@ -121,20 +118,16 @@ export const DataView = () => {
             </DropdownMenu>
           </div>
 
-          {/* Updated Search Bar: Pass handler for searchKeyword */}
-          <DataViewSearchBar onSearchChange={(keyword: string) => setSearchKeyword(keyword)} />
+          {/* Search Bar with Controlled Input */}
+          <DataViewSearchBar onSearch={handleSearch} />
         </div>
       </div>
 
       <div className="flex items-center justify-center">
         {selectedView === "link" ? (
-          <>
-            <ForceDirectedGraphView linkingData={linkingData} searchResults={searchResults} />
-          </>
+          <ForceDirectedGraphView linkingData={linkingData} searchKeyword={searchKeyword} />
         ) : (
-          <>
-            <PackGraphView data={typesData} />
-          </>
+          <PackGraphView data={filteredData} />
         )}
       </div>
     </motion.div>

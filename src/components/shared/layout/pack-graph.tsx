@@ -50,36 +50,39 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
     }
   };
 
-  const getModifiedDataForTypeGraph = (typeData: TTypeGraphNodeDTO[]) => {
-    const test = typeData.map((a) => {
-      return {
-        ...a,
-        name: a.type,
-        children: a.children.map((c) => ({
-          ...c,
-          objectType: a.objectType,
-          size: a.children.length,
-        })),
-      };
-    });
+  const getModifiedDataForTypeGraph = (typeData: TTypeGraphNodeDTO[] = [], keyword: string) => {
+    const lowerKeyword = keyword.toLowerCase();
+
+    const filteredData = typeData.map((a) => ({
+      ...a,
+      children: (a.children || []).filter(
+        (child) => child.name?.toLowerCase().includes(lowerKeyword), // Check child.name exists
+      ),
+    }));
+
+    const test = filteredData.map((a) => ({
+      ...a,
+      name: a.type || "Unnamed", // Ensure `a.type` is valid
+      children: (a.children || []).map((c) => ({
+        ...c,
+        objectType: a.objectType,
+        size: (a.children || []).length,
+      })),
+    }));
 
     const entitygroups = test
       .filter((d) => d.objectType === ObjectTypeEnum.Entity && d.name !== "Entity")
-      .map((a) => {
-        return {
-          ...a,
-          children: a.children.map((c) => ({ ...c, size: a.children.length })),
-        };
-      });
+      .map((a) => ({
+        ...a,
+        children: (a.children || []).map((c) => ({ ...c, size: (a.children || []).length })),
+      }));
 
     const singleEntities = test
       .find((d) => d.name === "Entity")
-      ?.children?.map((a) => {
-        return {
-          ...a,
-          size: 1,
-        };
-      });
+      ?.children?.map((a) => ({
+        ...a,
+        size: 1,
+      }));
 
     const entityGroup = {
       name: "ENTITY",
@@ -88,21 +91,17 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
 
     const studyGroups = test
       .filter((d) => d.objectType === ObjectTypeEnum.Study && d.name !== "Study")
-      .map((a) => {
-        return {
-          ...a,
-          children: a.children.map((c) => ({ ...c, size: a.children.length })),
-        };
-      });
+      .map((a) => ({
+        ...a,
+        children: (a.children || []).map((c) => ({ ...c, size: (a.children || []).length })),
+      }));
 
     const singleStudies = test
       .find((d) => d.name === "Study")
-      ?.children?.map((a) => {
-        return {
-          ...a,
-          size: 1,
-        };
-      });
+      ?.children?.map((a) => ({
+        ...a,
+        size: 1,
+      }));
 
     const studyGroup = {
       name: "STUDY",
@@ -128,7 +127,7 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
     // Clear previous SVG
     select(container).selectAll("svg").remove();
 
-    const modifiedData = getModifiedDataForTypeGraph(data);
+    const modifiedData = getModifiedDataForTypeGraph(data, searchKeyword || "");
 
     const width = container.clientWidth || 500;
     const height = container.clientHeight || 500;

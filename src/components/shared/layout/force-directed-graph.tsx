@@ -46,11 +46,11 @@ type TForceDirectedGraphViewProps = {
 
 export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
   linkingData,
-  searchResults,
+  searchKeyword,
 }) => {
   const containerRef = useRef<SVGSVGElement | null>(null);
   const navigate = useNavigate();
-
+  console.log("search", searchKeyword);
   const colorMap: Record<number, string> = {
     [ObjectTypeEnum.Entity]: "#0099CC", // Blue
     [ObjectTypeEnum.Study]: "#800080", // Purple
@@ -188,8 +188,8 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
   }, [linkingData, navigate]);
 
   useEffect(() => {
-    console.log("ForceDirectedGraphView props:", { linkingData, searchResults });
-  }, [linkingData, searchResults]);
+    console.log("ForceDirectedGraphView props:", { linkingData, searchKeyword });
+  }, [linkingData, searchKeyword]);
 
   return (
     <>
