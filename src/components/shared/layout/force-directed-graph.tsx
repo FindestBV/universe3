@@ -50,12 +50,12 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
 
     // Filter nodes and their children based on the search keyword
     const filteredNodes = linkingData.reduce((acc: any[], node: any) => {
-      const newLowerLevelNodes = (node.lowerLevelNodes || []).filter((child: any) =>
-        child.name.toLowerCase().includes(lowerKeyword),
+      const newLowerLevelNodes = (node.lowerLevelNodes || []).filter(
+        (child: any) => child.name?.toLowerCase()?.includes(lowerKeyword), // Optional chaining for `name`
       );
 
       // Include node if it matches the keyword or has matching children
-      if (node.name.toLowerCase().includes(lowerKeyword) || newLowerLevelNodes.length > 0) {
+      if (node.name?.toLowerCase()?.includes(lowerKeyword) || newLowerLevelNodes.length > 0) {
         acc.push({ ...node, lowerLevelNodes: newLowerLevelNodes });
       }
 
