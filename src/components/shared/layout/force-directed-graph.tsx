@@ -44,7 +44,10 @@ type TForceDirectedGraphViewProps = {
   }[];
 };
 
-export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linkingData }) => {
+export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
+  linkingData,
+  searchResults,
+}) => {
   const containerRef = useRef<SVGSVGElement | null>(null);
   const navigate = useNavigate();
 
@@ -183,6 +186,10 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
       node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
     });
   }, [linkingData, navigate]);
+
+  useEffect(() => {
+    console.log("ForceDirectedGraphView props:", { linkingData, searchResults });
+  }, [linkingData, searchResults]);
 
   return (
     <>

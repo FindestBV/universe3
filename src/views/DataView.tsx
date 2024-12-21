@@ -3,7 +3,7 @@ import ForceDirectedGraphView from "@/components/shared/layout/force-directed-gr
 import PackGraphView from "@/components/shared/layout/pack-graph";
 import DataViewSearchBar from "@/components/shared/search/data-view-searchbar";
 import { FindestButton } from "@/components/shared/utilities/findest-button";
-import { useDebounce } from "@/hooks/use-debounce";
+import { useDebounceDataView } from "@/hooks/use-debounce-data-view";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,10 +29,19 @@ export const DataView = () => {
   const initialGraphType = location.state?.graphType?.toLowerCase() || "link";
 
   const [selectedView, setSelectedView] = useState<string>(initialGraphType);
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
+  const [searchKeyword, setSearchKeyword] = useState<string>(""); // Controlled state for search
   const [searchResults, setSearchResults] = useState<any[]>([]);
 
-  const debouncedSearchKeyword = useDebounce(searchKeyword, 500);
+  // Debounce the search keyword
+  const debouncedSearchKeyword = useDebounceDataView(searchKeyword, 500);
+  const trimmedKeyword =
+    typeof debouncedSearchKeyword === "string" ? debouncedSearchKeyword.trim() : "";
+
+  console.log("Search Keyword:", searchKeyword);
+  console.log("Debounced Search Keyword:", debouncedSearchKeyword);
+  console.log("Trimmed Keyword:", trimmedKeyword);
+
+  // Fetch data from APIs
   const {
     data: linkingData,
     isLoading: linkingLoading,
@@ -40,29 +49,35 @@ export const DataView = () => {
   } = useGetLinkingQuery();
   const { data: typesData, isLoading: typesLoading, error: typesError } = useGetPageTypesQuery();
 
-  // Handle view switch
-  const handleOptionSelect = (label: string) => {
-    const graphType = viewOptions[label];
-    setSelectedView(graphType);
-    setSearchKeyword(""); // Reset search input on view change
-    setSearchResults([]); // Clear results
-  };
+  console.log("Linking Data:", linkingData);
+  console.log("Types Data:", typesData);
+  console.log("Errors:", { linkingError, typesError });
 
-  // Filter data based on the search keyword
+  // Handle filtering based on search and view
   useEffect(() => {
-    const currentKeyword =
-      typeof debouncedSearchKeyword === "string" ? debouncedSearchKeyword.trim() : "";
+    console.log("Selected View for Filtering:", selectedView);
+
     const dataToFilter = selectedView === "link" ? linkingData : typesData;
 
-    if (currentKeyword) {
-      const filteredResults = dataToFilter?.filter((item: any) =>
-        item.name?.toLowerCase().includes(currentKeyword.toLowerCase()),
+    console.log("Raw Data to Filter:", dataToFilter);
+
+    if (trimmedKeyword) {
+      const filteredResults = dataToFilter?.filter((item) =>
+        item.name.toLowerCase().includes(trimmedKeyword.toLowerCase()),
       );
+      console.log("Filtered Results:", filteredResults);
       setSearchResults(filteredResults || []);
     } else {
+      console.log("No keyword; using full data.");
       setSearchResults(dataToFilter || []);
     }
-  }, [debouncedSearchKeyword, selectedView, linkingData, typesData]);
+  }, [trimmedKeyword, selectedView, linkingData, typesData]);
+
+  useEffect(() => {
+    console.log("DataView mounted");
+  }, []);
+
+  console.log("Search Results in DataView:", searchResults);
 
   return (
     <motion.div
@@ -93,7 +108,7 @@ export const DataView = () => {
                   {optionLabels.map((label) => (
                     <DropdownMenuItem
                       key={label}
-                      onClick={() => handleOptionSelect(label)}
+                      onClick={() => setSelectedView(viewOptions[label])}
                       className={`cursor-pointer px-4 py-2 ${
                         viewOptions[label] === selectedView ? "font-bold" : ""
                       }`}
@@ -105,19 +120,21 @@ export const DataView = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <DataViewSearchBar onChange={(e) => setSearchKeyword(e.target.value)} />
+
+          {/* Updated Search Bar: Pass handler for searchKeyword */}
+          <DataViewSearchBar onSearchChange={(keyword: string) => setSearchKeyword(keyword)} />
         </div>
       </div>
 
       <div className="flex items-center justify-center">
-        {linkingLoading || typesLoading ? (
-          <p>Loading...</p>
-        ) : linkingError || typesError ? (
-          <p>Error loading data</p>
-        ) : selectedView === "link" ? (
-          <ForceDirectedGraphView linkingData={searchResults} />
+        {selectedView === "link" ? (
+          <>
+            <ForceDirectedGraphView linkingData={linkingData} searchResults={searchResults} />
+          </>
         ) : (
-          <PackGraphView data={searchResults} />
+          <>
+            <PackGraphView data={typesData} />
+          </>
         )}
       </div>
     </motion.div>

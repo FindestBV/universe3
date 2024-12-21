@@ -1,37 +1,35 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useGetLinkingDataByTitleQuery } from "@/api/activity/activityApi";
-import { useDebounce } from "@/hooks/use-debounce";
+import { useDebounceDataView } from "@/hooks/use-debounce-data-view";
 import { Loader, Search, X } from "lucide-react";
 
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-const TABS = ["All", "Entity", "Document", "Query", "Study"];
-
 export const DataViewSearchBar = () => {
   const { t } = useTranslation();
-  const [filters, setFilters] = useState({
-    keyword: "",
-    type: "",
-  });
-
-  const [selectedTab, setSelectedTab] = useState(TABS[0]); // Default to "All"
+  const [filters, setFilters] = useState({ keyword: "" });
   const [isTyping, setIsTyping] = useState(false);
 
-  const debouncedKeyword = useDebounce(filters.keyword || "", 500);
+  // Debounce the search keyword
+  const debouncedKeyword = useDebounceDataView(filters.keyword || "", 500);
 
   // Ensure debouncedKeyword is a string before calling .trim()
   const trimmedKeyword = typeof debouncedKeyword === "string" ? debouncedKeyword.trim() : "";
 
+  // Log the search input and debounced keyword for debugging
+  console.log("Search Input (filters.keyword):", filters.keyword);
+  console.log("Debounced Keyword:", debouncedKeyword);
+  console.log("Trimmed Keyword:", trimmedKeyword);
+
+  // Query the API with the trimmed keyword
   const { data, isLoading, error } = useGetLinkingDataByTitleQuery(trimmedKeyword, {
     skip: !trimmedKeyword, // Skip query if trimmedKeyword is empty
   });
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    console.log("value", value);
     setFilters((prev) => ({ ...prev, keyword: value }));
-    setIsTyping(true); // User is actively typing
+    setIsTyping(true);
   }, []);
 
   const handleInputPaste = useCallback((e: React.ClipboardEvent<HTMLInputElement>) => {
@@ -47,60 +45,11 @@ export const DataViewSearchBar = () => {
   };
 
   const handleReset = () => {
-    setFilters({
-      keyword: "",
-      type: "",
-    });
-    setSelectedTab("All");
+    setFilters({ keyword: "" });
   };
-
-  const handleTabChange = (tab: string) => {
-    setSelectedTab(tab);
-  };
-
-  const filterResults = (data: any) => {
-    if (!data) return [];
-
-    const allResults = Object.keys(data)
-      .filter((key) => Array.isArray(data[key]) && data[key].length > 0)
-      .flatMap((key) =>
-        data[key].map((item: any) => ({
-          id: item?.id,
-          name: item?.name || "Unnamed",
-          type: [
-            "ScienceArticle",
-            "Weblink",
-            "Technology",
-            "Technology Scouting",
-            "UsPatent",
-          ].includes(item?.type)
-            ? "Document"
-            : item?.type || "Unknown",
-          url: item?.url || `/library/${key}/${item?.id}`,
-        })),
-      )
-      .filter((item) => item.id && item.name);
-
-    const groupedResults = allResults.reduce((groups: Record<string, any[]>, item) => {
-      if (!groups[item.type]) {
-        groups[item.type] = [];
-      }
-      groups[item.type].push(item);
-      return groups;
-    }, {});
-
-    if (selectedTab === "All") {
-      return allResults;
-    }
-
-    return groupedResults[selectedTab] || [];
-  };
-
-  const results = filterResults(data);
 
   return (
     <div className="dataViewSearchBar">
-      {/* Search Input */}
       <form className="space-y-4">
         <div>
           <div className="relative">
@@ -133,8 +82,27 @@ export const DataViewSearchBar = () => {
         </div>
       </form>
 
-      {/* Render Results */}
-      <div className="results">{trimmedKeyword && trimmedKeyword}</div>
+      {/* Debugging Output */}
+      {/* <div className="results">
+        <p>Search Input: {filters.keyword}</p>
+        <p>Debounced Keyword: {debouncedKeyword}</p>
+        <p>Trimmed Keyword: {trimmedKeyword}</p>
+      </div> */}
+
+      {/* API Results */}
+      {/* <div className="results">
+        {isLoading && <p>Loading...</p>}
+        {error && <p>Error: {error.message}</p>}
+        {data?.length > 0 ? (
+          data.map((result: any) => (
+            <div key={result.id}>
+              <a href={result.url}>{result.name}</a>
+            </div>
+          ))
+        ) : (
+          <p>No results found.</p>
+        )}
+      </div> */}
     </div>
   );
 };
