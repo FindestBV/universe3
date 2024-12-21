@@ -55,6 +55,7 @@ export const DataView = () => {
 
       // Filter data based on the search keyword
       const lowerKeyword = keyword.toLowerCase();
+
       const filtered = dataToFilter.reduce((acc: any[], node: any) => {
         const newChildren = (node.children || []).filter((child: any) =>
           child.name?.toLowerCase().includes(lowerKeyword),
@@ -64,7 +65,7 @@ export const DataView = () => {
         }
         return acc;
       }, []);
-
+      console.log("filtered:", filtered);
       setFilteredData(filtered); // Update filtered results
     },
     [selectedView, linkingData, typesData],
@@ -125,7 +126,10 @@ export const DataView = () => {
 
       <div className="flex items-center justify-center">
         {selectedView === "link" ? (
-          <ForceDirectedGraphView linkingData={linkingData} searchKeyword={searchKeyword} />
+          <ForceDirectedGraphView
+            linkingData={filteredData && filteredData.length ? filteredData : linkingData}
+            searchKeyword={searchKeyword}
+          />
         ) : (
           <PackGraphView data={filteredData} />
         )}

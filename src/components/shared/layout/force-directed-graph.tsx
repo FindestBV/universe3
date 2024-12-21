@@ -10,10 +10,8 @@ import {
   zoom,
 } from "d3";
 
-import { FC, useEffect, useRef } from "react";
+import { FC, useCallback, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { FindestButton } from "../utilities/findest-button";
 
 export enum ObjectTypeEnum {
   Unknown = 0,
@@ -21,17 +19,6 @@ export enum ObjectTypeEnum {
   Document = 2,
   Highlight = 3,
   Study = 4,
-  Image = 5,
-  ScienceArticle = 6,
-  UsPatent = 7,
-  Weblink = 8,
-  MagPatent = 9,
-  Comment = 10,
-  File = 11,
-  Tenant = 12,
-  Organization = 13,
-  Case = 14,
-  Query = 15,
 }
 
 type TForceDirectedGraphViewProps = {
@@ -42,50 +29,57 @@ type TForceDirectedGraphViewProps = {
     objectType: number;
     lowerLevelNodes?: { id: string }[];
   }[];
+  searchKeyword?: string;
 };
 
 export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
-  linkingData,
-  searchKeyword,
+  linkingData = [],
+  searchKeyword = "",
 }) => {
   const containerRef = useRef<SVGSVGElement | null>(null);
   const navigate = useNavigate();
-  console.log("search", searchKeyword);
+
   const colorMap: Record<number, string> = {
     [ObjectTypeEnum.Entity]: "#0099CC", // Blue
     [ObjectTypeEnum.Study]: "#800080", // Purple
-    [ObjectTypeEnum.Unknown]: "#CCCCCC", // Gray for unknown
+    [ObjectTypeEnum.Unknown]: "#CCCCCC", // Gray
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const typeLabels: Record<number, string> = {
-    [ObjectTypeEnum.Entity]: "Entity",
-    [ObjectTypeEnum.Study]: "Study",
-    [ObjectTypeEnum.Unknown]: "Unknown",
-  };
+  // Filter Graph Data
+  const filterGraphData = useCallback(() => {
+    const lowerKeyword = searchKeyword.toLowerCase();
 
-  useEffect(() => {
-    if (!Array.isArray(linkingData) || linkingData.length === 0) {
-      console.warn("Invalid or empty linkingData.");
-      return;
-    }
+    const filteredNodes = linkingData.reduce((acc: any[], node: any) => {
+      const newLowerLevelNodes = (node.lowerLevelNodes || []).filter((child: any) =>
+        child.id?.toLowerCase().includes(lowerKeyword),
+      );
 
-    const nodes = linkingData.map((data) => ({
-      id: data.id,
-      name: data.name,
-      type: data.type,
-      objectType: data.objectType,
-    }));
+      if (node.name?.toLowerCase().includes(lowerKeyword) || newLowerLevelNodes.length > 0) {
+        acc.push({ ...node, lowerLevelNodes: newLowerLevelNodes });
+      }
 
-    const links = linkingData.flatMap((data) =>
-      (data.lowerLevelNodes || []).map((child) => ({
-        source: data.id,
-        target: child.id,
-      })),
+      return acc;
+    }, []);
+
+    const nodeIds = new Set(filteredNodes.map((node) => node.id));
+
+    const filteredLinks = linkingData.flatMap((node) =>
+      (node.lowerLevelNodes || [])
+        .filter((child) => nodeIds.has(child.id))
+        .map((child) => ({
+          source: node.id,
+          target: child.id,
+        })),
     );
 
+    return { nodes: filteredNodes, links: filteredLinks };
+  }, [linkingData, searchKeyword]);
+
+  useEffect(() => {
+    const { nodes, links } = filterGraphData();
+
     if (!nodes.length || !links.length) {
-      console.warn("Nodes or links data is empty.");
+      console.warn("No nodes or links available to render.");
       return;
     }
 
@@ -121,28 +115,33 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
 
     const svgGroup = svg
       .append("g")
-      .attr("transform", "translate(282.0683290021384,102.7027043871232) scale(0.05)") // Apply transform
-      .call(zoomBehavior as any);
+      .attr("transform", "translate(282.0683290021384,102.7027043871232) scale(0.05)")
+      .call(zoomBehavior);
 
-    // Render Links
+    // Render links
     const link = svgGroup
       .append("g")
       .selectAll("line")
       .data(links)
       .enter()
       .append("line")
-      .attr("stroke", "#CCCCCC")
+      .attr("stroke", (d) =>
+        nodes.find((node) => node.id === d.source)?.isHighlighted ||
+        nodes.find((node) => node.id === d.target)?.isHighlighted
+          ? "#007AFF"
+          : "#CCCCCC",
+      )
       .attr("stroke-width", 2)
       .attr("stroke-linecap", "round");
 
-    // Render Nodes
+    // Render nodes
     const node = svgGroup
       .append("g")
       .selectAll("circle")
       .data(nodes)
       .enter()
       .append("circle")
-      .attr("r", 10)
+      .attr("r", (d) => (d.isHighlighted ? 12 : 10))
       .attr("fill", (d) => colorMap[d.objectType] || "#000000")
       .style("cursor", "pointer")
       .call(
@@ -178,22 +177,17 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
 
     simulation.on("tick", () => {
       link
-        .attr("x1", (d) => d.source.x)
-        .attr("y1", (d) => d.source.y)
-        .attr("x2", (d) => d.target.x)
-        .attr("y2", (d) => d.target.y);
+        .attr("x1", (d: any) => d.source.x)
+        .attr("y1", (d: any) => d.source.y)
+        .attr("x2", (d: any) => d.target.x)
+        .attr("y2", (d: any) => d.target.y);
 
-      node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+      node.attr("cx", (d: any) => d.x).attr("cy", (d: any) => d.y);
     });
-  }, [linkingData, navigate]);
-
-  useEffect(() => {
-    console.log("ForceDirectedGraphView props:", { linkingData, searchKeyword });
-  }, [linkingData, searchKeyword]);
+  }, [filterGraphData, navigate]);
 
   return (
     <>
-      {/* Your Existing Legend */}
       <div className="absolute left-[1em] top-[3em] p-4">
         <ul className="flex flex-col">
           <li className="flex flex-row items-center gap-2 text-sm text-gray-500">
@@ -205,7 +199,6 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
         </ul>
       </div>
 
-      {/* Graph Container */}
       <div className="forceDirectedGraphContainer">
         <svg ref={containerRef} />
       </div>
