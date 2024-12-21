@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import {
   Clock,
   List,
@@ -21,7 +22,6 @@ import {
   SquareArrowOutUpRight,
 } from "lucide-react";
 
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 // import { useFeature } from "use-feature";
@@ -58,6 +58,7 @@ export const DashboardHeader = () => {
   const { data: documentInbox } = useGetMyDocumentInboxQuery();
 
   const navigate = useNavigate();
+  const navigateWithTransition = useNavigateWithTransition();
 
   return (
     <header className="dashBoardHeader">
@@ -92,7 +93,7 @@ export const DashboardHeader = () => {
                       onClick={() =>
                         // THIS IS A TEMPORARY PATCH.
                         // {activity.fullType === "StudyTypeUndefined" ? "studies" : "entities"}
-                        navigate(
+                        navigateWithTransition(
                           `/library/${activity.fullType === "StudyTypeUndefined" ? "studies" : "entities"}/${activity.id}`,
                         )
                       }

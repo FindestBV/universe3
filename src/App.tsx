@@ -59,32 +59,32 @@ function AuthenticatedLayout() {
 
         <TransitionGroup component={null}>
           <CSSTransition key={location.key} classNames="fade" timeout={1000} nodeRef={nodeRef}>
-            <Suspense
+            {/* <Suspense
               fallback={
                 <div className="flex h-screen flex-col items-center justify-center py-8 text-center">
                   <Loader className="mx-auto mb-2 animate-spin" />
                   <h3 className="text2-xl font-black">Loading</h3>
                 </div>
               }
-            >
-              <main className="pageContent">
-                <Routes location={location}>
-                  {/* TEMP!! THIS WILL BE REFACTORED */}
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/library/queries" element={<Queries />} />
-                  <Route path="/library/overview" element={<Documents />} />
-                  <Route path="/library/studies" element={<Studies />} />
-                  <Route path="/library/studies/:id" element={<Study />} />
-                  <Route path="/library/documents" element={<Documents />} />
-                  <Route path="/library/documents/:id" element={<Document />} />
-                  <Route path="/library/entities" element={<Entities />} />
-                  <Route path="/library/entities/:id" element={<Entity />} />
-                  <Route path="/dataview" element={<DataView />} />
-                  <Route path="/inbox" element={<Inbox />} />
-                  <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-              </main>
-            </Suspense>
+            > */}
+            <main className="pageContent">
+              <Routes location={location}>
+                {/* TEMP!! THIS WILL BE REFACTORED */}
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/library/queries" element={<Queries />} />
+                <Route path="/library/overview" element={<Documents />} />
+                <Route path="/library/studies" element={<Studies />} />
+                <Route path="/library/studies/:id" element={<Study />} />
+                <Route path="/library/documents" element={<Documents />} />
+                <Route path="/library/documents/:id" element={<Document />} />
+                <Route path="/library/entities" element={<Entities />} />
+                <Route path="/library/entities/:id" element={<Entity />} />
+                <Route path="/dataview" element={<DataView />} />
+                <Route path="/inbox" element={<Inbox />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </main>
+            {/* </Suspense> */}
           </CSSTransition>
         </TransitionGroup>
       </div>

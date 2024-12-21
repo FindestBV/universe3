@@ -18,6 +18,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import {
   BookOpenCheck,
   Bot,
@@ -67,7 +68,8 @@ const advancedItems = [
 
 export function AppSidebar() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const navigateWithTransition = useNavigateWithTransition();
   const user = useSelector(currentUser);
   const { t } = useTranslation();
 
@@ -77,7 +79,7 @@ export function AppSidebar() {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/");
+    navigateWithTransition("/");
   };
 
   return (
@@ -124,7 +126,7 @@ export function AppSidebar() {
                           </div>
                         ))}
                         <SidebarMenuItem>
-                          <GenerateReport />
+                          <GenerateReport leftContent={"Left"} rightContent={"Right"} />
                         </SidebarMenuItem>
                       </ul>
                     )}

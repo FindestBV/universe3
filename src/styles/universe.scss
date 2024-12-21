@@ -321,3 +321,22 @@
     background-color: green;
   }
 }
+
+html:has(.view-transition) {
+  transition: opacity 0.5s;
+  opacity: 0.5; /* Fades out the page */
+}
+
+.d-view-modal {
+  width: 100%;
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Ensures the content stays within bounds */
+}
+
+.d-view-modal svg {
+  width: 40%!important; /* Ensure the SVG scales */
+  height: 100%!important;
+}

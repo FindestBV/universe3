@@ -3,11 +3,12 @@ import { UserAvatar } from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { ExternalLink, Link, Trash2 } from "lucide-react";
 
 import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import LinkedCounts from "./linked-counts";
 
@@ -99,8 +100,9 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   onSelect,
   linkedCounts = {},
 }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
+  const navigateWithTransition = useNavigateWithTransition();
 
   const location = useLocation();
   const currentPath = location.pathname;
@@ -113,7 +115,9 @@ export const GenericCard: React.FC<GenericCardProps> = ({
       document: `/library/documents/${id}`,
       entity: `/library/entities/${id}`,
     };
-    navigate(routes[itemType], { state: { id, title, description, dateAdded, url, abstract } });
+    navigateWithTransition(routes[itemType], {
+      state: { id, title, description, dateAdded, url, abstract },
+    });
   };
 
   console.log("isDocument", isDocument);
@@ -168,7 +172,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
       <div className="relative flex h-auto w-[25px]">
         {/* Hoverable Actions */}
         <div className="links">
-          <a href={url || "#"} className="linkedStudy">
+          <a href={url || "#"} className="linkedStudy" viewTransition>
             <Link size={14} />
           </a>
           {type !== "document" && (

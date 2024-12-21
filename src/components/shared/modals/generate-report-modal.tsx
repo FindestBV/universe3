@@ -1,7 +1,10 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ClipboardPlus } from "lucide-react";
 
 import { useTranslation } from "react-i18next";
+
+import DocumentSkeleton from "../loaders/document-skeleton";
 
 type ModalProps = {
   leftContent: React.ReactNode;
@@ -21,16 +24,30 @@ const GenerateReport: React.FC<ModalProps> = ({ leftContent, rightContent, onClo
           </button>
         </div>
       </DialogTrigger>
-      <DialogContent className="h-[80vh] max-w-6xl items-start bg-slate-100 p-6">
-        <div className="h-20">
+      <DialogContent className="flex h-[80vh] max-w-6xl flex-col items-start bg-slate-100 p-6">
+        <div className="header">
           <h2 className="pl-2 text-2xl font-black">{t("generateReport")}</h2>
         </div>
-        <div className="flex h-full flex-row">
+        <div className="flex h-full w-full flex-1 flex-col md:flex-row">
           {/* Left Column */}
-          <div className="w-1/2 overflow-y-auto border-r border-gray-200 p-4">{leftContent}</div>
+          <div className="w-1/4 overflow-y-auto border-r border-gray-200 p-4">
+            {leftContent}
+            <Skeleton className="mb-2 h-10 w-full animate-pulse bg-gray-400" />
+            <Skeleton className="mb-2 h-10 w-full animate-pulse bg-gray-300" />
+            <Skeleton className="mb-2 h-10 w-full animate-pulse bg-gray-400" />
+            <Skeleton className="mb-2 h-10 w-full animate-pulse bg-gray-300" />
+          </div>
 
           {/* Right Column */}
-          <div className="w-1/2 overflow-y-auto p-4">{rightContent}</div>
+          <div className="w-3/4 overflow-y-auto p-4">
+            {rightContent}
+            <Skeleton className="mb-2 h-10 w-3/4 animate-pulse bg-gray-400" />
+            <Skeleton className="mb-2 h-10 w-full animate-pulse bg-gray-300" />
+            <Skeleton className="mb-2 h-20 w-full animate-pulse bg-gray-300" />
+            <Skeleton className="mb-2 h-10 w-3/4 animate-pulse bg-gray-400" />
+            <Skeleton className="mb-2 h-10 w-full animate-pulse bg-gray-300" />
+            <Skeleton className="mb-2 h-20 w-full animate-pulse bg-gray-300" />
+          </div>
         </div>
       </DialogContent>
     </Dialog>
