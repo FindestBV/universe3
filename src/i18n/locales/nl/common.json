@@ -10,5 +10,7 @@
     "pageType": "Pagina type",
     "createNew": "Nieuw maken",
     "profile": "Profiel",
-    "generateReport": "Rapport genereren"
+    "generateReport": "Rapport genereren",
+    "seeRelationsGraph": "Bekijk het relaties diagram",
+    "pageTypeBreakdown": "Bekijk het paginatype detail"
 }

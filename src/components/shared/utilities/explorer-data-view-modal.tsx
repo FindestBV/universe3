@@ -79,7 +79,7 @@ export const ExplorerDataViewModal = () => {
                   {optionLabels.find((label) => viewOptions[label] === selectedView)}
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="relative z-50 w-full bg-white shadow-lg">
+              <DropdownMenuContent className="relative z-50 w-full bg-slate-200 shadow-lg">
                 <DropdownMenuGroup>
                   {optionLabels.map((label) => (
                     <DropdownMenuItem

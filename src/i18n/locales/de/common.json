@@ -10,5 +10,7 @@
     "pageType": "Seitentyp",
     "createNew": "Neu erstellen",
     "profile": "Profil",
-    "generateReport": "Bericht generieren"
+    "generateReport": "Bericht generieren",
+    "seeRelationsGraph": "Sehen Sie das Beziehungsdiagramm",
+    "pageTypeBreakdown": "Sehen Sie die Seitentypen"
 }

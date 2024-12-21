@@ -10,5 +10,7 @@
     "pageType": "Përshkrimi i llojeve të faqeve",
     "createNew": "Krijo të ri",
     "profile": "Profili",
-    "generateReport": "Gjenero Raportin"
+    "generateReport": "Gjenero Raportin",
+    "seeRelationsGraph": "Shiko Grafikun e Marrëdhënieve",
+    "pageTypeBreakdown": "Shiko Përshkrimin e llojeve të faqeve"
 }

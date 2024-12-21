@@ -10,5 +10,7 @@
     "pageType": "Ανάλυση τύπου σελίδας",
     "createNew": "Δημιουργία νέου",
     "profile": "Λογαριασμός",
-    "generateReport": "Δημιουργία αναφοράς"
+    "generateReport": "Δημιουργία αναφοράς",
+    "seeRelationsGraph": "Δείτε το γράφημα σχέσεων",
+    "pageTypeBreakdown": "Δείτε την ανάλυση τύπου σελίδας"
 }

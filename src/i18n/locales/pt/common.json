@@ -10,5 +10,7 @@
     "pageType": "Detalhamento do tipo de página",
     "createNew": "Criar novo",
     "profile": "Perfil",
-    "generateReport": "Gerar relatório"
+    "generateReport": "Gerar relatório",
+    "seeRelationsGraph": "Ver o gráfico de relações",
+    "pageTypeBreakdown": "Ver o detalhamento do tipo de página"
 }

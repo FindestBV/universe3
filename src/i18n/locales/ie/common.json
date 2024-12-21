@@ -10,5 +10,7 @@
     "pageType": "Déilte ar an t-íos leathanach",
     "createNew": "Cruthaigh nua",
     "profile": "Próifíl",
-    "generateReport": "Géilear an Ráiteas"
+    "generateReport": "Géilear an Ráiteas",
+    "seeRelationsGraph": "Cuardaigh sa graif",
+    "pageTypeBreakdown": "Cuardaigh sa graif"
 }

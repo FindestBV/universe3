@@ -74,7 +74,7 @@ export function AppSidebar() {
   const { t } = useTranslation();
 
   const handleLogin = () => {
-    dispatch(setCredentials("generic@email.com"));
+    dispatch(setCredentials("generic@findest.eu"));
   };
 
   const handleLogout = () => {

@@ -10,5 +10,7 @@
     "pageType": "Page type breakdown",
     "createNew": "Create new",
     "profile": "Profile",
-    "generateReport": "Generate Report"
+    "generateReport": "Generate Report",
+    "seeRelationsGraph": "See Relations graph", 
+    "pageTypeBreakdown": "See Page Type breakdown"
 }

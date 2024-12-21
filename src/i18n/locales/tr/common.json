@@ -10,5 +10,7 @@
     "pageType": "Sayfa tipi",
     "createNew": "Yeni oluştur",
     "profile": "Profil",
-    "generateReport": "Rapor oluştur"
+    "generateReport": "Rapor oluştur",
+    "seeRelationsGraph": "İlişkiler grafiğini görüntüle",
+    "pageTypeBreakdown": "Sayfa tipi ayrıntısını görüntüle"
 }
