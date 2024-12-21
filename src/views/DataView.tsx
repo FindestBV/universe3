@@ -29,32 +29,34 @@ export const DataView = () => {
   const initialGraphType = location.state?.graphType?.toLowerCase() || "link";
 
   const [selectedView, setSelectedView] = useState<string>(initialGraphType);
-  const [searchKeyword, setSearchKeyword] = useState<string>(""); // Initialize as string
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
 
   const debouncedSearchKeyword = useDebounce(searchKeyword, 500);
-  const { data: linkingData } = useGetLinkingQuery();
-  const { data: typesData } = useGetPageTypesQuery();
+  const {
+    data: linkingData,
+    isLoading: linkingLoading,
+    error: linkingError,
+  } = useGetLinkingQuery();
+  const { data: typesData, isLoading: typesLoading, error: typesError } = useGetPageTypesQuery();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchKeyword(e.target.value || ""); // Ensure a string
-  };
-
+  // Handle view switch
   const handleOptionSelect = (label: string) => {
     const graphType = viewOptions[label];
-    setSelectedView(graphType); // Update view
-    setSearchKeyword(""); // Reset search input
+    setSelectedView(graphType);
+    setSearchKeyword(""); // Reset search input on view change
     setSearchResults([]); // Clear results
   };
 
+  // Filter data based on the search keyword
   useEffect(() => {
     const currentKeyword =
-      typeof debouncedSearchKeyword === "string" ? debouncedSearchKeyword.trim() : ""; // Safeguard
+      typeof debouncedSearchKeyword === "string" ? debouncedSearchKeyword.trim() : "";
     const dataToFilter = selectedView === "link" ? linkingData : typesData;
 
     if (currentKeyword) {
-      const filteredResults = dataToFilter?.filter((item) =>
-        item.name.toLowerCase().includes(currentKeyword.toLowerCase()),
+      const filteredResults = dataToFilter?.filter((item: any) =>
+        item.name?.toLowerCase().includes(currentKeyword.toLowerCase()),
       );
       setSearchResults(filteredResults || []);
     } else {
@@ -103,12 +105,16 @@ export const DataView = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <DataViewSearchBar onChange={handleInputChange} />
+          <DataViewSearchBar onChange={(e) => setSearchKeyword(e.target.value)} />
         </div>
       </div>
 
       <div className="flex items-center justify-center">
-        {selectedView === "link" ? (
+        {linkingLoading || typesLoading ? (
+          <p>Loading...</p>
+        ) : linkingError || typesError ? (
+          <p>Error loading data</p>
+        ) : selectedView === "link" ? (
           <ForceDirectedGraphView linkingData={searchResults} />
         ) : (
           <PackGraphView data={searchResults} />

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useSearchItemsMutation } from "@/api/search/searchApi";
+import { useGetLinkingDataByTitleQuery } from "@/api/activity/activityApi";
 import { useDebounce } from "@/hooks/use-debounce";
 import { Loader, Search, X } from "lucide-react";
 
@@ -13,67 +13,32 @@ export const DataViewSearchBar = () => {
   const [filters, setFilters] = useState({
     keyword: "",
     type: "",
-    category: "",
-    tags: "",
-    authors: "",
-    sources: "",
   });
 
   const [selectedTab, setSelectedTab] = useState(TABS[0]); // Default to "All"
-  const [hasSearched, setHasSearched] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
 
-  const [searchItems, { data, isLoading }] = useSearchItemsMutation();
+  const debouncedKeyword = useDebounce(filters.keyword || "", 500);
 
-  const debouncedTriggerSearch = useDebounce(() => {
-    if (filters.keyword.trim()) {
-      const queryParams = new URLSearchParams();
+  // Ensure debouncedKeyword is a string before calling .trim()
+  const trimmedKeyword = typeof debouncedKeyword === "string" ? debouncedKeyword.trim() : "";
 
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value.trim()) queryParams.append(key, value);
-      });
+  const { data, isLoading, error } = useGetLinkingDataByTitleQuery(trimmedKeyword, {
+    skip: !trimmedKeyword, // Skip query if trimmedKeyword is empty
+  });
 
-      const queryString = queryParams.toString();
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    console.log("value", value);
+    setFilters((prev) => ({ ...prev, keyword: value }));
+    setIsTyping(true); // User is actively typing
+  }, []);
 
-      searchItems(queryString)
-        .unwrap()
-        .then((response) => {
-          console.log("Search response:", response);
-        })
-        .catch((error) => {
-          console.error("Error fetching search results:", error);
-        });
-
-      setHasSearched(true);
-      setIsTyping(false); // Stop typing indicator after the search is triggered
-    }
-  }, 500);
-
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-      const { name, value } = e.target;
-      setFilters((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-      setIsTyping(true); // User is actively typing
-      debouncedTriggerSearch();
-    },
-    [debouncedTriggerSearch],
-  );
-
-  const handleInputPaste = useCallback(
-    (e: React.ClipboardEvent<HTMLInputElement>) => {
-      const pastedText = e.clipboardData.getData("text");
-      setFilters((prev) => ({
-        ...prev,
-        keyword: pastedText,
-      }));
-      setIsTyping(true);
-      debouncedTriggerSearch();
-    },
-    [debouncedTriggerSearch],
-  );
+  const handleInputPaste = useCallback((e: React.ClipboardEvent<HTMLInputElement>) => {
+    const pastedText = e.clipboardData.getData("text");
+    setFilters((prev) => ({ ...prev, keyword: pastedText }));
+    setIsTyping(true);
+  }, []);
 
   const handleInputBlur = () => {
     if (!filters.keyword.trim()) {
@@ -85,14 +50,8 @@ export const DataViewSearchBar = () => {
     setFilters({
       keyword: "",
       type: "",
-      category: "",
-      tags: "",
-      authors: "",
-      sources: "",
     });
     setSelectedTab("All");
-    searchItems("");
-    setHasSearched(false);
   };
 
   const handleTabChange = (tab: string) => {
@@ -137,6 +96,8 @@ export const DataViewSearchBar = () => {
     return groupedResults[selectedTab] || [];
   };
 
+  const results = filterResults(data);
+
   return (
     <div className="dataViewSearchBar">
       {/* Search Input */}
@@ -171,6 +132,9 @@ export const DataViewSearchBar = () => {
           </div>
         </div>
       </form>
+
+      {/* Render Results */}
+      <div className="results">{trimmedKeyword && trimmedKeyword}</div>
     </div>
   );
 };

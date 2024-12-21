@@ -30,6 +30,15 @@ export const activityApi = api.injectEndpoints({
       }),
       providesTags: ["SavedDocument"],
     }),
+
+    getLinkingDataByTitle: builder.query<SavedDocumentResponse, string | undefined>({
+      query: (name) => ({
+        url: "linking",
+        params: name ? { name } : {}, // Pass `name` only if it's defined
+      }),
+      providesTags: ["SavedDocument"],
+    }),
+
     getPageTypes: builder.query<SavedDocumentResponse, void>({
       query: () => ({
         url: "linking/types",
@@ -54,6 +63,7 @@ export const {
   useGetMyRecentActivityQuery,
   useGetMaxActivityQuery,
   useGetLinkingQuery,
+  useGetLinkingDataByTitleQuery,
   useGetPageTypesQuery,
   useGetMyRecentActivityDropdownQuery,
   usePrefetch,

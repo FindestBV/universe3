@@ -54,6 +54,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({ linki
     [ObjectTypeEnum.Unknown]: "#CCCCCC", // Gray for unknown
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const typeLabels: Record<number, string> = {
     [ObjectTypeEnum.Entity]: "Entity",
     [ObjectTypeEnum.Study]: "Study",
