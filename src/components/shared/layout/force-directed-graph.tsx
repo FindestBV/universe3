@@ -27,7 +27,7 @@ type TForceDirectedGraphViewProps = {
     name: string;
     type: string;
     objectType: number;
-    lowerLevelNodes?: { id: string }[];
+    lowerLevelNodes?: { id: string; name: string }[];
   }[];
   searchKeyword?: string;
 };
@@ -45,27 +45,30 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
     [ObjectTypeEnum.Unknown]: "#CCCCCC", // Gray
   };
 
-  // Filter Graph Data
   const filterGraphData = useCallback(() => {
     const lowerKeyword = searchKeyword.toLowerCase();
 
+    // Filter nodes and their children based on the search keyword
     const filteredNodes = linkingData.reduce((acc: any[], node: any) => {
       const newLowerLevelNodes = (node.lowerLevelNodes || []).filter((child: any) =>
-        child.id?.toLowerCase().includes(lowerKeyword),
+        child.name.toLowerCase().includes(lowerKeyword),
       );
 
-      if (node.name?.toLowerCase().includes(lowerKeyword) || newLowerLevelNodes.length > 0) {
+      // Include node if it matches the keyword or has matching children
+      if (node.name.toLowerCase().includes(lowerKeyword) || newLowerLevelNodes.length > 0) {
         acc.push({ ...node, lowerLevelNodes: newLowerLevelNodes });
       }
 
       return acc;
     }, []);
 
-    const nodeIds = new Set(filteredNodes.map((node) => node.id));
+    // Create a set of IDs for filtered nodes
+    const filteredNodeIds = new Set(filteredNodes.map((node) => node.id));
 
-    const filteredLinks = linkingData.flatMap((node) =>
+    // Create links based on the filtered nodes
+    const filteredLinks = filteredNodes.flatMap((node) =>
       (node.lowerLevelNodes || [])
-        .filter((child) => nodeIds.has(child.id))
+        .filter((child) => filteredNodeIds.has(child.id))
         .map((child) => ({
           source: node.id,
           target: child.id,
@@ -118,30 +121,22 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
       .attr("transform", "translate(282.0683290021384,102.7027043871232) scale(0.05)")
       .call(zoomBehavior);
 
-    // Render links
     const link = svgGroup
       .append("g")
       .selectAll("line")
       .data(links)
       .enter()
       .append("line")
-      .attr("stroke", (d) =>
-        nodes.find((node) => node.id === d.source)?.isHighlighted ||
-        nodes.find((node) => node.id === d.target)?.isHighlighted
-          ? "#007AFF"
-          : "#CCCCCC",
-      )
-      .attr("stroke-width", 2)
-      .attr("stroke-linecap", "round");
+      .attr("stroke", "#CCCCCC")
+      .attr("stroke-width", 2);
 
-    // Render nodes
     const node = svgGroup
       .append("g")
       .selectAll("circle")
       .data(nodes)
       .enter()
       .append("circle")
-      .attr("r", (d) => (d.isHighlighted ? 12 : 10))
+      .attr("r", 10)
       .attr("fill", (d) => colorMap[d.objectType] || "#000000")
       .style("cursor", "pointer")
       .call(
@@ -188,17 +183,6 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
 
   return (
     <>
-      <div className="absolute left-[1em] top-[3em] p-4">
-        <ul className="flex flex-col">
-          <li className="flex flex-row items-center gap-2 text-sm text-gray-500">
-            <span className="blueDot__indicator"></span>Entity
-          </li>
-          <li className="flex flex-row items-center gap-2 text-sm text-gray-500">
-            <span className="purpleDot__indicator"></span>Study
-          </li>
-        </ul>
-      </div>
-
       <div className="forceDirectedGraphContainer">
         <svg ref={containerRef} />
       </div>

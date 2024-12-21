@@ -46,26 +46,59 @@ export const DataView = () => {
   const { data: typesData, isLoading: typesLoading, error: typesError } = useGetPageTypesQuery();
 
   // Handle filtering based on search and view
+  // const handleSearch = useCallback(
+  //   (keyword: string) => {
+  //     console.log("Search Keyword:", keyword); // Debugging: Log keyword
+  //     const dataToFilter = selectedView === "link" ? linkingData : typesData;
+  //     console.log("dataToFilter:", dataToFilter); // Debugging: Log keyword
+  //     if (!dataToFilter) return; // No data to filter
+
+  //     // Filter data based on the search keyword
+  //     const lowerKeyword = keyword.toLowerCase();
+
+  //     const filtered = dataToFilter.reduce((acc: any[], node: any) => {
+  //       const newChildren = (node.children || []).filter((child: any) =>
+  //         child.name?.toLowerCase().includes(lowerKeyword),
+  //       );
+  //       if (newChildren.length > 0) {
+  //         acc.push({ ...node, children: newChildren });
+  //       }
+  //       return acc;
+  //     }, []);
+  //     console.log("filtered:", filtered);
+  //     setFilteredData(filtered); // Update filtered results
+  //   },
+  //   [selectedView, linkingData, typesData],
+  // );
+
   const handleSearch = useCallback(
     (keyword: string) => {
       console.log("Search Keyword:", keyword); // Debugging: Log keyword
       const dataToFilter = selectedView === "link" ? linkingData : typesData;
-      console.log("dataToFilter:", dataToFilter); // Debugging: Log keyword
+      console.log("dataToFilter:", dataToFilter); // Debugging: Log data to filter
       if (!dataToFilter) return; // No data to filter
 
-      // Filter data based on the search keyword
       const lowerKeyword = keyword.toLowerCase();
 
+      // Use appropriate structure based on selectedView
       const filtered = dataToFilter.reduce((acc: any[], node: any) => {
-        const newChildren = (node.children || []).filter((child: any) =>
+        const childrenKey = selectedView === "link" ? "lowerLevelNodes" : "children";
+
+        const newChildren = (node[childrenKey] || []).filter((child: any) =>
           child.name?.toLowerCase().includes(lowerKeyword),
         );
-        if (newChildren.length > 0) {
-          acc.push({ ...node, children: newChildren });
+
+        if (
+          node.name?.toLowerCase().includes(lowerKeyword) || // Include node if it matches the keyword
+          newChildren.length > 0 // Or if it has matching children
+        ) {
+          acc.push({ ...node, [childrenKey]: newChildren });
         }
+
         return acc;
       }, []);
-      console.log("filtered:", filtered);
+
+      console.log("filtered:", filtered); // Debugging: Log filtered data
       setFilteredData(filtered); // Update filtered results
     },
     [selectedView, linkingData, typesData],
