@@ -91,8 +91,6 @@ export const SimilarDocumentModal: React.FC = ({
                 <div className="flex flex-row gap-4">
                   <div className="w-3/4">
                     <p>{mainContents[0]?.content}</p>
-                    <h1 className="my-4 text-3xl font-black">Comments</h1>
-                    <p className="rounded-sm border border-[#f1f1f1] p-4">This is a comment</p>
                   </div>
                   <div className="w-1/4">
                     <div className="rounded-sm border border-[#f1f1f1] p-4">
