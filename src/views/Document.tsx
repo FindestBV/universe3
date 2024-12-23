@@ -111,7 +111,7 @@ export const Document: React.FC = () => {
                     <div>{fetchedDocument?.abstract || "No document information available."}</div>
                   </div>
                   <div className="w-1/4">
-                    <div className="border p-4">
+                    <div className="rounded-sm border p-4">
                       <h5 className="mb-2 font-bold">Meta</h5>
                       {fetchedDocument?.searchInformation ? (
                         <div>
@@ -141,6 +141,16 @@ export const Document: React.FC = () => {
                       ) : (
                         <p>No metadata available.</p>
                       )}
+
+                      {Object.entries(fetchedDocument?.authorships).map((key) => {
+                        return (
+                          <div key={key} className="mb-2">
+                            <strong>Authors:</strong>
+                            <br />
+                            {key[1]?.authorName || "Not available"}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
