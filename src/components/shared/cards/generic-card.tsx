@@ -120,6 +120,10 @@ export const GenericCard: React.FC<GenericCardProps> = ({
     });
   };
 
+  const linkItemToOther = (id: string) => {
+    console.log(`item with ${id} linked`);
+  };
+
   return (
     <div className="itemCard">
       <div className={`innerCardMain items-start ${isDocument ? "gap-4" : ""}`}>
@@ -170,7 +174,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
       <div className="relative flex h-auto w-[25px]">
         {/* Hoverable Actions */}
         <div className="links">
-          <a href={url || "#"} className="linkedStudy" viewTransition>
+          <a href={"#"} onClick={() => linkItemToOther(id)} className="linkedStudy">
             <Link size={14} />
           </a>
           {type !== "document" && (
