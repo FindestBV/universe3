@@ -7,7 +7,7 @@ import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { ExternalLink, Link, Trash2 } from "lucide-react";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import LinkedCounts from "./linked-counts";
@@ -98,11 +98,26 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   abstract,
   isSelected,
   onSelect,
+  connectedObjects,
+  searchInformation,
   linkedCounts = {},
 }) => {
   // const navigate = useNavigate();
+  const [prefetchedItems, setPrefetchedItems] = useState<Record<string, any>[]>([]);
   const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
   const navigateWithTransition = useNavigateWithTransition();
+
+  console.log("connected objects", connectedObjects);
+  // console.log('prefetchedObjectsForItem', prefetchConnectedObjects)
+
+  const handlePrefetch = async ({ id, type }: { id: string; type: string }) => {
+    try {
+      const data = await prefetchConnectedObjects({ id, type }, { force: false });
+      setPrefetchedItems((prevItems) => [...prevItems, { id, type, data }]);
+    } catch (error) {
+      console.log("error whle prefetching links", error);
+    }
+  };
 
   const location = useLocation();
   const currentPath = location.pathname;
@@ -116,13 +131,25 @@ export const GenericCard: React.FC<GenericCardProps> = ({
       entity: `/library/entities/${id}`,
     };
     navigateWithTransition(routes[itemType], {
-      state: { id, title, description, dateAdded, url, abstract },
+      state: {
+        id,
+        title,
+        description,
+        dateAdded,
+        url,
+        abstract,
+        connectedObjects,
+        searchInformation,
+        prefetchedItems,
+      },
     });
   };
 
   const linkItemToOther = (id: string) => {
     console.log(`item with ${id} linked`);
   };
+
+  console.log("searchInformation", searchInformation);
 
   return (
     <div className="itemCard">
@@ -158,8 +185,9 @@ export const GenericCard: React.FC<GenericCardProps> = ({
               <LinkedCounts
                 id={id}
                 linkedCounts={linkedCounts}
-                prefetch={({ id, type }) => prefetchConnectedObjects({ id, type })}
+                prefetch={({ id, type }) => handlePrefetch({ id, type })}
                 onItemClick={(id) => console.log(`Item clicked: ${id}`)}
+                connectedObjects={connectedObjects}
               />
             </div>
           </div>

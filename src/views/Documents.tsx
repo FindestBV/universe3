@@ -85,8 +85,9 @@ export const Documents: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log("current", data ? data : "nada");
     window.scroll(0, 0);
-  }, []);
+  }, [data]);
 
   return (
     <div className="flex h-full w-full flex-col px-12 max-sm:px-4">

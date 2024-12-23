@@ -1,9 +1,13 @@
-import { useGetDocumentByIdQuery } from "@/api/documents/documentApi";
+import {
+  useGetDocumentByIdQuery,
+  useGetDocumentRelatedScienceArticlesQuery,
+} from "@/api/documents/documentApi";
 import { Toolbar } from "@/components/shared/layout/toolbar";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 // import { FindestButton } from "@/components/shared/utilities/findest-button";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExternalLink } from "lucide-react";
 
 import { useEffect, useState } from "react";
@@ -16,6 +20,7 @@ export const Document: React.FC = () => {
   const { data: fetchedDocument } = useGetDocumentByIdQuery(id!, {
     refetchOnMountOrArgChange: false,
   });
+  const { data: scienceArticles } = useGetDocumentRelatedScienceArticlesQuery(id!);
 
   const renderConnectedObjects =
     fetchedDocument &&
@@ -41,8 +46,11 @@ export const Document: React.FC = () => {
   };
 
   useEffect(() => {
+    if (fetchedDocument) {
+      console.log(fetchedDocument);
+    }
     window.scroll(0, 0);
-  }, []);
+  }, [fetchedDocument]);
 
   return (
     <>
@@ -88,7 +96,74 @@ export const Document: React.FC = () => {
             <h4 className="pb-2 font-black">Connected Objects:</h4>
             <div className="mt-2 flex gap-4">{renderConnectedObjects}</div>
             <br />
-            <p className="text-black">{fetchedDocument?.abstract}</p>
+
+            {/* Tabs Section */}
+            <Tabs defaultValue="documentInfo" className="mt-6">
+              <TabsList className="mb-4 rounded-none border-b bg-transparent">
+                <TabsTrigger value="documentInfo">Document Information</TabsTrigger>
+                <TabsTrigger value="similarDocuments">Similar Documents</TabsTrigger>
+                <TabsTrigger value="attachments">Attachments</TabsTrigger>
+              </TabsList>
+              <TabsContent value="documentInfo">
+                <h4 className="pb-2 font-black">Document Information</h4>
+                <div className="flex flex-row gap-4">
+                  <div className="w-3/4">
+                    <div>{fetchedDocument?.abstract || "No document information available."}</div>
+                  </div>
+                  <div className="w-1/4">
+                    <div className="border p-4">
+                      <h5 className="mb-2 font-bold">Meta</h5>
+                      {fetchedDocument?.searchInformation ? (
+                        <div>
+                          {Object.entries(fetchedDocument.searchInformation).map(([key, value]) => {
+                            // Display specific keys in a user-friendly format
+                            if (key === "journalName") {
+                              return (
+                                <div key={key} className="mb-2">
+                                  <strong>Journal:</strong>
+                                  <br />
+                                  {value || "Not available"}
+                                </div>
+                              );
+                            }
+                            if (key === "publicationDate") {
+                              return (
+                                <div key={key} className="mb-2">
+                                  <strong>Publication Date:</strong>
+                                  <br />
+                                  {value || "Not available"}
+                                </div>
+                              );
+                            }
+                            return null; // Skip keys that are not relevant
+                          })}
+                        </div>
+                      ) : (
+                        <p>No metadata available.</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+              <TabsContent value="similarDocuments">
+                <h4 className="pb-2 font-black">Similar Documents</h4>
+                <div className="mt-2 flex gap-4">
+                  <ul>
+                    {scienceArticles?.map((article, index) => (
+                      <li key={index} className="science-article">
+                        <a href={article.url} target="_blank" rel="noopener noreferrer">
+                          {article.title || "Untitled Article"}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </TabsContent>
+              <TabsContent value="attachments">
+                <h4 className="pb-2 font-black">Attachments</h4>
+                <p>No attachments available.</p>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       )}

@@ -34,6 +34,11 @@ export const documentApi = api.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
     }),
 
+    getDocumentRelatedScienceArticles: builder.query<SavedDocumentResponse, string>({
+      query: (id) => `/document/sciencearticle/${id}/relatedsciencearticles`,
+      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+    }),
+
     getConnectedObjects: builder.query<ConnectedObject[], { id: string; type: string }>({
       query: ({ id, type }) => `linking/${id}?objectType[]=${type}`,
     }),
@@ -121,6 +126,7 @@ export const documentApi = api.injectEndpoints({
 export const {
   useGetSavedDocumentsQuery,
   useGetDocumentByIdQuery,
+  useGetDocumentRelatedScienceArticlesQuery,
   useGetMyDocumentInboxQuery,
   useLazyGetConnectedObjectsQuery,
   useAddDocumentMutation,

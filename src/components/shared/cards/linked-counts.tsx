@@ -1,3 +1,4 @@
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { BookOpenCheck, Fingerprint, Highlighter, Image, Paperclip } from "lucide-react";
 
 import React from "react";
@@ -34,8 +35,9 @@ const objectTypeMapping: { [key: string]: number } = {
 interface LinkedCountsProps {
   linkedCounts: { [key: string]: number };
   id: string;
-  prefetch?: (args: { id: string; type: number }) => void; // Prefetch function with type as a number
+  prefetch?: (args: { id: string; type: number }) => void;
   onItemClick?: (id: string) => void;
+  connectedObjects?: { id: string; name: string; type: number; url?: string }[];
 }
 
 export const LinkedCounts: React.FC<LinkedCountsProps> = ({
@@ -43,25 +45,47 @@ export const LinkedCounts: React.FC<LinkedCountsProps> = ({
   id,
   prefetch,
   onItemClick,
+  connectedObjects = [],
 }) => {
   return (
     <ul className="linkedCounts gap-2">
       {Object.entries(linkedCounts)
-        .filter(([, value]) => value > 0)
+        .filter(([, value]) => value > 0) // Only show items with counts > 0
         .map(([key, value], idx) => {
           const IconComponent = typeIcons[key as keyof typeof typeIcons] || null;
-          const objectType = objectTypeMapping[key] || -1; // Map key to type or use -1 if not found
+          const objectType = objectTypeMapping[key] || -1;
+
+          // Filter connectedObjects by type
+          const relatedObjects = connectedObjects.filter((obj) => obj.type === objectType);
 
           return (
-            <li
-              key={idx}
-              className={`linkedCounts__item ${key}`}
-              onMouseEnter={() => prefetch({ id, type: objectType })} // Pass correct object type
-              onClick={() => onItemClick(id)}
-            >
-              {IconComponent && <IconComponent size={16} />}
-              {value}
-            </li>
+            <TooltipProvider key={idx}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <li
+                    className={`linkedCounts__item ${key}`}
+                    onMouseEnter={() => prefetch?.({ id, type: objectType })}
+                    onClick={() => onItemClick?.(id)}
+                  >
+                    {IconComponent && <IconComponent size={16} />}
+                    {value}
+                  </li>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="z-50 rounded-md bg-white p-2 shadow-lg">
+                  <ul className="tooltipContent">
+                    {relatedObjects.length > 0 ? (
+                      relatedObjects.map((obj) => (
+                        <li key={obj.id}>
+                          <a href={obj.url || "#"}>{obj.name}</a>
+                        </li>
+                      ))
+                    ) : (
+                      <li>No related items</li>
+                    )}
+                  </ul>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           );
         })}
     </ul>
