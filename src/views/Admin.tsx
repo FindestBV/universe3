@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import { useLocation, useNavigate } from "react-router-dom";
 
-export const Settings = () => {
+export const Admin = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -26,8 +26,8 @@ export const Settings = () => {
         <div className="mx-auto max-w-full p-8">
           {/* Header */}
 
-          <h1 className="text-2xl font-semibold text-gray-800">User Settings</h1>
-          <p className="text-sm text-gray-500">Manage your account settings</p>
+          <h1 className="text-2xl font-semibold text-gray-800">Galaxy Admin</h1>
+          <p className="text-sm text-gray-500">Manage account settings for your tenant galaxies</p>
 
           {/* Tabs */}
           <Tabs defaultValue="profile" className="py-4">
@@ -107,4 +107,4 @@ export const Settings = () => {
   );
 };
 
-export default Settings;
+export default Admin;

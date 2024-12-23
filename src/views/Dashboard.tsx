@@ -178,9 +178,7 @@ export const Dashboard = () => {
           <div className="relative flex h-[320px] w-full flex-col items-start justify-start gap-1 overflow-y-scroll rounded-xl">
             {/* Show Loader */}
             {maxActivityLoading && (
-              <Skeleton className="relative flex h-[320px] w-full flex-col items-start justify-start gap-1 overflow-y-scroll rounded-xl">
-                <Loader className="mx-auto mb-2 animate-spin items-center justify-center text-white" />
-              </Skeleton>
+              <Skeleton className="relative flex h-[320px] w-full flex-col items-start justify-start gap-1 overflow-y-scroll rounded-xl" />
             )}
 
             {/* Render Content When Loaded */}
