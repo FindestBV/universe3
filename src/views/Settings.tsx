@@ -1,12 +1,18 @@
+import { currentUser, userEmail } from "@/api/auth/authSlice";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const Settings = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const user = useSelector(currentUser);
+  const mail = useSelector(userEmail);
+
+  console.log("user", user);
   const viewOptions = {
     "RELATIONS GRAPH": "link",
     "PAGE TYPE BREAKDOWN": "pack",
@@ -53,6 +59,7 @@ export const Settings = () => {
                   <input
                     type="text"
                     id="name"
+                    value={user}
                     className="mt-1 block w-full rounded-md border px-4 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
@@ -63,6 +70,7 @@ export const Settings = () => {
                   <input
                     type="email"
                     id="email"
+                    value={mail}
                     className="mt-1 block w-full rounded-md border px-4 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>

@@ -32,7 +32,9 @@ const Login = () => {
 
     // Simulating an API call or authentication process
     setTimeout(() => {
-      dispatch(setCredentials({ user: username, token: import.meta.env.VITE_ACCESS_TOKEN }));
+      dispatch(
+        setCredentials({ user: username, token: import.meta.env.VITE_ACCESS_TOKEN, email: email }),
+      );
       setIsLoading(false); // Reset loading state after the process
       navigate("/dashboard"); // Redirect after login
     }, 750);

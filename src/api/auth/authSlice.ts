@@ -7,6 +7,7 @@ import { AuthResponse, AuthState } from "../types/types";
 const initialState: AuthState = {
   user: null,
   token: null,
+  email: null,
   isLoading: false,
   error: null,
 };
@@ -17,6 +18,7 @@ const authSlice = createSlice({
   reducers: {
     setCredentials: (state, action: PayloadAction<AuthResponse>) => {
       state.user = action.payload.user;
+      state.email = action.payload.email;
       state.token = action.payload.token;
     },
     logout: (state) => {
@@ -28,6 +30,7 @@ const authSlice = createSlice({
 
 export const { setCredentials, logout } = authSlice.actions;
 export const currentUser = (state: RootState) => state.auth.user;
+export const userEmail = (state: RootState) => state.auth.email;
 // export const currentUser = (state: {
 //     auth: string; user: string | null;
 // }) => state?.auth?.user;
