@@ -43,6 +43,14 @@ export const Documents: React.FC = () => {
     }
   };
 
+  const bulkSelectAction = () => {
+    console.log(`collective action on ${selectedDocs}`, selectedDocs);
+  };
+
+  const bulkDeSelectAction = () => {
+    setSelectedDocs(new Set());
+  };
+
   const handleSelectDoc = (id: string, checked: boolean) => {
     const newSelected = new Set(selectedDocs);
     if (checked) {
@@ -92,10 +100,10 @@ export const Documents: React.FC = () => {
           />
           {isChecked && (
             <div className="ml-4 flex gap-2">
-              <a href="#" className="linkedStudy">
+              <a onClick={bulkSelectAction} className="linkedStudy">
                 <Link size={18} />
               </a>
-              <a href="#" className="trashCan">
+              <a onClick={bulkDeSelectAction} className="trashCan">
                 <Trash2 size={18} />
               </a>
             </div>
