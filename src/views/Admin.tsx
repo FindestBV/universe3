@@ -41,6 +41,9 @@ export const Admin = () => {
               <TabsTrigger value="security" className="px-4 py-2">
                 Security
               </TabsTrigger>
+              <TabsTrigger value="switch" className="px-4 py-2">
+                Switch Tenant
+              </TabsTrigger>
             </TabsList>
 
             {/* Profile Tab */}
@@ -95,6 +98,21 @@ export const Admin = () => {
                   <input
                     type="password"
                     id="password"
+                    className="mt-1 block w-full rounded-md border px-4 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </form>
+            </TabsContent>
+
+            <TabsContent value="switch" className="py-4">
+              <form className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700" htmlFor="username">
+                    Username
+                  </label>
+                  <input
+                    type="text"
+                    id="username"
                     className="mt-1 block w-full rounded-md border px-4 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
