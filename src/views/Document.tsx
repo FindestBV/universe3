@@ -5,6 +5,7 @@ import {
 import { LinkedCounts } from "@/components/shared/cards/linked-counts";
 import { Toolbar } from "@/components/shared/layout/toolbar";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
+import { SimilarDocumentModal } from "@/components/shared/modals/similar-document-modal";
 // import { FindestButton } from "@/components/shared/utilities/findest-button";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
@@ -138,7 +139,7 @@ export const Document: React.FC = () => {
                                 <div key={key} className="mb-2">
                                   <strong>Journal:</strong>
                                   <br />
-                                  {value || "Not available"}
+                                  {value ? value : "N/A"}
                                 </div>
                               );
                             }
@@ -179,9 +180,7 @@ export const Document: React.FC = () => {
                       >
                         <Button>Save</Button>
                         <div className="flex flex-col">
-                          <a href={article.url} target="_blank" rel="noopener noreferrer">
-                            <h3 className="font-black">{article.title || "Untitled Article"}</h3>
-                          </a>
+                          <SimilarDocumentModal title={article.title} />
                           {/* Publication Date and Authors */}
                           <div className="mt-2 flex flex-grow flex-wrap items-center gap-2">
                             {/* Publication Date */}
