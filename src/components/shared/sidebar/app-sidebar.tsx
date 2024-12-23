@@ -188,10 +188,14 @@ export function AppSidebar() {
                   </DropdownMenuItem>
                   <Separator />
                   <DropdownMenuItem>
-                    <span>Admin</span>
+                    <a href="#" onClick={() => navigateWithTransition("/admin")}>
+                      <span>Admin</span>
+                    </a>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <span>Settings</span>
+                    <a href="#" onClick={() => navigateWithTransition("/settings")}>
+                      <span>Settings</span>
+                    </a>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     {user ? (

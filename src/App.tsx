@@ -15,10 +15,13 @@ import { Provider as ReduxStoreProvider, useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
+import Galaxies from "./views/Galaxies";
+
 // Lazy-loaded views (TEMP! Will sort this out with some proper Routing )
 const Queries = lazy(() => import("@/views/Queries"));
 const Documents = lazy(() => import("@/views/Documents"));
 const Document = lazy(() => import("@/views/Document"));
+const Settings = lazy(() => import("@/views/Settings"));
 const Studies = lazy(() => import("@/views/Studies"));
 const Study = lazy(() => import("@/views/Study"));
 const Entities = lazy(() => import("@/views/Entities"));
@@ -79,6 +82,8 @@ function AuthenticatedLayout() {
                 <Route path="/library/documents/:id" element={<Document />} />
                 <Route path="/library/entities" element={<Entities />} />
                 <Route path="/library/entities/:id" element={<Entity />} />
+                <Route path="/admin" element={<Galaxies />} />
+                <Route path="/settings" element={<Settings />} />
                 <Route path="/dataview" element={<DataView />} />
                 <Route path="/inbox" element={<Inbox />} />
                 <Route path="*" element={<NotFoundPage />} />
