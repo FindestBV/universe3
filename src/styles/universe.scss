@@ -340,3 +340,17 @@ html:has(.view-transition) {
   width: 40%!important; /* Ensure the SVG scales */
   height: 100%!important;
 }
+
+
+.connections{
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #757575;
+  margin-bottom: 4px;
+}
+
+.linkedCounts__item{
+  @apply w-[40px] flex justify-center items-center gap-1 rounded-sm hover:bg-blue-500 mb-4;
+}

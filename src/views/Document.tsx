@@ -2,6 +2,7 @@ import {
   useGetDocumentByIdQuery,
   useGetDocumentRelatedScienceArticlesQuery,
 } from "@/api/documents/documentApi";
+import { LinkedCounts } from "@/components/shared/cards/linked-counts";
 import { Toolbar } from "@/components/shared/layout/toolbar";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 // import { FindestButton } from "@/components/shared/utilities/findest-button";
@@ -93,12 +94,17 @@ export const Document: React.FC = () => {
             </div>
             <br />
 
-            <h4 className="pb-2 font-black">Connected Objects:</h4>
-            <div className="mt-2 flex gap-4">{renderConnectedObjects}</div>
+            <h6 className="connections">Connections:</h6>
+            <div className="mt-2 flex gap-4">
+              {renderConnectedObjects}{" "}
+              <Button>
+                <i>+ Connect to Entity or Study</i>
+              </Button>
+            </div>
 
             {/* Tabs Section */}
             <Tabs defaultValue="documentInfo" className="mt-6">
-              <TabsList className="mb-4 rounded-none border-b bg-transparent">
+              <TabsList className="mb-4 w-full justify-start rounded-none border-b bg-transparent">
                 <TabsTrigger value="documentInfo">Document Information</TabsTrigger>
                 <TabsTrigger value="similarDocuments">
                   Similar Documents ({`${scienceArticles?.length}`}){" "}
@@ -106,12 +112,18 @@ export const Document: React.FC = () => {
                 <TabsTrigger value="attachments">Attachments</TabsTrigger>
               </TabsList>
               <TabsContent value="documentInfo">
+                <LinkedCounts
+                  id={fetchedDocument.id}
+                  linkedCounts={fetchedDocument.linkedCounts}
+                  onItemClick={(id) => console.log(`Item clicked: ${id}`)}
+                  connectedObjects={fetchedDocument.connectedObjects}
+                />
                 <h4 className="pb-2 font-black">Document Abstract</h4>
                 <div className="flex flex-row gap-4">
                   <div className="w-3/4">
                     <div>{fetchedDocument?.abstract || "No document information available."}</div>
 
-                    <h4 className="py-2 font-black">Comments</h4>
+                    <h1 className="my-4 flex-1 text-3xl font-black text-black">Comments</h1>
                     <p className="border p-4">This is a comment</p>
                   </div>
                   <div className="w-1/4">
@@ -161,7 +173,10 @@ export const Document: React.FC = () => {
                 <div className="mt-2 flex gap-4">
                   <ul>
                     {scienceArticles?.map((article, index) => (
-                      <li key={index} className="science-article flex items-center gap-6 py-4">
+                      <li
+                        key={index}
+                        className="science-article mb-4 flex items-center gap-6 rounded-sm border border-[#f2f4f8] p-4"
+                      >
                         <Button>Save</Button>
                         <div className="flex flex-col">
                           <a href={article.url} target="_blank" rel="noopener noreferrer">
