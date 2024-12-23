@@ -182,7 +182,24 @@ export const Document: React.FC = () => {
                           <a href={article.url} target="_blank" rel="noopener noreferrer">
                             <h3 className="font-black">{article.title || "Untitled Article"}</h3>
                           </a>
-                          <div>Pubdate, authors...</div>
+                          {/* Publication Date and Authors */}
+                          <div className="mt-2 flex flex-grow flex-wrap items-center gap-2">
+                            {/* Publication Date */}
+                            {fetchedDocument.searchInformation.publicationDate && (
+                              <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800">
+                                {fetchedDocument.searchInformation.publicationDate}
+                              </span>
+                            )}
+                            {/* Authors */}
+                            {article.authorships?.map((author, authorIndex) => (
+                              <span
+                                key={authorIndex}
+                                className="inline-block rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800"
+                              >
+                                {author.authorName || "Unknown Author"}
+                              </span>
+                            ))}
+                          </div>
                         </div>
                       </li>
                     ))}
