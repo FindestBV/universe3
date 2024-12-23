@@ -21,6 +21,7 @@ import Admin from "./views/Admin";
 const Queries = lazy(() => import("@/views/Queries"));
 const Documents = lazy(() => import("@/views/Documents"));
 const Document = lazy(() => import("@/views/Document"));
+const Resources = lazy(() => import("@/views/Resources"));
 const Settings = lazy(() => import("@/views/Settings"));
 const Studies = lazy(() => import("@/views/Studies"));
 const Study = lazy(() => import("@/views/Study"));
@@ -82,8 +83,9 @@ function AuthenticatedLayout() {
                 <Route path="/library/documents/:id" element={<Document />} />
                 <Route path="/library/entities" element={<Entities />} />
                 <Route path="/library/entities/:id" element={<Entity />} />
+                <Route path="/resources" element={<Resources />} />
                 <Route path="/admin" element={<Admin />} />
-                <Route path="/settings" element={<Settings />} />
+                <Route path="/user/settings" element={<Settings />} />
                 <Route path="/dataview" element={<DataView />} />
                 <Route path="/inbox" element={<Inbox />} />
                 <Route path="*" element={<NotFoundPage />} />

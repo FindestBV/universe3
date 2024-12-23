@@ -180,11 +180,9 @@ export function AppSidebar() {
                   </DropdownMenuItem>
                   <Separator />
                   <DropdownMenuItem>
-                    <span>
-                      <a href="https://docs.findest.com" target="_blank">
-                        Resources
-                      </a>
-                    </span>
+                    <a href="#" onClick={() => navigateWithTransition("/resources")}>
+                      <span>Resources</span>
+                    </a>
                   </DropdownMenuItem>
                   <Separator />
                   <DropdownMenuItem>
@@ -193,7 +191,7 @@ export function AppSidebar() {
                     </a>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <a href="#" onClick={() => navigateWithTransition("/settings")}>
+                    <a href="#" onClick={() => navigateWithTransition("/user/settings")}>
                       <span>Settings</span>
                     </a>
                   </DropdownMenuItem>
