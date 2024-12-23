@@ -195,7 +195,9 @@ export const Document: React.FC = () => {
                   <Upload size={14} />{" "}
                   <span>Add file (PDF, docx, pptx), maximum file size 50MB.</span>
                 </div>
-                <Button className="primary mt-2 bg-blue-500 p-4 text-white">Add File</Button>
+                <Button className="primary mt-2 bg-blue-500 p-4 text-white hover:bg-slate-200">
+                  Add File
+                </Button>
               </TabsContent>
             </Tabs>
           </div>
