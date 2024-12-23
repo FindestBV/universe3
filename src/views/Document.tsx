@@ -95,20 +95,24 @@ export const Document: React.FC = () => {
 
             <h4 className="pb-2 font-black">Connected Objects:</h4>
             <div className="mt-2 flex gap-4">{renderConnectedObjects}</div>
-            <br />
 
             {/* Tabs Section */}
             <Tabs defaultValue="documentInfo" className="mt-6">
               <TabsList className="mb-4 rounded-none border-b bg-transparent">
                 <TabsTrigger value="documentInfo">Document Information</TabsTrigger>
-                <TabsTrigger value="similarDocuments">Similar Documents</TabsTrigger>
+                <TabsTrigger value="similarDocuments">
+                  Similar Documents ({`${scienceArticles?.length}`}){" "}
+                </TabsTrigger>
                 <TabsTrigger value="attachments">Attachments</TabsTrigger>
               </TabsList>
               <TabsContent value="documentInfo">
-                <h4 className="pb-2 font-black">Document Information</h4>
+                <h4 className="pb-2 font-black">Document Abstract</h4>
                 <div className="flex flex-row gap-4">
                   <div className="w-3/4">
                     <div>{fetchedDocument?.abstract || "No document information available."}</div>
+
+                    <h4 className="py-2 font-black">Comments</h4>
+                    <p className="border p-4">This is a comment</p>
                   </div>
                   <div className="w-1/4">
                     <div className="rounded-sm border p-4">
