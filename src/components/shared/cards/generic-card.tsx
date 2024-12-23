@@ -164,7 +164,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
 
         {/* Main Card */}
         <Card key={id} className="flex flex-1 flex-row gap-4" onClick={handleCardClick}>
-          {isDocument && <div>Webpage</div>}
+          {isDocument && <div className="iconText">Webpage</div>}
           <div className="flex flex-1 flex-col px-4">
             <div className="w-auto cursor-pointer">
               {!isDocument && (

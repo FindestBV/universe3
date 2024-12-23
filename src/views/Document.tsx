@@ -9,7 +9,7 @@ import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Upload } from "lucide-react";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -104,7 +104,7 @@ export const Document: React.FC = () => {
 
             {/* Tabs Section */}
             <Tabs defaultValue="documentInfo" className="mt-6">
-              <TabsList className="mb-4 w-full justify-start rounded-none border-b bg-transparent">
+              <TabsList className="mb-4 w-full justify-start rounded-none border-b border-[#f1f1f1] bg-transparent">
                 <TabsTrigger value="documentInfo">Document Information</TabsTrigger>
                 <TabsTrigger value="similarDocuments">
                   Similar Documents ({`${scienceArticles?.length}`}){" "}
@@ -124,7 +124,7 @@ export const Document: React.FC = () => {
                     <div>{fetchedDocument?.abstract || "No document information available."}</div>
 
                     <h1 className="my-4 flex-1 text-3xl font-black text-black">Comments</h1>
-                    <p className="border p-4">This is a comment</p>
+                    <p className="rounded-sm border border-[#f1f1f1] p-4">This is a comment</p>
                   </div>
                   <div className="w-1/4">
                     <div className="rounded-sm border p-4">
@@ -191,7 +191,11 @@ export const Document: React.FC = () => {
               </TabsContent>
               <TabsContent value="attachments">
                 <h4 className="pb-2 font-black">Attachments</h4>
-                <p>No attachments available.</p>
+                <div className="flex items-center justify-start gap-2 rounded-sm bg-slate-100 p-4">
+                  <Upload size={14} />{" "}
+                  <span>Add file (PDF, docx, pptx), maximum file size 50MB.</span>
+                </div>
+                <Button className="primary mt-2 bg-blue-500 p-4 text-white">Add File</Button>
               </TabsContent>
             </Tabs>
           </div>

@@ -354,3 +354,13 @@ html:has(.view-transition) {
 .linkedCounts__item{
   @apply w-[40px] flex justify-center items-center gap-1 rounded-sm hover:bg-blue-500 mb-4;
 }
+
+.labelText{
+  color: #252525; 
+  font-size: 10px; 
+  font-weight: 500; 
+  line-height: 16px;
+  text-transform: uppercase;
+  display: flex; 
+  gap: 1em; 
+}
