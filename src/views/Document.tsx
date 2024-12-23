@@ -161,10 +161,14 @@ export const Document: React.FC = () => {
                 <div className="mt-2 flex gap-4">
                   <ul>
                     {scienceArticles?.map((article, index) => (
-                      <li key={index} className="science-article">
-                        <a href={article.url} target="_blank" rel="noopener noreferrer">
-                          {article.title || "Untitled Article"}
-                        </a>
+                      <li key={index} className="science-article flex items-center gap-6 py-4">
+                        <Button>Save</Button>
+                        <div className="flex flex-col">
+                          <a href={article.url} target="_blank" rel="noopener noreferrer">
+                            <h3 className="font-black">{article.title || "Untitled Article"}</h3>
+                          </a>
+                          <div>Pubdate, authors...</div>
+                        </div>
                       </li>
                     ))}
                   </ul>
