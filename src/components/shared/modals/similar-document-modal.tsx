@@ -1,3 +1,4 @@
+import { useGetDocumentByIdQuery } from "@/api/documents/documentApi";
 import LinkedCounts from "@/components/shared/cards/linked-counts";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
@@ -5,7 +6,26 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExternalLink, Upload } from "lucide-react";
 
-export const SimilarDocumentModal: React.FC = ({ title }: string) => {
+import { useEffect, useState } from "react";
+
+export const SimilarDocumentModal: React.FC = ({ title, id }: any) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const {
+    data: fetchedDocument,
+    refetch,
+    isLoading,
+  } = useGetDocumentByIdQuery(id, {
+    skip: !isOpen, // Skip fetching until modal is open
+    refetchOnMountOrArgChange: true,
+  });
+
+  useEffect(() => {
+    if (isOpen) {
+      console.log("Modal opened. Fetching document...");
+      refetch(); // Explicitly refetch when the modal opens
+    }
+  }, [isOpen, refetch]);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -27,6 +47,10 @@ export const SimilarDocumentModal: React.FC = ({ title }: string) => {
                 </Button>
                 <UserAvatar username="Ro" />
               </div>
+            </div>
+
+            <div className="flex">
+              <h1 className="my-4 flex-1 text-3xl font-black text-black">{title || "Document"}</h1>
             </div>
 
             <h6 className="text-lg font-bold">Connections:</h6>

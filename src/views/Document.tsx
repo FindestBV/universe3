@@ -180,7 +180,7 @@ export const Document: React.FC = () => {
                       >
                         <Button>Save</Button>
                         <div className="flex flex-col">
-                          <SimilarDocumentModal title={article.title} />
+                          <SimilarDocumentModal title={article.title} id={article.id} />
                           {/* Publication Date and Authors */}
                           <div className="mt-2 flex flex-grow flex-wrap items-center gap-2">
                             {/* Publication Date */}
