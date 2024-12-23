@@ -127,7 +127,7 @@ export const Document: React.FC = () => {
                     <p className="rounded-sm border border-[#f1f1f1] p-4">This is a comment</p>
                   </div>
                   <div className="w-1/4">
-                    <div className="rounded-sm border p-4">
+                    <div className="rounded-sm border border-[#f1f1f1] p-4">
                       <h5 className="mb-2 font-bold">Meta</h5>
                       {fetchedDocument?.searchInformation ? (
                         <div>
