@@ -23,7 +23,7 @@ export const Document: React.FC = () => {
     refetchOnMountOrArgChange: false,
   });
   const { data: scienceArticles } = useGetDocumentRelatedScienceArticlesQuery(id!);
-
+  console.log(scienceArticles);
   const renderConnectedObjects =
     fetchedDocument &&
     Object.entries(fetchedDocument?.connectedObjects).map((o, i) => (
@@ -180,7 +180,12 @@ export const Document: React.FC = () => {
                       >
                         <Button>Save</Button>
                         <div className="flex flex-col">
-                          <SimilarDocumentModal title={article.title} id={article.id} />
+                          <SimilarDocumentModal
+                            title={article.title}
+                            id={article.id}
+                            mainContents={article.mainContents}
+                            searchInformation={article.searchInformation}
+                          />
                           {/* Publication Date and Authors */}
                           <div className="mt-2 flex flex-grow flex-wrap items-center gap-2">
                             {/* Publication Date */}

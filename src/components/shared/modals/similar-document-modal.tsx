@@ -8,7 +8,12 @@ import { ExternalLink, Upload } from "lucide-react";
 
 import { useEffect, useState } from "react";
 
-export const SimilarDocumentModal: React.FC = ({ title, id }: any) => {
+export const SimilarDocumentModal: React.FC = ({
+  title,
+  id,
+  mainContents,
+  searchInformation,
+}: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const {
     data: fetchedDocument,
@@ -19,9 +24,12 @@ export const SimilarDocumentModal: React.FC = ({ title, id }: any) => {
     refetchOnMountOrArgChange: true,
   });
 
+  console.log("article main", mainContents);
+
   useEffect(() => {
     if (isOpen) {
       console.log("Modal opened. Fetching document...");
+
       refetch(); // Explicitly refetch when the modal opens
     }
   }, [isOpen, refetch]);
@@ -29,7 +37,9 @@ export const SimilarDocumentModal: React.FC = ({ title, id }: any) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <h4 className="cursor-pointer font-bold">{title}</h4>
+        <h4 className="cursor-pointer font-bold" aria-label="similar-title">
+          {title}
+        </h4>
       </DialogTrigger>
       <DialogContent className="h-auto max-w-6xl overflow-auto rounded-lg bg-white p-6 shadow-lg">
         {/* Static Body of Document */}
@@ -80,14 +90,40 @@ export const SimilarDocumentModal: React.FC = ({ title, id }: any) => {
                 <h4 className="pb-2 font-black">Document Abstract</h4>
                 <div className="flex flex-row gap-4">
                   <div className="w-3/4">
-                    <p>No document information available.</p>
+                    <p>{mainContents[0]?.content}</p>
                     <h1 className="my-4 text-3xl font-black">Comments</h1>
                     <p className="rounded-sm border border-[#f1f1f1] p-4">This is a comment</p>
                   </div>
                   <div className="w-1/4">
                     <div className="rounded-sm border border-[#f1f1f1] p-4">
-                      <h5 className="mb-2 font-bold">Meta</h5>
-                      <p>No metadata available.</p>
+                      {searchInformation ? (
+                        <div>
+                          {Object.entries(searchInformation).map(([key, value]) => {
+                            // Display specific keys in a user-friendly format
+                            if (key === "journalName") {
+                              return (
+                                <div key={key} className="mb-2">
+                                  <strong>Journal:</strong>
+                                  <br />
+                                  {value ? value : "N/A"}
+                                </div>
+                              );
+                            }
+                            if (key === "publicationDate") {
+                              return (
+                                <div key={key} className="mb-2">
+                                  <strong>Publication Date:</strong>
+                                  <br />
+                                  {value || "Not available"}
+                                </div>
+                              );
+                            }
+                            return null; // Skip keys that are not relevant
+                          })}
+                        </div>
+                      ) : (
+                        <p>No metadata available.</p>
+                      )}
                     </div>
                   </div>
                 </div>
