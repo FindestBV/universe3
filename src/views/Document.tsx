@@ -142,15 +142,12 @@ export const Document: React.FC = () => {
                         <p>No metadata available.</p>
                       )}
 
-                      {Object.entries(fetchedDocument?.authorships).map((key) => {
-                        return (
-                          <div key={key} className="mb-2">
-                            <strong>Authors:</strong>
-                            <br />
-                            {key[1]?.authorName || "Not available"}
-                          </div>
-                        );
-                      })}
+                      <div className="mb-2">
+                        <strong>Authors:</strong>
+                        {Object.entries(fetchedDocument?.authorships).map((key) => {
+                          return <p>{key[1]?.authorName || "Not available"}</p>;
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>
