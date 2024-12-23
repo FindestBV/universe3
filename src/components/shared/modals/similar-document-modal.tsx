@@ -77,7 +77,7 @@ export const SimilarDocumentModal: React.FC = ({
             <Tabs defaultValue="documentInfo" className="mt-6">
               <TabsList className="mb-4 w-full justify-start rounded-none border-b border-[#f1f1f1] bg-transparent">
                 <TabsTrigger value="documentInfo">Document Information</TabsTrigger>
-                <TabsTrigger value="similarDocuments">Similar Documents (5)</TabsTrigger>
+                {/* <TabsTrigger value="similarDocuments">Similar Documents (5)</TabsTrigger> */}
                 <TabsTrigger value="attachments">Attachments</TabsTrigger>
               </TabsList>
               <TabsContent value="documentInfo">
@@ -126,21 +126,7 @@ export const SimilarDocumentModal: React.FC = ({
                   </div>
                 </div>
               </TabsContent>
-              <TabsContent value="similarDocuments">
-                <h4 className="pb-2 font-black">Similar Documents</h4>
-                <div className="mt-2 flex gap-4">
-                  <ul>
-                    <li className="science-article mb-4 flex items-start gap-6 rounded-sm border border-[#f2f4f8] p-4">
-                      <Button>Save</Button>
-                      <div className="flex flex-col">
-                        <a href="#" target="_blank" rel="noopener noreferrer">
-                          <h3 className="font-black">Untitled Article</h3>
-                        </a>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </TabsContent>
+
               <TabsContent value="attachments">
                 <h4 className="pb-2 font-black">Attachments</h4>
                 <div className="flex items-center gap-2 rounded-sm bg-slate-100 p-4">

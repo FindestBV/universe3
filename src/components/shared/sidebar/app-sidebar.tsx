@@ -34,12 +34,11 @@ import {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
 
 import AdvancedSearchModal from "../modals/advanced-search-modal";
 import GenerateReport from "../modals/generate-report-modal";
 
-// Menu items.
+// Main menu items
 const items = [
   {
     title: "Inbox",
