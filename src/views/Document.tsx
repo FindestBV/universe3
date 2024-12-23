@@ -175,7 +175,7 @@ export const Document: React.FC = () => {
                     {scienceArticles?.map((article, index) => (
                       <li
                         key={index}
-                        className="science-article mb-4 flex items-center gap-6 rounded-sm border border-[#f2f4f8] p-4"
+                        className="science-article mb-4 flex items-start gap-6 rounded-sm border border-[#f2f4f8] p-4"
                       >
                         <Button>Save</Button>
                         <div className="flex flex-col">

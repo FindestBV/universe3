@@ -1,4 +1,5 @@
 import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/api/documents/documentApi";
+import { AddLinkToItem } from "@/components/shared/modals/add-link-to-item";
 import { UserAvatar } from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -202,9 +203,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
       <div className="relative flex h-auto w-[25px]">
         {/* Hoverable Actions */}
         <div className="links">
-          <a href={"#"} onClick={() => linkItemToOther(id)} className="linkedStudy">
-            <Link size={14} />
-          </a>
+          <AddLinkToItem attachToItem={linkItemToOther} parentId={id} parentTitle={title} />
           {type !== "document" && (
             <a href="#" className="trashCan">
               <Trash2 size={14} />
