@@ -98,7 +98,7 @@ export function AppSidebar() {
             </SidebarMenuItem>
             <ul
               className={`${
-                isCollapsed ? "flex flex-col items-center gap-2" : "mt-8 space-y-2 pl-2"
+                isCollapsed ? "ml-6 flex flex-col items-center gap-2" : "ml-0 mt-8 space-y-2 pl-2"
               }`}
             >
               <li>
