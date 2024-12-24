@@ -1,5 +1,3 @@
-"use client";
-
 import { currentUser, logout } from "@/api/auth/authSlice";
 import faviconUniverse from "@/assets/favicon.png";
 import logoUniverse from "@/assets/universe_logo_white.png";
@@ -32,20 +30,22 @@ import {
 
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import AdvancedSearchModal from "../modals/advanced-search-modal";
 import GenerateReport from "../modals/generate-report-modal";
+import UserAvatar from "../utilities/user-avatar";
 
 export function AppSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const user = useSelector(currentUser);
-
+  const dispatch = useDispatch();
   const handleToggleSidebar = (collapsed: boolean) => {
     setIsCollapsed(collapsed);
   };
 
   const handleLogout = () => {
-    console.log("Log out");
+    dispatch(logout());
   };
 
   return (
@@ -161,7 +161,7 @@ export function AppSidebar() {
               tooltip="Profile"
               className={`${isCollapsed ? "justify-center" : "justify-start"} flex items-center`}
             >
-              <UserRoundPen size={18} className="text-white" />
+              <UserAvatar username={user} />
               {!isCollapsed && (
                 <span className="font-medium group-data-[collapsible=icon]:hidden">Profile</span>
               )}
