@@ -48,7 +48,7 @@ export const LinkedCounts: React.FC<LinkedCountsProps> = ({
   connectedObjects = [],
 }) => {
   return (
-    <ul className="linkedCounts gap-2">
+    <ul className="linkedCounts flex flex-wrap gap-2">
       {Object.entries(linkedCounts)
         .filter(([, value]) => value > 0) // Only show items with counts > 0
         .map(([key, value], idx) => {

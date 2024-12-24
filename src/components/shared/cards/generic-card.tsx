@@ -13,6 +13,24 @@ import { useLocation } from "react-router-dom";
 
 import LinkedCounts from "./linked-counts";
 
+export const objectTypeMapping: { [key: string]: number } = {
+  entityCount: 1,
+  documentCount: 2,
+  highlightCount: 3,
+  studyCount: 4,
+  imageCount: 5,
+  scienceArticleCount: 6,
+  usPatentCount: 7,
+  weblinkCount: 8,
+  magPatentCount: 9,
+  commentCount: 10,
+  fileCount: 11,
+  tenantCount: 12,
+  organizationCount: 13,
+  caseCount: 14,
+  queryCount: 15,
+};
+
 // Utility Functions
 const formatDate = (date: any) =>
   date ? new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "Dec 16";
