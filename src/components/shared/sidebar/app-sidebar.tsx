@@ -1,7 +1,7 @@
 "use client";
 
 import { currentUser, logout } from "@/api/auth/authSlice";
-import faviconUniverse from "@/assets/favicon.ico";
+import faviconUniverse from "@/assets/favicon.png";
 import logoUniverse from "@/assets/universe_logo_white.png";
 import {
   DropdownMenu,
@@ -14,13 +14,11 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import {
   BookOpenCheck,
   Bot,
@@ -29,7 +27,6 @@ import {
   FileText,
   Fingerprint,
   Inbox,
-  Settings,
   UserRoundIcon as UserRoundPen,
 } from "lucide-react";
 
@@ -41,7 +38,6 @@ import GenerateReport from "../modals/generate-report-modal";
 
 export function AppSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const navigateWithTransition = useNavigateWithTransition();
   const user = useSelector(currentUser);
 
   const handleToggleSidebar = (collapsed: boolean) => {
@@ -72,18 +68,19 @@ export function AppSidebar() {
       </div>
 
       {/* Sidebar Content */}
-      <SidebarContent className="flex flex-col justify-between p-4">
-        <div className="gap-4 space-y-6">
+      <SidebarContent
+        className={`mt-8 flex min-h-0 flex-1 flex-col justify-between ${
+          isCollapsed ? "p-4" : "p-2"
+        }`}
+      >
+        <div className={`flex flex-col gap-6 ${isCollapsed ? "items-center" : "items-start"}`}>
           {/* Inbox Menu */}
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton tooltip="Inbox">
                 <a href="/inbox" className="flex items-center gap-2">
-                  <Inbox
-                    size={18}
-                    className="text-white group-data-[collapsible=icon]:text-white"
-                  />
-                  <span className="font-medium group-data-[collapsible=icon]:hidden">Inbox</span>
+                  <Inbox size={18} className="text-white" />
+                  {!isCollapsed && <span className="font-medium">Inbox</span>}
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -91,22 +88,19 @@ export function AppSidebar() {
 
           {/* Universe Menu */}
           <SidebarMenu>
-            {!isCollapsed && (
-              <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Universe">
-                  <div className="flex items-center gap-2">
-                    <Calendar
-                      size={18}
-                      className="text-white group-data-[collapsible=icon]:text-white"
-                    />
-                    <span className="font-medium group-data-[collapsible=icon]:hidden">
-                      Universe
-                    </span>
-                  </div>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            )}
-            <ul className="ml-6 mt-2 space-y-2 group-data-[collapsible=icon]:ml-0 group-data-[collapsible=icon]:space-y-0">
+            <SidebarMenuItem>
+              <SidebarMenuButton tooltip="Universe">
+                <div className="flex items-center gap-2">
+                  <Calendar size={18} className="text-white" />
+                  {!isCollapsed && <span className="font-medium">Universe</span>}
+                </div>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <ul
+              className={`${
+                isCollapsed ? "flex flex-col items-center gap-2" : "mt-8 space-y-2 pl-2"
+              }`}
+            >
               <li>
                 <a
                   href="/library/documents"
@@ -138,77 +132,69 @@ export function AppSidebar() {
           </SidebarMenu>
 
           {/* Advanced Search */}
-          <SidebarGroupLabel className="mb-4 mt-6 flex items-center gap-2">
-            <Bot size={18} className="text-white group-data-[collapsible=icon]:text-white" />
-            <h1 className="text-md font-black group-data-[collapsible=icon]:hidden">
-              IGOR<sup>AI</sup>search
-            </h1>
-          </SidebarGroupLabel>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <AdvancedSearchModal />
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <GenerateReport
-                  leftContent={"Left"}
-                  rightContent={"Right"}
-                  className="text-white hover:text-blue-500 group-data-[collapsible=icon]:hidden"
-                />
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
+          <div className={`mb-4 mt-6 ${isCollapsed ? "text-center" : ""}`}>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <AdvancedSearchModal />
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <GenerateReport
+                    leftContent={"Left"}
+                    rightContent={"Right"}
+                    className="text-white hover:text-blue-500"
+                  />
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </div>
         </div>
-
-        {/* Sidebar Footer */}
-        <SidebarFooter className="p-0">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <SidebarMenuButton
-                tooltip="Profile"
-                className="group-data-[collapsible=icon]:justify-center"
-              >
-                <UserRoundPen
-                  size={18}
-                  className="text-white group-data-[collapsible=icon]:text-white"
-                />
-                <span className="font-medium group-data-[collapsible=icon]:hidden">Profile</span>
-                <ChevronUp className="ml-auto" />
-              </SidebarMenuButton>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              side="top"
-              className="w-[--radix-popper-anchor-width] bg-gray-800 text-white"
-            >
-              <DropdownMenuItem>
-                <a href="/inbox">{user ? `${user}'s` : ""} Inbox</a>
-              </DropdownMenuItem>
-              <Separator />
-              <DropdownMenuItem>
-                <a href="/resources">Resources</a>
-              </DropdownMenuItem>
-              <Separator />
-              <DropdownMenuItem>
-                <a href="/admin">Admin</a>
-              </DropdownMenuItem>
-              <Separator />
-              <DropdownMenuItem>
-                <a href="/user/settings">Settings</a>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <a href="#" onClick={handleLogout}>
-                  Log Out
-                </a>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </SidebarFooter>
       </SidebarContent>
 
-      {/* Sidebar Rail */}
-      <SidebarRail />
+      {/* Sidebar Footer */}
+      <SidebarFooter className="p-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuButton
+              tooltip="Profile"
+              className={`${isCollapsed ? "justify-center" : "justify-start"} flex items-center`}
+            >
+              <UserRoundPen size={18} className="text-white" />
+              {!isCollapsed && (
+                <span className="font-medium group-data-[collapsible=icon]:hidden">Profile</span>
+              )}
+              <ChevronUp className="ml-auto" />
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            side="top"
+            className="w-[--radix-popper-anchor-width] bg-gray-800 text-white"
+          >
+            <DropdownMenuItem>
+              <a href="/inbox">{user ? `${user}'s` : ""} Inbox</a>
+            </DropdownMenuItem>
+            <Separator />
+            <DropdownMenuItem>
+              <a href="/resources">Resources</a>
+            </DropdownMenuItem>
+            <Separator />
+            <DropdownMenuItem>
+              <a href="/admin">Admin</a>
+            </DropdownMenuItem>
+            <Separator />
+            <DropdownMenuItem>
+              <a href="/user/settings">Settings</a>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <a href="#" onClick={handleLogout}>
+                Log Out
+              </a>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }
