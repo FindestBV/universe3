@@ -41,7 +41,7 @@ export const ReferencesSidebar: React.FC<{ onToggleSidebar: () => void; isCollap
       {/* Sidebar Content */}
       {!isCollapsed && (
         <div className="flex flex-col p-4 transition-all duration-300">
-          <div className="flex items-center justify-between">
+          <div className="flex justify-between">
             <h3 className="mb-4 text-xl font-bold">References</h3>
             <Button className="fixed right-0" onClick={onToggleSidebar}>
               <X size={20} />
