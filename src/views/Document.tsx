@@ -33,7 +33,6 @@ import { useParams } from "react-router";
 export const Document: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [isLoading, setIsLoading] = useState(true);
-  const [isToolbarVisible, setIsToolbarVisible] = useState<boolean>(false); // State for toolbar visibility
   const { data: fetchedDocument } = useGetDocumentByIdQuery(id!, {
     refetchOnMountOrArgChange: false,
   });
@@ -96,9 +95,9 @@ export const Document: React.FC = () => {
     }
   }, [fetchedDocument]);
 
-  const handleEditClick = () => {
-    setIsToolbarVisible((prev) => !prev); // Toggle toolbar visibility
-  };
+  // const handleEditClick = () => {
+  //   setIsToolbarVisible((prev) => !prev); // Toggle toolbar visibility
+  // };
 
   useEffect(() => {
     if (fetchedDocument) {
@@ -113,11 +112,6 @@ export const Document: React.FC = () => {
         <DocumentSkeleton />
       ) : (
         <div className="flex h-screen w-auto flex-col">
-          {isToolbarVisible === true && (
-            <header className="documentCrud">
-              <Toolbar />
-            </header>
-          )}
           <div className="mx-auto flex h-full w-3/4 flex-col px-12 py-4 max-sm:px-4">
             <div className="flex w-full flex-col justify-between">
               <div className="flex w-full justify-between">
@@ -131,10 +125,7 @@ export const Document: React.FC = () => {
                   </a>
                 </Button>
                 <div className="flex-2 flex flex-row items-center">
-                  <button
-                    onClick={handleEditClick}
-                    className="w-full rounded-md bg-blue-500 px-4 py-1 text-white hover:bg-blue-600"
-                  >
+                  <button className="w-full rounded-md bg-blue-500 px-4 py-1 text-white hover:bg-blue-600">
                     Actions
                   </button>
                   <UserAvatar username={"Ro"} />
