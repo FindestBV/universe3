@@ -1,5 +1,6 @@
 import { currentUser, logout, setCredentials } from "@/api/auth/authSlice";
 import logoUniverse from "@/assets/universe_logo_white.png";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,18 +18,20 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
 } from "@/components/ui/sidebar";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import {
   BookOpenCheck,
   Bot,
   Calendar,
+  ChevronRight,
   ChevronUp,
   FileText,
   Fingerprint,
   Inbox,
   Settings,
-  UserRoundPen,
+  UserRoundIcon as UserRoundPen,
 } from "lucide-react";
 
 import { useTranslation } from "react-i18next";
@@ -67,7 +70,6 @@ const advancedItems = [
 
 export function AppSidebar() {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
   const navigateWithTransition = useNavigateWithTransition();
   const user = useSelector(currentUser);
   const { t } = useTranslation();
@@ -82,7 +84,7 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar className="bg-white">
+    <Sidebar collapsible="icon" className="bg-white">
       <div className="mx-auto flex w-full items-center justify-center p-4">
         <a href="/dashboard" rel="preload">
           <img
@@ -90,7 +92,7 @@ export function AppSidebar() {
             alt="Findest logo"
             width="100px"
             height="25px"
-            className="items-center justify-center"
+            className="items-center justify-center transition-all duration-300 ease-in-out group-data-[collapsible=icon]:w-8"
           />
         </a>
       </div>
@@ -101,35 +103,40 @@ export function AppSidebar() {
             <SidebarGroupContent>
               <SidebarMenu className="gap-4 px-4">
                 {items.map((item) => (
-                  <div key={item.title}>
+                  <Collapsible key={item.title} className="group/collapsible">
                     <SidebarMenuItem>
-                      <SidebarMenuButton asChild>
-                        <a href={item.url}>
+                      <CollapsibleTrigger asChild>
+                        <SidebarMenuButton tooltip={item.title}>
                           <item.icon />
                           <span className="font-bold">{item.title}</span>
-                        </a>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                    {item.sublinks && (
-                      <ul className="ml-8 mt-1 space-y-1">
-                        {item.sublinks.map((sublink, idx) => (
-                          <div key={idx}>
+                          {item.sublinks && (
+                            <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                          )}
+                        </SidebarMenuButton>
+                      </CollapsibleTrigger>
+                      {item.sublinks && (
+                        <CollapsibleContent>
+                          <ul className="ml-8 mt-1 space-y-1">
+                            {item.sublinks.map((sublink, idx) => (
+                              <div key={idx}>
+                                <SidebarMenuItem>
+                                  <SidebarMenuButton asChild tooltip={sublink.title}>
+                                    <a href={`/library${sublink.url}`}>
+                                      <sublink.icon width={12} />
+                                      <span className="font-bold">{sublink.title}</span>
+                                    </a>
+                                  </SidebarMenuButton>
+                                </SidebarMenuItem>
+                              </div>
+                            ))}
                             <SidebarMenuItem>
-                              <SidebarMenuButton asChild>
-                                <a href={`/library${sublink.url}`}>
-                                  <sublink.icon width={12} />
-                                  <span className="font-bold">{sublink.title}</span>
-                                </a>
-                              </SidebarMenuButton>
+                              <GenerateReport leftContent={"Left"} rightContent={"Right"} />
                             </SidebarMenuItem>
-                          </div>
-                        ))}
-                        <SidebarMenuItem>
-                          <GenerateReport leftContent={"Left"} rightContent={"Right"} />
-                        </SidebarMenuItem>
-                      </ul>
-                    )}
-                  </div>
+                          </ul>
+                        </CollapsibleContent>
+                      )}
+                    </SidebarMenuItem>
+                  </Collapsible>
                 ))}
               </SidebarMenu>
             </SidebarGroupContent>
@@ -146,7 +153,7 @@ export function AppSidebar() {
                 {advancedItems.map((item) => (
                   <div key={item.title}>
                     <SidebarMenuItem>
-                      <SidebarMenuButton asChild>
+                      <SidebarMenuButton asChild tooltip={item.title}>
                         <a href={`${item.url}`}>
                           <item.icon width={12} />
                           <span className="font-bold">{item.title}</span>
@@ -165,7 +172,7 @@ export function AppSidebar() {
             <SidebarMenuItem>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton>
+                  <SidebarMenuButton tooltip={t("profile")}>
                     <UserRoundPen width={"16"} color={"white"} className="hover:text-black" />
                     <h1 className="text-md p-6 font-black">{t("profile")}</h1>
                     <ChevronUp className="ml-auto" />
@@ -215,6 +222,7 @@ export function AppSidebar() {
           </SidebarMenu>
         </SidebarFooter>
       </SidebarContent>
+      <SidebarRail />
     </Sidebar>
   );
 }

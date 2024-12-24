@@ -6,11 +6,10 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { persistor, store } from "@/store";
 import Dashboard from "@/views/Dashboard";
 import { LoginPage } from "@/views/LoginPage";
-import { Loader } from "lucide-react";
 import { PersistGate } from "redux-persist/integration/react";
 
 import { useEffect, useRef } from "react";
-import { lazy, Suspense } from "react";
+import { lazy } from "react";
 import { Provider as ReduxStoreProvider, useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
