@@ -154,9 +154,9 @@ export const ReferencesSearchbar = () => {
               onBlur={handleInputBlur}
               placeholder="Filter on references"
               aria-label="Search input"
-              className="w-full p-2 pl-10"
+              className="w-full p-2 pl-8"
             />
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-500">
+            <div className="absolute left-1 top-1/2 -translate-y-1/2 transform text-gray-500">
               <Filter size={20} />
             </div>
             {filters.keyword && (
