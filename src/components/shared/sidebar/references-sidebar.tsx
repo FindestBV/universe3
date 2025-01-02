@@ -77,7 +77,7 @@ export const ReferencesSidebar: React.FC<{
               {connectedDocs
                 ? connectedDocs &&
                   Object.entries(connectedDocs).map((doc, index) => {
-                    console.log("doc", doc);
+                    // console.log("doc", doc);
                     return (
                       <div key={index} className="mb-2">
                         <a href={"#"} className="font-bold">
