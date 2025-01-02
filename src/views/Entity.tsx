@@ -5,8 +5,8 @@ import {
   useGetDocumentRelatedScienceArticlesQuery,
   useGetEntityByIdQuery,
 } from "@/api/documents/documentApi";
-import LinkedCounts from "@/components/shared/cards/linked-counts";
-import Tiptap from "@/components/shared/editor/Tiptap";
+// import LinkedCounts from "@/components/shared/cards/linked-counts";
+import Tiptap from "@/components/shared/editor/TipTap";
 import Comments from "@/components/shared/layout/comments";
 import { Toolbar } from "@/components/shared/layout/toolbar";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
