@@ -1,15 +1,13 @@
-// src/Tiptap.tsx
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const Tiptap = ({ content }: any) => {
-  console.log("for render", typeof content);
-  const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
-  console.log("parsed", parsedContent.content);
+import CustomImage from "./CustomImage";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Tiptap = ({ content }: any) => {
+  const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -17,20 +15,24 @@ export const Tiptap = ({ content }: any) => {
         openOnClick: true,
       }),
       Image,
+      CustomImage,
     ],
-    content: parsedContent.content,
+    content: parsedContent || {
+      type: "doc",
+      content: [{ type: "paragraph", content: [{ type: "text", text: "Start writing..." }] }],
+    },
   });
 
-  console.log("editor object", editor?.options.content);
+  if (!editor) {
+    console.error("Editor failed to initialize.");
+    return <p>Loading editor...</p>;
+  }
 
   return (
-    <div>
-      <h3>Raw JSON Content:</h3>
-      <pre>{JSON.stringify(parsedContent.content, null, 2)}</pre>
-      <FloatingMenu editor={null}>This is the floating menu</FloatingMenu>
-      <h3>TTE:</h3>
+    <div className="tiptap">
+      <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
       <EditorContent editor={editor} />
-      <BubbleMenu editor={null}>This is the bubble menu</BubbleMenu>
+      <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
     </div>
   );
 };
