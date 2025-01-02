@@ -60,7 +60,7 @@ export const Entity: React.FC = () => {
       ) : (
         <>
           <div className="flex h-screen w-auto flex-col">
-            <div className="flex h-full w-full max-sm:px-4">
+            <div className="flex w-full max-sm:px-4">
               <div
                 className={`flex-2 flex ${isSidebarCollapsed ? "w-full" : "w-3/4"} flex-col px-12 py-4`}
               >
