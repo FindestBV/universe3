@@ -1,35 +1,21 @@
-import Image from "@tiptap/extension-image";
-import Link from "@tiptap/extension-link";
-import { EditorContent, useEditor } from "@tiptap/react";
+// src/Tiptap.tsx
+import renderProseMirrorContent from "@/lib/renderProseMirror";
+import { BubbleMenu, EditorProvider, FloatingMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-import CustomImage from "./CustomImage";
+// define your extension array
+const extensions = [StarterKit];
 
-// Custom extension for `customImage`
+export const Tiptap = ({ content }) => {
+  console.log("raw object passed into TipTap component", content.content);
 
-const Tiptap = ({ content }) => {
-  // Debug to verify content format
-  console.log("Content passed to TipTap:", content);
-
-  const editor = useEditor({
-    extensions: [
-      StarterKit, // Includes basic node types like paragraph, heading
-      Link.configure({ openOnClick: true }), // For clickable links
-      Image, // For basic image nodes
-      CustomImage, // Support for `customImage` nodes
-    ],
-    content, // Pass the JSON content directly
-    onCreate: ({ editor }) => {
-      console.log("Editor initialized with content:", editor.getJSON());
-    },
-  });
-
-  if (!editor) return null;
+  console.log("content passed into TipTap component", renderProseMirrorContent(content.content));
 
   return (
-    <div className="tiptap-editor">
-      <EditorContent editor={editor} />
-    </div>
+    <EditorProvider extensions={extensions} content={content}>
+      <FloatingMenu editor={null}>This is the floating menu</FloatingMenu>
+      <BubbleMenu editor={null}>This is the bubble menu</BubbleMenu>
+    </EditorProvider>
   );
 };
 
