@@ -6,6 +6,7 @@ import {
   useGetEntityByIdQuery,
 } from "@/api/documents/documentApi";
 import LinkedCounts from "@/components/shared/cards/linked-counts";
+import Tiptap from "@/components/shared/editor/Tiptap";
 import Comments from "@/components/shared/layout/comments";
 import { Toolbar } from "@/components/shared/layout/toolbar";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
@@ -58,8 +59,7 @@ export const Entity: React.FC = () => {
 
   if (fetchedEntity?.description) {
     try {
-      parsedDescription = JSON.parse(fetchedEntity.description);
-      console.log("Parsed description:", parsedDescription);
+      console.log("Parsed description:", fetchedEntity?.description);
     } catch (error) {
       console.error("Failed to parse description:", error);
     }
@@ -113,12 +113,11 @@ export const Entity: React.FC = () => {
                   </h1>
                 </div>
 
-                <h3 className="pb-2 text-lg font-black">Description</h3>
                 <div className="flex flex-row gap-4">
                   <div className="">
                     <div>
-                      {fetchedEntity?.abstract ||
-                        "Inspect Weld is a technology that leverages advanced techniques such as phased array ultrasonic testing (PAUT) and machine learning to enhance the inspection of welds for defects [Ref] [Ref]. PAUT is particularly effective for inspecting complex geometries and non-magnetic materials, providing intuitive and efficient analysis of weld quality [Ref] [Ref]. Machine learning classifiers, including Decision Trees and Support Vector Machines, are employed to classify weld defects based on statistical image features, improving the accuracy and speed of defect detection [Ref]. This integration of ultrasonic testing and machine learning allows for automated, reliable inspection processes, reducing reliance on manual inspection and enhancing overall weld quality assurance [Ref] [Ref] [Ref]."}
+                      {/* {parsedDescription ? renderProseMirrorContent(parsedDescription) : <p className="text-gray-400 italic">Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text, adding links, images, files, and tables, and even utilizing IGORᴬᴵ. The right sidebar provides options to include references, highlights, and images from connected documents. Have fun creating!.</p>} */}
+                      <Tiptap content={fetchedEntity?.description} />
                     </div>
                     <Comments />
                   </div>
