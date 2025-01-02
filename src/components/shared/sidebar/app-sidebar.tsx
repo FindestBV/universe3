@@ -15,20 +15,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
-import {
-  BookOpenCheck,
-  Bot,
-  Calendar,
-  ChevronUp,
-  FileText,
-  Fingerprint,
-  Inbox,
-  UserRoundIcon as UserRoundPen,
-} from "lucide-react";
+import { BookOpenCheck, Calendar, ChevronUp, FileText, Fingerprint, Inbox } from "lucide-react";
 
-import { useState } from "react";
+// import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
@@ -37,32 +28,24 @@ import GenerateReport from "../modals/generate-report-modal";
 import UserAvatar from "../utilities/user-avatar";
 
 export function AppSidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const { open } = useSidebar();
+  const isCollapsed = open && true;
   const user = useSelector(currentUser);
   const dispatch = useDispatch();
-  const handleToggleSidebar = (collapsed: boolean) => {
-    setIsCollapsed(collapsed);
-  };
 
   const handleLogout = () => {
     dispatch(logout());
   };
 
   return (
-    <Sidebar
-      collapsible="icon"
-      onToggle={(collapsed) => handleToggleSidebar(collapsed)}
-      className="bg-gray-900 text-white"
-    >
+    <Sidebar collapsible="icon" className="bg-gray-900 text-white">
       {/* Sidebar Header */}
       <div className="mx-auto flex w-full items-center justify-center p-4">
         <a href="/dashboard" rel="preload">
           <img
-            src={isCollapsed ? faviconUniverse : logoUniverse}
+            src={open ? logoUniverse : faviconUniverse}
             alt="Findest logo"
-            className={`transition-all duration-300 ease-in-out ${
-              isCollapsed ? "h-8 w-8" : "h-auto w-32"
-            }`}
+            className={`transition-all duration-300 ease-in-out ${open ? "h-auto w-32" : ""}`}
           />
         </a>
       </div>
@@ -73,14 +56,14 @@ export function AppSidebar() {
           isCollapsed ? "p-4" : "p-2"
         }`}
       >
-        <div className={`flex flex-col gap-6 ${isCollapsed ? "items-center" : "items-start"}`}>
+        <div className={`flex flex-col gap-8 ${open ? "items-start" : "items-center"}`}>
           {/* Inbox Menu */}
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton tooltip="Inbox">
-                <a href="/inbox" className="flex items-center gap-2">
-                  <Inbox size={18} className="text-white" />
-                  {!isCollapsed && <span className="font-medium">Inbox</span>}
+                <a href="/inbox" className="flex items-center gap-2 text-white hover:text-black">
+                  <Inbox size={18} />
+                  {open && <span className="font-medium">Inbox</span>}
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -88,18 +71,18 @@ export function AppSidebar() {
 
           {/* Universe Menu */}
           <SidebarMenu>
-            <SidebarMenuItem>
+            <SidebarMenuItem className={`${!open && "hidden"}`}>
               <SidebarMenuButton tooltip="Universe">
-                <div className="flex items-center gap-2">
-                  <Calendar size={18} className="text-white" />
-                  {!isCollapsed && <span className="font-medium">Universe</span>}
+                <div className={`flex items-center gap-2 text-white hover:text-black`}>
+                  <Calendar size={18} />
+                  {open && <span className="font-medium">Universe</span>}
                 </div>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <ul
               className={`${
-                isCollapsed ? "ml-6 flex flex-col items-center gap-2" : "ml-0 mt-8 space-y-2 pl-2"
-              }`}
+                open ? "mt-4 gap-6 md:ml-6" : "ml-0 gap-6 space-y-2 pl-2 md:mt-4"
+              } flex flex-col`}
             >
               <li>
                 <a
@@ -132,7 +115,7 @@ export function AppSidebar() {
           </SidebarMenu>
 
           {/* Advanced Search */}
-          <div className={`mb-4 mt-6 ${isCollapsed ? "text-center" : ""}`}>
+          <div className={`mb-4 mt-6 gap-6 ${!open ? "text-center" : ""}`}>
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
@@ -159,13 +142,13 @@ export function AppSidebar() {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               tooltip="Profile"
-              className={`${isCollapsed ? "justify-center" : "justify-start"} flex items-center`}
+              className={`${!open ? "items-center justify-center" : "items-center justify-start"} flex`}
             >
               <UserAvatar username={user} />
-              {!isCollapsed && (
+              {open && (
                 <span className="font-medium group-data-[collapsible=icon]:hidden">Profile</span>
               )}
-              <ChevronUp className="ml-auto" />
+              <ChevronUp className="ml-auto hidden" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent

@@ -20,6 +20,7 @@ export type NewItem = {
 
 export const CreateNewItem = ({ type, desc, icon }: NewItem) => {
   // const { t } = useTransition();
+
   return (
     <Card className="w-auto">
       <CardHeader className={`flex min-h-[250px] flex-col justify-between space-y-2 p-8 ${type}`}>

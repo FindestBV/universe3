@@ -13,9 +13,10 @@ import {
   X,
 } from "lucide-react";
 
+import { useState } from "react";
 import React from "react";
 
-import AddLinkToItem from "../modals/add-link-to-item";
+// import AddLinkToItem from "../modals/add-link-to-item";
 import { ReferencesSearchbar } from "../search/references-searchbar";
 
 export const ReferencesSidebar: React.FC<{
@@ -25,7 +26,7 @@ export const ReferencesSidebar: React.FC<{
   connectedInbox: string;
 }> = ({ onToggleSidebar, isCollapsed, connectedInbox, connectedDocs }) => {
   console.log("is collapsed", isCollapsed);
-
+  const [activeTab, setActiveTab] = useState<string>("documents"); // Initial active tab
   console.log("connected docs in reference sidebar", connectedDocs);
 
   return (
@@ -55,25 +56,45 @@ export const ReferencesSidebar: React.FC<{
           </div>
 
           <ReferencesSearchbar />
-          <Tabs defaultValue="inbox" className="mt-4">
+          <Tabs
+            defaultValue="documents"
+            className="mt-4"
+            value={activeTab}
+            onValueChange={setActiveTab}
+          >
             <TabsList className="mb-4 inline-flex h-10 w-full items-center justify-start gap-4 rounded-none border-b border-[#f1f1f1] bg-transparent p-1 text-muted-foreground">
               <TabsTrigger value="inbox">
-                <Inbox size={16} />
+                <Inbox
+                  size={16}
+                  className={activeTab === "inbox" ? "text-black" : "text-muted-foreground"}
+                />
               </TabsTrigger>
               <TabsTrigger value="highlights">
                 <Highlighter size={16} />
               </TabsTrigger>
               <TabsTrigger value="documents">
-                <FileText size={16} />
+                <FileText
+                  size={16}
+                  className={activeTab === "documents" ? "text-black" : "text-muted-foreground"}
+                />
               </TabsTrigger>
               <TabsTrigger value="attachments">
-                <Paperclip size={16} />
+                <Paperclip
+                  size={16}
+                  className={activeTab === "attachments" ? "text-black" : "text-muted-foreground"}
+                />
               </TabsTrigger>
               <TabsTrigger value="entities">
-                <Fingerprint size={16} />
+                <Fingerprint
+                  size={16}
+                  className={activeTab === "entities" ? "text-black" : "text-muted-foreground"}
+                />
               </TabsTrigger>
               <TabsTrigger value="studies">
-                <BookOpenCheck size={16} />
+                <BookOpenCheck
+                  size={16}
+                  className={activeTab === "studies" ? "text-black" : "text-muted-foreground"}
+                />
               </TabsTrigger>
             </TabsList>
             <TabsContent value="inbox">

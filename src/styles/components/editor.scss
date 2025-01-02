@@ -1,6 +1,6 @@
-@import "../colors/colors.scss";
 
-@layer components {
+@import '../colors/colors.scss';
+
 .compactEditorContent {
   .tiptap.ProseMirror > * {
     margin-left: 0 !important;
@@ -485,5 +485,4 @@
       }
     }
   }
-}
 }

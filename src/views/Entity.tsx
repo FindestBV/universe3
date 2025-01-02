@@ -10,7 +10,6 @@ import Comments from "@/components/shared/layout/comments";
 import { Toolbar } from "@/components/shared/layout/toolbar";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 import ReferencesSidebar from "@/components/shared/sidebar/references-sidebar";
-import renderProseMirrorContent from "@/lib/renderProseMirror";
 
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -104,7 +103,9 @@ export const Entity: React.FC = () => {
                       {/* {parsedDescription ? parsedDescription : <p className="text-gray-400 italic">Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text, adding links, images, files, and tables, and even utilizing IGORᴬᴵ. The right sidebar provides options to include references, highlights, and images from connected documents. Have fun creating!.</p>} */}
                       <Tiptap content={parsedDescription} />
                     </div>
-                    <Comments />
+                    <div className="mx-16">
+                      <Comments />
+                    </div>
                   </div>
                 </div>
               </div>

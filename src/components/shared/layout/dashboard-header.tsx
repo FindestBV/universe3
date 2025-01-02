@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useGetMyRecentActivityDropdownQuery } from "@/api/activity/activityApi";
-import { currentUser } from "@/api/auth/authSlice";
+// import { currentUser } from "@/api/auth/authSlice";
 import { useGetMyDocumentInboxQuery } from "@/api/documents/documentApi";
 import { Button } from "@/components/ui/button";
 import {
