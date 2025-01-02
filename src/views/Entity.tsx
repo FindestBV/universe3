@@ -73,7 +73,7 @@ export const Entity: React.FC = () => {
               <div
                 className={`flex-2 flex ${isSidebarCollapsed ? "w-full" : "w-3/4"} flex-col px-12 py-4`}
               >
-                <div className="flex flex-col">
+                <div className="mx-16 flex flex-col">
                   <div className="flex flex-row items-center gap-4">
                     <svg
                       aria-hidden="true"
