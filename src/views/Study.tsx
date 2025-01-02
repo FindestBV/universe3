@@ -66,7 +66,7 @@ export const Study: React.FC = () => {
     console.log("fetched study desc obj", JSON.parse(fetchedStudy?.description));
     try {
       parsedDescription = JSON.parse(fetchedStudy?.description);
-      console.log("Parsed description:", parsedDescription.content[0].content[0].text);
+      console.log("Parsed description:", parsedDescription);
     } catch (error) {
       console.error("Failed to parse description:", error);
     }
@@ -138,7 +138,7 @@ export const Study: React.FC = () => {
                               <div key={index} className="mb-2 flex items-center gap-2">
                                 {/* <AddLinkToItem attachToItem={id} parentId={id} parentTitle={title} /> */}
                                 <Link size={24} />
-                                <a href={"#"} className="font-bold">
+                                <a href={"/library/stu"} className="font-bold">
                                   {doc[1].documentTitle}
                                 </a>
                               </div>

@@ -1,21 +1,37 @@
 // src/Tiptap.tsx
-import renderProseMirrorContent from "@/lib/renderProseMirror";
-import { BubbleMenu, EditorProvider, FloatingMenu } from "@tiptap/react";
+import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
+import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-// define your extension array
-const extensions = [StarterKit];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const Tiptap = ({ content }: any) => {
+  console.log("for render", typeof content);
+  const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
+  console.log("parsed", parsedContent.content);
 
-export const Tiptap = ({ content }) => {
-  console.log("raw object passed into TipTap component", content.content);
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Link.configure({
+        openOnClick: true,
+      }),
+      Image,
+    ],
+    content: parsedContent.content,
+  });
 
-  console.log("content passed into TipTap component", renderProseMirrorContent(content.content));
+  console.log("editor object", editor?.options.content);
 
   return (
-    <EditorProvider extensions={extensions} content={content}>
+    <div>
+      <h3>Raw JSON Content:</h3>
+      <pre>{JSON.stringify(parsedContent.content, null, 2)}</pre>
       <FloatingMenu editor={null}>This is the floating menu</FloatingMenu>
+      <h3>TTE:</h3>
+      <EditorContent editor={editor} />
       <BubbleMenu editor={null}>This is the bubble menu</BubbleMenu>
-    </EditorProvider>
+    </div>
   );
 };
 

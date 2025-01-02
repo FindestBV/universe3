@@ -5,26 +5,12 @@ import {
   useGetDocumentRelatedScienceArticlesQuery,
   useGetEntityByIdQuery,
 } from "@/api/documents/documentApi";
-// import LinkedCounts from "@/components/shared/cards/linked-counts";
 import Tiptap from "@/components/shared/editor/TipTap";
 import Comments from "@/components/shared/layout/comments";
 import { Toolbar } from "@/components/shared/layout/toolbar";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
-import SimilarDocumentModal from "@/components/shared/modals/similar-document-modal";
 import ReferencesSidebar from "@/components/shared/sidebar/references-sidebar";
-import UserAvatar from "@/components/shared/utilities/user-avatar";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { renderProseMirrorContent } from "@/lib/renderProseMirror";
-import {
-  BookOpenCheck,
-  FileText,
-  Fingerprint,
-  Highlighter,
-  Inbox,
-  Paperclip,
-  Upload,
-} from "lucide-react";
+import renderProseMirrorContent from "@/lib/renderProseMirror";
 
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -36,7 +22,7 @@ export const Entity: React.FC = () => {
   // const entity = location.state;
   const user = useSelector(currentUser);
   console.log("Entity user:", user);
-  const [isToolbarVisible, setIsToolbarVisible] = useState<boolean>(true); // State for toolbar visibility
+  const isToolbarVisible = true; // State for toolbar visibility
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false); // State for toolbar visibility
 
   const toggleSidebar = () => {
@@ -44,8 +30,6 @@ export const Entity: React.FC = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
     console.log(isSidebarCollapsed);
   };
-
-  let parsedDescription: any = null;
 
   const { data: fetchedEntity, isLoading: fetchedEntityIsLoading } = useGetEntityByIdQuery(id, {
     refetchOnMountOrArgChange: false, // Prevents automatic refetching
@@ -56,10 +40,11 @@ export const Entity: React.FC = () => {
   });
 
   console.log("inbox query item result", inboxQuery);
-
+  let parsedDescription;
   if (fetchedEntity?.description) {
     try {
-      console.log("Parsed description:", fetchedEntity?.description);
+      parsedDescription = fetchedEntity?.description;
+      console.log("Parsed entity description type:", typeof parsedDescription);
     } catch (error) {
       console.error("Failed to parse description:", error);
     }
@@ -67,7 +52,7 @@ export const Entity: React.FC = () => {
 
   useEffect(() => {
     if (fetchedEntity) {
-      console.log(fetchedEntity);
+      console.log("fetchedEntity", fetchedEntity);
     }
     window.scroll(0, 0);
   }, [fetchedEntity]);
@@ -116,8 +101,8 @@ export const Entity: React.FC = () => {
                 <div className="flex flex-row gap-4">
                   <div className="">
                     <div>
-                      {/* {parsedDescription ? renderProseMirrorContent(parsedDescription) : <p className="text-gray-400 italic">Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text, adding links, images, files, and tables, and even utilizing IGORᴬᴵ. The right sidebar provides options to include references, highlights, and images from connected documents. Have fun creating!.</p>} */}
-                      <Tiptap content={fetchedEntity?.description} />
+                      {/* {parsedDescription ? parsedDescription : <p className="text-gray-400 italic">Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text, adding links, images, files, and tables, and even utilizing IGORᴬᴵ. The right sidebar provides options to include references, highlights, and images from connected documents. Have fun creating!.</p>} */}
+                      <Tiptap content={parsedDescription} />
                     </div>
                     <Comments />
                   </div>
