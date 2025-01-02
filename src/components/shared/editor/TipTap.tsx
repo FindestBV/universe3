@@ -3,8 +3,6 @@ import Link from "@tiptap/extension-link";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-import React from "react";
-
 import CustomImage from "./CustomImage";
 
 // Custom extension for `customImage`
