@@ -7,7 +7,6 @@ import {
 } from "@/api/documents/documentApi";
 import Tiptap from "@/components/shared/editor/TipTap";
 import Comments from "@/components/shared/layout/comments";
-import { Toolbar } from "@/components/shared/layout/toolbar";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 import ReferencesSidebar from "@/components/shared/sidebar/references-sidebar";
 
@@ -20,8 +19,6 @@ export const Entity: React.FC = () => {
   // const location = useLocation();
   // const entity = location.state;
   const user = useSelector(currentUser);
-  console.log("Entity user:", user);
-  const isToolbarVisible = true; // State for toolbar visibility
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false); // State for toolbar visibility
 
   const toggleSidebar = () => {
@@ -63,11 +60,6 @@ export const Entity: React.FC = () => {
       ) : (
         <>
           <div className="flex h-screen w-auto flex-col">
-            {isToolbarVisible === true && (
-              <header className="documentCrud">
-                <Toolbar />
-              </header>
-            )}
             <div className="flex h-full w-full max-sm:px-4">
               <div
                 className={`flex-2 flex ${isSidebarCollapsed ? "w-full" : "w-3/4"} flex-col px-12 py-4`}

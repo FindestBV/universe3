@@ -4,6 +4,7 @@ import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from "@tiptap/reac
 import StarterKit from "@tiptap/starter-kit";
 
 import CustomImage from "./CustomImage";
+import Toolbar from "./toolbar";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Tiptap = ({ content }: any) => {
@@ -29,11 +30,14 @@ const Tiptap = ({ content }: any) => {
   }
 
   return (
-    <div className="tiptap">
-      <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
-      <EditorContent editor={editor} />
-      <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
-    </div>
+    <>
+      <Toolbar editor={editor} />
+      <div className="tiptap">
+        <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
+        <EditorContent editor={editor} />
+        <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
+      </div>
+    </>
   );
 };
 
