@@ -5,6 +5,7 @@ import {
   useGetEntityByIdQuery,
 } from "@/api/documents/documentApi";
 import LinkedCounts from "@/components/shared/cards/linked-counts";
+import Comments from "@/components/shared/layout/comments";
 import { Toolbar } from "@/components/shared/layout/toolbar";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 import SimilarDocumentModal from "@/components/shared/modals/similar-document-modal";
@@ -112,8 +113,7 @@ export const Entity: React.FC = () => {
                       {fetchedEntity?.abstract ||
                         "Inspect Weld is a technology that leverages advanced techniques such as phased array ultrasonic testing (PAUT) and machine learning to enhance the inspection of welds for defects [Ref] [Ref]. PAUT is particularly effective for inspecting complex geometries and non-magnetic materials, providing intuitive and efficient analysis of weld quality [Ref] [Ref]. Machine learning classifiers, including Decision Trees and Support Vector Machines, are employed to classify weld defects based on statistical image features, improving the accuracy and speed of defect detection [Ref]. This integration of ultrasonic testing and machine learning allows for automated, reliable inspection processes, reducing reliance on manual inspection and enhancing overall weld quality assurance [Ref] [Ref] [Ref]."}
                     </div>
-                    <h3 className="my-4 flex-1 text-3xl font-black text-black">Comments</h3>
-                    <p className="rounded-sm border border-[#f1f1f1] p-4">This is a comment</p>
+                    <Comments />
                   </div>
                 </div>
               </div>

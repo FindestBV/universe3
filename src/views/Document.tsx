@@ -3,6 +3,7 @@ import {
   useGetDocumentRelatedScienceArticlesQuery,
 } from "@/api/documents/documentApi";
 import { LinkedCounts } from "@/components/shared/cards/linked-counts";
+import Comments from "@/components/shared/layout/comments";
 import { Toolbar } from "@/components/shared/layout/toolbar";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 import ConnectToEntity from "@/components/shared/modals/connect-to-entity";
@@ -165,8 +166,7 @@ export const Document: React.FC = () => {
                   <div className="w-3/4">
                     <div>{fetchedDocument?.abstract || "No document information available."}</div>
 
-                    <h1 className="my-4 flex-1 text-3xl font-black text-black">Comments</h1>
-                    <p className="rounded-sm border border-[#f1f1f1] p-4">This is a comment</p>
+                    <Comments />
                   </div>
                   <div className="w-1/4">
                     <div className="rounded-sm border border-[#f1f1f1] p-4">
