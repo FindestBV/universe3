@@ -11,9 +11,9 @@ export const Comments = () => {
       <h3 className="my-4 flex-1 text-3xl font-black text-black">Comments</h3>
       <div className="flex gap-6 rounded-sm border border-[#f1f1f1] p-4">
         <UserAvatar username={user} />
-        <form>
+        <form className="w-full">
           <input
-            className="relative h-full w-full italic text-gray-400"
+            className="w-full italic text-gray-400"
             type="text"
             placeholder="Write your comment here"
           />
