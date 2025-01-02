@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { currentUser } from "@/api/auth/authSlice";
 import {
+  useGetConnectedInboxItemsQuery,
   useGetDocumentRelatedScienceArticlesQuery,
   useGetEntityByIdQuery,
 } from "@/api/documents/documentApi";
@@ -48,6 +49,12 @@ export const Entity: React.FC = () => {
   const { data: fetchedEntity, isLoading: fetchedEntityIsLoading } = useGetEntityByIdQuery(id, {
     refetchOnMountOrArgChange: false, // Prevents automatic refetching
   });
+
+  const { data: inboxQuery } = useGetConnectedInboxItemsQuery(id, {
+    refetchOnMountOrArgChange: false, // Prevents automatic refetching
+  });
+
+  console.log("inbox query item result", inboxQuery);
 
   if (fetchedEntity?.description) {
     try {
@@ -117,7 +124,11 @@ export const Entity: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <ReferencesSidebar onToggleSidebar={toggleSidebar} isCollapsed={isSidebarCollapsed} />
+              <ReferencesSidebar
+                onToggleSidebar={toggleSidebar}
+                isCollapsed={isSidebarCollapsed}
+                connectedDocs={inboxQuery}
+              />
             </div>
           </div>
         </>

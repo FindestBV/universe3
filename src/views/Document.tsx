@@ -38,7 +38,7 @@ export const Document: React.FC = () => {
     refetchOnMountOrArgChange: false,
   });
   const { data: scienceArticles } = useGetDocumentRelatedScienceArticlesQuery(id!);
-  console.log(scienceArticles);
+  console.log("SCIENCE ARTICLES", scienceArticles);
   const renderConnectedObjects =
     fetchedDocument &&
     Object.entries(fetchedDocument?.connectedObjects).map((o, i) => (

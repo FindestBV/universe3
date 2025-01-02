@@ -101,6 +101,12 @@ export const documentApi = api.injectEndpoints({
       }),
     }),
 
+    getConnectedInboxItems: builder.query<Entity[], void>({
+      query: (id) => ({
+        url: `reference/inbox?connectedToObjectId=${id}`,
+      }),
+    }),
+
     getStudies: builder.query<
       { studies: Study[]; totalItems: number; totalPages: number; page: number },
       { page?: number; limit?: number }
@@ -135,5 +141,6 @@ export const {
   useGetEntityByIdQuery,
   useGetStudiesQuery,
   useGetStudyByIdQuery,
+  useGetConnectedInboxItemsQuery,
   usePrefetch,
 } = documentApi;

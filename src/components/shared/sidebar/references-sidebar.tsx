@@ -16,11 +16,14 @@ import React from "react";
 
 import { ReferencesSearchbar } from "../search/references-searchbar";
 
-export const ReferencesSidebar: React.FC<{ onToggleSidebar: () => void; isCollapsed: boolean }> = ({
-  onToggleSidebar,
-  isCollapsed,
-}) => {
+export const ReferencesSidebar: React.FC<{
+  onToggleSidebar: () => void;
+  isCollapsed: boolean;
+  connectedDocs: string;
+}> = ({ onToggleSidebar, isCollapsed, connectedDocs }) => {
   console.log("is collapsed", isCollapsed);
+
+  console.log("connected docs in reference sidebar", connectedDocs);
 
   return (
     <div
@@ -57,11 +60,11 @@ export const ReferencesSidebar: React.FC<{ onToggleSidebar: () => void; isCollap
               <TabsTrigger value="highlights">
                 <Highlighter size={16} />
               </TabsTrigger>
-              <TabsTrigger value="attachments">
-                <Paperclip size={16} />
-              </TabsTrigger>
               <TabsTrigger value="documents">
                 <FileText size={16} />
+              </TabsTrigger>
+              <TabsTrigger value="attachments">
+                <Paperclip size={16} />
               </TabsTrigger>
               <TabsTrigger value="entities">
                 <Fingerprint size={16} />
@@ -71,7 +74,19 @@ export const ReferencesSidebar: React.FC<{ onToggleSidebar: () => void; isCollap
               </TabsTrigger>
             </TabsList>
             <TabsContent value="inbox">
-              <h1>Inbox Content</h1>
+              {connectedDocs
+                ? connectedDocs &&
+                  Object.entries(connectedDocs).map((doc, index) => {
+                    console.log("doc", doc);
+                    return (
+                      <div key={index} className="mb-2">
+                        <a href={"#"} className="font-bold">
+                          {doc[1].documentTitle}
+                        </a>
+                      </div>
+                    );
+                  })
+                : "no connected objects"}
             </TabsContent>
             <TabsContent value="highlights">
               <h1>Highlights Content</h1>
