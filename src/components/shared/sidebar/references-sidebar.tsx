@@ -6,6 +6,7 @@ import {
   Fingerprint,
   Highlighter,
   Inbox,
+  Link,
   List,
   Paperclip,
   Quote,
@@ -14,6 +15,7 @@ import {
 
 import React from "react";
 
+import AddLinkToItem from "../modals/add-link-to-item";
 import { ReferencesSearchbar } from "../search/references-searchbar";
 
 export const ReferencesSidebar: React.FC<{
@@ -79,7 +81,9 @@ export const ReferencesSidebar: React.FC<{
                   Object.entries(connectedDocs).map((doc, index) => {
                     // console.log("doc", doc);
                     return (
-                      <div key={index} className="mb-2">
+                      <div key={index} className="mb-2 flex items-start gap-2">
+                        {/* <AddLinkToItem attachToItem={id} parentId={id} parentTitle={title} /> */}
+                        <Link size={24} />
                         <a href={"#"} className="font-bold">
                           {doc[1].documentTitle}
                         </a>
@@ -95,7 +99,21 @@ export const ReferencesSidebar: React.FC<{
               <h1>Attachments Content</h1>
             </TabsContent>
             <TabsContent value="documents">
-              <h1>Documents Content</h1>
+              {connectedDocs
+                ? connectedDocs &&
+                  Object.entries(connectedDocs).map((doc, index) => {
+                    // console.log("doc", doc);
+                    return (
+                      <div key={index} className="mb-2 flex items-center gap-2">
+                        {/* <AddLinkToItem attachToItem={id} parentId={id} parentTitle={title} /> */}
+                        <Link size={24} />
+                        <a href={"#"} className="font-bold">
+                          {doc[1].documentTitle}
+                        </a>
+                      </div>
+                    );
+                  })
+                : "no connected objects"}
             </TabsContent>
             <TabsContent value="entities">
               <h1>Entities Content</h1>
