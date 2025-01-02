@@ -22,7 +22,8 @@ export const ReferencesSidebar: React.FC<{
   onToggleSidebar: () => void;
   isCollapsed: boolean;
   connectedDocs: string;
-}> = ({ onToggleSidebar, isCollapsed, connectedDocs }) => {
+  connectedInbox: string;
+}> = ({ onToggleSidebar, isCollapsed, connectedInbox, connectedDocs }) => {
   console.log("is collapsed", isCollapsed);
 
   console.log("connected docs in reference sidebar", connectedDocs);
@@ -76,9 +77,9 @@ export const ReferencesSidebar: React.FC<{
               </TabsTrigger>
             </TabsList>
             <TabsContent value="inbox">
-              {connectedDocs
-                ? connectedDocs &&
-                  Object.entries(connectedDocs).map((doc, index) => {
+              {connectedInbox
+                ? connectedInbox &&
+                  Object.entries(connectedInbox).map((doc, index) => {
                     // console.log("doc", doc);
                     return (
                       <div key={index} className="mb-2 flex items-start gap-2">

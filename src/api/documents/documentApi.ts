@@ -107,6 +107,16 @@ export const documentApi = api.injectEndpoints({
       }),
     }),
 
+    getSideBarDocuments: builder.query<SavedDocumentResponse[], void>({
+      query: (id) => ({
+        url: `reference/documents?connectedToObjectId=${id}`,
+        params: {
+          doOnlyGetConnectedToObjectId: true,
+        },
+      }),
+      providesTags: ["SavedDocument"],
+    }),
+
     getStudies: builder.query<
       { studies: Study[]; totalItems: number; totalPages: number; page: number },
       { page?: number; limit?: number }
@@ -134,6 +144,7 @@ export const {
   useGetDocumentByIdQuery,
   useGetDocumentRelatedScienceArticlesQuery,
   useGetMyDocumentInboxQuery,
+  useGetSideBarDocumentsQuery,
   useLazyGetConnectedObjectsQuery,
   useAddDocumentMutation,
   useDeleteDocumentMutation,
