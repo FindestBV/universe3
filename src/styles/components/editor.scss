@@ -9,6 +9,9 @@
 }
 
 .tiptap {
+
+
+
   * {
     &:first-child {
       margin-top: 0;
@@ -186,7 +189,7 @@
         text-decoration: none;
         word-break: normal;
         cursor: pointer;
-
+      
         &:hover {
           text-decoration: underline;
         }
@@ -200,6 +203,7 @@
 
   a {
     cursor: pointer;
+    color: #0000ee; 
   }
 
   blockquote {
