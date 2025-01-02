@@ -102,3 +102,5 @@ export const CustomImage = Node.create({
     ];
   },
 });
+
+export default CustomImage;
