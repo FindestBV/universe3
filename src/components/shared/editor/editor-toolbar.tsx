@@ -1,4 +1,14 @@
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
+import { List, MoreHorizontal, Network, ScanEye, SquareArrowOutUpRight } from "lucide-react";
+
 import AskIgorModal from "../modals/ask-igor";
+import UserAvatar from "../utilities/user-avatar";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const EditorToolbar = ({ editor }: { editor: any }) => {
@@ -49,7 +59,7 @@ export const EditorToolbar = ({ editor }: { editor: any }) => {
                 className={`rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 ${btn.isActive && "active"}`}
                 aria-label="Align Left"
               >
-                <svg
+                {/* <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5"
                   fill="none"
@@ -62,7 +72,7 @@ export const EditorToolbar = ({ editor }: { editor: any }) => {
                     strokeLinejoin="round"
                     d="M3 10h18M3 6h18M3 14h10M3 18h10"
                   />
-                </svg>
+                </svg> */}
                 {btn.label}
               </button>
             ))}
@@ -71,75 +81,18 @@ export const EditorToolbar = ({ editor }: { editor: any }) => {
 
         {/* Right Section: Formatting and Alignment Options */}
         <div className="flex items-center space-x-2">
-          {/* Bold Button */}
-          {/* {buttons.map((btn, index) => (
-            <button
-              key={index}
-              onClick={btn.command}
-              className={`rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 ${btn.isActive && "active"}`}
-              aria-label="Align Left"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 10h18M3 6h18M3 14h10M3 18h10"
-                />
-              </svg>
-            </button>
-          ))} */}
-          {/* <button
-          className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          aria-label="Bold"
-        >
-          
-        </button> */}
-
-          {/* Italic Button
-        <button
-          className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          aria-label="Italic"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
+          <button
+            className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            aria-label="Align Left"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M10 3h8m-4 0l-4 18m4-18h4" />
-          </svg>
-        </button>
-
-        {/* Underline Button 
-        <button
-          className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          aria-label="Underline"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
+            VIEW
+          </button>
+          <button
+            className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            aria-label="Align Left"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M10 3v10a4 4 0 008 0V3m-8 18h8"
-            />
-          </svg>
-        </button> */}
-
+            EDIT
+          </button>
           {/* Divider */}
           <span className="h-6 border-l border-gray-300"></span>
 
@@ -148,20 +101,7 @@ export const EditorToolbar = ({ editor }: { editor: any }) => {
             className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
             aria-label="Align Left"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 10h18M3 6h18M3 14h10M3 18h10"
-              />
-            </svg>
+            PIN
           </button>
 
           {/* Align Center */}
@@ -169,24 +109,35 @@ export const EditorToolbar = ({ editor }: { editor: any }) => {
             className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
             aria-label="Align Center"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 6h16M6 10h12M4 14h16M6 18h12"
-              />
-            </svg>
+            SHARE
           </button>
 
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="rotated" className="h-8 w-8 bg-transparent p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="h-8 w-8 bg-white p-0">
+              <DropdownMenuItem>
+                <SquareArrowOutUpRight /> Open Page
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <ScanEye /> Open Preview
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Network /> Open in Tree View
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <List /> Open in List View
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           {/* Align Right */}
-          <button
+
+          <UserAvatar username="Diqque" />
+          {/* <button
             className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
             aria-label="Align Right"
           >
@@ -204,7 +155,7 @@ export const EditorToolbar = ({ editor }: { editor: any }) => {
                 d="M3 6h18M7 10h14M3 14h18M7 18h14"
               />
             </svg>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
