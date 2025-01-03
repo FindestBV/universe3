@@ -22,18 +22,22 @@ import { ReferencesSearchbar } from "../search/references-searchbar";
 export const ReferencesSidebar: React.FC<{
   onToggleSidebar: () => void;
   isCollapsed: boolean;
-  connectedDocs: string;
-  connectedInbox: string;
+  connectedDocs?: string;
+  connectedInbox?: string;
 }> = ({ onToggleSidebar, isCollapsed, connectedInbox, connectedDocs }) => {
-  console.log("is collapsed", isCollapsed);
   const [activeTab, setActiveTab] = useState<string>("documents"); // Initial active tab
-  console.log("connected docs in reference sidebar", connectedDocs);
 
   return (
     <>
       {/* Persistent Panel */}
       <div className="absolute top-0 z-10 -ml-14 mt-4 flex h-[100px] flex-col items-center gap-4 bg-white p-4 shadow-md">
-        <button onClick={onToggleSidebar}>
+        {/* Toggle Sidebar */}
+        <button
+          onClick={() => {
+            console.log("List button clicked, toggling sidebar");
+            onToggleSidebar();
+          }}
+        >
           <List size={24} />
         </button>
         <button>
@@ -46,7 +50,13 @@ export const ReferencesSidebar: React.FC<{
         <div className="flex flex-col p-4 transition-all duration-300">
           <div className="flex justify-between">
             <h3 className="mb-4 text-xl font-bold">References</h3>
-            <Button className="fixed right-0" onClick={onToggleSidebar}>
+            <Button
+              className="fixed right-0"
+              onClick={() => {
+                console.log("X button clicked, toggling sidebar");
+                onToggleSidebar();
+              }}
+            >
               <X size={20} />
             </Button>
           </div>
@@ -96,18 +106,14 @@ export const ReferencesSidebar: React.FC<{
             <TabsContent value="inbox">
               {connectedInbox
                 ? connectedInbox &&
-                  Object.entries(connectedInbox).map((doc, index) => {
-                    // console.log("doc", doc);
-                    return (
-                      <div key={index} className="mb-2 flex items-start gap-2">
-                        {/* <AddLinkToItem attachToItem={id} parentId={id} parentTitle={title} /> */}
-                        <Link size={24} />
-                        <a href={"#"} className="font-bold">
-                          {doc[1].documentTitle}
-                        </a>
-                      </div>
-                    );
-                  })
+                  Object.entries(connectedInbox).map((doc, index) => (
+                    <div key={index} className="mb-2 flex items-start gap-2">
+                      <Link size={24} />
+                      <a href={"#"} className="font-bold">
+                        {doc[1].documentTitle}
+                      </a>
+                    </div>
+                  ))
                 : "no connected objects"}
             </TabsContent>
             <TabsContent value="highlights">
@@ -119,18 +125,14 @@ export const ReferencesSidebar: React.FC<{
             <TabsContent value="documents">
               {connectedDocs
                 ? connectedDocs &&
-                  Object.entries(connectedDocs).map((doc, index) => {
-                    // console.log("doc", doc);
-                    return (
-                      <div key={index} className="mb-2 flex items-center gap-2">
-                        {/* <AddLinkToItem attachToItem={id} parentId={id} parentTitle={title} /> */}
-                        <Link size={24} />
-                        <a href={"#"} className="font-bold">
-                          {doc[1].documentTitle}
-                        </a>
-                      </div>
-                    );
-                  })
+                  Object.entries(connectedDocs).map((doc, index) => (
+                    <div key={index} className="mb-2 flex items-center gap-2">
+                      <Link size={24} />
+                      <a href={"#"} className="font-bold">
+                        {doc[1].documentTitle}
+                      </a>
+                    </div>
+                  ))
                 : "no connected objects"}
             </TabsContent>
             <TabsContent value="entities">

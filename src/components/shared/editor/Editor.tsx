@@ -12,17 +12,15 @@ import EditorToolbar from "./editor-toolbar";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Editor = ({ content, title, connectedDocs }: any) => {
-  console.log("actual content", content);
-
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
 
   const toggleSidebar = () => {
-    console.log("should be toggled");
-    setIsSidebarCollapsed(!isSidebarCollapsed);
-    console.log(isSidebarCollapsed);
+    console.log("triggered in editor");
+    setIsSidebarCollapsed((prev) => !prev);
   };
 
   const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -39,7 +37,6 @@ const Editor = ({ content, title, connectedDocs }: any) => {
   });
 
   if (!editor) {
-    console.error("Editor failed to initialize.");
     return <p>Loading editor...</p>;
   }
 
@@ -47,7 +44,12 @@ const Editor = ({ content, title, connectedDocs }: any) => {
     <>
       <EditorToolbar editor={editor} />
       <div className="flex">
-        <div className={`flex-col ${isSidebarCollapsed ? "w-full" : "w-3/4"}`}>
+        {/* Main Content */}
+        <div
+          className={`flex-col transition-all duration-300 ${
+            isSidebarCollapsed ? "w-full" : "w-3/4"
+          }`}
+        >
           <div className="mx-16 my-8 flex flex-col">
             <div className="flex flex-row items-center gap-4">
               <svg
@@ -68,7 +70,7 @@ const Editor = ({ content, title, connectedDocs }: any) => {
               </svg>{" "}
               ENTITY
             </div>
-            <h1 className="my-4 flex-1 text-3xl font-black text-black">{title || "Document"}</h1>
+            <h1 className="my-4 flex-1 text-3xl font-bold text-black">{title || "Document"}</h1>
           </div>
 
           <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
@@ -79,16 +81,16 @@ const Editor = ({ content, title, connectedDocs }: any) => {
           </div>
         </div>
 
+        {/* Sidebar */}
         <div
-          className={`ease relative flex flex-col transition-all duration-300 ${
-            !isSidebarCollapsed ? "w-1/4" : "w-0"
-          } border-l border-gray-200`}
+          className={`relative flex flex-col border-l border-gray-200 transition-all duration-300 ${
+            isSidebarCollapsed ? "opacity-1" : "w-1/4 opacity-100"
+          }`}
         >
           <ReferencesSidebar
             onToggleSidebar={toggleSidebar}
             isCollapsed={isSidebarCollapsed}
             connectedDocs={connectedDocs}
-            connectedInbox={""}
           />
         </div>
       </div>
