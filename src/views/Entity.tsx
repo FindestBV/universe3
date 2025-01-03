@@ -7,8 +7,7 @@ import {
 import Editor from "@/components/shared/editor/Editor";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 
-import React, { useEffect } from "react";
-// import { useSelector } from "react-redux";
+import { useEffect } from "react";
 import { useParams } from "react-router";
 
 export const Entity: React.FC = () => {
@@ -49,6 +48,7 @@ export const Entity: React.FC = () => {
           <div className="flex h-screen w-auto">
             <div className="flex-col">
               <Editor
+                type={"entity"}
                 title={fetchedEntity?.title}
                 content={parsedDescription}
                 connectedDocs={inboxQuery}
