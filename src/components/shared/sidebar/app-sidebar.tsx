@@ -17,7 +17,15 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { BookOpenCheck, Calendar, ChevronUp, FileText, Fingerprint, Inbox } from "lucide-react";
+import {
+  BookOpenCheck,
+  Bot,
+  Calendar,
+  ChevronUp,
+  FileText,
+  Fingerprint,
+  Inbox,
+} from "lucide-react";
 
 // import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -42,11 +50,15 @@ export function AppSidebar() {
       {/* Sidebar Header */}
       <div className="mx-auto flex w-full items-center justify-center p-4">
         <a href="/dashboard" rel="preload">
-          <img
-            src={open ? logoUniverse : faviconUniverse}
-            alt="Findest logo"
-            className={`transition-all duration-300 ease-in-out ${open ? "h-auto w-32" : ""}`}
-          />
+          {open ? (
+            <img
+              src={logoUniverse}
+              alt="Findest logo"
+              className={`transition-all duration-300 ease-in-out ${open ? "h-auto w-32" : ""}`}
+            />
+          ) : (
+            <Bot size={24} />
+          )}
         </a>
       </div>
 
