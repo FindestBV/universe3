@@ -176,7 +176,7 @@ export const SearchBar = () => {
 
       {/* Filter Tabs and Results */}
       {(filteredResults.length > 0 || hasSearched) && (
-        <div className="absolute left-0 top-full z-20 mt-2 w-full rounded-md border border-gray-300 bg-white px-2 py-4 shadow-lg">
+        <div className="absolute left-0 top-full z-40 mt-2 w-full rounded-md border border-gray-300 bg-white px-2 py-4 shadow-lg">
           {/* Filter Tabs */}
           <div className="flex flex-wrap justify-center gap-4 border-b border-gray-300 bg-white pb-4 max-sm:w-full max-sm:flex-col">
             {TABS.map((tab) => (

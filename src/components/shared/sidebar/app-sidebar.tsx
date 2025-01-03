@@ -100,7 +100,7 @@ export function AppSidebar() {
               <li>
                 <a
                   href="/library/documents"
-                  className="flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white hover:p-2 hover:text-black"
+                  className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:hover:p-2" : ""} hover:text-black`}
                 >
                   <FileText size={16} />
                   <span className="group-data-[collapsible=icon]:hidden">Documents</span>
