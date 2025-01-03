@@ -203,7 +203,7 @@ export const DashboardHeader = () => {
 
       <div className="flex items-center gap-2">
         {/* {user ? <p>Welcome, {`${user}`}</p> : null} */}
-        <LanguageSelector />
+
         <div className="create-action hidden items-center gap-2 sm:flex">
           <CreateItemModal />
           <HappinessSelector />

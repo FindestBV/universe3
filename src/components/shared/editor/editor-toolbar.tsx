@@ -5,7 +5,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import { List, MoreHorizontal, Network, ScanEye, SquareArrowOutUpRight } from "lucide-react";
+import {
+  Eye,
+  FilePenLine,
+  List,
+  MoreHorizontal,
+  Network,
+  Pin,
+  ScanEye,
+  SquareArrowOutUpRight,
+  Users,
+} from "lucide-react";
 
 import AskIgorModal from "../modals/ask-igor";
 import UserAvatar from "../utilities/user-avatar";
@@ -82,15 +92,16 @@ export const EditorToolbar = ({ editor }: { editor: any }) => {
         {/* Right Section: Formatting and Alignment Options */}
         <div className="flex items-center space-x-2">
           <button
-            className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
             aria-label="Align Left"
           >
-            VIEW
+            <Eye size={18} /> VIEW
           </button>
           <button
-            className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
             aria-label="Align Left"
           >
+            <FilePenLine size={18} />
             EDIT
           </button>
           {/* Divider */}
@@ -98,17 +109,19 @@ export const EditorToolbar = ({ editor }: { editor: any }) => {
 
           {/* Align Left */}
           <button
-            className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
             aria-label="Align Left"
           >
+            <Pin size={18} />
             PIN
           </button>
 
           {/* Align Center */}
           <button
-            className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
             aria-label="Align Center"
           >
+            <Users size={18} />
             SHARE
           </button>
 
@@ -136,7 +149,7 @@ export const EditorToolbar = ({ editor }: { editor: any }) => {
           </DropdownMenu>
           {/* Align Right */}
 
-          <UserAvatar username="Diqque" />
+          <UserAvatar username="Ronan" />
           {/* <button
             className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
             aria-label="Align Right"

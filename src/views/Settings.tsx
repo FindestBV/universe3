@@ -1,4 +1,5 @@
 import { currentUser, userEmail } from "@/api/auth/authSlice";
+import LanguageSelector from "@/components/shared/layout/language-selector";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 
@@ -73,6 +74,15 @@ export const Settings = () => {
                     value={mail}
                     className="mt-1 block w-full rounded-md border px-4 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
+                </div>
+                <div>
+                  <label
+                    className="mb-4 block text-sm font-medium text-gray-700"
+                    htmlFor="Select Language"
+                  >
+                    Select Language
+                  </label>
+                  <LanguageSelector />
                 </div>
               </form>
             </TabsContent>
