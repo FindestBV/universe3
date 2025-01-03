@@ -6,9 +6,8 @@ import {
 } from "@/api/documents/documentApi";
 import Editor from "@/components/shared/editor/Editor";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
-import ReferencesSidebar from "@/components/shared/sidebar/references-sidebar";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 // import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
