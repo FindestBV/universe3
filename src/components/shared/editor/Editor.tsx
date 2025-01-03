@@ -46,7 +46,7 @@ const Editor = ({ content, title, connectedDocs }: any) => {
       <div className="flex">
         {/* Main Content */}
         <div
-          className={`flex-col transition-all duration-300 ${
+          className={`flex-col px-12 transition-all duration-300 ${
             isSidebarCollapsed ? "w-full" : "w-3/4"
           }`}
         >
