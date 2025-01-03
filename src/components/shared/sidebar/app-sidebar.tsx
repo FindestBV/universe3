@@ -94,13 +94,13 @@ export function AppSidebar() {
             </SidebarMenuItem>
             <ul
               className={`${
-                open ? "mt-4 gap-6 md:ml-6" : "ml-0 gap-6 space-y-2 pl-2 md:mt-4"
+                open ? "mt-4 gap-4 md:ml-6" : "ml-0 gap-4 space-y-2 pl-2 md:mt-4"
               } flex flex-col`}
             >
               <li>
                 <a
                   href="/library/documents"
-                  className="flex items-center gap-2 text-white hover:text-blue-500"
+                  className="flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white hover:p-2 hover:text-black"
                 >
                   <FileText size={16} />
                   <span className="group-data-[collapsible=icon]:hidden">Documents</span>
@@ -109,7 +109,7 @@ export function AppSidebar() {
               <li>
                 <a
                   href="/library/entities"
-                  className="flex items-center gap-2 text-white hover:text-blue-500"
+                  className="flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white hover:p-2 hover:text-black"
                 >
                   <Fingerprint size={16} />
                   <span className="group-data-[collapsible=icon]:hidden">Entities</span>
@@ -118,7 +118,7 @@ export function AppSidebar() {
               <li>
                 <a
                   href="/library/studies"
-                  className="flex items-center gap-2 text-white hover:text-blue-500"
+                  className="flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white hover:p-2 hover:text-black"
                 >
                   <BookOpenCheck size={16} />
                   <span className="group-data-[collapsible=icon]:hidden">Studies</span>

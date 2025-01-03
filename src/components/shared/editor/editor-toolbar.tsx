@@ -138,6 +138,7 @@ const EditorToolbar = ({ editor }: { editor: any }) => {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
+          <span className="h-6 border-l border-gray-300"></span>
           <div className="flex items-center space-x-2">
             {buttons.map((btn, index) => (
               <button
