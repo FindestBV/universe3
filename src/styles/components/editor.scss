@@ -8,9 +8,12 @@
   }
 }
 
+.editor_main{
+  @apply flex flex-col; 
+}
+
+
 .tiptap {
-
-
 
   * {
     &:first-child {

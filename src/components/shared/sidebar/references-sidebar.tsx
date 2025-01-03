@@ -30,11 +30,7 @@ export const ReferencesSidebar: React.FC<{
   console.log("connected docs in reference sidebar", connectedDocs);
 
   return (
-    <div
-      className={`relative flex h-full flex-col transition-all duration-300 ${
-        isCollapsed ? "w-0" : "w-1/4"
-      } border-l border-gray-200`}
-    >
+    <>
       {/* Persistent Panel */}
       <div className="absolute top-0 z-10 -ml-14 mt-4 flex h-[100px] flex-col items-center gap-4 bg-white p-4 shadow-md">
         <button onClick={onToggleSidebar}>
@@ -146,7 +142,7 @@ export const ReferencesSidebar: React.FC<{
           </Tabs>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

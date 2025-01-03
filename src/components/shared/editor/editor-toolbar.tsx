@@ -70,7 +70,6 @@ export const EditorToolbar = ({ editor }: { editor: any }) => {
                   d="M13 10V3H5v18h8a4 4 0 100-8H9m0-5h4"
                 />
               </svg>
-              {btn.label}
             </button>
           ))}
           {/* <button
