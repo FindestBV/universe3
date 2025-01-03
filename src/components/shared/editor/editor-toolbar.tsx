@@ -9,11 +9,14 @@ import {
   Bold,
   Eye,
   FilePenLine,
+  Grid2x2,
+  ImagePlus,
   Italic,
   Link,
   List,
   ListOrdered,
   MoreHorizontal,
+  Paperclip,
   Pilcrow,
   Pin,
   Subscript,
@@ -71,6 +74,33 @@ const EditorToolbar = ({ editor }: { editor: any }) => {
       command: () => editor.chain().focus().toggleOrderedList().run(),
       isActive: editor.isActive("orderedList"),
       icon: <ListOrdered size={16} />,
+    },
+  ];
+
+  const formattingButtons = [
+    {
+      label: "Link",
+      command: () => editor.chain().focus().toggleBold().run(),
+      isActive: editor.isActive("link"),
+      icon: <Link size={16} />,
+    },
+    {
+      label: "Image",
+      command: () => editor.chain().focus().toggleImage().run(),
+      isActive: editor.isActive("image"),
+      icon: <ImagePlus size={16} />,
+    },
+    {
+      label: "File",
+      command: () => editor.chain().focus().toggleFile().run(),
+      isActive: editor.isActive("file"),
+      icon: <Paperclip size={16} />,
+    },
+    {
+      label: "Table",
+      command: () => editor.chain().focus().toggleTable().run(),
+      isActive: editor.isActive("table"),
+      icon: <Grid2x2 size={16} />,
     },
   ];
 
@@ -141,6 +171,21 @@ const EditorToolbar = ({ editor }: { editor: any }) => {
           <span className="h-6 border-l border-gray-300"></span>
           <div className="flex items-center space-x-2">
             {buttons.map((btn, index) => (
+              <button
+                key={index}
+                onClick={btn.command}
+                className={`rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400 ${
+                  btn.isActive && "bg-blue-100 text-blue-700"
+                }`}
+                aria-label={btn.label}
+              >
+                {btn.icon}
+              </button>
+            ))}
+          </div>
+          <span className="h-6 border-l border-gray-300"></span>
+          <div className="flex items-center space-x-2">
+            {formattingButtons.map((btn, index) => (
               <button
                 key={index}
                 onClick={btn.command}
