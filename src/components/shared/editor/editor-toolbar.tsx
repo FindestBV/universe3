@@ -189,7 +189,7 @@ const EditorToolbar = ({ editor }: { editor: any }) => {
               <button
                 key={index}
                 onClick={btn.command}
-                className={`rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400 ${
+                className={`rounded border border-gray-300 bg-white p-1 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400 ${
                   btn.isActive && "bg-blue-100 text-blue-700"
                 }`}
                 aria-label={btn.label}
@@ -204,7 +204,7 @@ const EditorToolbar = ({ editor }: { editor: any }) => {
               <button
                 key={index}
                 onClick={btn.command}
-                className={`rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400 ${
+                className={`rounded border border-gray-300 bg-white p-1 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400 ${
                   btn.isActive && "bg-blue-100 text-blue-700"
                 }`}
                 aria-label={btn.label}
