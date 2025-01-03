@@ -24,14 +24,11 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
-// import { useFeature } from "use-feature";
 // import { useTranslation } from "react-i18next";
-
 import CreateItemModal from "../modals/create-item-modal";
 import ExplorerModal from "../modals/explorer-modal";
 import SearchBar from "../search/searchbar";
 import HappinessSelector from "./happiness-selector";
-import LanguageSelector from "./language-selector";
 
 interface DashboardHeader {
   className?: string;

@@ -7,6 +7,8 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import {
   Bold,
+  ChevronDown,
+  ChevronUp,
   Eye,
   FilePenLine,
   Grid2x2,
@@ -19,16 +21,22 @@ import {
   Paperclip,
   Pilcrow,
   Pin,
+  SquarePlus,
   Subscript,
   Superscript,
   Underline,
   Users,
 } from "lucide-react";
 
+import { useState } from "react";
+
 import AskIgorModal from "../modals/ask-igor";
 import UserAvatar from "../utilities/user-avatar";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const EditorToolbar = ({ editor }: { editor: any }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+
   if (!editor) return null;
 
   const buttons = [
@@ -102,6 +110,12 @@ const EditorToolbar = ({ editor }: { editor: any }) => {
       isActive: editor.isActive("table"),
       icon: <Grid2x2 size={16} />,
     },
+    {
+      label: "Advanced",
+      command: () => editor.chain().focus().toggleTable().run(),
+      isActive: editor.isActive("advanced"),
+      icon: <SquarePlus size={16} />,
+    },
   ];
 
   const headingOptions = [
@@ -148,10 +162,11 @@ const EditorToolbar = ({ editor }: { editor: any }) => {
         {/* Left Section: Formatting Buttons */}
         <div className="flex items-center space-x-2">
           <AskIgorModal />
-          <DropdownMenu>
+          <DropdownMenu onOpenChange={(open) => setIsDropdownOpen(open)}>
             <DropdownMenuTrigger asChild>
               <Button className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400">
-                Paragraph <Pilcrow size={16} />
+                <Pilcrow size={16} /> Paragraph
+                {isDropdownOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="z-10 w-40 border border-gray-200 bg-white p-1 shadow-md">
