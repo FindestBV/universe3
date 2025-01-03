@@ -5,6 +5,7 @@ import authSlice from "@/api/auth/authSlice";
 import { documentApi } from "@/api/documents/documentApi";
 import { searchApi } from "@/api/search/searchApi";
 import languageReducer from "@/api/utilities/languageSlice";
+import sidebarReducer from "@/api/utilities/sidebarSlice";
 // Configure Store and Persistance
 import { configureStore, Reducer } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
@@ -26,7 +27,7 @@ const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHisto
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "language"], // Language must match key in combineReducers
+  whitelist: ["auth", "language", "sidebar"], // Language must match key in combineReducers
 };
 
 // Combine reducers
@@ -37,6 +38,7 @@ export const rootReducer = combineReducers({
   search: searchApi,
   documents: documentApi,
   language: languageReducer,
+  sidebar: sidebarReducer,
   [authApi.reducerPath]: authApi.reducer,
 }) as Reducer;
 

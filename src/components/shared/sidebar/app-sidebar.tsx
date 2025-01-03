@@ -1,5 +1,5 @@
 import { currentUser, logout } from "@/api/auth/authSlice";
-import faviconUniverse from "@/assets/favicon.png";
+import { setSidebarState } from "@/api/utilities/sidebarSlice";
 import logoUniverse from "@/assets/universe_logo_white.png";
 import {
   DropdownMenu,
@@ -27,9 +27,8 @@ import {
   Inbox,
 } from "lucide-react";
 
-// import { useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import AdvancedSearchModal from "../modals/advanced-search-modal";
 import GenerateReport from "../modals/generate-report-modal";
@@ -37,13 +36,17 @@ import UserAvatar from "../utilities/user-avatar";
 
 export function AppSidebar() {
   const { open } = useSidebar();
-  const isCollapsed = open && true;
   const user = useSelector(currentUser);
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     dispatch(logout());
   };
+
+  useEffect(() => {
+    console.log("is open", open);
+    // dispatch(setSidebarState(open));
+  }, [open]);
 
   return (
     <Sidebar collapsible="icon" className="bg-gray-900 text-white">
@@ -64,9 +67,7 @@ export function AppSidebar() {
 
       {/* Sidebar Content */}
       <SidebarContent
-        className={`mt-8 flex min-h-0 flex-1 flex-col justify-between ${
-          isCollapsed ? "p-4" : "p-2"
-        }`}
+        className={`mt-8 flex min-h-0 flex-1 flex-col justify-between ${open ? "p-4" : "p-2"}`}
       >
         <div className={`flex flex-col gap-8 ${open ? "items-start" : "items-center"}`}>
           {/* Inbox Menu */}
