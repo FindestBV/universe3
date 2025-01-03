@@ -6,24 +6,26 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import {
+  Bold,
   Eye,
   FilePenLine,
+  Italic,
+  Link,
   List,
+  ListOrdered,
   MoreHorizontal,
-  Network,
+  Pilcrow,
   Pin,
-  ScanEye,
-  SquareArrowOutUpRight,
+  Subscript,
+  Superscript,
+  Underline,
   Users,
 } from "lucide-react";
 
 import AskIgorModal from "../modals/ask-igor";
 import UserAvatar from "../utilities/user-avatar";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const EditorToolbar = ({ editor }: { editor: any }) => {
-  console.log("editor in entity single toolabr", editor);
-
+const EditorToolbar = ({ editor }: { editor: any }) => {
   if (!editor) return null;
 
   const buttons = [
@@ -31,130 +33,172 @@ export const EditorToolbar = ({ editor }: { editor: any }) => {
       label: "Bold",
       command: () => editor.chain().focus().toggleBold().run(),
       isActive: editor.isActive("bold"),
+      icon: <Bold size={16} />,
     },
     {
       label: "Italic",
       command: () => editor.chain().focus().toggleItalic().run(),
       isActive: editor.isActive("italic"),
+      icon: <Italic size={16} />,
     },
     {
       label: "Underline",
-      command: () => editor.chain().focus().toggleUnderline?.().run(), // Optional if underline is supported
+      command: () => editor.chain().focus().toggleUnderline?.().run(),
       isActive: editor.isActive("underline"),
+      icon: <Underline size={16} />,
     },
+    {
+      label: "Superscript",
+      command: () => editor.chain().focus().toggleSuperscript?.().run(),
+      isActive: editor.isActive("superscript"),
+      icon: <Superscript size={16} />,
+    },
+    {
+      label: "Subscript",
+      command: () => editor.chain().focus().toggleSubscript?.().run(),
+      isActive: editor.isActive("subscript"),
+      icon: <Subscript size={16} />,
+    },
+
     {
       label: "Bullet List",
       command: () => editor.chain().focus().toggleBulletList().run(),
       isActive: editor.isActive("bulletList"),
+      icon: <List size={16} />,
     },
     {
       label: "Numbered List",
       command: () => editor.chain().focus().toggleOrderedList().run(),
       isActive: editor.isActive("orderedList"),
+      icon: <ListOrdered size={16} />,
+    },
+  ];
+
+  const headingOptions = [
+    {
+      label: "Paragraph",
+      command: () => editor.chain().focus().setParagraph().run(),
+      isActive: editor.isActive("paragraph"),
+    },
+    {
+      label: "Heading 1",
+      command: () => editor.chain().focus().setHeading({ level: 1 }).run(),
+      isActive: editor.isActive("heading", { level: 1 }),
+    },
+    {
+      label: "Heading 2",
+      command: () => editor.chain().focus().setHeading({ level: 2 }).run(),
+      isActive: editor.isActive("heading", { level: 2 }),
+    },
+    {
+      label: "Heading 3",
+      command: () => editor.chain().focus().setHeading({ level: 3 }).run(),
+      isActive: editor.isActive("heading", { level: 3 }),
+    },
+    {
+      label: "Heading 4",
+      command: () => editor.chain().focus().setHeading({ level: 4 }).run(),
+      isActive: editor.isActive("heading", { level: 4 }),
+    },
+    {
+      label: "Heading 5",
+      command: () => editor.chain().focus().setHeading({ level: 5 }).run(),
+      isActive: editor.isActive("heading", { level: 5 }),
+    },
+    {
+      label: "Heading 6",
+      command: () => editor.chain().focus().setHeading({ level: 6 }).run(),
+      isActive: editor.isActive("heading", { level: 6 }),
     },
   ];
 
   return (
-    <div className="toolbar w-full border-b border-gray-300 bg-gray-100 px-4 py-2">
+    <div className="toolbar sticky top-16 z-20 w-full border-b border-gray-300 bg-gray-100 px-4 py-2">
       <div className="flex items-center justify-between">
-        {/* Left Section: Ask Igor Button */}
-        <div className="flex items-center justify-center gap-2">
+        {/* Left Section: Formatting Buttons */}
+        <div className="flex items-center space-x-2">
           <AskIgorModal />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400">
+                Paragraph <Pilcrow size={16} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="z-10 w-40 border border-gray-200 bg-white p-1 shadow-md">
+              {headingOptions.map((option, index) => (
+                <DropdownMenuItem
+                  key={index}
+                  onClick={option.command}
+                  className={`cursor-pointer rounded p-2 text-sm ${
+                    option.isActive ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
+                  }`}
+                >
+                  {option.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
           <div className="flex items-center space-x-2">
-            {/* Bold Button */}
             {buttons.map((btn, index) => (
               <button
                 key={index}
                 onClick={btn.command}
-                className={`rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 ${btn.isActive && "active"}`}
-                aria-label="Align Left"
+                className={`rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400 ${
+                  btn.isActive && "bg-blue-100 text-blue-700"
+                }`}
+                aria-label={btn.label}
               >
-                {btn.label}
+                {btn.icon}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Right Section: Formatting and Alignment Options */}
+        {/* Right Section: View and Share Options */}
         <div className="flex items-center space-x-2">
           <button
-            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            aria-label="Align Left"
+            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400"
+            aria-label="View"
           >
-            <Eye size={18} /> VIEW
+            <Eye size={16} />
+            VIEW
           </button>
           <button
-            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            aria-label="Align Left"
+            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400"
+            aria-label="Edit"
           >
-            <FilePenLine size={18} />
+            <FilePenLine size={16} />
             EDIT
           </button>
-          {/* Divider */}
           <span className="h-6 border-l border-gray-300"></span>
-
-          {/* Align Left */}
           <button
-            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            aria-label="Align Left"
+            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400"
+            aria-label="Pin"
           >
-            <Pin size={18} />
+            <Pin size={16} />
             PIN
           </button>
-
-          {/* Align Center */}
           <button
-            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            aria-label="Align Center"
+            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400"
+            aria-label="Share"
           >
-            <Users size={18} />
+            <Users size={16} />
             SHARE
           </button>
-
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="rotated" className="h-8 w-8 bg-transparent p-0">
-                <span className="sr-only">Open menu</span>
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="h-8 w-8 bg-white p-0">
-              <DropdownMenuItem>
-                <SquareArrowOutUpRight /> Open Page
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <ScanEye /> Open Preview
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Network /> Open in Tree View
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <List /> Open in List View
-              </DropdownMenuItem>
+            <DropdownMenuContent className="w-40 border border-gray-200 bg-white p-1 shadow-md">
+              <DropdownMenuItem>Open Page</DropdownMenuItem>
+              <DropdownMenuItem>Open Preview</DropdownMenuItem>
+              <DropdownMenuItem>Open in Tree View</DropdownMenuItem>
+              <DropdownMenuItem>Open in List View</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          {/* Align Right */}
-
           <UserAvatar username="Ronan" />
-          {/* <button
-            className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            aria-label="Align Right"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 6h18M7 10h14M3 14h18M7 18h14"
-              />
-            </svg>
-          </button> */}
         </div>
       </div>
     </div>
