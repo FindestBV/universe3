@@ -25,7 +25,7 @@ export const ReferencesSidebar: React.FC<{
   connectedDocs?: string;
   connectedInbox?: string;
   connectedObjects?: string;
-}> = ({ onToggleSidebar, isCollapsed, connectedInbox, connectedDocs, connectedObjects }) => {
+}> = ({ onToggleSidebar, isCollapsed, connectedInbox, connectedObjects }) => {
   const [activeTab, setActiveTab] = useState<string>("documents"); // Initial active tab
 
   return (
@@ -111,7 +111,7 @@ export const ReferencesSidebar: React.FC<{
                     <div key={index} className="mb-2 flex items-start gap-2">
                       <Link size={24} />
                       <a href={"#"} className="font-bold">
-                        {doc[1].documentTitle}
+                        {doc[1]?.documentTitle}
                       </a>
                     </div>
                   ))
