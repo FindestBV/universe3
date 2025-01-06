@@ -126,9 +126,44 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
   const navigateWithTransition = useNavigateWithTransition();
 
-  console.log("genric card abstract", abstract);
-  console.log("genric card description", description);
+  // console.log("genric card description", JSON.parse(description));
   // console.log('prefetchedObjectsForItem', prefetchConnectedObjects)
+
+  const renderFirstThreeParagraphs = (descriptionString: string) => {
+    if (!descriptionString) {
+      return <p>No content available.</p>;
+    }
+
+    let parsedDescription;
+    try {
+      parsedDescription = JSON.parse(descriptionString);
+    } catch (error) {
+      console.error("Error parsing description:", error);
+      return <p>Invalid description format.</p>;
+    }
+
+    if (!parsedDescription.content || !Array.isArray(parsedDescription.content)) {
+      return <p>No valid content found.</p>;
+    }
+
+    // Extract the first three paragraphs
+    const paragraphs = parsedDescription.content
+      .filter((item: any) => item.type === "paragraph")
+      .slice(0, 1);
+
+    return (
+      <div>
+        {paragraphs.map((paragraph: any, index: number) => (
+          <p key={index}>
+            {paragraph.content
+              ?.map((child: any) => child.text)
+              .filter(Boolean)
+              .join(" ")}
+          </p>
+        ))}
+      </div>
+    );
+  };
 
   const handlePrefetch = async ({ id, type }: { id: string; type: string }) => {
     try {
@@ -201,7 +236,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
                 {title}
               </h3>
               {isDocument && <DocumentLink url={url} />}
-              {isEntity && <p>{description && description[0].content}</p>}
+              {isEntity && renderFirstThreeParagraphs(description)}
             </div>
             <div className="flex flex-row items-center gap-4">
               <LinkedCounts
