@@ -26,22 +26,31 @@ export const ReferencesSidebar: React.FC<{
   connectedInbox?: string;
   connectedObjects?: string;
 }> = ({ onToggleSidebar, isCollapsed, connectedInbox, connectedObjects }) => {
-  const [activeTab, setActiveTab] = useState<string>("documents"); // Initial active tab
+  const [activeMainTab, setActiveMainTab] = useState<string>("references"); // Main tab
+  const [activeSubTab, setActiveSubTab] = useState<string>("documents"); // Sub-tab for references
+
+  const toggleActiveSubTab = (tab) => {
+    if (isCollapsed) {
+      onToggleSidebar();
+    }
+    setActiveMainTab(tab);
+  };
 
   return (
     <>
       {/* Persistent Panel */}
       <div className="absolute top-0 z-10 -ml-14 mt-4 flex h-[100px] flex-col items-center gap-4 bg-white p-4 shadow-md">
-        {/* Toggle Sidebar */}
+        {/* Toggle Main Tabs */}
         <button
-          onClick={() => {
-            console.log("List button clicked, toggling sidebar");
-            onToggleSidebar();
-          }}
+          onClick={() => toggleActiveSubTab("references")}
+          className={`${activeMainTab === "references" ? "text-blue-500" : "text-gray-400"}`}
         >
           <List size={24} />
         </button>
-        <button>
+        <button
+          onClick={() => toggleActiveSubTab("onThisPage")}
+          className={`${activeMainTab === "onThisPage" ? "text-blue-500" : "text-gray-400"}`}
+        >
           <Quote size={24} />
         </button>
       </div>
@@ -49,8 +58,7 @@ export const ReferencesSidebar: React.FC<{
       {/* Sidebar Content */}
       {!isCollapsed && (
         <div className="flex flex-col p-4 transition-all duration-300">
-          <div className="flex justify-between">
-            <h3 className="mb-4 text-xl font-bold">References</h3>
+          <div className="flex flex-row justify-between">
             <Button
               className="fixed right-0"
               onClick={() => {
@@ -60,86 +68,117 @@ export const ReferencesSidebar: React.FC<{
             >
               <X size={20} />
             </Button>
+            <h3 className="mb-4 text-xl font-bold">
+              {activeMainTab === "references" ? "References" : "On This Page"}
+            </h3>
           </div>
 
-          <ReferencesSearchbar />
+          {/* Main Tabs */}
           <Tabs
-            defaultValue="documents"
+            defaultValue="references"
+            value={activeMainTab}
+            onValueChange={setActiveMainTab}
             className="mt-4"
-            value={activeTab}
-            onValueChange={setActiveTab}
           >
-            <TabsList className="mb-4 inline-flex h-10 w-full items-center justify-start gap-4 rounded-none border-b border-[#f1f1f1] bg-transparent p-1 text-muted-foreground">
-              <TabsTrigger value="inbox">
-                <Inbox
-                  size={16}
-                  className={activeTab === "inbox" ? "text-black" : "text-muted-foreground"}
-                />
-              </TabsTrigger>
-              <TabsTrigger value="highlights">
-                <Highlighter size={16} />
-              </TabsTrigger>
-              <TabsTrigger value="documents">
-                <FileText
-                  size={16}
-                  className={activeTab === "documents" ? "text-black" : "text-muted-foreground"}
-                />
-              </TabsTrigger>
-              <TabsTrigger value="attachments">
-                <Paperclip
-                  size={16}
-                  className={activeTab === "attachments" ? "text-black" : "text-muted-foreground"}
-                />
-              </TabsTrigger>
-              <TabsTrigger value="entities">
-                <Fingerprint
-                  size={16}
-                  className={activeTab === "entities" ? "text-black" : "text-muted-foreground"}
-                />
-              </TabsTrigger>
-              <TabsTrigger value="studies">
-                <BookOpenCheck
-                  size={16}
-                  className={activeTab === "studies" ? "text-black" : "text-muted-foreground"}
-                />
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="inbox">
-              {connectedInbox
-                ? connectedInbox &&
-                  Object.entries(connectedInbox).map((doc, index) => (
-                    <div key={index} className="mb-2 flex items-start gap-2">
-                      <Link size={24} />
-                      <a href={"#"} className="font-bold">
-                        {doc[1]?.documentTitle}
-                      </a>
-                    </div>
-                  ))
-                : "no connected objects"}
+            <ReferencesSearchbar />
+            {/* References Tab Content */}
+            <TabsContent value="references">
+              <Tabs
+                defaultValue="documents"
+                value={activeSubTab}
+                onValueChange={setActiveSubTab}
+                className="mt-4"
+              >
+                <TabsList className="mb-4 inline-flex h-10 w-full items-center justify-start gap-4 rounded-none border-b border-[#f1f1f1] bg-transparent p-1 text-muted-foreground">
+                  <TabsTrigger value="inbox">
+                    <Inbox
+                      size={16}
+                      className={activeSubTab === "inbox" ? "text-black" : "text-muted-foreground"}
+                    />
+                  </TabsTrigger>
+                  <TabsTrigger value="highlights">
+                    <Highlighter
+                      size={16}
+                      className={
+                        activeSubTab === "highlights" ? "text-black" : "text-muted-foreground"
+                      }
+                    />
+                  </TabsTrigger>
+                  <TabsTrigger value="documents">
+                    <FileText
+                      size={16}
+                      className={
+                        activeSubTab === "documents" ? "text-black" : "text-muted-foreground"
+                      }
+                    />
+                  </TabsTrigger>
+                  <TabsTrigger value="attachments">
+                    <Paperclip
+                      size={16}
+                      className={
+                        activeSubTab === "attachments" ? "text-black" : "text-muted-foreground"
+                      }
+                    />
+                  </TabsTrigger>
+                  <TabsTrigger value="entities">
+                    <Fingerprint
+                      size={16}
+                      className={
+                        activeSubTab === "entities" ? "text-black" : "text-muted-foreground"
+                      }
+                    />
+                  </TabsTrigger>
+                  <TabsTrigger value="studies">
+                    <BookOpenCheck
+                      size={16}
+                      className={
+                        activeSubTab === "studies" ? "text-black" : "text-muted-foreground"
+                      }
+                    />
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="inbox">
+                  {connectedInbox
+                    ? Object.entries(connectedInbox).map((doc, index) => (
+                        <div key={index} className="mb-2 flex items-start gap-2">
+                          <Link size={24} />
+                          <a href={"#"} className="font-bold">
+                            {doc[1]?.documentTitle}
+                          </a>
+                        </div>
+                      ))
+                    : "No connected inbox items."}
+                </TabsContent>
+                <TabsContent value="highlights">
+                  <h1>Highlights Content</h1>
+                </TabsContent>
+                <TabsContent value="documents">
+                  {connectedObjects?.documents && connectedObjects.documents.length > 0
+                    ? connectedObjects.documents.map((doc, index) => (
+                        <div key={index} className="mb-2 flex items-center gap-2">
+                          <Link size={24} />
+                          <a href={"#"} className="font-bold">
+                            {doc.title || "Untitled Document"}
+                          </a>
+                        </div>
+                      ))
+                    : "No connected objects."}
+                </TabsContent>
+                <TabsContent value="attachments">
+                  <h1>Attachments Content</h1>
+                </TabsContent>
+                <TabsContent value="entities">
+                  <h1>Entities Content</h1>
+                </TabsContent>
+                <TabsContent value="studies">
+                  <h1>Studies Content</h1>
+                </TabsContent>
+              </Tabs>
             </TabsContent>
-            <TabsContent value="highlights">
-              <h1>Highlights Content</h1>
-            </TabsContent>
-            <TabsContent value="attachments">
-              <h1>Attachments Content</h1>
-            </TabsContent>
-            <TabsContent value="documents">
-              {connectedObjects?.documents && connectedObjects.documents.length > 0
-                ? connectedObjects.documents.map((doc, index) => (
-                    <div key={index} className="mb-2 flex items-center gap-2">
-                      <Link size={24} />
-                      <a href={"#"} className="font-bold">
-                        {doc.title || "Untitled Document"}
-                      </a>
-                    </div>
-                  ))
-                : "no connected objects"}
-            </TabsContent>
-            <TabsContent value="entities">
-              <h1>Entities Content</h1>
-            </TabsContent>
-            <TabsContent value="studies">
-              <h1>Studies Content</h1>
+
+            {/* On This Page Tab Content */}
+            <TabsContent value="onThisPage">
+              <h1>This is the "On This Page" content area.</h1>
             </TabsContent>
           </Tabs>
         </div>
