@@ -16,9 +16,17 @@ import CustomImage from "./CustomImage";
 import EditorToolbar from "./editor-toolbar";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Editor = ({ type, content, title, connectedDocs, connectedInbox, connectedObjects }: any) => {
+const Editor = ({
+  type,
+  content,
+  title,
+  connectedDocs,
+  connectedInbox,
+  connectedObjects,
+  connectedQueries,
+}: any) => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
-  console.log(connectedInbox);
+  console.log("connected queries:", connectedQueries[0].connectedObjects);
   const toggleSidebar = () => {
     console.log("triggered in editor");
     setIsSidebarCollapsed((prev) => !prev);
@@ -57,7 +65,7 @@ const Editor = ({ type, content, title, connectedDocs, connectedInbox, connected
 
   console.log("connected docs", connectedDocs);
   console.log(`connected object in Editor and for id: ${title}`, connectedObjects);
-  console.log("connnectde inbox", connectedInbox);
+  console.log("connnected inbox", connectedInbox);
 
   return (
     <>
@@ -98,11 +106,27 @@ const Editor = ({ type, content, title, connectedDocs, connectedInbox, connected
           <div className="mx-16">
             <h3 className="my-4 flex-1 text-3xl font-black text-black">Linked Objects</h3>
             {connectedObjects?.documents && connectedObjects.documents.length > 0
-              ? connectedObjects.documents.map((doc, index) => (
+              ? connectedObjects.documents.map((doc) => (
                   <GenericCard itemType="entity" key={doc.id} {...doc} />
                 ))
               : "no connected objects"}
           </div>
+
+          <div className="mx-16">
+            <h3 className="my-4 flex-1 text-3xl font-black text-black">Connected Queries</h3>
+            <p className="iconText">Connections</p>
+            <div className="flex flex-wrap gap-2">
+              {connectedQueries[0]?.connectedObjects &&
+              connectedQueries[0].connectedObjects.length > 0
+                ? connectedQueries[0].connectedObjects.map((obj) => (
+                    <div key={obj.id} className="connected-item">
+                      <p>{obj.name}</p>
+                    </div>
+                  ))
+                : "No connected objects found"}
+            </div>
+          </div>
+
           <div className="mx-16">
             <Comments />
           </div>
@@ -120,6 +144,7 @@ const Editor = ({ type, content, title, connectedDocs, connectedInbox, connected
             connectedDocs={connectedDocs}
             connectedObjects={connectedObjects}
             connectedInbox={connectedInbox}
+            connectedQueries={connectedQueries}
           />
         </div>
       </div>

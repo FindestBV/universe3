@@ -123,6 +123,9 @@ export const documentApi = api.injectEndpoints({
             console.log("dispatching get Connected Objects from query", entity.id);
             dispatch(api.endpoints?.getEntityConnectedDocs.initiate(entity.id));
             console.log("dispatching getSideBarDocuments from query started", entity.id);
+
+            console.log("dispatching getEntityConnectedQueries from query started", entity.id);
+            dispatch(api.endpoints?.getEntityConnectedQueries.initiate(entity.id));
             dispatch(api.endpoints?.getSideBarDocuments.initiate(entity.id));
           }
         } catch (error) {
@@ -142,6 +145,12 @@ export const documentApi = api.injectEndpoints({
     getEntityConnectedDocs: builder.query<Entity[], void>({
       query: (id) => ({
         url: `entity/${id}/saveddocuments?orderBy=2&doIncludePatents=true&doIncludeScienceArticles=true&doIncludeWeblinks=true`,
+      }),
+    }),
+
+    getEntityConnectedQueries: builder.query<Entity[], void>({
+      query: (id) => ({
+        url: `entity/${id}/queries`,
       }),
     }),
 
@@ -199,5 +208,6 @@ export const {
   useGetStudyByIdQuery,
   useGetConnectedInboxItemsQuery,
   useGetEntityConnectedDocsQuery,
+  useGetEntityConnectedQueriesQuery,
   usePrefetch,
 } = documentApi;

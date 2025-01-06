@@ -3,8 +3,9 @@ import {
   useGetConnectedInboxItemsQuery,
   useGetEntityByIdQuery,
   useGetEntityConnectedDocsQuery,
+  useGetEntityConnectedQueriesQuery,
 } from "@/api/documents/documentApi";
-import Editor from "@/components/shared/editor/Editor";
+import Editor from "@/components/shared/editor/editor";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 
 import { useEffect, useState } from "react";
@@ -26,7 +27,10 @@ export const Entity: React.FC = () => {
       refetchOnMountOrArgChange: false, // Prevents automatic refetching
     });
 
-  console.log("fetch connected", connectedObjects);
+  const { data: connectedQueries, isLoading: connectedQueriesIsLoading } =
+    useGetEntityConnectedQueriesQuery(id, {
+      refetchOnMountOrArgChange: false, // Prevents automatic refetching
+    });
 
   let parsedDescription;
   if (fetchedEntity?.description) {
@@ -59,6 +63,7 @@ export const Entity: React.FC = () => {
                 content={parsedDescription}
                 connectedObjects={connectedObjects}
                 connectedInbox={inboxQuery}
+                connectedQueries={connectedQueries}
               />
             </div>
           </div>

@@ -25,10 +25,17 @@ export const ReferencesSidebar: React.FC<{
   connectedDocs?: string;
   connectedInbox?: string;
   connectedObjects?: string;
-}> = ({ onToggleSidebar, isCollapsed, connectedInbox, connectedDocs, connectedObjects }) => {
+}> = ({
+  onToggleSidebar,
+  isCollapsed,
+  connectedInbox,
+  connectedDocs,
+  connectedObjects,
+  connectedQueries,
+}) => {
   const [activeTab, setActiveTab] = useState<string>("documents"); // Initial active tab
 
-  console.log(connectedObjects ? connectedObjects?.documents : "no connected objects passed");
+  console.log(connectedQueries ? "connectedQueries" : "no connected queries passed");
 
   return (
     <>
