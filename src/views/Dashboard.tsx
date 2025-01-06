@@ -189,7 +189,7 @@ export const Dashboard = () => {
                   key={idx}
                   className="flex w-full flex-row items-center rounded-md py-2 max-sm:px-4"
                 >
-                  <UserAvatar username={user ? user : "User"} />
+                  <UserAvatar username={maxActivity?.userEmail} />
                   <div className="flex w-full items-center justify-between">
                     <p className="pl-4 text-sm">
                       <a href={`mailto:${maxActivity?.userEmail}`} className="text-blue-500">
