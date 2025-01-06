@@ -1,11 +1,18 @@
+import Document from "@tiptap/extension-document";
+import Heading from "@tiptap/extension-heading";
+import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
 import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 
 import { useState } from "react";
 
 import GenericCard from "../cards/generic-card";
 import Comments from "../layout/comments";
 import ReferencesSidebar from "../sidebar/references-sidebar";
-import { extensions } from "./editor-extensions";
+import CustomImage from "./custom-image";
 import EditorToolbar from "./editor-toolbar";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,9 +24,10 @@ const Editor = ({
   connectedInbox,
   connectedObjects,
   connectedQueries,
+  connectedComments,
 }: any) => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
-  console.log("connected queries:", connectedQueries[0].connectedObjects);
+  console.log("connectedComments:", connectedComments);
   const toggleSidebar = () => {
     console.log("triggered in editor");
     setIsSidebarCollapsed((prev) => !prev);
@@ -28,7 +36,24 @@ const Editor = ({
   const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
 
   const editor = useEditor({
-    extensions,
+    extensions: [
+      StarterKit,
+      Link.configure({
+        openOnClick: true,
+      }),
+      Document,
+      Paragraph.configure({
+        HTMLAttributes: {
+          class: "my-custom-class",
+        },
+      }),
+      Heading.configure({
+        levels: [1, 2, 3, 4, 5, 6],
+      }),
+      Text,
+      Image,
+      CustomImage,
+    ],
     content: parsedContent || {
       type: "doc",
       content: [{ type: "paragraph", content: [{ type: "text", text: "Start writing..." }] }],
@@ -104,7 +129,7 @@ const Editor = ({
           </div>
 
           <div className="mx-16">
-            <Comments />
+            <Comments connectedComments={connectedComments} />
           </div>
         </div>
 

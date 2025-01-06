@@ -2,6 +2,7 @@
 import {
   useGetConnectedInboxItemsQuery,
   useGetEntityByIdQuery,
+  useGetEntityConnectedCommentsQuery,
   useGetEntityConnectedDocsQuery,
   useGetEntityConnectedQueriesQuery,
 } from "@/api/documents/documentApi";
@@ -29,6 +30,11 @@ export const Entity: React.FC = () => {
 
   const { data: connectedQueries, isLoading: connectedQueriesIsLoading } =
     useGetEntityConnectedQueriesQuery(id, {
+      refetchOnMountOrArgChange: false, // Prevents automatic refetching
+    });
+
+  const { data: connectedComments, isLoading: connectedCommentsIsLoading } =
+    useGetEntityConnectedCommentsQuery(id, {
       refetchOnMountOrArgChange: false, // Prevents automatic refetching
     });
 
@@ -64,6 +70,7 @@ export const Entity: React.FC = () => {
                 connectedObjects={connectedObjects}
                 connectedInbox={inboxQuery}
                 connectedQueries={connectedQueries}
+                connectedComments={connectedComments}
               />
             </div>
           </div>

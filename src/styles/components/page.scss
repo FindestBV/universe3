@@ -3,7 +3,11 @@
     // @apply flex flex-col items-center justify-start w-full;
 }  
 
-
+.connected-item{
+  background-color: #e5f7fe;
+  padding: 1%;
+  @apply rounded-lg;
+}
 
 .entityCount{
   background-color: lightpink;

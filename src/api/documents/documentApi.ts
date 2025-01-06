@@ -154,6 +154,12 @@ export const documentApi = api.injectEndpoints({
       }),
     }),
 
+    getEntityConnectedComments: builder.query<Entity[], void>({
+      query: (id) => ({
+        url: `v2/comment/1/${id}`,
+      }),
+    }),
+
     getConnectedInboxItems: builder.query<Entity[], void>({
       query: (id) => ({
         url: `reference/inbox?connectedToObjectId=${id}`,
@@ -209,5 +215,6 @@ export const {
   useGetConnectedInboxItemsQuery,
   useGetEntityConnectedDocsQuery,
   useGetEntityConnectedQueriesQuery,
+  useGetEntityConnectedCommentsQuery,
   usePrefetch,
 } = documentApi;
