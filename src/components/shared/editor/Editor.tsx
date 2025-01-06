@@ -16,7 +16,7 @@ import ReferencesSidebar from "../sidebar/references-sidebar";
 import CustomImage from "./custom-image";
 import EditorToolbar from "./editor-toolbar";
 
-const Editor = ({
+export const Editor = ({
   type,
   content,
   title,
