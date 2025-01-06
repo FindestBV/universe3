@@ -52,8 +52,11 @@ export const Entity: React.FC = () => {
     if (fetchedEntity) {
       console.log("fetchedEntity", fetchedEntity);
     }
+    if (connectedComments) {
+      console.log("connectedComments", connectedComments);
+    }
     window.scroll(0, 0);
-  }, [fetchedEntity]);
+  }, [fetchedEntity, connectedComments]);
 
   return (
     <>
