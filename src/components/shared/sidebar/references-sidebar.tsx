@@ -24,8 +24,11 @@ export const ReferencesSidebar: React.FC<{
   isCollapsed: boolean;
   connectedDocs?: string;
   connectedInbox?: string;
-}> = ({ onToggleSidebar, isCollapsed, connectedInbox, connectedDocs }) => {
+  connectedObjects?: string;
+}> = ({ onToggleSidebar, isCollapsed, connectedInbox, connectedDocs, connectedObjects }) => {
   const [activeTab, setActiveTab] = useState<string>("documents"); // Initial active tab
+
+  console.log(connectedObjects ? connectedObjects?.documents : "no connected objects passed");
 
   return (
     <>
@@ -123,13 +126,12 @@ export const ReferencesSidebar: React.FC<{
               <h1>Attachments Content</h1>
             </TabsContent>
             <TabsContent value="documents">
-              {connectedDocs
-                ? connectedDocs &&
-                  Object.entries(connectedDocs).map((doc, index) => (
+              {connectedObjects?.documents && connectedObjects.documents.length > 0
+                ? connectedObjects.documents.map((doc, index) => (
                     <div key={index} className="mb-2 flex items-center gap-2">
                       <Link size={24} />
                       <a href={"#"} className="font-bold">
-                        {doc[1].documentTitle}
+                        {doc.title || "Untitled Document"}
                       </a>
                     </div>
                   ))

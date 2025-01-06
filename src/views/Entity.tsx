@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   useGetConnectedInboxItemsQuery,
-  // useGetDocumentRelatedScienceArticlesQuery,
   useGetEntityByIdQuery,
+  useGetEntityConnectedDocsQuery,
 } from "@/api/documents/documentApi";
 import Editor from "@/components/shared/editor/Editor";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
@@ -13,17 +13,21 @@ import { useParams } from "react-router";
 export const Entity: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { data: fetchedEntity, isLoading: fetchedEntityIsLoading } = useGetEntityByIdQuery(id, {
-    refetchOnMountOrArgChange: false, // Prevents automatic refetching
-  });
-
-  const [connectedInboxItems, setConnectedInboxItems] = useState<any[]>([]);
-
   const { data: inboxQuery } = useGetConnectedInboxItemsQuery(id, {
     refetchOnMountOrArgChange: false, // Prevents automatic refetching
   });
 
-  console.log("inbox query item result", inboxQuery);
+  const { data: fetchedEntity, isLoading: fetchedEntityIsLoading } = useGetEntityByIdQuery(id, {
+    refetchOnMountOrArgChange: false, // Prevents automatic refetching
+  });
+
+  const { data: connectedObjects, isLoading: fetchedEntityConnectedIsLoading } =
+    useGetEntityConnectedDocsQuery(id, {
+      refetchOnMountOrArgChange: false, // Prevents automatic refetching
+    });
+
+  console.log("fetch connected", connectedObjects);
+
   let parsedDescription;
   if (fetchedEntity?.description) {
     try {
@@ -33,13 +37,6 @@ export const Entity: React.FC = () => {
       console.error("Failed to parse description:", error);
     }
   }
-
-  useEffect(() => {
-    if (inboxQuery) {
-      console.log("inbox items fetched", inboxQuery);
-      setConnectedInboxItems(inboxQuery);
-    }
-  }, [inboxQuery]);
 
   useEffect(() => {
     if (fetchedEntity) {
@@ -60,7 +57,8 @@ export const Entity: React.FC = () => {
                 type={"entity"}
                 title={fetchedEntity?.title}
                 content={parsedDescription}
-                connectedDocs={inboxQuery}
+                connectedObjects={connectedObjects}
+                connectedInbox={inboxQuery}
               />
             </div>
           </div>

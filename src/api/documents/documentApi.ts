@@ -120,6 +120,8 @@ export const documentApi = api.injectEndpoints({
             console.log("triggered from query started", entity.id);
             console.log("dispatching getConnectedInboxItems from query started", entity.id);
             dispatch(api.endpoints?.getConnectedInboxItems.initiate(entity.id));
+            console.log("dispatching get Connected Objects from query", entity.id);
+            dispatch(api.endpoints?.getEntityConnectedDocs.initiate(entity.id));
             console.log("dispatching getSideBarDocuments from query started", entity.id);
             dispatch(api.endpoints?.getSideBarDocuments.initiate(entity.id));
           }
@@ -134,6 +136,12 @@ export const documentApi = api.injectEndpoints({
         url: `/${id}/title`,
         method: "PUT",
         body: { title },
+      }),
+    }),
+
+    getEntityConnectedDocs: builder.query<Entity[], void>({
+      query: (id) => ({
+        url: `entity/${id}/saveddocuments?orderBy=2&doIncludePatents=true&doIncludeScienceArticles=true&doIncludeWeblinks=true`,
       }),
     }),
 
@@ -181,6 +189,7 @@ export const {
   useGetDocumentRelatedScienceArticlesQuery,
   useGetMyDocumentInboxQuery,
   useGetSideBarDocumentsQuery,
+  useGetConnectedObjectsQuery,
   useLazyGetConnectedObjectsQuery,
   useAddDocumentMutation,
   useDeleteDocumentMutation,
@@ -189,5 +198,6 @@ export const {
   useGetStudiesQuery,
   useGetStudyByIdQuery,
   useGetConnectedInboxItemsQuery,
+  useGetEntityConnectedDocsQuery,
   usePrefetch,
 } = documentApi;

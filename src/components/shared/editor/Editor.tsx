@@ -9,15 +9,16 @@ import StarterKit from "@tiptap/starter-kit";
 
 import { useState } from "react";
 
+import GenericCard from "../cards/generic-card";
 import Comments from "../layout/comments";
 import ReferencesSidebar from "../sidebar/references-sidebar";
 import CustomImage from "./CustomImage";
 import EditorToolbar from "./editor-toolbar";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Editor = ({ type, content, title, connectedDocs }: any) => {
+const Editor = ({ type, content, title, connectedDocs, connectedInbox, connectedObjects }: any) => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
-
+  console.log(connectedInbox);
   const toggleSidebar = () => {
     console.log("triggered in editor");
     setIsSidebarCollapsed((prev) => !prev);
@@ -53,6 +54,10 @@ const Editor = ({ type, content, title, connectedDocs }: any) => {
   if (!editor) {
     return <p>Loading editor...</p>;
   }
+
+  console.log("connected docs", connectedDocs);
+  console.log(`connected object in Editor and for id: ${title}`, connectedObjects);
+  console.log("connnectde inbox", connectedInbox);
 
   return (
     <>
@@ -91,6 +96,14 @@ const Editor = ({ type, content, title, connectedDocs }: any) => {
           <EditorContent editor={editor} />
           <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
           <div className="mx-16">
+            <h3 className="my-4 flex-1 text-3xl font-black text-black">Linked Objects</h3>
+            {connectedObjects?.documents && connectedObjects.documents.length > 0
+              ? connectedObjects.documents.map((doc, index) => (
+                  <GenericCard itemType="entity" key={doc.id} {...doc} />
+                ))
+              : "no connected objects"}
+          </div>
+          <div className="mx-16">
             <Comments />
           </div>
         </div>
@@ -105,6 +118,8 @@ const Editor = ({ type, content, title, connectedDocs }: any) => {
             onToggleSidebar={toggleSidebar}
             isCollapsed={isSidebarCollapsed}
             connectedDocs={connectedDocs}
+            connectedObjects={connectedObjects}
+            connectedInbox={connectedInbox}
           />
         </div>
       </div>
