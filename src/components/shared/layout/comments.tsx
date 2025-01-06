@@ -18,7 +18,7 @@ export const Comments = ({ connectedComments }: any) => {
             connectedComments.comments.map((comment: string) => (
               <>
                 <UserAvatar username={comment?.username} />
-                <div key={comment?.id} className="comment comment-card w-full">
+                <div className="comment comment-card group w-full">
                   <div className="flex justify-between">
                     <div>
                       <h4>{comment?.username}</h4>
@@ -31,7 +31,8 @@ export const Comments = ({ connectedComments }: any) => {
                         </small>
                       </div>
                     </div>
-                    <div className="flex gap-2">
+                    {/* Buttons only visible on hover */}
+                    <div className="flex gap-2 opacity-0 transition-opacity group-hover:opacity-100">
                       <Button>EDIT</Button>
                       <Button>DELETE</Button>
                     </div>
