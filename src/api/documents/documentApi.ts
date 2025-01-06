@@ -69,7 +69,7 @@ export const documentApi = api.injectEndpoints({
           doIncludeScienceArticles: true,
           doIncludeWeblinks: true,
           doExcludeLinks: false,
-          createdByMe: true,
+          createdByMe: false,
         },
       }),
       providesTags: ["SavedDocument"],
@@ -91,6 +91,22 @@ export const documentApi = api.injectEndpoints({
       query: (id) => ({
         url: `entity/${id}`,
       }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        try {
+          // Wait for the article query to finish
+          const { data: entity } = await queryFulfilled;
+          // Trigger dependent queries for connected inbox items
+          if (entity?.id) {
+            console.log("triggered from query started", entity.id);
+            console.log("dispatching getConnectedInboxItems from query started", entity.id);
+            dispatch(api.endpoints?.getConnectedInboxItems.initiate(entity.id));
+            console.log("dispatching getSideBarDocuments from query started", entity.id);
+            dispatch(api.endpoints?.getSideBarDocuments.initiate(entity.id));
+          }
+        } catch (error) {
+          console.error("Error in onQueryStarted for getArticle:", error);
+        }
+      },
     }),
 
     updateEntityTitle: builder.mutation<Entity, { id: number; title: string }>({
