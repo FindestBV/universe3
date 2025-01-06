@@ -145,7 +145,6 @@ const Editor = ({
             connectedDocs={connectedDocs}
             connectedObjects={connectedObjects}
             connectedInbox={connectedInbox}
-            connectedQueries={connectedQueries}
           />
         </div>
       </div>
