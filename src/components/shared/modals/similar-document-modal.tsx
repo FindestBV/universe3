@@ -70,8 +70,8 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
         <div className="itemCard">
           <div className={`innerCardMain items-start gap-4`}>
             <Checkbox id={`card-${id}`} className="secondary mr-4 mt-1" />
-            <div className="flex flex-row items-center gap-8">
-              {<div className="iconText">Science</div>}
+            <div className={`flex flex-row items-center gap-8`}>
+              {<div className="iconText">SCIENCE</div>}
               <SimilarDocumentModal
                 title={title}
                 id={id}
@@ -151,9 +151,6 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
               ) : (
                 <p>No connected documents found.</p>
               )}
-              <Button>
-                <i>+ Connect to Entity or Study</i>
-              </Button>
             </div>
 
             <Tabs defaultValue="documentInfo" className="mt-6">
@@ -221,11 +218,8 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
                 <h4 className="pb-2 font-black">Attachments</h4>
                 <div className="flex items-center gap-2 rounded-sm bg-slate-100 p-4">
                   <Upload size={14} />
-                  <span>Add file (PDF, docx, pptx), maximum file size 50MB.</span>
+                  <p>List of attachments (should not be editable)</p>
                 </div>
-                <Button className="primary mt-2 bg-blue-500 p-4 text-white hover:bg-slate-200">
-                  Add File
-                </Button>
               </TabsContent>
             </Tabs>
           </div>

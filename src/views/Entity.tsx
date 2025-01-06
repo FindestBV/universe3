@@ -23,20 +23,17 @@ export const Entity: React.FC = () => {
     refetchOnMountOrArgChange: false, // Prevents automatic refetching
   });
 
-  const { data: connectedObjects, isLoading: fetchedEntityConnectedIsLoading } =
-    useGetEntityConnectedDocsQuery(id, {
-      refetchOnMountOrArgChange: false, // Prevents automatic refetching
-    });
+  const { data: connectedObjects } = useGetEntityConnectedDocsQuery(id, {
+    refetchOnMountOrArgChange: false, // Prevents automatic refetching
+  });
 
-  const { data: connectedQueries, isLoading: connectedQueriesIsLoading } =
-    useGetEntityConnectedQueriesQuery(id, {
-      refetchOnMountOrArgChange: false, // Prevents automatic refetching
-    });
+  const { data: connectedQueries } = useGetEntityConnectedQueriesQuery(id, {
+    refetchOnMountOrArgChange: false, // Prevents automatic refetching
+  });
 
-  const { data: connectedComments, isLoading: connectedCommentsIsLoading } =
-    useGetEntityConnectedCommentsQuery(id, {
-      refetchOnMountOrArgChange: false, // Prevents automatic refetching
-    });
+  const { data: connectedComments } = useGetEntityConnectedCommentsQuery(id, {
+    refetchOnMountOrArgChange: false, // Prevents automatic refetching
+  });
 
   let parsedDescription;
   if (fetchedEntity?.description) {

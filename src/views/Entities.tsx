@@ -75,6 +75,8 @@ export const Entities: React.FC = () => {
     setFilters(filters.filter((f) => f !== filter));
   };
 
+  console.log("data on entiries", data?.entities);
+
   const filterOptions = ["SCIENCE", "PATENT", "WEBPAGE"];
 
   return (

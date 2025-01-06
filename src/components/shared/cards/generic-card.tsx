@@ -126,7 +126,8 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
   const navigateWithTransition = useNavigateWithTransition();
 
-  console.log("connected objects", connectedObjects);
+  console.log("genric card abstract", abstract);
+  console.log("genric card description", description);
   // console.log('prefetchedObjectsForItem', prefetchConnectedObjects)
 
   const handlePrefetch = async ({ id, type }: { id: string; type: string }) => {
@@ -140,7 +141,8 @@ export const GenericCard: React.FC<GenericCardProps> = ({
 
   const location = useLocation();
   const currentPath = location.pathname;
-  const isDocument = currentPath.includes("document");
+  const isDocument = currentPath.includes("documents");
+  const isEntity = currentPath.includes("entities");
 
   const handleCheckboxChange = (checked: boolean) => onSelect(id, checked);
   const handleCardClick = () => {
@@ -190,7 +192,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
                 <div className="iconText">{type === "StudyTypeUndefined" ? "Study" : "Entity"}</div>
               )}
             </div>
-            <div className="flex flex-row gap-2">
+            <div className={`flex ${isDocument ? "flex-row" : "flex-col"} gap-2`}>
               <h3
                 className={`overflow-hidden text-ellipsis font-bold text-black ${
                   !isDocument ? "py-2" : ""
@@ -199,6 +201,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
                 {title}
               </h3>
               {isDocument && <DocumentLink url={url} />}
+              {isEntity && <p>{description && description[0].content}</p>}
             </div>
             <div className="flex flex-row items-center gap-4">
               <LinkedCounts

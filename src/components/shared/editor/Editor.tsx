@@ -65,10 +65,6 @@ export const Editor = ({
     return <p>Loading editor...</p>;
   }
 
-  console.log("connected docs", connectedDocs);
-  console.log(`connected object in Editor and for id: ${title}`, connectedObjects);
-  console.log("connnected inbox", connectedInbox);
-
   return (
     <>
       <EditorToolbar editor={editor} />
@@ -118,8 +114,8 @@ export const Editor = ({
 
           <div className="mx-16">
             <h3 className="my-4 flex-1 text-3xl font-black text-black">Connected Queries</h3>
-            <p className="iconText">Connections</p>
-            <div className="flex flex-wrap gap-2">
+            <p className="iconText">Connections:</p>
+            <div className="flex flex-wrap gap-2 pt-2">
               {connectedQueries[0]?.connectedObjects &&
               connectedQueries[0].connectedObjects.length > 0 ? (
                 connectedQueries[0].connectedObjects.map((obj) => (
