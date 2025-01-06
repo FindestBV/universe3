@@ -32,6 +32,26 @@ export const documentApi = api.injectEndpoints({
     getDocumentById: builder.query<SavedDocumentResponse, string>({
       query: (id) => `saveddocument/${id}`,
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        try {
+          // Wait for the article query to finish
+          const { data: document } = await queryFulfilled;
+          // Trigger dependent queries for connected inbox items
+          if (document?.id) {
+            console.log("triggered from query started", document.id);
+            console.log(
+              "dispatching getDocumentRelatedScienceArticles from query started",
+              document.id,
+            );
+            dispatch(api.endpoints?.getDocumentRelatedScienceArticles.initiate(document.id));
+            console.log("dispatching getConnectedObjectss from query started", document.id);
+            dispatch(api.endpoints?.getConnectedObjectss.initiate(document.id));
+          }
+        } catch (error) {
+          console.error("Error in onQueryStarted for getDocument:", error);
+        }
+      },
     }),
 
     getDocumentRelatedScienceArticles: builder.query<SavedDocumentResponse, string>({
