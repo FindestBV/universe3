@@ -5,8 +5,8 @@ import { useState } from "react";
 import GenericCard from "../cards/generic-card";
 import Comments from "../layout/comments";
 import ReferencesSidebar from "../sidebar/references-sidebar";
-import { extensions } from "./editorExtensions";
-import EditorToolbar from "./EditorToolbar";
+import { extensions } from "./editor-extensions";
+import EditorToolbar from "./editor-toolbar";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Editor = ({ type, content, title, connectedDocs, connectedInbox, connectedObjects }: any) => {
