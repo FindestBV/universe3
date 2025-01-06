@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Button } from "@/components/ui/button";
 import Document from "@tiptap/extension-document";
 import Heading from "@tiptap/extension-heading";
 import Image from "@tiptap/extension-image";
@@ -10,7 +11,7 @@ import StarterKit from "@tiptap/starter-kit";
 
 import { useState } from "react";
 
-import GenericCard from "../cards/generic-card";
+// import GenericCard from "../cards/generic-card";
 import Comments from "../layout/comments";
 import SimilarDocumentModal from "../modals/similar-document-modal";
 import ReferencesSidebar from "../sidebar/references-sidebar";
@@ -116,21 +117,26 @@ export const Editor = ({
             <h3 className="my-4 flex-1 text-3xl font-black text-black">Connected Queries</h3>
             <p className="iconText">Connections:</p>
             <div className="flex flex-wrap gap-2 pt-2">
-              {connectedQueries[0]?.connectedObjects &&
-              connectedQueries[0].connectedObjects.length > 0 ? (
-                connectedQueries[0].connectedObjects.map((obj) => (
-                  <SimilarDocumentModal
-                    key={obj.id} // Ensure each modal has a unique key
-                    id={obj.id}
-                    title={obj.name}
-                    mainContents={obj.mainContents}
-                    searchInformation={obj.searchInformation}
-                    type="entity"
-                  />
-                ))
-              ) : (
-                <p className="text-gray-500">No connected objects found</p>
-              )}
+              {connectedQueries ? (
+                connectedQueries[0]?.connectedObjects &&
+                connectedQueries[0].connectedObjects.length > 0 ? (
+                  connectedQueries[0].connectedObjects.map((obj) => (
+                    <SimilarDocumentModal
+                      key={obj.id} // Ensure each modal has a unique key
+                      id={obj.id}
+                      title={obj.name}
+                      mainContents={obj.mainContents}
+                      searchInformation={obj.searchInformation}
+                      type="entity"
+                    />
+                  ))
+                ) : (
+                  <div className="flex flex-row-reverse items-center gap-4">
+                    <Button variant="ghost">Connect a query</Button>
+                    <p className="text-gray-500">No connected objects</p>
+                  </div>
+                )
+              ) : null}
             </div>
           </div>
 

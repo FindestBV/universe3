@@ -3,7 +3,6 @@ import {
   useGetDocumentRelatedScienceArticlesQuery,
 } from "@/api/documents/documentApi";
 import { LinkedCounts } from "@/components/shared/cards/linked-counts";
-import { Toolbar } from "@/components/shared/editor/toolbar";
 import Comments from "@/components/shared/layout/comments";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 import ConnectToEntity from "@/components/shared/modals/connect-to-entity";

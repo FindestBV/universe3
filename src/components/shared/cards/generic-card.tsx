@@ -221,12 +221,14 @@ export const GenericCard: React.FC<GenericCardProps> = ({
           <div className="flex flex-1 flex-col px-4">
             <div className="w-auto cursor-pointer">
               {!isDocument && (
-                <div className="iconText">{type === "StudyTypeUndefined" ? "Study" : "Entity"}</div>
+                <div className="iconText py-1">
+                  {type === "StudyTypeUndefined" ? "Study" : "Entity"}
+                </div>
               )}
             </div>
-            <div className={`flex ${isDocument ? "flex-row" : "flex-col"} gap-2`}>
+            <div className={`flex ${isDocument ? "flex-row gap-2" : "flex-col"}`}>
               <h3
-                className={`overflow-hidden text-ellipsis font-bold text-black ${
+                className={`overflow-hidden text-ellipsis text-lg font-bold text-black ${
                   !isDocument ? "py-2" : ""
                 }`}
               >

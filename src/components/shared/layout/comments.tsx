@@ -1,5 +1,6 @@
 import { currentUser } from "@/api/auth/authSlice";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
+import { Button } from "@/components/ui/button";
 
 import { useSelector } from "react-redux";
 
@@ -12,23 +13,48 @@ export const Comments = ({ connectedComments }: any) => {
     <>
       <h3 className="my-4 flex-1 text-3xl font-black text-black">Comments</h3>
       <div className="comments-list">
-        {connectedComments?.comments && connectedComments.comments.length > 0 ? (
-          connectedComments.comments.map((comment: string) => (
-            <div key={comment?.id} className="comment-card">
-              <p className="comment-text">{comment?.text}</p>
-              <div className="comment-meta">
-                <span className="comment-username">{comment?.username}</span>
-                <span className="comment-date">
-                  {new Date(comment?.dateAdded).toLocaleString()}
-                </span>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p>No comments available</p>
-        )}
+        <div className="flex w-full gap-6 rounded-sm border border-[#f1f1f1] p-4">
+          {connectedComments?.comments && connectedComments.comments.length > 0 ? (
+            connectedComments.comments.map((comment: string) => (
+              <>
+                <UserAvatar username={comment?.username} />
+                <div key={comment?.id} className="comment comment-card w-full">
+                  <div className="flex justify-between">
+                    <div>
+                      <h4>{comment?.username}</h4>
+                      <div className="comment-meta flex">
+                        <small className="comment-date">
+                          {new Date(comment?.dateAdded).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </small>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button>EDIT</Button>
+                      <Button>DELETE</Button>
+                    </div>
+                  </div>
+                  <p className="comment-text py-4">{comment?.text}</p>
+                  <div className="flex gap-6 rounded-sm border border-[#f1f1f1] p-4">
+                    <form className="w-full">
+                      <input
+                        className="w-full italic text-gray-400"
+                        placeholder="Write your reply here"
+                        type="text"
+                      />
+                    </form>
+                  </div>
+                </div>
+              </>
+            ))
+          ) : (
+            <p>No comments available</p>
+          )}
+        </div>
       </div>
-      <div className="flex gap-6 rounded-sm border border-[#f1f1f1] p-4">
+      <div className="mt-6 flex gap-6 rounded-sm border border-[#f1f1f1] p-4">
         <UserAvatar username={user} />
         <form className="w-full">
           <input
