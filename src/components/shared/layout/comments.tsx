@@ -3,7 +3,8 @@ import UserAvatar from "@/components/shared/utilities/user-avatar";
 
 import { useSelector } from "react-redux";
 
-export const Comments = ({ connectedComments }: string) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const Comments = ({ connectedComments }: any) => {
   console.log("connected comments here", connectedComments);
   const user = useSelector(currentUser);
 
@@ -12,12 +13,14 @@ export const Comments = ({ connectedComments }: string) => {
       <h3 className="my-4 flex-1 text-3xl font-black text-black">Comments</h3>
       <div className="comments-list">
         {connectedComments?.comments && connectedComments.comments.length > 0 ? (
-          connectedComments.comments.map((comment) => (
-            <div key={comment.id} className="comment-card">
-              <p className="comment-text">{comment.text}</p>
+          connectedComments.comments.map((comment: string) => (
+            <div key={comment?.id} className="comment-card">
+              <p className="comment-text">{comment?.text}</p>
               <div className="comment-meta">
-                <span className="comment-username">{comment.username}</span>
-                <span className="comment-date">{new Date(comment.dateAdded).toLocaleString()}</span>
+                <span className="comment-username">{comment?.username}</span>
+                <span className="comment-date">
+                  {new Date(comment?.dateAdded).toLocaleString()}
+                </span>
               </div>
             </div>
           ))
