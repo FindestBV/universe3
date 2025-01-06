@@ -12,6 +12,7 @@ import { useState } from "react";
 
 import GenericCard from "../cards/generic-card";
 import Comments from "../layout/comments";
+import SimilarDocumentModal from "../modals/similar-document-modal";
 import ReferencesSidebar from "../sidebar/references-sidebar";
 import CustomImage from "./custom-image";
 import EditorToolbar from "./editor-toolbar";
@@ -108,7 +109,9 @@ export const Editor = ({
             <h3 className="my-4 flex-1 text-3xl font-black text-black">Linked Objects</h3>
             {connectedObjects?.documents && connectedObjects.documents.length > 0
               ? connectedObjects.documents.map((doc) => (
-                  <GenericCard itemType="entity" key={doc.id} {...doc} />
+                  <>
+                    <SimilarDocumentModal title={doc.title} id={doc.id} type="linkedObjects" />
+                  </>
                 ))
               : "no connected objects"}
           </div>
@@ -118,13 +121,20 @@ export const Editor = ({
             <p className="iconText">Connections</p>
             <div className="flex flex-wrap gap-2">
               {connectedQueries[0]?.connectedObjects &&
-              connectedQueries[0].connectedObjects.length > 0
-                ? connectedQueries[0].connectedObjects.map((obj) => (
-                    <div key={obj.id} className="connected-item">
-                      <p>{obj.name}</p>
-                    </div>
-                  ))
-                : "No connected objects found"}
+              connectedQueries[0].connectedObjects.length > 0 ? (
+                connectedQueries[0].connectedObjects.map((obj) => (
+                  <SimilarDocumentModal
+                    key={obj.id} // Ensure each modal has a unique key
+                    id={obj.id}
+                    title={obj.name}
+                    mainContents={obj.mainContents}
+                    searchInformation={obj.searchInformation}
+                    type="entity"
+                  />
+                ))
+              ) : (
+                <p className="text-gray-500">No connected objects found</p>
+              )}
             </div>
           </div>
 

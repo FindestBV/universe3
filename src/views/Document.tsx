@@ -226,6 +226,7 @@ export const Document: React.FC = () => {
                             id={article.id}
                             mainContents={article.mainContents}
                             searchInformation={article.searchInformation}
+                            type="document"
                           />
                           {/* Publication Date and Authors */}
                           <div className="mt-2 flex flex-grow flex-wrap items-center gap-2">
