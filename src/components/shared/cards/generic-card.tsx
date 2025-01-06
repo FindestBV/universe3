@@ -126,9 +126,6 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
   const navigateWithTransition = useNavigateWithTransition();
 
-  // console.log("genric card description", JSON.parse(description));
-  // console.log('prefetchedObjectsForItem', prefetchConnectedObjects)
-
   const renderFirstThreeParagraphs = (descriptionString: string) => {
     if (!descriptionString) {
       return <p>No content available.</p>;
