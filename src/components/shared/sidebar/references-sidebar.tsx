@@ -179,7 +179,8 @@ export const ReferencesSidebar: React.FC<{
 
             {/* On This Page Tab Content */}
             <TabsContent value="onThisPage">
-              <h1>This is the "On This Page" content area.</h1>
+              <h1>Table of Contents.</h1>
+              <a href="">Linked</a>
             </TabsContent>
           </Tabs>
         </div>

@@ -133,7 +133,7 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
               <h1 className="my-4 flex-1 text-3xl font-black text-black">{title || "Document"}</h1>
             </div>
 
-            <h6 className="text-lg font-bold">Connections:</h6>
+            {/* <h6 className="text-lg font-bold">Connections:</h6>
             <div className="mt-2 flex flex-wrap gap-4">
               {isLoadingConnected ? (
                 <p>Loading connections...</p>
@@ -151,7 +151,7 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
               ) : (
                 <p>No connected documents found.</p>
               )}
-            </div>
+            </div> */}
 
             <Tabs defaultValue="documentInfo" className="mt-6">
               <TabsList className="mb-4 w-full justify-start rounded-none border-b border-[#f1f1f1] bg-transparent">

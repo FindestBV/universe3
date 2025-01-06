@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Comments = ({ connectedComments }: any) => {
-  console.log("connected comments here", connectedComments);
+  // console.log("connected comments here", connectedComments);
   const user = useSelector(currentUser);
 
   return (
@@ -33,11 +33,12 @@ export const Comments = ({ connectedComments }: any) => {
                     </div>
                     {/* Buttons only visible on hover */}
                     <div className="flex gap-2 opacity-0 transition-opacity group-hover:opacity-100">
+                      {/* TODO: Make this accessible only if Admin or if signed in user is the same as the comment user */}
                       <Button>EDIT</Button>
                       <Button>DELETE</Button>
                     </div>
                   </div>
-                  <p className="comment-text py-4">{comment?.text}</p>
+                  <p className="comment-text mb-4 mt-4 py-2">{comment?.text}</p>
                   <div className="flex gap-6 rounded-sm border border-[#f1f1f1] p-4">
                     <form className="w-full">
                       <input
