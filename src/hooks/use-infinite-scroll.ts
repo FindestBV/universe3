@@ -1,10 +1,7 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export function useInfiniteScroll(fetchData, options = {}) {
-  const { 
-        threshold = 0.8, 
-        hasMore = true 
-    } = options;
+  const { threshold = 0.8, hasMore = true } = options;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -26,18 +23,18 @@ export function useInfiniteScroll(fetchData, options = {}) {
 
   useEffect(() => {
     if (!hasMore) return;
-    
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
           loadMore();
         }
       },
-      { threshold }
+      { threshold },
     );
-    
+
     if (observerRef.current) observer.observe(observerRef.current);
-    
+
     return () => {
       if (observerRef.current) observer.unobserve(observerRef.current);
     };
