@@ -36,6 +36,15 @@ export const Editor = ({
   };
 
   const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
+  const defaultContent = {
+    type: "doc",
+    content: [
+      {
+        type: "paragraph",
+        content: [{ type: "text", text: "This is the default paragraph text." }],
+      },
+    ],
+  };
 
   const editor = useEditor({
     extensions: [
@@ -56,9 +65,14 @@ export const Editor = ({
       Image,
       CustomImage,
     ],
-    content: parsedContent || {
-      type: "doc",
-      content: [{ type: "paragraph", content: [{ type: "text", text: "Start writing..." }] }],
+    content: parsedContent ||
+      defaultContent || {
+        type: "doc",
+        content: [{ type: "paragraph", content: [{ type: "text", text: "Start writing..." }] }],
+      },
+    onUpdate({ editor }) {
+      const value = editor.getHTML();
+      onChange(value);
     },
   });
 
@@ -102,6 +116,7 @@ export const Editor = ({
           <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
           <EditorContent editor={editor} />
           <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
+
           <div className="mx-16">
             <h3 className="my-4 flex-1 text-3xl font-black text-black">Linked Objects</h3>
             {connectedObjects?.documents && connectedObjects.documents.length > 0
