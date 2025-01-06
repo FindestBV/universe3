@@ -1,19 +1,12 @@
-import Document from "@tiptap/extension-document";
-import Heading from "@tiptap/extension-heading";
-import Image from "@tiptap/extension-image";
-import Link from "@tiptap/extension-link";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
 import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 
 import { useState } from "react";
 
 import GenericCard from "../cards/generic-card";
 import Comments from "../layout/comments";
 import ReferencesSidebar from "../sidebar/references-sidebar";
-import CustomImage from "./CustomImage";
-import EditorToolbar from "./editor-toolbar";
+import { extensions } from "./editorExtensions";
+import EditorToolbar from "./EditorToolbar";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Editor = ({ type, content, title, connectedDocs, connectedInbox, connectedObjects }: any) => {
@@ -27,24 +20,7 @@ const Editor = ({ type, content, title, connectedDocs, connectedInbox, connected
   const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
 
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Link.configure({
-        openOnClick: true,
-      }),
-      Document,
-      Paragraph.configure({
-        HTMLAttributes: {
-          class: "my-custom-class",
-        },
-      }),
-      Heading.configure({
-        levels: [1, 2, 3, 4, 5, 6],
-      }),
-      Text,
-      Image,
-      CustomImage,
-    ],
+    extensions,
     content: parsedContent || {
       type: "doc",
       content: [{ type: "paragraph", content: [{ type: "text", text: "Start writing..." }] }],
