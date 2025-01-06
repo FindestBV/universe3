@@ -80,9 +80,10 @@ export const ReferencesSidebar: React.FC<{
             onValueChange={setActiveMainTab}
             className="mt-4"
           >
-            <ReferencesSearchbar />
             {/* References Tab Content */}
             <TabsContent value="references">
+              <ReferencesSearchbar />
+
               <Tabs
                 defaultValue="documents"
                 value={activeSubTab}
