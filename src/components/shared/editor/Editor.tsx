@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Document from "@tiptap/extension-document";
 import Heading from "@tiptap/extension-heading";
 import Image from "@tiptap/extension-image";
@@ -15,7 +16,6 @@ import ReferencesSidebar from "../sidebar/references-sidebar";
 import CustomImage from "./custom-image";
 import EditorToolbar from "./editor-toolbar";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Editor = ({
   type,
   content,
