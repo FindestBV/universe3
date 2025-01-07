@@ -36,6 +36,18 @@ export const ReferencesSidebar: React.FC<{
     setActiveMainTab(tab);
   };
 
+  const scrollToSection = (sectionId) => {
+    console.log("scrollto", sectionId);
+    const sectionElement = document.querySelector(sectionId); // Find the section
+    if (sectionElement) {
+      sectionElement.scrollIntoView({
+        behavior: "smooth",
+      });
+    } else {
+      console.error("Section not found:", sectionId);
+    }
+  };
+
   return (
     <>
       {/* Persistent Panel */}
@@ -179,8 +191,39 @@ export const ReferencesSidebar: React.FC<{
 
             {/* On This Page Tab Content */}
             <TabsContent value="onThisPage">
-              <h1>Table of Contents.</h1>
-              <a href="">Linked</a>
+              <div class="flex h-full flex-col justify-between">
+                <div>
+                  <h1>Table of Contents.</h1>
+                </div>
+                <div>
+                  <ul>
+                    <li>
+                      <a
+                        className="cursor-pointer"
+                        onClick={() => scrollToSection("#linkedDocuments")}
+                      >
+                        Linked
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        className="cursor-pointer"
+                        onClick={() => scrollToSection("#connectedQueries")}
+                      >
+                        Queries
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        className="cursor-pointer"
+                        onClick={() => scrollToSection("#connectedComments")}
+                      >
+                        Comments
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </TabsContent>
           </Tabs>
         </div>

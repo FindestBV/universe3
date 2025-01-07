@@ -113,7 +113,7 @@ export const Editor = ({
           <EditorContent editor={editor} />
           <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
 
-          <div className="editorContentContainer">
+          <div className="editorContentContainer" id="linkedDocuments">
             <h3 className="itemTitle flex items-center gap-4">
               Linked documents <Download size={16} />
             </h3>
@@ -129,7 +129,7 @@ export const Editor = ({
               : "no connected objects"}
           </div>
 
-          <div className="editorContentContainer">
+          <div className="editorContentContainer" id="connectedQueries">
             <h3 className="itemTitle">Connected Queries</h3>
             <p className="iconText">Connections:</p>
             <div className="flex flex-wrap gap-2 pt-2">
@@ -162,7 +162,7 @@ export const Editor = ({
             </div>
           </div>
 
-          <div className="editorContentContainer">
+          <div className="editorContentContainer" id="connectedComments">
             <Comments connectedComments={connectedComments} />
           </div>
         </div>
