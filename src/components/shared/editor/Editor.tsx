@@ -9,7 +9,7 @@ import Text from "@tiptap/extension-text";
 import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-import { useState } from "react";
+import { Key, useState } from "react";
 
 // import GenericCard from "../cards/generic-card";
 import Comments from "../layout/comments";
@@ -29,9 +29,8 @@ export const Editor = ({
   connectedComments,
 }: any) => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
-  console.log("connectedComments:", connectedComments);
+
   const toggleSidebar = () => {
-    console.log("triggered in editor");
     setIsSidebarCollapsed((prev) => !prev);
   };
 
@@ -85,12 +84,8 @@ export const Editor = ({
       <EditorToolbar editor={editor} />
       <div className="flex">
         {/* Main Content */}
-        <div
-          className={`z-10 mb-16 h-auto flex-col px-12 transition-all duration-300 ${
-            isSidebarCollapsed ? "w-full" : "w-3/4"
-          }`}
-        >
-          <div className="mx-16 my-8 flex flex-col">
+        <div className={`editorMainContent ${isSidebarCollapsed ? "w-full" : "w-3/4"}`}>
+          <div className="editorContentContainer my-8 flex flex-col">
             <div className="flex flex-row items-center gap-4">
               <svg
                 aria-hidden="true"
@@ -117,34 +112,43 @@ export const Editor = ({
           <EditorContent editor={editor} />
           <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
 
-          <div className="mx-16">
-            <h3 className="my-4 flex-1 text-3xl font-black text-black">Linked Objects</h3>
+          <div className="editorContentContainer">
+            <h3 className="itemTitle">Linked Objects</h3>
             {connectedObjects?.documents && connectedObjects.documents.length > 0
-              ? connectedObjects.documents.map((doc) => (
-                  <div key={doc.title}>
-                    <SimilarDocumentModal title={doc.title} id={doc.id} type="linkedObjects" />
-                  </div>
-                ))
+              ? connectedObjects.documents.map(
+                  (doc: { title: Key | null | undefined; id: string }) => (
+                    <div key={doc.title}>
+                      <SimilarDocumentModal title={doc.title} id={doc.id} type="linkedObjects" />
+                    </div>
+                  ),
+                )
               : "no connected objects"}
           </div>
 
-          <div className="mx-16">
-            <h3 className="my-4 flex-1 text-3xl font-black text-black">Connected Queries</h3>
+          <div className="editorContentContainer">
+            <h3 className="itemTitle">Connected Queries</h3>
             <p className="iconText">Connections:</p>
             <div className="flex flex-wrap gap-2 pt-2">
               {connectedQueries ? (
                 connectedQueries[0]?.connectedObjects &&
                 connectedQueries[0].connectedObjects.length > 0 ? (
-                  connectedQueries[0].connectedObjects.map((obj) => (
-                    <SimilarDocumentModal
-                      key={obj.id} // Ensure each modal has a unique key
-                      id={obj.id}
-                      title={obj.name}
-                      mainContents={obj.mainContents}
-                      searchInformation={obj.searchInformation}
-                      type="entity"
-                    />
-                  ))
+                  connectedQueries[0].connectedObjects.map(
+                    (obj: {
+                      id: Key | null | undefined;
+                      name: string;
+                      mainContents: unknown;
+                      searchInformation: unknown;
+                    }) => (
+                      <SimilarDocumentModal
+                        key={obj.id} // Ensure each modal has a unique key
+                        id={obj.id}
+                        title={obj.name}
+                        mainContents={obj.mainContents}
+                        searchInformation={obj.searchInformation}
+                        type="entity"
+                      />
+                    ),
+                  )
                 ) : (
                   <div className="flex flex-row-reverse items-center gap-4">
                     <Button variant="ghost">Connect a query</Button>
@@ -155,16 +159,14 @@ export const Editor = ({
             </div>
           </div>
 
-          <div className="mx-16">
+          <div className="editorContentContainer">
             <Comments connectedComments={connectedComments} />
           </div>
         </div>
 
         {/* Sidebar */}
         <div
-          className={`relative flex flex-col border-l border-gray-200 transition-all duration-300 ${
-            isSidebarCollapsed ? "opacity-1" : "w-1/4 opacity-100"
-          }`}
+          className={`referenceSidebar ${isSidebarCollapsed ? "opacity-1" : "w-1/4 opacity-100"}`}
         >
           <ReferencesSidebar
             onToggleSidebar={toggleSidebar}

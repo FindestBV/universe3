@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   useGetConnectedInboxItemsQuery,
-  useGetDocumentRelatedScienceArticlesQuery,
   useGetSideBarDocumentsQuery,
   useGetStudyByIdQuery,
 } from "@/api/documents/documentApi";
-import Editor from "@/components/shared/editor/Editor";
+import Editor from "@/components/shared/editor/editor";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 
 import { useEffect } from "react";

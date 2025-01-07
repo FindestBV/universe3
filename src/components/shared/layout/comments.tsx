@@ -2,13 +2,13 @@ import { currentUser } from "@/api/auth/authSlice";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Comments = ({ connectedComments }: any) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  // console.log("connected comments here", connectedComments);
+
   const user = useSelector(currentUser);
 
   // const addComment = (id) => {
@@ -59,7 +59,17 @@ export const Comments = ({ connectedComments }: any) => {
                         </div>
                       ))}
                   </div>
-                  <p className="comment-text mb-4 mt-4 py-2">{comment?.text}</p>
+                  {isEditing ? (
+                    <form className="w-full">
+                      <input
+                        className="w-full italic text-gray-400"
+                        placeholder={comment?.text}
+                        type="text"
+                      />
+                    </form>
+                  ) : (
+                    <p className="comment-text mb-4 mt-4 py-2">{comment?.text}</p>
+                  )}
                   <div className="flex gap-6 rounded-sm border border-[#f1f1f1] p-4">
                     <form className="w-full">
                       <input

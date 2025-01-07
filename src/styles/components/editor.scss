@@ -489,3 +489,19 @@
     }
   }
 }
+
+.editorContentContainer{
+  @apply mx-16; 
+
+  .itemTitle{
+    @apply my-4 flex-1 text-3xl font-black text-black; 
+  }
+}
+
+.editorMainContent{
+  @apply z-10 mb-16 h-auto flex-col px-12 transition-all duration-300; 
+}
+
+.referenceSidebar{
+  @apply relative flex flex-col border-l border-gray-200 transition-all duration-300
+}
