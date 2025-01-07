@@ -1,11 +1,5 @@
 // src/features/documentApi.ts
-import type {
-  ConnectedObject,
-  Entity,
-  SavedDocument,
-  SavedDocumentResponse,
-  Study,
-} from "@/types/types";
+import type { ConnectedObject, Entity, SavedDocumentResponse, Study } from "@/types/types";
 
 import { api } from "../api";
 
@@ -57,7 +51,6 @@ export const documentApi = api.injectEndpoints({
     }),
 
     // Document Inbox Items
-
     getMyDocumentInbox: builder.query<SavedDocumentResponse, string>({
       query: () => ({
         url: "saveddocument/my",
@@ -86,27 +79,52 @@ export const documentApi = api.injectEndpoints({
       }),
     }),
 
-    // Get Entity By Id: gets a specific entity by Id and chain subsequent queries, appending to the main
-    // fetchedEntity object
+    /* 
+      Get Entity By Id: gets a specific entity by Id and chain subsequent queries, appending to the main query. 
+
+      What is happening here ?
+      Entities are hydrated by a range of builder queries, which are each dispatched with a common parameter - the entity id. 
+      On the Entity.tsx component, as single call is made to the getEntityById query, 
+    
+      Here, we're using OnQueryStarted to dispatch the subsequent queries, which hiterto returned an object via a separate cal.     
+    */
+
     getEntityById: builder.query<Entity, void>({
+      // Main request. Gets the Entity by Id
+
       query: (id) => ({
         url: `entity/${id}`,
       }),
 
+      // onQuery started:
+      // Dispatches the other queries
+      // Note: ".unwrap" - this will return a new promise which contains the *actual* action to be executed.
+
       async onQueryStarted(id, { dispatch }) {
         try {
+          // get connected inbox items associated with this item Id
           const inboxItems = await dispatch(
             api.endpoints.getConnectedInboxItems.initiate(id),
           ).unwrap();
+          // get connected documents/objects associated with this item Id
           const connectedDocs = await dispatch(
             api.endpoints.getEntityConnectedDocs.initiate(id),
           ).unwrap();
+          // get connected queriess associated with this item Id
           const connectedQueries = await dispatch(
             api.endpoints.getEntityConnectedQueries.initiate(id),
           ).unwrap();
+          // get connected comments associated with this item Id
           const connectedComments = await dispatch(
             api.endpoints.getEntityConnectedComments.initiate(id),
           ).unwrap();
+
+          /* 
+            upDateQueryData will then take the result of the initial query and appends the result of the actual actions.
+            Result (in case of Entities ) - an object 'fetchedEntity' is then returned with the additional keys which can be accessed in 
+            the component like: fetchedEntity.connectedDocs, fetchedEntity.connectedQueries
+            Essentially, this removes the need for repeated calls to be made from the Frontend to hydrate associated objects. 
+          */
 
           dispatch(
             api.util.updateQueryData("getEntityById", id, (draft) => {
