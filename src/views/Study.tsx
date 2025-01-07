@@ -1,9 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  useGetConnectedInboxItemsQuery,
-  useGetSideBarDocumentsQuery,
-  useGetStudyByIdQuery,
-} from "@/api/documents/documentApi";
+import { useGetSideBarDocumentsQuery, useGetStudyByIdQuery } from "@/api/documents/documentApi";
 import Editor from "@/components/shared/editor/Editor";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 
@@ -19,9 +15,10 @@ export const Study: React.FC = () => {
     refetchOnMountOrArgChange: false, // Prevents automatic refetching
   });
 
-  const { data: inboxQuery } = useGetConnectedInboxItemsQuery(id, {
-    refetchOnMountOrArgChange: false, // Prevents automatic refetching
-  });
+  const connectedStudies = fetchedStudy?.connectedStudies;
+  const connectedDocs = fetchedStudy?.connectedDocs;
+  const connectedComments = fetchedStudy?.connectedComments;
+  const inboxQuery = fetchedStudy?.connectedInboxItems;
 
   const { data: sidebarDocs } = useGetSideBarDocumentsQuery(id, {
     refetchOnMountOrArgChange: false, // Prevents automatic refetching
@@ -29,7 +26,6 @@ export const Study: React.FC = () => {
 
   if (fetchedStudy?.description) {
     console.log("fetched study full obj", fetchedStudy);
-    console.log("fetched study desc obj", JSON.parse(fetchedStudy?.description));
     try {
       parsedDescription = JSON.parse(fetchedStudy?.description);
       console.log("Parsed description:", parsedDescription);
@@ -40,8 +36,13 @@ export const Study: React.FC = () => {
 
   useEffect(() => {
     if (fetchedStudy) {
-      console.log(fetchedStudy);
+      console.log("fetched", fetchedStudy);
+      console.log("study connections", connectedStudies);
+      console.log("study queries", connectedDocs);
+      console.log("study inbox", inboxQuery);
+      console.log("connected comments", connectedComments);
     }
+
     window.scroll(0, 0);
   }, [fetchedStudy]);
 
@@ -57,7 +58,10 @@ export const Study: React.FC = () => {
                 type={"study"}
                 title={fetchedStudy?.title}
                 content={parsedDescription}
-                connectedDocs={inboxQuery}
+                connectedInbox={inboxQuery}
+                connectedObjects={connectedDocs}
+                connectedQueries={connectedStudies}
+                connectedComments={connectedComments}
               />
             </div>
           </div>

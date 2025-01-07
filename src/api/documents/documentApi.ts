@@ -21,9 +21,27 @@ export const documentApi = api.injectEndpoints({
       providesTags: ["SavedDocument"],
     }),
 
+    /* 
+      Get Document By Id: gets a specific document by Id and chain subsequent queries, appending to the main query. 
+
+      What is happening here ?
+      Documents are hydrated by a several queries, which are each dispatched with a common parameter - the document id. 
+      On the Document.tsx view, as single call is made to the getDocumentById query, 
+    
+      Here, we're using OnQueryStarted to dispatch the subsequent queries, which hiterto returned an object via a separate call.    
+      Note: a similar strategy is employed for Entities/Studies, as illustrated below. 
+
+    */
+
     getDocumentById: builder.query<SavedDocumentResponse, string>({
       query: (id) => `saveddocument/${id}`,
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+
+      // onQuery started:
+      // Dispatches the other queries
+      // Note: ".unwrap" - this will return a new promise which contains the *actual* action to be executed.
+      // The builder query must still be defined on the api slice.
+
       async onQueryStarted(id, { dispatch, queryFulfilled }) {
         try {
           const { data: document } = await queryFulfilled;
@@ -211,6 +229,59 @@ export const documentApi = api.injectEndpoints({
       query: (id) => ({
         url: `study/${id}`,
       }),
+
+      async onQueryStarted(id, { dispatch }) {
+        try {
+          // get connected inbox items associated with this item Id
+
+          const inboxItems = await dispatch(
+            api.endpoints.getConnectedInboxItems.initiate(id),
+          ).unwrap();
+
+          const connectedStudies = await dispatch(
+            api.endpoints.getStudyConnectedQueries.initiate(id),
+          ).unwrap();
+
+          const connectedDocs = await dispatch(
+            api.endpoints.getStudyConnectedDocs.initiate(id),
+          ).unwrap();
+
+          const connectedComments = await dispatch(
+            api.endpoints.getStudyConnectedComments.initiate(id),
+          ).unwrap();
+
+          dispatch(
+            api.util.updateQueryData("getStudyById", id, (draft) => {
+              draft.connectedInboxItems = inboxItems;
+              draft.connectedStudies = connectedStudies;
+              draft.connectedDocs = connectedDocs;
+              draft.connectedComments = connectedComments;
+            }),
+          );
+        } catch (error) {
+          console.error("Error in onQueryStarted for getStudyById:", error);
+        }
+      },
+    }),
+
+    // Connected Study Queries (linked to id)
+    getStudyConnectedQueries: builder.query<Study[], void>({
+      query: (id) => ({
+        url: `study/${id}/queries`,
+      }),
+    }),
+
+    getStudyConnectedDocs: builder.query<Entity[], void>({
+      query: (id) => ({
+        url: `study/${id}/saveddocuments?orderBy=2&doIncludePatents=true&doIncludeScienceArticles=true&doIncludeWeblinks=true`,
+      }),
+    }),
+
+    // Connected Comments (linked to id)
+    getStudyConnectedComments: builder.query<Entity[], void>({
+      query: (id) => ({
+        url: `v2/comment/1/${id}`,
+      }),
     }),
   }),
 });
@@ -231,5 +302,8 @@ export const {
   useGetEntityConnectedDocsQuery,
   useGetEntityConnectedQueriesQuery,
   useGetEntityConnectedCommentsQuery,
+  useGetStudyConnectedQueriesQuery,
+  useGetStudyConnectedDocsQuery,
+  useGetStudyConnectedCommentsQuery,
   usePrefetch,
 } = documentApi;

@@ -8,6 +8,7 @@ import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { Download } from "lucide-react";
 
 import { Key, useState } from "react";
 
@@ -113,7 +114,10 @@ export const Editor = ({
           <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
 
           <div className="editorContentContainer">
-            <h3 className="itemTitle">Linked Objects</h3>
+            <h3 className="itemTitle flex items-center gap-4">
+              Linked documents <Download size={16} />
+            </h3>
+
             {connectedObjects?.documents && connectedObjects.documents.length > 0
               ? connectedObjects.documents.map(
                   (doc: { title: Key | null | undefined; id: string }) => (
@@ -129,8 +133,8 @@ export const Editor = ({
             <h3 className="itemTitle">Connected Queries</h3>
             <p className="iconText">Connections:</p>
             <div className="flex flex-wrap gap-2 pt-2">
-              {connectedQueries ? (
-                connectedQueries[0]?.connectedObjects &&
+              {connectedQueries &&
+                (connectedQueries[0]?.connectedObjects &&
                 connectedQueries[0].connectedObjects.length > 0 ? (
                   connectedQueries[0].connectedObjects.map(
                     (obj: {
@@ -154,8 +158,7 @@ export const Editor = ({
                     <Button variant="ghost">Connect a query</Button>
                     <p className="text-gray-500">No connected objects</p>
                   </div>
-                )
-              ) : null}
+                ))}
             </div>
           </div>
 
