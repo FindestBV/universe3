@@ -33,7 +33,7 @@ export const documentApi = api.injectEndpoints({
       query: (id) => `saveddocument/${id}`,
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
 
-      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+      async onQueryStarted(id, { dispatch, queryFulfilled, getState }) {
         try {
           // Wait for the article query to finish
           const { data: document } = await queryFulfilled;
@@ -45,8 +45,6 @@ export const documentApi = api.injectEndpoints({
               document.id,
             );
             dispatch(api.endpoints?.getDocumentRelatedScienceArticles.initiate(document.id));
-            console.log("dispatching getConnectedObjects from query started", document.id);
-            dispatch(api.endpoints?.getConnectedObjects.initiate(document.id!));
           }
         } catch (error) {
           console.error("Error in onQueryStarted for getDocument:", error);
@@ -63,22 +61,23 @@ export const documentApi = api.injectEndpoints({
       query: ({ id, type }) => `linking/${id}?objectType[]=${type}`,
     }),
 
-    addDocument: builder.mutation<void, Document>({
-      query: (newDocument) => ({
-        url: "saveddocument",
-        method: "POST",
-        body: newDocument,
-      }),
-      invalidatesTags: ["SavedDocument"],
-    }),
+    //  FOR CRUD OPS
+    // addDocument: builder.mutation<void, Document>({
+    //   query: (newDocument) => ({
+    //     url: "saveddocument",
+    //     method: "POST",
+    //     body: newDocument,
+    //   }),
+    //   invalidatesTags: ["SavedDocument"],
+    // }),
 
-    deleteDocument: builder.mutation<void, string>({
-      query: (id) => ({
-        url: `saveddocument/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["SavedDocument"],
-    }),
+    // deleteDocument: builder.mutation<void, string>({
+    //   query: (id) => ({
+    //     url: `saveddocument/${id}`,
+    //     method: "DELETE",
+    //   }),
+    //   invalidatesTags: ["SavedDocument"],
+    // }),
 
     getMyDocumentInbox: builder.query<SavedDocumentResponse, string>({
       query: () => ({

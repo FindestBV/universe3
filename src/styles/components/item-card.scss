@@ -15,10 +15,26 @@
       }
     
       .innerCardMain {
-        @apply flex w-full border border-[#f2f4f8] p-4 pr-6 pl-4 hover:border-[#ccc] rounded-sm transition-all duration-150;
+        @apply flex w-full border border-[#f2f4f8] p-4 pr-6 pl-4 hover:border-[#ccc] rounded-sm transition-all duration-150 items-start;
     
         &--inbox {
           @apply bg-[#f7f8fa] border-[#f7f8fa];
+        }
+
+        .innerCardCheckbox{
+          @apply secondary mr-4 mt-1;
+        }
+
+        .innerCardContent{
+          @apply flex flex-1 flex-row gap-4;
+
+          &__Detail{
+            @apply flex flex-1 flex-col px-4; 
+          }
+
+          &__Links{
+            @apply flex flex-row items-center gap-4; 
+          }
         }
       }
     

@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
-import { ExternalLink, Link, Trash2 } from "lucide-react";
+import { ExternalLink, Trash2 } from "lucide-react";
 
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -202,23 +202,21 @@ export const GenericCard: React.FC<GenericCardProps> = ({
     console.log(`item with ${id} linked`);
   };
 
-  console.log("searchInformation", searchInformation);
-
   return (
     <div className="itemCard">
-      <div className={`innerCardMain items-start ${isDocument ? "gap-4" : ""}`}>
+      <div className={`innerCardMain ${isDocument ? "gap-4" : ""}`}>
         {/* Checkbox */}
         <Checkbox
           id={`card-${id}`}
           checked={isSelected}
           onCheckedChange={(checked) => handleCheckboxChange(checked as boolean)}
-          className="secondary mr-4 mt-1"
+          className="innerCardCheckbox"
         />
 
         {/* Main Card */}
-        <Card key={id} className="flex flex-1 flex-row gap-4" onClick={handleCardClick}>
+        <Card key={id} className="innerCardContent" onClick={handleCardClick}>
           {isDocument && <div className="iconText">Science</div>}
-          <div className="flex flex-1 flex-col px-4">
+          <div className="innerCardContent__Detail">
             <div className="w-auto cursor-pointer">
               {!isDocument && (
                 <div className="iconText py-1">
@@ -237,7 +235,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
               {isDocument && <DocumentLink url={url} />}
               {isEntity && renderFirstThreeParagraphs(description)}
             </div>
-            <div className="flex flex-row items-center gap-4">
+            <div className="innerCardContent__Links">
               <LinkedCounts
                 id={id}
                 linkedCounts={linkedCounts}
