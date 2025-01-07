@@ -34,6 +34,7 @@ export const documentApi = api.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
 
       async onQueryStarted(id, { dispatch, queryFulfilled, getState }) {
+        console.log("state inside of onQS", getState);
         try {
           // Wait for the article query to finish
           const { data: document } = await queryFulfilled;
@@ -110,24 +111,40 @@ export const documentApi = api.injectEndpoints({
       query: (id) => ({
         url: `entity/${id}`,
       }),
+      transformResponse: (response: any) => {
+        // Example transformation: Add a custom field and rename keys
+        return {
+          ...response,
+          transformedField: `Custom value for ${response.id}`,
+          updatedKeyName: response.someOldKeyName, // Renaming a key
+        };
+      },
       async onQueryStarted(id, { dispatch, queryFulfilled }) {
         try {
-          // Wait for the article query to finish
           const { data: entity } = await queryFulfilled;
-          // Trigger dependent queries for connected inbox items
-          if (entity?.id) {
-            console.log("triggered from query started", entity.id);
-            console.log("dispatching getConnectedInboxItems from query started", entity.id);
-            dispatch(api.endpoints?.getConnectedInboxItems.initiate(entity.id));
-            console.log("dispatching get Connected Objects from query", entity.id);
-            dispatch(api.endpoints?.getEntityConnectedDocs.initiate(entity.id));
-            console.log("dispatching getEntityConnectedQueries from query started", entity.id);
-            dispatch(api.endpoints?.getEntityConnectedQueries.initiate(entity.id));
-            console.log("dispatching getSideBarDocuments from query started", entity.id);
-            dispatch(api.endpoints?.getSideBarDocuments.initiate(entity.id));
-          }
+          const inboxItems = await dispatch(
+            api.endpoints.getConnectedInboxItems.initiate(id),
+          ).unwrap();
+          const connectedDocs = await dispatch(
+            api.endpoints.getEntityConnectedDocs.initiate(id),
+          ).unwrap();
+          const connectedQueries = await dispatch(
+            api.endpoints.getEntityConnectedQueries.initiate(id),
+          ).unwrap();
+          const connectedComments = await dispatch(
+            api.endpoints.getEntityConnectedComments.initiate(id),
+          ).unwrap();
+
+          dispatch(
+            api.util.updateQueryData("getEntityById", id, (draft) => {
+              draft.connectedInboxItems = inboxItems;
+              draft.connectedDocs = connectedDocs;
+              draft.connectedQueries = connectedQueries;
+              draft.connectedComments = connectedComments;
+            }),
+          );
         } catch (error) {
-          console.error("Error in onQueryStarted for getArticle:", error);
+          console.error("Error in onQueryStarted for getEntityById:", error);
         }
       },
     }),
@@ -210,8 +227,6 @@ export const {
   useGetSideBarDocumentsQuery,
   useGetConnectedObjectsQuery,
   useLazyGetConnectedObjectsQuery,
-  useAddDocumentMutation,
-  useDeleteDocumentMutation,
   useGetEntitiesQuery,
   useGetEntityByIdQuery,
   useGetStudiesQuery,

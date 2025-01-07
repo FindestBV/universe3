@@ -1,11 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  useGetConnectedInboxItemsQuery,
-  useGetEntityByIdQuery,
-  useGetEntityConnectedCommentsQuery,
-  useGetEntityConnectedDocsQuery,
-  useGetEntityConnectedQueriesQuery,
-} from "@/api/documents/documentApi";
+import { useGetEntityByIdQuery } from "@/api/documents/documentApi";
 import Editor from "@/components/shared/editor/Editor";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 
@@ -15,25 +9,14 @@ import { useParams } from "react-router";
 export const Entity: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { data: inboxQuery } = useGetConnectedInboxItemsQuery(id, {
-    refetchOnMountOrArgChange: false, // Prevents automatic refetching
-  });
-
   const { data: fetchedEntity, isLoading: fetchedEntityIsLoading } = useGetEntityByIdQuery(id, {
     refetchOnMountOrArgChange: false, // Prevents automatic refetching
   });
 
-  const { data: connectedObjects } = useGetEntityConnectedDocsQuery(id, {
-    refetchOnMountOrArgChange: false, // Prevents automatic refetching
-  });
-
-  const { data: connectedQueries } = useGetEntityConnectedQueriesQuery(id, {
-    refetchOnMountOrArgChange: false, // Prevents automatic refetching
-  });
-
-  const { data: connectedComments } = useGetEntityConnectedCommentsQuery(id, {
-    refetchOnMountOrArgChange: false, // Prevents automatic refetching
-  });
+  const inboxQuery = fetchedEntity?.connectedInboxItems;
+  const connectedObjects = fetchedEntity?.connectedDocs;
+  const connectedQueries = fetchedEntity?.connectedQueries;
+  const connectedComments = fetchedEntity?.connectedComments;
 
   let parsedDescription;
   if (fetchedEntity?.description) {
@@ -52,8 +35,14 @@ export const Entity: React.FC = () => {
     if (connectedComments) {
       console.log("connectedComments", connectedComments);
     }
+    if (connectedObjects) {
+      console.log("connectedObjects", connectedObjects);
+    }
+    if (inboxQuery) {
+      console.log("inboxQuery", inboxQuery);
+    }
     window.scroll(0, 0);
-  }, [fetchedEntity, connectedComments]);
+  }, [connectedComments, connectedObjects, fetchedEntity, inboxQuery]);
 
   return (
     <>
