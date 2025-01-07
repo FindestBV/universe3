@@ -1,15 +1,13 @@
 // src/features/documentApi.ts
-import type { ConnectedObject, Entity, SavedDocumentResponse, Study } from "@/types/types";
+import type {
+  ConnectedObject,
+  Entity,
+  SavedDocument,
+  SavedDocumentResponse,
+  Study,
+} from "@/types/types";
 
 import { api } from "../api";
-
-interface Document {
-  id: string;
-  url: string;
-  title: string;
-  type: string;
-  abstract: string;
-}
 
 export const documentApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -58,23 +56,7 @@ export const documentApi = api.injectEndpoints({
       query: ({ id, type }) => `linking/${id}?objectType[]=${type}`,
     }),
 
-    //  FOR CRUD OPS
-    // addDocument: builder.mutation<void, Document>({
-    //   query: (newDocument) => ({
-    //     url: "saveddocument",
-    //     method: "POST",
-    //     body: newDocument,
-    //   }),
-    //   invalidatesTags: ["SavedDocument"],
-    // }),
-
-    // deleteDocument: builder.mutation<void, string>({
-    //   query: (id) => ({
-    //     url: `saveddocument/${id}`,
-    //     method: "DELETE",
-    //   }),
-    //   invalidatesTags: ["SavedDocument"],
-    // }),
+    // Document Inbox Items
 
     getMyDocumentInbox: builder.query<SavedDocumentResponse, string>({
       query: () => ({
@@ -93,6 +75,7 @@ export const documentApi = api.injectEndpoints({
 
     // Entities
 
+    // Get Entities: gets all entities for display on Entities index
     getEntities: builder.query<Entity[], void>({
       query: () => ({
         url: "entity",
@@ -103,14 +86,15 @@ export const documentApi = api.injectEndpoints({
       }),
     }),
 
-    getEntityById: builder.query<SavedDocumentResponse, void>({
+    // Get Entity By Id: gets a specific entity by Id and chain subsequent queries, appending to the main
+    // fetchedEntity object
+    getEntityById: builder.query<Entity, void>({
       query: (id) => ({
         url: `entity/${id}`,
       }),
 
-      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+      async onQueryStarted(id, { dispatch }) {
         try {
-          const { data: entity } = await queryFulfilled;
           const inboxItems = await dispatch(
             api.endpoints.getConnectedInboxItems.initiate(id),
           ).unwrap();
@@ -137,6 +121,8 @@ export const documentApi = api.injectEndpoints({
         }
       },
     }),
+
+    // N/A yet
 
     updateEntityTitle: builder.mutation<Entity, { id: number; title: string }>({
       query: ({ id, title }) => ({
@@ -185,6 +171,9 @@ export const documentApi = api.injectEndpoints({
       }),
       providesTags: ["SavedDocument"],
     }),
+
+    // Studies
+    // GetStudies - get all studies
 
     getStudies: builder.query<
       { studies: Study[]; totalItems: number; totalPages: number; page: number },

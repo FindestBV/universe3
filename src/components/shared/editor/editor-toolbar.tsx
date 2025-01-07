@@ -31,6 +31,7 @@ import {
 import { useState } from "react";
 
 import AskIgorModal from "../modals/ask-igor";
+import ShareObject from "../modals/share-object";
 import UserAvatar from "../utilities/user-avatar";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -239,13 +240,7 @@ const EditorToolbar = ({ editor }: { editor: any }) => {
             <Pin size={16} />
             PIN
           </button>
-          <button
-            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400"
-            aria-label="Share"
-          >
-            <Users size={16} />
-            SHARE
-          </button>
+          <ShareObject parentId={""} parentTitle={""} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="rotated" className="h-8 w-8 bg-transparent p-0">
