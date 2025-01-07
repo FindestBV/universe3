@@ -25,7 +25,6 @@ import {
   Subscript,
   Superscript,
   Underline,
-  Users,
 } from "lucide-react";
 
 import { useState } from "react";

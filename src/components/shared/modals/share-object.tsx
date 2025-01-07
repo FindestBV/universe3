@@ -6,6 +6,8 @@ import { Users } from "lucide-react";
 
 import { useState } from "react";
 
+import AddUsersForm from "../forms/add-users";
+
 export const ShareObject: React.FC<{
   parentId: string;
   parentTitle: string;
@@ -38,22 +40,7 @@ export const ShareObject: React.FC<{
         <h2 className="mb-2 text-lg font-bold">Share</h2>
 
         {/* Current Item Title */}
-        <div className="mb-2">
-          <form className="flex gap-2">
-            <input
-              type="text"
-              name="add_users"
-              placeholder="Type users to add"
-              className="w-3/4 rounded-md border p-4"
-            />
-            <button
-              type="submit"
-              className="w-1/4 rounded-md bg-gray-400 p-4 text-center text-white hover:bg-blue-400"
-            >
-              Add
-            </button>
-          </form>
-        </div>
+        <AddUsersForm />
 
         {/* Select Relationship */}
         <div className="mb-2">
