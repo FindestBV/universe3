@@ -496,6 +496,7 @@
   .itemTitle{
     @apply my-4 flex-1 text-3xl font-black text-black; 
   }
+
 }
 
 .editorMainContent{
@@ -504,4 +505,16 @@
 
 .referenceSidebar{
   @apply relative flex flex-col border-l border-gray-200 transition-all duration-300
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  @apply mt-2;
+  
+  th,td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }  
 }

@@ -70,8 +70,8 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
         <div className="itemCard">
           <div className={`innerCardMain items-start gap-4`}>
             <Checkbox id={`card-${id}`} className="secondary mr-4 mt-1" />
-            <div className={`flex flex-row items-center gap-8`}>
-              {<div className="iconText">SCIENCE</div>}
+            <div className={`flex flex-row items-start gap-8`}>
+              {<div className="iconText mt-1">SCIENCE</div>}
               <SimilarDocumentModal
                 title={title}
                 id={id}

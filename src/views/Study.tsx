@@ -20,10 +20,6 @@ export const Study: React.FC = () => {
   const connectedComments = fetchedStudy?.connectedComments;
   const inboxQuery = fetchedStudy?.connectedInboxItems;
 
-  const { data: sidebarDocs } = useGetSideBarDocumentsQuery(id, {
-    refetchOnMountOrArgChange: false, // Prevents automatic refetching
-  });
-
   if (fetchedStudy?.description) {
     console.log("fetched study full obj", fetchedStudy);
     try {

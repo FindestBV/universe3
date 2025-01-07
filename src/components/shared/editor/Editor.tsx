@@ -1,10 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
+import { Mark } from "@tiptap/core";
 import Document from "@tiptap/extension-document";
 import Heading from "@tiptap/extension-heading";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import Paragraph from "@tiptap/extension-paragraph";
+import Table from "@tiptap/extension-table";
+import TableCell from "@tiptap/extension-table-cell";
+import TableHeader from "@tiptap/extension-table-header";
+import TableRow from "@tiptap/extension-table-row";
 import Text from "@tiptap/extension-text";
 import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -18,6 +23,22 @@ import SimilarDocumentModal from "../modals/similar-document-modal";
 import ReferencesSidebar from "../sidebar/references-sidebar";
 import CustomImage from "./custom-image";
 import EditorToolbar from "./editor-toolbar";
+
+export const Rating = Mark.create({
+  name: "rating",
+  addAttributes() {
+    return {
+      rating: { default: 0 },
+      sourceId: { default: null },
+      targetId: { default: null },
+      ratersCount: { default: 0 },
+      isRatingNeeded: { default: false },
+    };
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["span", { class: "rating", ...HTMLAttributes }, "⭐"];
+  },
+});
 
 export const Editor = ({
   type,
@@ -36,6 +57,8 @@ export const Editor = ({
   };
 
   const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
+  console.log("Parsed Content:", JSON.stringify(parsedContent, null, 2));
+
   const defaultContent = {
     type: "doc",
     content: [
@@ -48,22 +71,29 @@ export const Editor = ({
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
       Link.configure({
         openOnClick: true,
       }),
       Document,
       Paragraph.configure({
         HTMLAttributes: {
-          class: "my-custom-class",
+          class: "editor_paragraph",
         },
       }),
       Heading.configure({
         levels: [1, 2, 3, 4, 5, 6],
       }),
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
       Text,
       Image,
       CustomImage,
+      Rating,
+      StarterKit,
     ],
     content: parsedContent ||
       defaultContent || {
@@ -72,6 +102,8 @@ export const Editor = ({
       },
     onUpdate({ editor }) {
       const value = editor.getHTML();
+      console.log("Editor HTML:", value); // Check rendered HTML
+      console.log("Editor JSON:", editor.getJSON()); // Check internal JSON structure
       onChange(value);
     },
   });
