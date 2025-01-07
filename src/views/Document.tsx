@@ -37,10 +37,38 @@ export const Document: React.FC = () => {
     refetchOnMountOrArgChange: false,
   });
   const { data: scienceArticles } = useGetDocumentRelatedScienceArticlesQuery(id!);
+
+  const [relatedScienceArticles, setRelatedScienceArticles] = useState<any[]>([]);
+  const [connectedObjects, setConnectedObjects] = useState<any[]>([]);
+
+  console.log("Related from Deferred call", relatedScienceArticles);
   console.log("SCIENCE ARTICLES", scienceArticles);
+  // setRelatedScienceArticles(scienceArticles);
+
+  useEffect(() => {
+    // Log and observe fetched data for debugging
+    if (fetchedDocument) {
+      console.log("Fetched document:", fetchedDocument);
+    }
+
+    // Mock logic to simulate Redux selectors or directly access query responses
+    const fetchChainedData = async () => {
+      if (fetchedDocument?.relatedScienceArticles) {
+        setRelatedScienceArticles(fetchedDocument.relatedScienceArticles);
+        console.log("Related Science Articles:", fetchedDocument.relatedScienceArticles);
+      }
+      if (fetchedDocument?.connectedObjects) {
+        setConnectedObjects(fetchedDocument.connectedObjects);
+        console.log("Connected Objects:", connectedObjects);
+      }
+    };
+
+    fetchChainedData();
+  }, [fetchedDocument, connectedObjects]);
+
   const renderConnectedObjects =
     fetchedDocument &&
-    Object.entries(fetchedDocument?.connectedObjects).map((o, i) => (
+    Object.entries(connectedObjects).map((o, i) => (
       <div key={i} className={`connected-object ${o[1].type} gap-2`}>
         <svg
           aria-hidden="true"
@@ -86,24 +114,31 @@ export const Document: React.FC = () => {
 
   useEffect(() => {
     if (fetchedDocument) {
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, 250); // Simulate loading delay
-
-      // Cleanup the timer to prevent memory leaks
-      return () => clearTimeout(timer);
+      console.log("Fetched document:", fetchedDocument);
     }
-  }, [fetchedDocument]);
+    const fetchChainedData = async () => {
+      if (fetchedDocument?.relatedScienceArticles) {
+        setRelatedScienceArticles(fetchedDocument.relatedScienceArticles);
+        console.log("Related Science Articles:", fetchedDocument.relatedScienceArticles);
+      }
+      if (fetchedDocument?.connectedObjects) {
+        setConnectedObjects(fetchedDocument.connectedObjects);
+        console.log("Connected Objects from ChainedData:", connectedObjects);
+      }
+    };
 
-  // const handleEditClick = () => {
-  //   setIsToolbarVisible((prev) => !prev); // Toggle toolbar visibility
-  // };
+    fetchChainedData();
+    window.scroll(0, 0);
+  }, [fetchedDocument, connectedObjects]);
 
   useEffect(() => {
     if (fetchedDocument) {
-      console.log(fetchedDocument);
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 250); // Simulate loading delay
+      // Cleanup the timer to prevent memory leaks
+      return () => clearTimeout(timer);
     }
-    window.scroll(0, 0);
   }, [fetchedDocument]);
 
   return (

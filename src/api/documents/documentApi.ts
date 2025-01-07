@@ -45,8 +45,8 @@ export const documentApi = api.injectEndpoints({
               document.id,
             );
             dispatch(api.endpoints?.getDocumentRelatedScienceArticles.initiate(document.id));
-            console.log("dispatching getConnectedObjectss from query started", document.id);
-            dispatch(api.endpoints?.getConnectedObjectss.initiate(document.id));
+            console.log("dispatching getConnectedObjects from query started", document.id);
+            dispatch(api.endpoints?.getConnectedObjects.initiate(document.id!));
           }
         } catch (error) {
           console.error("Error in onQueryStarted for getDocument:", error);
@@ -122,10 +122,9 @@ export const documentApi = api.injectEndpoints({
             dispatch(api.endpoints?.getConnectedInboxItems.initiate(entity.id));
             console.log("dispatching get Connected Objects from query", entity.id);
             dispatch(api.endpoints?.getEntityConnectedDocs.initiate(entity.id));
-            console.log("dispatching getSideBarDocuments from query started", entity.id);
-
             console.log("dispatching getEntityConnectedQueries from query started", entity.id);
             dispatch(api.endpoints?.getEntityConnectedQueries.initiate(entity.id));
+            console.log("dispatching getSideBarDocuments from query started", entity.id);
             dispatch(api.endpoints?.getSideBarDocuments.initiate(entity.id));
           }
         } catch (error) {
@@ -142,30 +141,36 @@ export const documentApi = api.injectEndpoints({
       }),
     }),
 
+    // Entity Connected Docs
+    // TODO: generalise type to merge this with Study
     getEntityConnectedDocs: builder.query<Entity[], void>({
       query: (id) => ({
         url: `entity/${id}/saveddocuments?orderBy=2&doIncludePatents=true&doIncludeScienceArticles=true&doIncludeWeblinks=true`,
       }),
     }),
 
+    // Connected Entity Queries (linked to id)
     getEntityConnectedQueries: builder.query<Entity[], void>({
       query: (id) => ({
         url: `entity/${id}/queries`,
       }),
     }),
 
+    // Connected Comments (linked to id)
     getEntityConnectedComments: builder.query<Entity[], void>({
       query: (id) => ({
         url: `v2/comment/1/${id}`,
       }),
     }),
 
+    // Connected Inbox Items
     getConnectedInboxItems: builder.query<Entity[], void>({
       query: (id) => ({
         url: `reference/inbox?connectedToObjectId=${id}`,
       }),
     }),
 
+    // Sidebar Document List
     getSideBarDocuments: builder.query<SavedDocumentResponse[], void>({
       query: (id) => ({
         url: `reference/documents?connectedToObjectId=${id}`,
