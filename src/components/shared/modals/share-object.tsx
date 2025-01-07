@@ -35,13 +35,23 @@ export const ShareObject: React.FC<{
       </DialogTrigger>
       <DialogContent className="h-auto max-w-3xl overflow-auto rounded-lg bg-white p-6 shadow-lg">
         {/* Modal Header */}
-        <h2 className="mb-4 text-lg font-bold">SHARE</h2>
+        <h2 className="mb-2 text-lg font-bold">Share</h2>
 
         {/* Current Item Title */}
         <div className="mb-2">
-          <form>
-            <input type="text" name="add_users" placeholder="Type users to add" />
-            <button type="submit">Add</button>
+          <form className="flex gap-2">
+            <input
+              type="text"
+              name="add_users"
+              placeholder="Type users to add"
+              className="w-3/4 rounded-md border p-4"
+            />
+            <button
+              type="submit"
+              className="w-1/4 rounded-md bg-gray-400 p-4 text-center text-white hover:bg-blue-400"
+            >
+              Add
+            </button>
           </form>
         </div>
 
@@ -50,7 +60,7 @@ export const ShareObject: React.FC<{
           <h2 className="mb-4 text-lg font-bold">Settings</h2>
 
           <div className="mb-2 flex items-center space-x-2">
-            <Switch id="share-this-object" />
+            <Switch id="share-this-object" defaultChecked />
             <Label htmlFor="share-this-object">Share this object</Label>
           </div>
           <div className="flex items-center space-x-2">
