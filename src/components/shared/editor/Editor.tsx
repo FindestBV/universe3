@@ -144,7 +144,7 @@ export const Editor = ({
                       searchInformation: unknown;
                     }) => (
                       <SimilarDocumentModal
-                        key={obj.id} // Ensure each modal has a unique key
+                        key={obj.id}
                         id={obj.id}
                         title={obj.name}
                         mainContents={obj.mainContents}

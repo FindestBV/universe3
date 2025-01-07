@@ -54,7 +54,12 @@ export const Comments = ({ connectedComments }: any) => {
                       ("Ronan" && (
                         <div className="flex gap-2 opacity-0 transition-opacity group-hover:opacity-100">
                           {/* TODO: Make this accessible only if Admin or if signed in user is the same as the comment user */}
-                          <Button onClick={() => editComment(comment.id)}>EDIT</Button>
+                          <Button onClick={() => editComment(comment.id)}>
+                            {isEditing ? "SAVE" : "EDIT"}
+                          </Button>
+                          {isEditing && (
+                            <Button onClick={() => editComment(comment.id)}>CANCEL</Button>
+                          )}
                           <Button onClick={() => deleteComment(comment.id)}>DELETE</Button>
                         </div>
                       ))}
