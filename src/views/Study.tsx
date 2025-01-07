@@ -4,7 +4,7 @@ import {
   useGetSideBarDocumentsQuery,
   useGetStudyByIdQuery,
 } from "@/api/documents/documentApi";
-import Editor from "@/components/shared/editor/editor";
+import Editor from "@/components/shared/editor/Editor";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 
 import { useEffect } from "react";
