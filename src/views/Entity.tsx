@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// Combine multiple calls to related endpoints on the one querySlice.
 import { useGetEntityByIdQuery } from "@/api/documents/documentApi";
+// Import TipTap Editor
 import Editor from "@/components/shared/editor/Editor";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 
@@ -22,7 +24,6 @@ export const Entity: React.FC = () => {
   if (fetchedEntity?.description) {
     try {
       parsedDescription = fetchedEntity?.description;
-      console.log("Parsed entity description type:", typeof parsedDescription);
     } catch (error) {
       console.error("Failed to parse description:", error);
     }
@@ -32,17 +33,8 @@ export const Entity: React.FC = () => {
     if (fetchedEntity) {
       console.log("fetchedEntity", fetchedEntity);
     }
-    if (connectedComments) {
-      console.log("connectedComments", connectedComments);
-    }
-    if (connectedObjects) {
-      console.log("connectedObjects", connectedObjects);
-    }
-    if (inboxQuery) {
-      console.log("inboxQuery", inboxQuery);
-    }
     window.scroll(0, 0);
-  }, [connectedComments, connectedObjects, fetchedEntity, inboxQuery]);
+  }, [fetchedEntity]);
 
   return (
     <>

@@ -32,23 +32,19 @@ export const documentApi = api.injectEndpoints({
     getDocumentById: builder.query<SavedDocumentResponse, string>({
       query: (id) => `saveddocument/${id}`,
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
-
-      async onQueryStarted(id, { dispatch, queryFulfilled, getState }) {
-        console.log("state inside of onQS", getState);
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
         try {
-          // Wait for the article query to finish
           const { data: document } = await queryFulfilled;
-          // Trigger dependent queries for connected inbox items
-          if (document?.id) {
-            console.log("triggered from query started", document.id);
-            console.log(
-              "dispatching getDocumentRelatedScienceArticles from query started",
-              document.id,
-            );
-            dispatch(api.endpoints?.getDocumentRelatedScienceArticles.initiate(document.id));
-          }
+          const scienceArticles = await dispatch(
+            api.endpoints?.getDocumentRelatedScienceArticles.initiate(document.id),
+          ).unwrap();
+          dispatch(
+            api.util.updateQueryData("getDocumentById", id, (draft) => {
+              draft.scienceArticles = scienceArticles;
+            }),
+          );
         } catch (error) {
-          console.error("Error in onQueryStarted for getDocument:", error);
+          console.error("Error in onQueryStarted for getEntityById:", error);
         }
       },
     }),
@@ -111,14 +107,7 @@ export const documentApi = api.injectEndpoints({
       query: (id) => ({
         url: `entity/${id}`,
       }),
-      transformResponse: (response: any) => {
-        // Example transformation: Add a custom field and rename keys
-        return {
-          ...response,
-          transformedField: `Custom value for ${response.id}`,
-          updatedKeyName: response.someOldKeyName, // Renaming a key
-        };
-      },
+
       async onQueryStarted(id, { dispatch, queryFulfilled }) {
         try {
           const { data: entity } = await queryFulfilled;

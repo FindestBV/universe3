@@ -2,12 +2,30 @@ import { currentUser } from "@/api/auth/authSlice";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Comments = ({ connectedComments }: any) => {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   // console.log("connected comments here", connectedComments);
   const user = useSelector(currentUser);
+
+  // const addComment = (id) => {
+  //   setIsEditing(!isEditing);
+  //   console.log(`adding comment with id ${comment.id}`)
+  // }
+
+  const editComment = (id) => {
+    setIsEditing(!isEditing);
+    console.log(`editing comment with id ${id}`);
+  };
+
+  const deleteComment = (id) => {
+    setIsEditing(true);
+    console.log(`deleting comment with id ${id}`);
+    setIsEditing(false);
+  };
 
   return (
     <>
@@ -16,7 +34,7 @@ export const Comments = ({ connectedComments }: any) => {
         <div className="flex w-full gap-6 rounded-sm border border-[#f1f1f1] p-4">
           {connectedComments?.comments && connectedComments.comments.length > 0 ? (
             connectedComments.comments.map((comment: string) => (
-              <>
+              <div key={comment.id} className="flex w-full">
                 <UserAvatar username={comment?.username} />
                 <div className="comment comment-card group w-full">
                   <div className="flex justify-between">
@@ -32,11 +50,14 @@ export const Comments = ({ connectedComments }: any) => {
                       </div>
                     </div>
                     {/* Buttons only visible on hover */}
-                    <div className="flex gap-2 opacity-0 transition-opacity group-hover:opacity-100">
-                      {/* TODO: Make this accessible only if Admin or if signed in user is the same as the comment user */}
-                      <Button>EDIT</Button>
-                      <Button>DELETE</Button>
-                    </div>
+                    {(user && user === comment.username) ||
+                      ("Ronan" && (
+                        <div className="flex gap-2 opacity-0 transition-opacity group-hover:opacity-100">
+                          {/* TODO: Make this accessible only if Admin or if signed in user is the same as the comment user */}
+                          <Button onClick={() => editComment(comment.id)}>EDIT</Button>
+                          <Button onClick={() => deleteComment(comment.id)}>DELETE</Button>
+                        </div>
+                      ))}
                   </div>
                   <p className="comment-text mb-4 mt-4 py-2">{comment?.text}</p>
                   <div className="flex gap-6 rounded-sm border border-[#f1f1f1] p-4">
@@ -49,7 +70,7 @@ export const Comments = ({ connectedComments }: any) => {
                     </form>
                   </div>
                 </div>
-              </>
+              </div>
             ))
           ) : (
             <p>No comments available</p>

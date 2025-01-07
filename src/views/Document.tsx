@@ -1,13 +1,9 @@
-import {
-  useGetDocumentByIdQuery,
-  useGetDocumentRelatedScienceArticlesQuery,
-} from "@/api/documents/documentApi";
+import { useGetDocumentByIdQuery } from "@/api/documents/documentApi";
 import { LinkedCounts } from "@/components/shared/cards/linked-counts";
 import Comments from "@/components/shared/layout/comments";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
 import ConnectToEntity from "@/components/shared/modals/connect-to-entity";
 import { SimilarDocumentModal } from "@/components/shared/modals/similar-document-modal";
-// import { FindestButton } from "@/components/shared/utilities/findest-button";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,7 +23,7 @@ import {
   Upload,
 } from "lucide-react";
 
-import { useEffect, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 export const Document: React.FC = () => {
@@ -36,8 +32,7 @@ export const Document: React.FC = () => {
   const { data: fetchedDocument } = useGetDocumentByIdQuery(id!, {
     refetchOnMountOrArgChange: false,
   });
-  const { data: scienceArticles } = useGetDocumentRelatedScienceArticlesQuery(id!);
-  console.log("SCIENCE ARTICLES", scienceArticles);
+  const scienceArticles = fetchedDocument?.scienceArticles;
   const renderConnectedObjects =
     fetchedDocument &&
     Object.entries(fetchedDocument?.connectedObjects).map((o, i) => (
@@ -100,9 +95,6 @@ export const Document: React.FC = () => {
   // };
 
   useEffect(() => {
-    if (fetchedDocument) {
-      console.log(fetchedDocument);
-    }
     window.scroll(0, 0);
   }, [fetchedDocument]);
 
@@ -149,7 +141,7 @@ export const Document: React.FC = () => {
               <TabsList className="mb-4 w-full justify-start rounded-none border-b border-[#f1f1f1] bg-transparent">
                 <TabsTrigger value="documentInfo">Document Information</TabsTrigger>
                 <TabsTrigger value="similarDocuments">
-                  Similar Documents ({`${scienceArticles?.length}`}){" "}
+                  Similar Documents ({`${scienceArticles?.length ? scienceArticles.length : 0}`}){" "}
                 </TabsTrigger>
                 <TabsTrigger value="attachments">Attachments</TabsTrigger>
               </TabsList>
@@ -198,11 +190,14 @@ export const Document: React.FC = () => {
                       ) : (
                         <p>No metadata available.</p>
                       )}
-
                       <div className="mb-2">
                         <strong>Authors:</strong>
                         {Object.entries(fetchedDocument?.authorships).map((key) => {
-                          return <p>{key[1]?.authorName || "Not available"}</p>;
+                          return (
+                            <div key={key}>
+                              <p>{key[1]?.authorName || "Not available"}</p>
+                            </div>
+                          );
                         })}
                       </div>
                     </div>
@@ -213,41 +208,61 @@ export const Document: React.FC = () => {
                 <h4 className="pb-2 font-black">Similar Documents</h4>
                 <div className="mt-2 flex gap-4">
                   <ul>
-                    {scienceArticles?.map((article, index) => (
-                      <li
-                        key={index}
-                        className="science-article mb-4 flex items-start gap-6 rounded-sm border border-[#f2f4f8] p-4"
-                      >
-                        <Button>Save</Button>
-                        <div className="flex flex-col">
-                          <SimilarDocumentModal
-                            title={article.title}
-                            id={article.id}
-                            mainContents={article.mainContents}
-                            searchInformation={article.searchInformation}
-                            type="document"
-                          />
-                          {/* Publication Date and Authors */}
-                          <div className="mt-2 flex flex-grow flex-wrap items-center gap-2">
-                            {/* Publication Date */}
-                            {fetchedDocument.searchInformation.publicationDate && (
-                              <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800">
-                                {fetchedDocument.searchInformation.publicationDate}
-                              </span>
-                            )}
-                            {/* Authors */}
-                            {article.authorships?.map((author, authorIndex) => (
-                              <span
-                                key={authorIndex}
-                                className="inline-block rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800"
-                              >
-                                {author.authorName || "Unknown Author"}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </li>
-                    ))}
+                    {scienceArticles ? (
+                      scienceArticles?.map(
+                        (
+                          article: {
+                            title: string;
+                            id: string;
+                            mainContents: unknown;
+                            searchInformation: unknown;
+                            authorships: any[];
+                          },
+                          index: Key | null | undefined,
+                        ) => (
+                          <li
+                            key={index}
+                            className="science-article mb-4 flex items-start gap-6 rounded-sm border border-[#f2f4f8] p-4"
+                          >
+                            <Button>Save</Button>
+                            <div className="flex flex-col">
+                              <SimilarDocumentModal
+                                title={article.title}
+                                id={article.id}
+                                mainContents={article.mainContents}
+                                searchInformation={article.searchInformation}
+                                type="document"
+                              />
+                              {/* Publication Date and Authors */}
+                              <div className="mt-2 flex flex-grow flex-wrap items-center gap-2">
+                                {/* Publication Date */}
+                                {fetchedDocument?.searchInformation.publicationDate && (
+                                  <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800">
+                                    {fetchedDocument?.searchInformation.publicationDate}
+                                  </span>
+                                )}
+                                {/* Authors */}
+                                {article.authorships?.map(
+                                  (
+                                    author: { authorName: any },
+                                    authorIndex: Key | null | undefined,
+                                  ) => (
+                                    <span
+                                      key={authorIndex}
+                                      className="inline-block rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800"
+                                    >
+                                      {author.authorName || "Unknown Author"}
+                                    </span>
+                                  ),
+                                )}
+                              </div>
+                            </div>
+                          </li>
+                        ),
+                      )
+                    ) : (
+                      <p>No document information available.</p>
+                    )}
                   </ul>
                 </div>
               </TabsContent>

@@ -121,9 +121,9 @@ export const Editor = ({
             <h3 className="my-4 flex-1 text-3xl font-black text-black">Linked Objects</h3>
             {connectedObjects?.documents && connectedObjects.documents.length > 0
               ? connectedObjects.documents.map((doc) => (
-                  <>
+                  <div key={doc.title}>
                     <SimilarDocumentModal title={doc.title} id={doc.id} type="linkedObjects" />
-                  </>
+                  </div>
                 ))
               : "no connected objects"}
           </div>
