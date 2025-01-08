@@ -210,7 +210,6 @@ export const documentApi = api.injectEndpoints({
 
     // Studies
     // GetStudies - get all studies
-
     getStudies: builder.query<
       { studies: Study[]; totalItems: number; totalPages: number; page: number },
       { page?: number; limit?: number }
@@ -225,6 +224,17 @@ export const documentApi = api.injectEndpoints({
         },
       }),
     }),
+
+    /* 
+      Get Study By Id: gets a specific entity by Id and chain subsequent queries, appending to the main query. 
+
+      What is happening here ?
+      Entities are hydrated by a range of builder queries, which are each dispatched with a common parameter - the study id. 
+      On the Study.tsx component, as single call is made to the getStudyId query, 
+    
+      Here, we're using OnQueryStarted to dispatch the subsequent queries, which hiterto returned an object via a separate cal.     
+    */
+
     getStudyById: builder.query<Study, void>({
       query: (id) => ({
         url: `study/${id}`,
