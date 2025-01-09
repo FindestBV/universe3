@@ -1,3 +1,4 @@
+import { currentUser } from "@/api/auth/authSlice";
 import {
   Dialog,
   DialogContent,
@@ -8,11 +9,13 @@ import {
 import { Minus } from "lucide-react";
 
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const MinimizableDialog = () => {
   const [isOpen, setIsOpen] = useState(false); // Track dialog visibility
   const [isMinimized, setIsMinimized] = useState(false); // Track minimized state
 
+  const user = useSelector(currentUser);
   const handleToggleMinimized = () => {
     setIsMinimized((prev) => !prev);
   };
@@ -38,7 +41,23 @@ const MinimizableDialog = () => {
               </div>
             </DialogHeader>
             <div>
-              <p>This is the dialog content. You can minimize this dialog.</p>
+              {user && `Hi ${user}`}
+
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda saepe et quidem
+                dolores consequatur recusandae laudantium fugit optio magnam, aliquam porro labore
+                commodi, dignissimos est fuga non nam. Veritatis esse enim cum assumenda neque
+                veniam quos quo et, aliquam cumque repudiandae eligendi voluptas, dolorem iure eos
+                magni beatae ab perferendis?
+              </p>
+              <br />
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda saepe et quidem
+                dolores consequatur recusandae laudantium fugit optio magnam, aliquam porro labore
+                commodi, dignissimos est fuga non nam. Veritatis esse enim cum assumenda neque
+                veniam quos quo et, aliquam cumque repudiandae eligendi voluptas, dolorem iure eos
+                magni beatae ab perferendis?
+              </p>
             </div>
           </DialogContent>
         </Dialog>

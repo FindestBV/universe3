@@ -30,6 +30,7 @@ import {
 import { useState } from "react";
 
 import AskIgorModal from "../modals/ask-igor";
+import MinimizableDialog from "../modals/minimizable-dialog";
 import ShareObject from "../modals/share-object";
 import UserAvatar from "../utilities/user-avatar";
 
@@ -240,6 +241,7 @@ const EditorToolbar = ({ editor }: { editor: any }) => {
             PIN
           </button>
           <ShareObject parentId={""} parentTitle={""} />
+          <MinimizableDialog />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="rotated" className="h-8 w-8 bg-transparent p-0">
