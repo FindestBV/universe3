@@ -10,7 +10,6 @@ import { useParams } from "react-router";
 
 export const Entity: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-
   const { data: fetchedEntity, isLoading: fetchedEntityIsLoading } = useGetEntityByIdQuery(id, {
     refetchOnMountOrArgChange: false, // Prevents automatic refetching
   });
