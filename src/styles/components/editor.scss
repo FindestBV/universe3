@@ -1,6 +1,7 @@
 
 @import '../colors/colors.scss';
 
+.editorMainContent,
 .compactEditorContent {
   .tiptap.ProseMirror > * {
     margin-left: 0 !important;
@@ -54,8 +55,8 @@
     }
 
     > * {
-      margin-left: 4rem !important;
-      margin-right: 4rem !important;
+      margin-left: 0em;
+      margin-right: 0em;
     }
 
     &.resize-cursor {
