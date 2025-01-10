@@ -54,7 +54,7 @@ const CreateQueryDialog: React.FC<CreateQueryDialogProps> = ({ icon, queryType }
         style={{ maxHeight: "70%", maxWidth: "80%" }}
       >
         <div className="flex h-full w-full flex-col items-center justify-center">
-          <UserAvatar username={user ? user : "Ronan"} />
+          {/* <UserAvatar username={user ? user : "Ronan"} /> */}
           <div className="flex w-full max-w-lg flex-col gap-6 p-6">
             <div>
               <select
