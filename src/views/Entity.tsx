@@ -42,7 +42,7 @@ export const Entity: React.FC = () => {
       ) : (
         <>
           <div className="flex h-screen w-auto">
-            <div className="flex-col">
+            <div className="w-full flex-col">
               <Editor
                 type={"entity"}
                 title={fetchedEntity?.title}
