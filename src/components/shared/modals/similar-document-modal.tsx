@@ -81,7 +81,7 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
                 id={id}
                 mainContents={mainContents}
                 searchInformation={searchInformation}
-                type="linkedObjects"
+                type="document"
                 isOpenAccess={isOpenAccess}
               />
             </div>
@@ -135,9 +135,7 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
             </div>
 
             <div className={`flex`}>
-              <h1
-                className={`my-4 flex-1 text-3xl font-black text-black ${isOpenAccess && "flex flex-row items-center gap-2"}`}
-              >
+              <h1 className={`my-4 flex-1 text-3xl font-black text-black`}>
                 <img
                   className="openAccess_openAccessLogo__Q-5ld h-4"
                   src={openAccessLogo}
