@@ -1,12 +1,17 @@
 import { currentUser, userEmail } from "@/api/auth/authSlice";
+import ArticleTest from "@/components/shared/layout/article-test";
+import BentoGrid from "@/components/shared/layout/bento-grid";
+import ImageTiles from "@/components/shared/layout/image-tiles";
 import LanguageSelector from "@/components/shared/layout/language-selector";
+import ProfileCardTest from "@/components/shared/layout/profile-card-test";
+import Settings from "@/components/shared/user/settings";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export const Settings = () => {
+export const SettingsPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -29,6 +34,7 @@ export const Settings = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
+      <ArticleTest />
       <div className="min-h-screen">
         <div className="mx-auto max-w-full p-8">
           {/* Header */}
@@ -52,6 +58,7 @@ export const Settings = () => {
 
             {/* Profile Tab */}
             <TabsContent value="profile" className="py-4">
+              <Settings user={user} />
               <form className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700" htmlFor="name">
@@ -119,10 +126,12 @@ export const Settings = () => {
               </form>
             </TabsContent>
           </Tabs>
+
+          <BentoGrid />
         </div>
       </div>
     </motion.div>
   );
 };
 
-export default Settings;
+export default SettingsPage;

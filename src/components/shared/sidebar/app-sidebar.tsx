@@ -22,6 +22,7 @@ import {
   Bot,
   Calendar,
   ChevronUp,
+  FileQuestion,
   FileText,
   Fingerprint,
   Inbox,
@@ -135,6 +136,17 @@ export function AppSidebar() {
                   <AdvancedSearchModal />
                 </SidebarMenuButton>
               </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <a
+                  href="/advanced-search"
+                  className="flex items-center gap-2 text-white hover:text-black"
+                >
+                  <FileQuestion size={18} className="ml-2" />
+                  {open && <span className="font-medium">Advanced Search</span>}
+                </a>
+              </SidebarMenuItem>
+
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <GenerateReport

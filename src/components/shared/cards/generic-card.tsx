@@ -108,6 +108,7 @@ export const ConnectedObjectsDialog = ({
 export const GenericCard: React.FC<GenericCardProps> = ({
   id,
   title,
+  name,
   type,
   itemType,
   description,
@@ -220,7 +221,11 @@ export const GenericCard: React.FC<GenericCardProps> = ({
             <div className="w-auto cursor-pointer">
               {!isDocument && (
                 <div className="iconText py-1">
-                  {type === "StudyTypeUndefined" ? "Study" : "Entity"}
+                  {itemType === "advancedSearchItem"
+                    ? null
+                    : type === "StudyTypeUndefined"
+                      ? "Study"
+                      : "Entity"}
                 </div>
               )}
             </div>
@@ -230,8 +235,10 @@ export const GenericCard: React.FC<GenericCardProps> = ({
                   !isDocument ? "py-2" : ""
                 }`}
               >
-                {title}
+                {name ? name : title}
               </h3>
+
+              {itemType == "advancedSearchItem" && <h5 className="iconText">Connections</h5>}
               {isDocument && <DocumentLink url={url} />}
               {isEntity && renderFirstThreeParagraphs(description)}
             </div>
@@ -253,17 +260,20 @@ export const GenericCard: React.FC<GenericCardProps> = ({
           </div>
         </Card>
       </div>
-      <div className="relative flex h-auto w-[25px]">
-        {/* Hoverable Actions */}
-        <div className="links">
-          <AddLinkToItem attachToItem={linkItemToOther} parentId={id} parentTitle={title} />
-          {type !== "document" && (
-            <a href="#" className="trashCan">
-              <Trash2 size={14} />
-            </a>
-          )}
+      {itemType && itemType == "advancedSearchItem" ? null : (
+        <div className="relative flex h-auto w-[25px]">
+          {/* Hoverable Actions */}
+
+          <div className="links">
+            <AddLinkToItem attachToItem={linkItemToOther} parentId={id} parentTitle={title} />
+            {type !== "document" && (
+              <a href="#" className="trashCan">
+                <Trash2 size={14} />
+              </a>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
