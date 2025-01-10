@@ -34,7 +34,6 @@ export const SettingsPage = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
-      <ArticleTest />
       <div className="min-h-screen">
         <div className="mx-auto max-w-full p-8">
           {/* Header */}
