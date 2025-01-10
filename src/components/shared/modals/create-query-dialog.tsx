@@ -46,7 +46,7 @@ const CreateQueryDialog: React.FC<CreateQueryDialogProps> = ({ icon, queryType }
         <div className="flex w-full cursor-pointer items-center justify-between">
           <IconComponent size={24} />
           <div className="ml-2">Search for {queryType}</div>
-          <ArrowRightCircle size={24} />
+          <ArrowRightCircle size={24} className="group-hover:text-blue-300" />
         </div>
       </DialogTrigger>
       <DialogContent
@@ -87,7 +87,7 @@ const CreateQueryDialog: React.FC<CreateQueryDialogProps> = ({ icon, queryType }
             <div className="flex justify-start gap-4">
               <button
                 type="button"
-                className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
                 Create Query
               </button>

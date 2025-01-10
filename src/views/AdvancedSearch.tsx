@@ -76,13 +76,13 @@ export const AdvancedSearch: React.FC = () => {
           </div>
           <div className="queryTypeSelection">
             <ul className="mx-auto flex w-full gap-4 max-sm:flex-col">
-              <li className="border-sm flex w-1/3 justify-between bg-white p-4 font-bold max-sm:w-full">
+              <li className="border-sm group flex w-1/3 justify-between rounded-md bg-white p-4 font-bold shadow-md max-sm:w-full">
                 <CreateQueryDialog queryType={`technologies/materials`} icon="Rainbow" />
               </li>
-              <li className="border-sm flex w-1/3 justify-between bg-white p-4 font-bold max-sm:w-full">
+              <li className="border-sm group flex w-1/3 justify-between rounded-md bg-white p-4 font-bold shadow-md max-sm:w-full">
                 <CreateQueryDialog queryType={`scientific papers`} icon="Beaker" />
               </li>
-              <li className="border-sm flex w-1/3 justify-between bg-white p-4 font-bold max-sm:w-full">
+              <li className="border-sm group flex w-1/3 justify-between rounded-md bg-white p-4 font-bold shadow-md max-sm:w-full">
                 <CreateQueryDialog queryType={`patents`} icon="Award" />
               </li>
             </ul>
