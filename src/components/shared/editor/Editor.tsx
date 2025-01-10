@@ -174,7 +174,12 @@ export const Editor = ({
               ? connectedObjects.documents.map(
                   (doc: { title: Key | null | undefined; id: string }) => (
                     <div key={doc.title}>
-                      <SimilarDocumentModal title={doc.title} id={doc.id} type="linkedObjects" />
+                      <SimilarDocumentModal
+                        title={doc.title}
+                        id={doc.id}
+                        type="linkedObjects"
+                        isOpenAccess={doc.isOpenAccess}
+                      />
                     </div>
                   ),
                 )

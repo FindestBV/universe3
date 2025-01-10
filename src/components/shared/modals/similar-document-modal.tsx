@@ -2,6 +2,7 @@ import {
   useGetDocumentByIdQuery,
   useGetEntityConnectedDocsQuery,
 } from "@/api/documents/documentApi";
+import openAccessLogo from "@/assets/openAccessLogo.png";
 import LinkedCounts from "@/components/shared/cards/linked-counts";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ type SimilarDocumentModalProps = {
   id: string;
   mainContents?: any;
   searchInformation?: any;
+  isOpenAccess?: boolean;
   type: "entity" | "study" | "document" | "linkedObjects"; // Added "linkedObjects"
 };
 
@@ -27,6 +29,7 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
   id,
   mainContents,
   searchInformation,
+  isOpenAccess,
   type,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,6 +64,7 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
       refetchDocument();
       refetchConnectedDocuments();
     }
+    console.log("is open access", isOpenAccess);
   }, [isOpen, refetchDocument, refetchConnectedDocuments]);
 
   // If type is "linkedObjects," render as a GenericCard
@@ -77,7 +81,8 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
                 id={id}
                 mainContents={mainContents}
                 searchInformation={searchInformation}
-                type="document"
+                type="linkedObjects"
+                isOpenAccess={isOpenAccess}
               />
             </div>
             <div className="relative flex h-auto w-[25px]">{/* Hoverable Actions */}</div>
@@ -129,8 +134,17 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
               </div>
             </div>
 
-            <div className="flex">
-              <h1 className="my-4 flex-1 text-3xl font-black text-black">{title || "Document"}</h1>
+            <div className={`flex`}>
+              <h1
+                className={`my-4 flex-1 text-3xl font-black text-black ${isOpenAccess && "flex flex-row items-center gap-2"}`}
+              >
+                <img
+                  className="openAccess_openAccessLogo__Q-5ld h-4"
+                  src={openAccessLogo}
+                  alt="Open Access Logo"
+                />{" "}
+                {title || "Document"}
+              </h1>
             </div>
 
             {/* <h6 className="text-lg font-bold">Connections:</h6>
