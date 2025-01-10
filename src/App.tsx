@@ -85,7 +85,7 @@ function AuthenticatedLayout() {
                 <Route path="/library/entities/:id" element={<Entity />} />
                 <Route path="/resources" element={<Resources />} />
                 <Route path="/admin" element={<Admin />} />
-                <Route path="/advanced-search" element={<AdvancedSearch />} />
+                <Route path="/queries" element={<AdvancedSearch />} />
                 <Route path="/user/settings" element={<Settings />} />
                 <Route path="/dataview" element={<DataView />} />
                 <Route path="/inbox" element={<Inbox />} />

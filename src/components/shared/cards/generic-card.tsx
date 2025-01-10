@@ -113,6 +113,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   itemType,
   description,
   dateAdded,
+  dateCreated,
   createdByUsername,
   url,
   abstract,
@@ -190,6 +191,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
         title,
         description,
         dateAdded,
+        dateCreated,
         url,
         abstract,
         connectedObjects,
@@ -254,7 +256,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
           </div>
           <div className="flex flex-row items-start gap-2">
             <div className="flex flex-row items-center gap-4">
-              <div className="time">{formatDate(dateAdded)}</div>
+              <div className="time">{formatDate(dateCreated ? dateCreated : dateAdded)}</div>
               <CreatorTooltip createdByUsername={createdByUsername} />
             </div>
           </div>

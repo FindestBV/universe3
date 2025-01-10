@@ -23,6 +23,7 @@ import SimilarDocumentModal from "../modals/similar-document-modal";
 import ReferencesSidebar from "../sidebar/references-sidebar";
 import CustomImage from "./custom-image";
 import EditorToolbar from "./editor-toolbar";
+import PlaceholderExtension from "./placeholder-extension";
 
 export const Rating = Mark.create({
   name: "rating",
@@ -93,12 +94,23 @@ export const Editor = ({
       Image,
       CustomImage,
       Rating,
+      PlaceholderExtension,
       StarterKit,
     ],
     content: parsedContent ||
       defaultContent || {
         type: "doc",
-        content: [{ type: "paragraph", content: [{ type: "text", text: "Start writing..." }] }],
+        content: [
+          {
+            type: "paragraph",
+            content: [
+              {
+                type: "text",
+                text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text addinglinks,\n images, files and tables and even utilizing IGOR<sup>AI</sup>. The right sidebar provides otions to include references, \n highlights and images from connected documents. \n Have fun creating!",
+              },
+            ],
+          },
+        ],
       },
     onUpdate({ editor }) {
       const value = editor.getHTML();
@@ -143,9 +155,13 @@ export const Editor = ({
                 <h1 className="my-4 flex-1 text-3xl font-bold text-black">{title || "Document"}</h1>
               </div>
 
-              <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
-              <EditorContent editor={editor} />
-              <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
+              {editor && (
+                <>
+                  <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
+                  <EditorContent editor={editor} />
+                  <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
+                </>
+              )}
             </div>
           </div>
 
