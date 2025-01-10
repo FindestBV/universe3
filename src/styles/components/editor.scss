@@ -252,6 +252,19 @@
     }
   }
 
+.rating{
+  align-items: center;
+  display: inline-flex;
+  float: right;
+  height: 36px;
+  justify-content: flex-end;
+  min-width: 174px;
+  position: absolute;
+  right: 12px;
+  top: calc(50% - 18px);
+}
+
+
   .ratingsWrapper {
     align-items: center;
     display: inline-flex;
