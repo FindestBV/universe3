@@ -85,6 +85,7 @@ The project structure follows a standard React application layout:
 
 ```
 universe3/
+  ├── .storybook           # Storybook
   ├── node_modules/        # Project dependencies
   ├── public/              # Public
   ├── src/
@@ -112,6 +113,7 @@ universe3/
   │   |   └── search/      # Search
   │   |   └── activity/    # Activity
   │   |   └── utilities/   # Utility - it does something, but probably best stored separately
+  |   ├── stories          # Catch-all (for now) of Storybook config (WIP)
   |   ├── styles/          # CSS stylesheets
   │   |   └── colors/
   │   |   └── components/
