@@ -1,4 +1,4 @@
-import { CreateNewItem, NewItem } from "@/components/ui/create-new-item";
+import { CreateNewItem, NewItem } from "@/components/shared/cards/create-new-item";
 import { Meta, StoryObj } from "@storybook/react";
 import { BookOpen, Users } from "lucide-react";
 
@@ -38,7 +38,7 @@ const mockData: NewItem[] = [
 
 export const Default: Story = {
   render: () => (
-    <div className="flex flex-col space-y-4">
+    <div className="flex w-full gap-1">
       {mockData.map((item, index) => (
         <CreateNewItem key={index} {...item} />
       ))}

@@ -47,7 +47,7 @@ export const Default: Story = {
   args: {
     src: "",
     alt: "Avatar",
-    fallback: "R",
+    fallback: "RO",
   },
 };
 
@@ -59,9 +59,9 @@ export const WithImage: Story = {
     </Avatar>
   ),
   args: {
-    src: "https://via.placeholder.com/150",
+    src: "https://ronan-oleary.com/assets/ro-bw.d434f415.png",
     alt: "User Avatar",
-    fallback: "R",
+    fallback: "RO",
   },
 };
 
@@ -75,6 +75,6 @@ export const CustomFallback: Story = {
   args: {
     src: "",
     alt: "Avatar",
-    fallback: "R",
+    fallback: "RO",
   },
 };

@@ -4,9 +4,9 @@ export const ArticleTest = () => {
   return (
     <div className="bg-white px-6 py-32 lg:px-8">
       <div className="mx-auto max-w-3xl text-base/7 text-gray-700">
-        <p className="text-base/7 font-semibold text-indigo-600">Introducing</p>
+        <p className="text-base/7 font-semibold text-indigo-600">Entity Type</p>
         <h1 className="mt-2 text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-          Tighter Layout.
+          Entity/Study/Document Title
         </h1>
         <p className="mt-6 text-xl/8">
           Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi,
@@ -98,7 +98,7 @@ export const ArticleTest = () => {
         </figure>
         <div className="mt-16 max-w-2xl">
           <h2 className="text-pretty text-3xl font-semibold tracking-tight text-gray-900">
-            Everything you need to get up and running
+            Related Documents listed below:
           </h2>
           <p className="mt-6">
             Purus morbi dignissim senectus mattis adipiscing. Amet, massa quam varius orci dapibus

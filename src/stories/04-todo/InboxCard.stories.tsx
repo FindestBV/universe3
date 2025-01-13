@@ -2,7 +2,7 @@ import GenericCard from "@/components/shared/cards/generic-card";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {
-  title: "Components/shared/cards/GenericCard",
+  title: "Components/shared/cards/InboxCard",
   component: GenericCard,
   parameters: {
     docs: {
@@ -18,7 +18,7 @@ export default meta;
 
 type Story = StoryObj<typeof GenericCard>;
 
-export const Base: Story = {
+export const Inbox: Story = {
   args: {
     id: "1",
     title: "Example Document",
@@ -40,20 +40,6 @@ export const Base: Story = {
       entityCount: 5,
       documentCount: 10,
     },
-  },
-  render: (args) => <GenericCard {...args} />,
-};
-
-export const WithAdditionalActions: Story = {
-  args: {
-    ...Base.args,
-    title: "Document with Actions",
-    description:
-      '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"This document has additional actions like linking and deletion."}]}]}',
-    connectedObjects: [
-      { id: "2", name: "Connected Object 1", type: "document" },
-      { id: "3", name: "Connected Object 2", type: "entity" },
-    ],
   },
   render: (args) => <GenericCard {...args} />,
 };

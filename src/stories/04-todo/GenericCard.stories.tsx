@@ -2,7 +2,7 @@ import GenericCard from "@/components/shared/cards/generic-card";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {
-  title: "Components/shared/cards/InboxCard",
+  title: "Components/shared/cards/GenericCard",
   component: GenericCard,
   parameters: {
     docs: {
@@ -46,7 +46,7 @@ export const Entity: Story = {
 
 export const Study: Story = {
   args: {
-    ...Base.args,
+    ...Entity.args,
     title: "Document with Actions",
     description:
       '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"This document has additional actions like linking and deletion."}]}]}',
@@ -58,28 +58,16 @@ export const Study: Story = {
   render: (args) => <GenericCard {...args} />,
 };
 
-export const SearchItem: Story = {
+export const Search: Story = {
   args: {
-    id: "1",
-    title: "Example Document",
-    name: "Sample Name",
-    type: "document",
-    itemType: "document",
+    ...Entity.args,
+    title: "Document with Actions",
     description:
-      '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"This is a sample description for the GenericCard component."}]}]}',
-    dateAdded: new Date().toISOString(),
-    dateCreated: new Date().toISOString(),
-    createdByUsername: "John Doe",
-    url: "https://example.com",
-    abstract: "An abstract summarizing the document content.",
-    isSelected: false,
-    onSelect: (id, selected) => console.log(`Selected: ${selected}, ID: ${id}`),
-    connectedObjects: [],
-    searchInformation: {},
-    linkedCounts: {
-      entityCount: 5,
-      documentCount: 10,
-    },
+      '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"This document has additional actions like linking and deletion."}]}]}',
+    connectedObjects: [
+      { id: "2", name: "Connected Object 1", type: "document" },
+      { id: "3", name: "Connected Object 2", type: "entity" },
+    ],
   },
   render: (args) => <GenericCard {...args} />,
 };

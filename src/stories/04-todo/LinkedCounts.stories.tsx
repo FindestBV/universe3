@@ -18,6 +18,32 @@ export default meta;
 
 type Story = StoryObj<typeof GenericCard>;
 
+export const Default: Story = {
+  args: {
+    id: "1",
+    title: "Example Document",
+    name: "Sample Name",
+    type: "document",
+    itemType: "document",
+    description:
+      '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"This is a sample description for the GenericCard component."}]}]}',
+    dateAdded: new Date().toISOString(),
+    dateCreated: new Date().toISOString(),
+    createdByUsername: "John Doe",
+    url: "https://example.com",
+    abstract: "An abstract summarizing the document content.",
+    isSelected: false,
+    onSelect: (id, selected) => console.log(`Selected: ${selected}, ID: ${id}`),
+    connectedObjects: [],
+    searchInformation: {},
+    linkedCounts: {
+      entityCount: 5,
+      documentCount: 10,
+    },
+  },
+  render: (args) => <GenericCard {...args} />,
+};
+
 export const Entity: Story = {
   args: {
     id: "1",
@@ -46,7 +72,7 @@ export const Entity: Story = {
 
 export const Study: Story = {
   args: {
-    ...Base.args,
+    ...Default.args,
     title: "Document with Actions",
     description:
       '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"This document has additional actions like linking and deletion."}]}]}',
@@ -58,7 +84,33 @@ export const Study: Story = {
   render: (args) => <GenericCard {...args} />,
 };
 
-export const SearchItem: Story = {
+export const Document: Story = {
+  args: {
+    id: "1",
+    title: "Example Document",
+    name: "Sample Name",
+    type: "document",
+    itemType: "document",
+    description:
+      '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"This is a sample description for the GenericCard component."}]}]}',
+    dateAdded: new Date().toISOString(),
+    dateCreated: new Date().toISOString(),
+    createdByUsername: "John Doe",
+    url: "https://example.com",
+    abstract: "An abstract summarizing the document content.",
+    isSelected: false,
+    onSelect: (id, selected) => console.log(`Selected: ${selected}, ID: ${id}`),
+    connectedObjects: [],
+    searchInformation: {},
+    linkedCounts: {
+      entityCount: 5,
+      documentCount: 10,
+    },
+  },
+  render: (args) => <GenericCard {...args} />,
+};
+
+export const Highlight: Story = {
   args: {
     id: "1",
     title: "Example Document",

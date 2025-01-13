@@ -18,7 +18,7 @@ const meta: Meta<typeof Auth> = {
     user: {
       control: "object",
       description: "The current user object.",
-      defaultValue: null,
+      defaultValue: "Ro",
     },
     onLogin: { action: "onLogin", description: "Called when the user logs in." },
     onLogout: { action: "onLogout", description: "Called when the user logs out." },

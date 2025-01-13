@@ -1,0 +1,67 @@
+import { Meta } from "@storybook/blocks";
+import { Markdown } from '@storybook/blocks';
+
+<Meta title="Structure/Frontend" />
+
+# Frontend Site Structure - Universe (3)
+
+The graphic below is taken from the project Readme, and outlines the up to date structure of the modernise branch. 
+
+```
+universe3/
+  ├── node_modules/        # Project dependencies
+  ├── public/              # Public
+  ├── src/
+  |   ├── assets           # assets
+  │   ├── components/      # React components
+  │   │   └── login/
+  |   |   └── shared/
+  |   |   |     └── cards/
+  |   |   |     └── layout/
+  |   |   |     └── loaders/
+  |   |   |     └── modals/
+  |   |   |     └── search/
+  |   |   |     └── sidebar/
+  |   |   |     └── utilities/
+  |   |   |
+  |   |   └── ui/          # shadcn/ui primatives/components
+  |   |
+  │   ├── hooks/           # Misc hooks
+  │   ├── i18n/            # Support for i18n
+  │   ├── lib/             # Lib & Utils
+  │   ├── api/             # RTKQuery API Slices
+  |   |   └── api.ts       # Base
+  │   |   └── auth/        # Auth API
+  │   |   └── documents/   # Documents, Entities & Studies - API queries/mutations all live here
+  │   |   └── search/      # Search
+  │   |   └── activity/    # Activity
+  │   |   └── utilities/   # Utility - it does something, but probably best stored separately
+  |   ├── styles/          # CSS stylesheets
+  │   |   └── colors/
+  │   |   └── components/
+  │   |   └── typography/
+  │   |   └── utilities
+  │   |   └── universe.scss
+  │   ├── types            # Utility functions
+  │   ├── views            # React views - please note: will be (significantly) reduced further
+  |   |   └── Dashboard/
+  |   |   └── DataView/
+  │   |   └── Document/
+  │   |   └── Documents/
+  │   |   └── Entities/
+  │   |   └── Inbox/
+  │   |   └── LoginPage/
+  │   |   └── NotFound/
+  │   |   └── Queries/
+  │   |   └── Studies
+  │   ├── App.tsx          # Application entry point
+  │   └── main.tsx         # Main rendering file
+  |   └── store.ts         # Redux Store
+  ├── eslint.config.js     # ESLint configuration
+  ├── index.html           # HTML entry point
+  ├── postcss.config.js    # PostCSS configuration
+  ├── tailwind.config.ts   # Tailwind CSS configuration
+  ├── tsconfig.json        # TypeScript configuration
+  └── vite.config.ts       # Vite configuration
+```
+

@@ -20,9 +20,9 @@ const meta: Meta = {
     },
     size: {
       control: "select",
-      options: ["sm", "md", "lg"],
+      options: ["sm", "lg"],
       description: "The size of the button.",
-      defaultValue: "md",
+      defaultValue: "lg",
     },
     disabled: {
       control: "boolean",
@@ -49,7 +49,7 @@ export const Default: Story = {
   ),
   args: {
     variant: "default",
-    size: "md",
+    size: "lg",
     disabled: false,
     children: "Default Button",
   },
@@ -57,7 +57,7 @@ export const Default: Story = {
 
 export const Variants: Story = {
   render: () => (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-row gap-4">
       <Button variant="default">Default</Button>
       <Button variant="primary">Primary</Button>
       <Button variant="secondary">Secondary</Button>
@@ -70,9 +70,9 @@ export const Variants: Story = {
 
 export const Sizes: Story = {
   render: () => (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-row gap-4">
       <Button size="sm">Small</Button>
-      <Button size="md">Medium</Button>
+      {/* <Button size="md">Medium</Button> */}
       <Button size="lg">Large</Button>
     </div>
   ),
@@ -80,7 +80,7 @@ export const Sizes: Story = {
 
 export const Disabled: Story = {
   render: () => (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-row gap-4">
       <Button variant="default" disabled>
         Disabled Default
       </Button>
@@ -96,7 +96,7 @@ export const Disabled: Story = {
 
 export const WithIcon: Story = {
   render: () => (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-row gap-4">
       <Button>
         <span className="mr-2">🚀</span> With Icon
       </Button>
