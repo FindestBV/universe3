@@ -31,8 +31,8 @@ import {
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import AdvancedSearchModal from "../modals/advanced-search-modal";
-import GenerateReport from "../modals/generate-report-modal";
+import AdvancedSearchModal from "../dialogs/advanced-search-modal";
+import GenerateReport from "../dialogs/generate-report-modal";
 import UserAvatar from "../utilities/user-avatar";
 
 export function AppSidebar() {

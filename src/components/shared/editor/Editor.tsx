@@ -17,9 +17,9 @@ import { Download } from "lucide-react";
 
 import { Key, useState } from "react";
 
+import SimilarDocumentModal from "../dialogs/similar-document-modal";
 // import GenericCard from "../cards/generic-card";
 import Comments from "../layout/comments";
-import SimilarDocumentModal from "../modals/similar-document-modal";
 import ReferencesSidebar from "../sidebar/references-sidebar";
 import CustomImage from "./custom-image";
 import EditorToolbar from "./editor-toolbar";

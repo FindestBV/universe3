@@ -16,7 +16,7 @@ import {
 import { useState } from "react";
 import React from "react";
 
-// import AddLinkToItem from "../modals/add-link-to-item";
+// import AddLinkToItem from "../dialogs/add-link-to-item";
 import { ReferencesSearchbar } from "../search/references-searchbar";
 
 export const ReferencesSidebar: React.FC<{
