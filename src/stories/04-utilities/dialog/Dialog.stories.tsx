@@ -110,7 +110,407 @@ export const Default: Story = {
   },
 };
 
-export const WithCustomContent: Story = {
+export const AddLinkToItem: Story = {
+  args: {
+    type: "document",
+    title: "My Document",
+    content: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [{ type: "text", text: "Welcome to the editor. Start typing here!" }],
+        },
+      ],
+    },
+    connectedDocs: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedObjects: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedQueries: [
+      {
+        connectedObjects: [
+          { id: "1", name: "Query 1" },
+          { id: "2", name: "Query 2" },
+        ],
+      },
+    ],
+    connectedComments: [
+      { id: "1", content: "Great job!" },
+      { id: "2", content: "Consider rephrasing this paragraph." },
+    ],
+  },
+};
+
+export const AdvancedSearch: Story = {
+  args: {
+    type: "document",
+    title: "My Document",
+    content: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [{ type: "text", text: "Welcome to the editor. Start typing here!" }],
+        },
+      ],
+    },
+    connectedDocs: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedObjects: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedQueries: [
+      {
+        connectedObjects: [
+          { id: "1", name: "Query 1" },
+          { id: "2", name: "Query 2" },
+        ],
+      },
+    ],
+    connectedComments: [
+      { id: "1", content: "Great job!" },
+      { id: "2", content: "Consider rephrasing this paragraph." },
+    ],
+  },
+};
+
+export const AskIgor: Story = {
+  args: {
+    type: "document",
+    title: "My Document",
+    content: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [{ type: "text", text: "Welcome to the editor. Start typing here!" }],
+        },
+      ],
+    },
+    connectedDocs: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedObjects: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedQueries: [
+      {
+        connectedObjects: [
+          { id: "1", name: "Query 1" },
+          { id: "2", name: "Query 2" },
+        ],
+      },
+    ],
+    connectedComments: [
+      { id: "1", content: "Great job!" },
+      { id: "2", content: "Consider rephrasing this paragraph." },
+    ],
+  },
+};
+
+export const ConnectToEntity: Story = {
+  args: {
+    type: "document",
+    title: "My Document",
+    content: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [{ type: "text", text: "Welcome to the editor. Start typing here!" }],
+        },
+      ],
+    },
+    connectedDocs: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedObjects: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedQueries: [
+      {
+        connectedObjects: [
+          { id: "1", name: "Query 1" },
+          { id: "2", name: "Query 2" },
+        ],
+      },
+    ],
+    connectedComments: [
+      { id: "1", content: "Great job!" },
+      { id: "2", content: "Consider rephrasing this paragraph." },
+    ],
+  },
+};
+
+export const CreateItem: Story = {
+  args: {
+    type: "document",
+    title: "My Document",
+    content: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [{ type: "text", text: "Welcome to the editor. Start typing here!" }],
+        },
+      ],
+    },
+    connectedDocs: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedObjects: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedQueries: [
+      {
+        connectedObjects: [
+          { id: "1", name: "Query 1" },
+          { id: "2", name: "Query 2" },
+        ],
+      },
+    ],
+    connectedComments: [
+      { id: "1", content: "Great job!" },
+      { id: "2", content: "Consider rephrasing this paragraph." },
+    ],
+  },
+};
+
+export const CreateQuery: Story = {
+  args: {
+    type: "document",
+    title: "My Document",
+    content: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [{ type: "text", text: "Welcome to the editor. Start typing here!" }],
+        },
+      ],
+    },
+    connectedDocs: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedObjects: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedQueries: [
+      {
+        connectedObjects: [
+          { id: "1", name: "Query 1" },
+          { id: "2", name: "Query 2" },
+        ],
+      },
+    ],
+    connectedComments: [
+      { id: "1", content: "Great job!" },
+      { id: "2", content: "Consider rephrasing this paragraph." },
+    ],
+  },
+};
+
+export const ExplorerModal: Story = {
+  args: {
+    type: "document",
+    title: "My Document",
+    content: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [{ type: "text", text: "Welcome to the editor. Start typing here!" }],
+        },
+      ],
+    },
+    connectedDocs: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedObjects: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedQueries: [
+      {
+        connectedObjects: [
+          { id: "1", name: "Query 1" },
+          { id: "2", name: "Query 2" },
+        ],
+      },
+    ],
+    connectedComments: [
+      { id: "1", content: "Great job!" },
+      { id: "2", content: "Consider rephrasing this paragraph." },
+    ],
+  },
+};
+
+export const GenerateReport: Story = {
+  args: {
+    type: "document",
+    title: "My Document",
+    content: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [{ type: "text", text: "Welcome to the editor. Start typing here!" }],
+        },
+      ],
+    },
+    connectedDocs: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedObjects: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedQueries: [
+      {
+        connectedObjects: [
+          { id: "1", name: "Query 1" },
+          { id: "2", name: "Query 2" },
+        ],
+      },
+    ],
+    connectedComments: [
+      { id: "1", content: "Great job!" },
+      { id: "2", content: "Consider rephrasing this paragraph." },
+    ],
+  },
+};
+
+export const MinimizableDialog: Story = {
+  args: {
+    type: "document",
+    title: "My Document",
+    content: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [{ type: "text", text: "Welcome to the editor. Start typing here!" }],
+        },
+      ],
+    },
+    connectedDocs: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedObjects: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedQueries: [
+      {
+        connectedObjects: [
+          { id: "1", name: "Query 1" },
+          { id: "2", name: "Query 2" },
+        ],
+      },
+    ],
+    connectedComments: [
+      { id: "1", content: "Great job!" },
+      { id: "2", content: "Consider rephrasing this paragraph." },
+    ],
+  },
+};
+
+export const ShareObject: Story = {
+  args: {
+    type: "document",
+    title: "My Document",
+    content: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [{ type: "text", text: "Welcome to the editor. Start typing here!" }],
+        },
+      ],
+    },
+    connectedDocs: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedObjects: {
+      documents: [
+        { id: "1", title: "Connected Doc 1" },
+        { id: "2", title: "Connected Doc 2" },
+      ],
+    },
+    connectedQueries: [
+      {
+        connectedObjects: [
+          { id: "1", name: "Query 1" },
+          { id: "2", name: "Query 2" },
+        ],
+      },
+    ],
+    connectedComments: [
+      { id: "1", content: "Great job!" },
+      { id: "2", content: "Consider rephrasing this paragraph." },
+    ],
+  },
+};
+
+export const SimilarDocument: Story = {
   args: {
     ...Default.args,
     content: {
