@@ -1,9 +1,16 @@
-import Editor from "@/components/shared/editor/editor";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {
   title: "Components/shared/dialogs/Dialog",
-  component: Editor,
+  component: Dialog,
   parameters: {
     docs: {
       description: {
