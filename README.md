@@ -37,7 +37,7 @@ The primary branch from which the project is published is:
 
 <pre>
    <code>
-   findest/dev-prototype
+      findest/dev-prototype
    </code>
 </pre>
 
@@ -45,7 +45,11 @@ The primary branch from which the project is published is:
 
 Developers invited to clone the repo, checkout and create a new feature branch off of findest/dev-prototype. Until such a time as convention changes this, new and feature-branches should be created with the format:
 
-[contributor-name]/FN-XXXX-brief-description-of-tasks
+<pre>
+   <code>
+      [contributor-name]/FN-XXXX-brief-description-of-tasks
+   <c/ode>
+</pre>
 
 - branches will be configured to be auto-deleted when merges complete.
 
