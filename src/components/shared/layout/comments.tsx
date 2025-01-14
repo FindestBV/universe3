@@ -11,11 +11,6 @@ export const Comments = ({ connectedComments }: any) => {
 
   const user = useSelector(currentUser);
 
-  // const addComment = (id) => {
-  //   setIsEditing(!isEditing);
-  //   console.log(`adding comment with id ${comment.id}`)
-  // }
-
   const editComment = (id) => {
     setIsEditing(!isEditing);
     console.log(`editing comment with id ${id}`);

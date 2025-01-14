@@ -29,9 +29,9 @@ import {
 
 import { useState } from "react";
 
-import AskIgorModal from "../modals/ask-igor";
-import MinimizableDialog from "../modals/minimizable-dialog";
-import ShareObject from "../modals/share-object";
+import AskIgorModal from "../dialogs/ask-igor";
+import MinimizableDialog from "../dialogs/minimizable-dialog";
+import ShareObject from "../dialogs/share-object";
 import UserAvatar from "../utilities/user-avatar";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

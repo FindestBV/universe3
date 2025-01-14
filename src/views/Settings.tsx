@@ -1,4 +1,5 @@
 import { currentUser, userEmail } from "@/api/auth/authSlice";
+import LinkedObjects from "@/components/shared/cards/linked-objects";
 import ArticleTest from "@/components/shared/layout/article-test";
 import BentoGrid from "@/components/shared/layout/bento-grid";
 import ImageTiles from "@/components/shared/layout/image-tiles";
@@ -57,6 +58,8 @@ export const SettingsPage = () => {
 
             {/* Profile Tab */}
             <TabsContent value="profile" className="py-4">
+              <LinkedObjects linkedObjects={{}} id={""} />
+
               <Settings user={user} />
               <form className="space-y-4">
                 <div>
