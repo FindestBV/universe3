@@ -68,7 +68,7 @@ const meta: Meta = {
 
 export default meta;
 
-type Story = StoryObj<typeof Editor>;
+type Story = StoryObj<typeof Dialog>;
 
 export const Default: Story = {
   args: {

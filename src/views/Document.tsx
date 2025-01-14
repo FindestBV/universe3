@@ -1,9 +1,9 @@
 import { useGetDocumentByIdQuery } from "@/api/documents/documentApi";
 import { LinkedCounts } from "@/components/shared/cards/linked-counts";
+import ConnectToEntity from "@/components/shared/dialogs/connect-to-entity";
+import { SimilarDocumentModal } from "@/components/shared/dialogs/similar-document-modal";
 import Comments from "@/components/shared/layout/comments";
 import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
-import ConnectToEntity from "@/components/shared/modals/connect-to-entity";
-import { SimilarDocumentModal } from "@/components/shared/modals/similar-document-modal";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import {

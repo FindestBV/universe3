@@ -25,8 +25,8 @@ import {
 import { useNavigate } from "react-router-dom";
 
 // import { useTranslation } from "react-i18next";
-import CreateItemModal from "../modals/create-item-modal";
-import ExplorerModal from "../modals/explorer-modal";
+import CreateItemModal from "../dialogs/create-item-modal";
+import ExplorerModal from "../dialogs/explorer-modal";
 import SearchBar from "../search/searchbar";
 import HappinessSelector from "./happiness-selector";
 
