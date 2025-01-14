@@ -1,11 +1,18 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Meta, StoryObj } from "@storybook/react";
 
 // Adjust the path as needed
 
 const meta: Meta = {
-  title: "Components/ui/Avatar",
-  component: Avatar,
+  title: "Components/ui/Breadcrumb",
+  component: Breadcrumb,
   decorators: [
     (Story) => (
       <div style={{ margin: "2em" }}>
@@ -46,39 +53,22 @@ export default meta;
 type Story = StoryObj;
 
 export const Default: Story = {
-  render: ({ src, alt, fallback }) => (
-    <Avatar>
-      <AvatarImage src={src} alt={alt} />
-      <AvatarFallback>{fallback}</AvatarFallback>
-    </Avatar>
-  ),
-  args: {
-    src: "",
-    alt: "Avatar",
-    fallback: "RO",
-  },
-};
-
-export const WithImage: Story = {
-  render: ({ src, alt, fallback }) => (
-    <Avatar>
-      <AvatarImage src={src} alt={alt} />
-      <AvatarFallback>{fallback}</AvatarFallback>
-    </Avatar>
-  ),
-  args: {
-    src: "https://ronan-oleary.com/assets/ro-bw.d434f415.png",
-    alt: "User Avatar",
-    fallback: "RO",
-  },
-};
-
-export const CustomFallback: Story = {
-  render: ({ src, alt, fallback }) => (
-    <Avatar>
-      <AvatarImage src={src} alt={alt} />
-      <AvatarFallback className="bg-blue-500 text-white">{fallback}</AvatarFallback>
-    </Avatar>
+  render: () => (
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
   ),
   args: {
     src: "",

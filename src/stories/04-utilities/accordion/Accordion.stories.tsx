@@ -24,21 +24,23 @@ type Story = StoryObj;
 
 export const Base: Story = {
   render: () => (
-    <Accordion type="single" collapsible>
-      <AccordionItem value="item-1">
-        <AccordionTrigger>Item 1</AccordionTrigger>
-        <AccordionContent>
-          This is the content for Item 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="item-2">
-        <AccordionTrigger>Item 2</AccordionTrigger>
-        <AccordionContent>
-          This is the content for Item 2. Sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua.
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <div className="baseAccordion">
+      <Accordion type="single" collapsible>
+        <AccordionItem value="item-1">
+          <AccordionTrigger>Item 1</AccordionTrigger>
+          <AccordionContent>
+            This is the content for Item 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-2">
+          <AccordionTrigger>Item 2</AccordionTrigger>
+          <AccordionContent>
+            This is the content for Item 2. Sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua.
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </div>
   ),
 };
 
