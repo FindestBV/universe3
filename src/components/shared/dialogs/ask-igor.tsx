@@ -1,9 +1,8 @@
+import { useGetIgorReportQuery } from "@/api/activity/activityApi";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { Bot } from "lucide-react";
-
-import { useState } from "react";
 
 const AskIgorModal: React.FC = () => {
   return (
@@ -112,8 +111,8 @@ const AskIgorModal: React.FC = () => {
                 </div>
                 <div className="flex flex-col">
                   <h4 className="text-lg font-semibold">
-                    I will write a report with an Intoduction, Methods, Results and conclusion based
-                    on your sources
+                    I will write a report with an Introduction, Methods, Results and Conclusion
+                    based on your sources
                   </h4>
                   <br />
                 </div>
@@ -122,15 +121,10 @@ const AskIgorModal: React.FC = () => {
               <div className="flex items-start gap-4 p-4">
                 <div className="flex items-center gap-2 font-black">YOU</div>
                 <div className="w-full">
-                  <input
-                    type="text"
-                    className="my-2 block w-full rounded-md border px-4 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    placeholder="Enter your question here"
-                  />
                   <Button
                     type="button"
                     className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    disabled
+                    onClick={() => fireReportRequest()}
                   >
                     SUBMIT
                   </Button>

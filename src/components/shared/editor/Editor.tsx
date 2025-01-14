@@ -58,7 +58,7 @@ export const Editor = ({
   };
 
   const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
-  console.log("Parsed Content:", JSON.stringify(parsedContent, null, 2));
+  // console.log("Parsed Content:", JSON.stringify(parsedContent, null, 2));
 
   const defaultContent = {
     type: "doc",

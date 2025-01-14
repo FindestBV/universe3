@@ -12,8 +12,6 @@ import {
 import { FC, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { FindestButton } from "../utilities/findest-button";
-
 export enum ObjectTypeEnum {
   Unknown = 0,
   Entity = 1,
@@ -38,7 +36,7 @@ type TTypeGraphViewProps = {
   searchKeyword?: string;
 };
 
-export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) => {
+export const PackGraphRevisedView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -230,4 +228,4 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
   );
 };
 
-export default PackGraphView;
+export default PackGraphRevisedView;

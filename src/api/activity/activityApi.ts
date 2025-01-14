@@ -56,6 +56,17 @@ export const activityApi = api.injectEndpoints({
       }),
       providesTags: ["SavedDocument"],
     }),
+    getIgorReport: builder.query<SavedDocumentResponse, { id: number; limit: number }>({
+      query: (id) => ({
+        url: "ai/generateReportFromDocumentsAndHighlights",
+        params: {
+          objectId: id,
+          objectType: 1,
+          dataPointsAmount: 10,
+        },
+      }),
+      providesTags: ["SavedDocument"],
+    }),
   }),
 });
 
@@ -66,5 +77,6 @@ export const {
   useGetLinkingDataByTitleQuery,
   useGetPageTypesQuery,
   useGetMyRecentActivityDropdownQuery,
+  useGetIgorReportQuery,
   usePrefetch,
 } = activityApi;

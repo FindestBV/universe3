@@ -162,7 +162,7 @@ const EditorToolbar = ({ editor }: { editor: any }) => {
       <div className="flex items-center justify-between">
         {/* Left Section: Formatting Buttons */}
         <div className="flex items-center space-x-2">
-          <AskIgorModal />
+          <AskIgorModal objectId={"08dd34a5-f831-4a07-800d-da1e275c129a"} />
           <DropdownMenu onOpenChange={(open) => setIsDropdownOpen(open)}>
             <DropdownMenuTrigger asChild>
               <Button className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400">
