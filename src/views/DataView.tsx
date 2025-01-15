@@ -162,6 +162,7 @@ export const DataView = () => {
           <ForceDirectedGraphView
             linkingData={filteredData && filteredData.length ? filteredData : linkingData}
             searchKeyword={searchKeyword}
+            isDashBoard={false}
           />
         ) : (
           <PackGraphViewUpdated data={filteredData} />

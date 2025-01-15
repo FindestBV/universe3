@@ -7,7 +7,7 @@ import {
 import { currentUser } from "@/api/auth/authSlice";
 import ForceDirectedGraphView from "@/components/shared/layout/force-directed-graph";
 import { OverlayPanel } from "@/components/shared/layout/overlay-panel";
-import PackGraphView from "@/components/shared/layout/pack-graph";
+import PackGraphViewUpdated from "@/components/shared/layout/pack-graph-updated";
 import { FindestButton } from "@/components/shared/utilities/findest-button";
 import UserAvatar from "@/components/shared/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
@@ -153,7 +153,11 @@ export const Dashboard = () => {
                 </div>
               ) : (
                 <OverlayPanel>
-                  <ForceDirectedGraphView initialNodes={nodes} linkingData={linkingData} />
+                  <ForceDirectedGraphView
+                    initialNodes={nodes}
+                    linkingData={linkingData}
+                    isDashBoard={true}
+                  />
                   <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 ease-in-out hover:bg-opacity-50">
                     <div className="hidden text-center group-hover:block">
                       <FindestButton
@@ -217,7 +221,7 @@ export const Dashboard = () => {
                 </div>
               )}
               <OverlayPanel>
-                <PackGraphView data={typesData} searchKeyword={searchKeyword} />
+                <PackGraphViewUpdated data={typesData} searchKeyword={searchKeyword} />
                 <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 ease-in-out hover:bg-opacity-50">
                   <div className="hidden text-center group-hover:block">
                     <FindestButton
