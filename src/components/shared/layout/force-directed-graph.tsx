@@ -1,5 +1,6 @@
 import {
   drag as d3Drag,
+  hsl as d3Hsl,
   forceCollide,
   forceLink,
   forceManyBody,
@@ -8,6 +9,7 @@ import {
   forceY,
   select,
   zoom,
+  zoomIdentity,
 } from "d3";
 
 import { FC, useCallback, useEffect, useRef } from "react";
@@ -39,22 +41,27 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
   const containerRef = useRef<SVGSVGElement | null>(null);
   const navigate = useNavigate();
 
-  const colorMap: Record<number, string> = {
-    [ObjectTypeEnum.Entity]: "#0099CC", // Blue
-    [ObjectTypeEnum.Study]: "#800080", // Purple
-    [ObjectTypeEnum.Unknown]: "#CCCCCC", // Gray
+  const calculateNodeColor = (objectType: number): string => {
+    const baseColor =
+      objectType === ObjectTypeEnum.Entity
+        ? "#0099CC"
+        : objectType === ObjectTypeEnum.Study
+          ? "#800080"
+          : "#CCCCCC";
+
+    const color = d3Hsl(baseColor);
+    color.l += 0.1;
+    return color.toString();
   };
 
   const filterGraphData = useCallback(() => {
     const lowerKeyword = searchKeyword.toLowerCase();
 
-    // Filter nodes and their children based on the search keyword
     const filteredNodes = linkingData.reduce((acc: any[], node: any) => {
-      const newLowerLevelNodes = (node.lowerLevelNodes || []).filter(
-        (child: any) => child.name?.toLowerCase()?.includes(lowerKeyword), // Optional chaining for `name`
+      const newLowerLevelNodes = (node.lowerLevelNodes || []).filter((child: any) =>
+        child.name?.toLowerCase()?.includes(lowerKeyword),
       );
 
-      // Include node if it matches the keyword or has matching children
       if (node.name?.toLowerCase()?.includes(lowerKeyword) || newLowerLevelNodes.length > 0) {
         acc.push({ ...node, lowerLevelNodes: newLowerLevelNodes });
       }
@@ -62,10 +69,8 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
       return acc;
     }, []);
 
-    // Create a set of IDs for filtered nodes
     const filteredNodeIds = new Set(filteredNodes.map((node) => node.id));
 
-    // Create links based on the filtered nodes
     const filteredLinks = filteredNodes.flatMap((node) =>
       (node.lowerLevelNodes || [])
         .filter((child) => filteredNodeIds.has(child.id))
@@ -92,34 +97,29 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
     const width = 1000;
     const height = 1000;
 
-    svg
-      .attr("width", width)
-      .attr("height", height)
-      .attr("viewBox", `0 0 600 250`)
-      .style("width", "100%")
-      .style("height", "100%")
-      .style("margin", "0 auto");
+    svg.attr("width", width).attr("height", height).style("width", "100%").style("height", "100%");
+
+    const svgGroup = svg.append("g");
 
     const simulation = forceSimulation(nodes)
       .force(
         "link",
         forceLink(links)
           .id((d: any) => d.id)
-          .distance(100),
+          .distance(150),
       )
-      .force("charge", forceManyBody().strength(-500))
+      .force("charge", forceManyBody().strength(-300))
       .force("x", forceX(width / 2))
       .force("y", forceY(height / 2))
-      .force("collision", forceCollide().radius(50));
+      .force("collision", forceCollide().radius(40));
 
-    const zoomBehavior = zoom().on("zoom", (event) => {
-      svgGroup.attr("transform", event.transform);
-    });
+    const zoomBehavior = zoom()
+      .scaleExtent([0.1, 5]) // Allow zooming out and in dynamically
+      .on("zoom", (event) => {
+        svgGroup.attr("transform", event.transform);
+      });
 
-    const svgGroup = svg
-      .append("g")
-      .attr("transform", "translate(282.0683290021384,102.7027043871232) scale(0.05)")
-      .call(zoomBehavior);
+    svg.call(zoomBehavior);
 
     const link = svgGroup
       .append("g")
@@ -128,7 +128,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
       .enter()
       .append("line")
       .attr("stroke", "#CCCCCC")
-      .attr("stroke-width", 2);
+      .attr("stroke-width", 1.5);
 
     const node = svgGroup
       .append("g")
@@ -136,11 +136,11 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
       .data(nodes)
       .enter()
       .append("circle")
-      .attr("r", 10)
-      .attr("fill", (d) => colorMap[d.objectType] || "#000000")
+      .attr("r", 12)
+      .attr("fill", (d) => calculateNodeColor(d.objectType))
       .style("cursor", "pointer")
       .call(
-        d3Drag<SVGCircleElement, Node>()
+        d3Drag<SVGCircleElement, any>()
           .on("start", (event, d) => {
             if (!event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
@@ -157,10 +157,23 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
           }),
       );
 
+    node.append("title").text((d) => d.name);
+
+    // Set the initial transformation to `translate(360, 360) scale(0.2)`
+    svgGroup.attr("transform", "translate(360,360) scale(0.2)");
+
+    // Add click and hover interactions
     node
       .on("click", (event, d) => {
-        const rewrite = d.type == "Study" ? "studies" : "entities";
-        // console.log(`/library/${rewrite}/${d.id}`);
+        svg
+          .transition()
+          .duration(750)
+          .call(
+            zoomBehavior.transform,
+            zoomIdentity.translate(width / 2 - d.x * 1.5, height / 2 - d.y * 1.5).scale(1.5),
+          );
+
+        const rewrite = d.type === "Study" ? "studies" : "entities";
         navigate(`/library/${rewrite}/${d.id}`);
       })
       .on("mouseover", function () {
@@ -169,8 +182,6 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
       .on("mouseout", function () {
         select(this).attr("stroke", null).attr("stroke-width", null);
       });
-
-    node.append("title").text((d) => d.name);
 
     simulation.on("tick", () => {
       link
@@ -184,11 +195,9 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
   }, [filterGraphData, navigate]);
 
   return (
-    <>
-      <div className="forceDirectedGraphContainer">
-        <svg ref={containerRef} />
-      </div>
-    </>
+    <div className="forceDirectedGraphContainer">
+      <svg ref={containerRef} />
+    </div>
   );
 };
 
