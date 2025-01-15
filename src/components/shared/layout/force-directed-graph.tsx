@@ -1,6 +1,5 @@
 import {
   drag as d3Drag,
-  hsl as d3Hsl,
   forceCollide,
   forceLink,
   forceManyBody,
@@ -12,8 +11,7 @@ import {
   zoomIdentity,
 } from "d3";
 
-import { FC, useCallback, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { FC, useEffect, useRef } from "react";
 
 export enum ObjectTypeEnum {
   Unknown = 0,
@@ -32,89 +30,56 @@ type TForceDirectedGraphViewProps = {
     lowerLevelNodes?: { id: string; name: string }[];
   }[];
   searchKeyword?: string;
+  isDashBoard?: boolean;
 };
 
 export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
   linkingData = [],
   searchKeyword = "",
+  isDashBoard,
 }) => {
   const containerRef = useRef<SVGSVGElement | null>(null);
-  const navigate = useNavigate();
-
-  const calculateNodeColor = (objectType: number): string => {
-    const baseColor =
-      objectType === ObjectTypeEnum.Entity
-        ? "#0099CC"
-        : objectType === ObjectTypeEnum.Study
-          ? "#800080"
-          : "#CCCCCC";
-
-    const color = d3Hsl(baseColor);
-    color.l += 0.1;
-    return color.toString();
-  };
-
-  const filterGraphData = useCallback(() => {
-    const lowerKeyword = searchKeyword.toLowerCase();
-
-    const filteredNodes = linkingData.reduce((acc: any[], node: any) => {
-      const newLowerLevelNodes = (node.lowerLevelNodes || []).filter((child: any) =>
-        child.name?.toLowerCase()?.includes(lowerKeyword),
-      );
-
-      if (node.name?.toLowerCase()?.includes(lowerKeyword) || newLowerLevelNodes.length > 0) {
-        acc.push({ ...node, lowerLevelNodes: newLowerLevelNodes });
-      }
-
-      return acc;
-    }, []);
-
-    const filteredNodeIds = new Set(filteredNodes.map((node) => node.id));
-
-    const filteredLinks = filteredNodes.flatMap((node) =>
-      (node.lowerLevelNodes || [])
-        .filter((child) => filteredNodeIds.has(child.id))
-        .map((child) => ({
-          source: node.id,
-          target: child.id,
-        })),
-    );
-
-    return { nodes: filteredNodes, links: filteredLinks };
-  }, [linkingData, searchKeyword]);
 
   useEffect(() => {
-    const { nodes, links } = filterGraphData();
-
-    if (!nodes.length || !links.length) {
-      console.warn("No nodes or links available to render.");
+    if (!linkingData || linkingData.length === 0) {
+      console.warn("No data provided for rendering.");
       return;
     }
 
     const svg = select(containerRef.current);
     svg.selectAll("*").remove(); // Clear previous SVG content
 
-    const width = 1000;
-    const height = 1000;
+    const width = containerRef.current?.clientWidth || 1000;
+    const height = containerRef.current?.clientHeight || 1000;
 
-    svg.attr("width", width).attr("height", height).style("width", "100%").style("height", "100%");
+    svg
+      .attr("viewBox", [-width / 2, -height / 2, width, height].join(" "))
+      .attr("style", "width: 100%; height: 100%; background-color: white;");
 
     const svgGroup = svg.append("g");
+
+    const nodes = linkingData.map((node) => ({ ...node }));
+    const links = linkingData.flatMap((node) =>
+      (node.lowerLevelNodes || []).map((child) => ({
+        source: node.id,
+        target: child.id,
+      })),
+    );
 
     const simulation = forceSimulation(nodes)
       .force(
         "link",
         forceLink(links)
           .id((d: any) => d.id)
-          .distance(150),
+          .distance(100),
       )
       .force("charge", forceManyBody().strength(-300))
-      .force("x", forceX(width / 2))
-      .force("y", forceY(height / 2))
-      .force("collision", forceCollide().radius(40));
+      .force("x", forceX())
+      .force("y", forceY())
+      .force("collision", forceCollide(30));
 
     const zoomBehavior = zoom()
-      .scaleExtent([0.1, 5]) // Allow zooming out and in dynamically
+      .scaleExtent([0.1, 5])
       .on("zoom", (event) => {
         svgGroup.attr("transform", event.transform);
       });
@@ -123,24 +88,30 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
 
     const link = svgGroup
       .append("g")
+      .attr("stroke", "#999")
+      .attr("stroke-opacity", 0.6)
       .selectAll("line")
       .data(links)
-      .enter()
-      .append("line")
-      .attr("stroke", "#CCCCCC")
+      .join("line")
       .attr("stroke-width", 1.5);
 
     const node = svgGroup
       .append("g")
+      .attr("stroke", "#fff")
+      .attr("stroke-width", 1.5)
       .selectAll("circle")
       .data(nodes)
-      .enter()
-      .append("circle")
+      .join("circle")
       .attr("r", 12)
-      .attr("fill", (d) => calculateNodeColor(d.objectType))
-      .style("cursor", "pointer")
+      .attr("fill", (d) =>
+        d.objectType === ObjectTypeEnum.Entity
+          ? "#0099CC"
+          : d.objectType === ObjectTypeEnum.Study
+            ? "#800080"
+            : "#CCCCCC",
+      )
       .call(
-        d3Drag<SVGCircleElement, any>()
+        d3Drag()
           .on("start", (event, d) => {
             if (!event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
@@ -159,23 +130,18 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
 
     node.append("title").text((d) => d.name);
 
-    // Set the initial transformation to `translate(360, 360) scale(0.2)`
-    svgGroup.attr("transform", "translate(360,360) scale(0.2)");
+    // Zoom to node on click
+    node.on("click", (event, d) => {
+      svg
+        .transition()
+        .duration(750)
+        .call(
+          zoomBehavior.transform,
+          zoomIdentity.translate(width / 2 - d.x * 1.5, height / 2 - d.y * 1.5).scale(1.5),
+        );
+    });
 
-    // Add click and hover interactions
     node
-      .on("click", (event, d) => {
-        svg
-          .transition()
-          .duration(750)
-          .call(
-            zoomBehavior.transform,
-            zoomIdentity.translate(width / 2 - d.x * 1.5, height / 2 - d.y * 1.5).scale(1.5),
-          );
-
-        const rewrite = d.type === "Study" ? "studies" : "entities";
-        navigate(`/library/${rewrite}/${d.id}`);
-      })
       .on("mouseover", function () {
         select(this).attr("stroke", "yellow").attr("stroke-width", 2);
       })
@@ -192,10 +158,31 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
 
       node.attr("cx", (d: any) => d.x).attr("cy", (d: any) => d.y);
     });
-  }, [filterGraphData, navigate]);
+
+    // Custom scale and translation
+    const bounds = svgGroup.node()?.getBBox();
+    if (bounds) {
+      const fullWidth = bounds.width;
+      const fullHeight = bounds.height;
+      const midX = bounds.x + fullWidth / 2;
+      const midY = bounds.y + fullHeight / 2;
+
+      // Custom scaling and translation
+      const customScale = isDashBoard ? 0.075 : 0.2; // Adjust this for your preferred scale
+      const customTranslateX = 0; // Adjust this for horizontal centering
+      const customTranslateY = 0; // Adjust this for vertical centering
+
+      svg.call(
+        zoomBehavior.transform,
+        zoomIdentity
+          .translate(customTranslateX - midX * customScale, customTranslateY - midY * customScale)
+          .scale(customScale),
+      );
+    }
+  }, [linkingData]);
 
   return (
-    <div className="forceDirectedGraphContainer">
+    <div style={{ width: "auto", height: "100vh" }}>
       <svg ref={containerRef} />
     </div>
   );

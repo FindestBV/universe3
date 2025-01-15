@@ -3,8 +3,6 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { Bot } from "lucide-react";
 
-import { useState } from "react";
-
 const AskIgorModal: React.FC = () => {
   return (
     <Dialog>
