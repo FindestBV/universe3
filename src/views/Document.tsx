@@ -16,6 +16,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ExternalLink,
+  File,
   List,
   MoreHorizontal,
   Network,
@@ -84,6 +85,11 @@ export const Document: React.FC = () => {
         </DropdownMenu>
       </div>
     ));
+
+  const openFile = (file) => {
+    console.log(file.url);
+    // window.location.href = file.url;
+  };
 
   useEffect(() => {
     if (fetchedDocument) {
@@ -290,14 +296,38 @@ export const Document: React.FC = () => {
               </TabsContent>
               <TabsContent value="attachments">
                 <h4 className="pb-2 font-black">Attachments</h4>
-                {fetchedDocument?.attachedFiles && "Stuff here"}
-                <div className="flex items-center justify-start gap-2 rounded-sm bg-slate-100 p-4">
-                  <Upload size={14} />{" "}
-                  <span>Add file (PDF, docx, pptx), maximum file size 50MB.</span>
-                </div>
-                <Button className="primary mt-2 bg-blue-500 p-4 text-white hover:bg-slate-200">
-                  Add File
-                </Button>
+                {fetchedDocument?.attachedFiles && fetchedDocument?.attachedFiles.length > 0 ? (
+                  <>
+                    <div className="mb-4 flex items-center justify-start gap-2 rounded-sm bg-slate-100 p-4">
+                      <ul>
+                        {fetchedDocument.attachedFiles.map((file) => {
+                          console.log(file);
+                          return (
+                            <li className="flex flex-row items-center gap-4">
+                              <File size={16} />{" "}
+                              <span>
+                                {file.title}.{file.fileExtension}
+                              </span>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                    <Button className="primary mt-2 bg-blue-500 p-4 text-white hover:bg-blue-300">
+                      PREVIEW FILE
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-start gap-2 rounded-sm bg-slate-100 p-4">
+                      <Upload size={14} />{" "}
+                      <span>Add file (PDF, docx, pptx), maximum file size 50MB.</span>
+                    </div>
+                    <Button className="primary mt-2 bg-blue-500 p-4 text-white hover:bg-slate-200">
+                      Add File
+                    </Button>
+                  </>
+                )}
               </TabsContent>
             </Tabs>
           </div>

@@ -158,14 +158,14 @@ const EditorToolbar = ({ editor }: { editor: any }) => {
   ];
 
   return (
-    <div className="toolbar sticky top-16 z-20 w-full border-b border-gray-300 bg-gray-100 px-4 py-2">
+    <div className="toolbar sticky top-16 z-20 w-full border-b border-gray-300 bg-gray-100 px-2 py-1">
       <div className="flex items-center justify-between">
         {/* Left Section: Formatting Buttons */}
         <div className="flex items-center space-x-2">
           <AskIgorModal />
           <DropdownMenu onOpenChange={(open) => setIsDropdownOpen(open)}>
             <DropdownMenuTrigger asChild>
-              <Button className="rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400">
+              <Button className="h-9 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400">
                 <Pilcrow size={16} /> Paragraph
                 {isDropdownOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </Button>
@@ -219,14 +219,14 @@ const EditorToolbar = ({ editor }: { editor: any }) => {
         {/* Right Section: View and Share Options */}
         <div className="flex items-center space-x-2">
           <button
-            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400"
+            className="flex items-center gap-2 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400"
             aria-label="View"
           >
             <Eye size={16} />
             VIEW
           </button>
           <button
-            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400"
+            className="flex items-center gap-2 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400"
             aria-label="Edit"
           >
             <FilePenLine size={16} />
@@ -234,7 +234,7 @@ const EditorToolbar = ({ editor }: { editor: any }) => {
           </button>
           <span className="h-6 border-l border-gray-300"></span>
           <button
-            className="flex items-center gap-2 rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400"
+            className="flex items-center gap-2 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400"
             aria-label="Pin"
           >
             <Pin size={16} />
