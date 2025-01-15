@@ -69,14 +69,14 @@ const MinimizableDialog = () => {
           className="fixed bottom-4 right-4 flex h-12 w-1/4 cursor-pointer items-center justify-between bg-[#3B82F6] px-4 text-white shadow-lg"
           onClick={handleToggleMinimized}
         >
-          <p className="text-sm text-white">Dialog (Minimized)</p>
+          <p className="text-sm text-white">Dialog title</p>
           <button
             onClick={() => {
               setIsOpen(true);
               setIsMinimized(false);
               handleToggleMinimized();
             }}
-            className="text-sm text-blue-800"
+            className="text-sm text-white"
           >
             Restore
           </button>
