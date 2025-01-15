@@ -1,5 +1,14 @@
 import { TTypeGraphNodeDTO } from "@/types/types";
-import { hsl as d3Hsl, hierarchy, HierarchyCircularNode, pack, scaleOrdinal, select } from "d3";
+import {
+  hsl as d3Hsl,
+  hierarchy,
+  HierarchyCircularNode,
+  pack,
+  scaleOrdinal,
+  select,
+  zoom,
+  zoomIdentity,
+} from "d3";
 
 import { FC, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,12 +19,11 @@ type TTypeGraphViewProps = {
 };
 
 export const PackGraphViewUpdated: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) => {
-  const containerRef = useRef<HTMLDivElement>(null); // Reference for the graph container
-  const navigate = useNavigate(); // Navigation hook for redirection
+  const containerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   /**
-   * Prepares the graph data by grouping nodes and filtering based on the keyword.
-   * Groups are created for "ENTITY" and "STUDY" and filtered by the search keyword.
+   * Prepare data for the graph: groups nodes by "ENTITY" and "STUDY," filtered by the search keyword.
    */
   const getModifiedDataForTypeGraph = (typeData: TTypeGraphNodeDTO[] = [], keyword: string) => {
     const lowerKeyword = keyword.toLowerCase();
@@ -38,13 +46,13 @@ export const PackGraphViewUpdated: FC<TTypeGraphViewProps> = ({ data, searchKeyw
     };
 
     return {
-      name: "PackData", // Root node, not displayed
+      name: "PackData",
       children: [entityGroup, studyGroup],
     };
   };
 
   useEffect(() => {
-    if (!data || !data.length) return; // Exit if no data is provided
+    if (!data || !data.length) return;
 
     const container = containerRef.current;
     if (!container) return;
@@ -54,36 +62,31 @@ export const PackGraphViewUpdated: FC<TTypeGraphViewProps> = ({ data, searchKeyw
 
     const modifiedData = getModifiedDataForTypeGraph(data, searchKeyword || "");
 
-    // Set graph dimensions
     const width = container.clientWidth || 1000;
     const height = container.clientHeight || 1000;
 
-    // Create a hierarchical data structure and pack layout
+    // Create hierarchical data and pack layout
     const root = pack<TTypeGraphNodeDTO>().size([width, height]).padding(8)(
       hierarchy(modifiedData).sum((d) => d.size || 1),
     );
 
-    let focus = root; // Current focus node
-    let view = [root.x, root.y, root.r * 2]; // Initial view dimensions
+    let focus = root;
+    let view = [root.x, root.y, root.r * 2];
 
-    // Create the SVG element for the graph
+    // Create the SVG element
     const svg = select(container)
       .append("svg")
-      .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
       .attr("width", width)
       .attr("height", height)
+      .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
       .style("background-color", "white");
 
-    const svgGroup = svg.append("g"); // Group for circles and labels
+    const svgGroup = svg.append("g");
 
-    // Define a color scale for the different node categories
     const color = scaleOrdinal<string>()
       .domain(["ENTITY", "STUDY", "PackData"])
       .range(["#0099CC", "#800080", "rgb(242, 244, 248)"]);
 
-    /**
-     * Determines the color of each node based on its depth and type.
-     */
     const calculateColor = (d: HierarchyCircularNode<TTypeGraphNodeDTO>) => {
       let parent = d;
       while (parent.depth > 1 && parent.parent) {
@@ -91,47 +94,51 @@ export const PackGraphViewUpdated: FC<TTypeGraphViewProps> = ({ data, searchKeyw
       }
       const baseColor = color(parent.data.name) || "#0099cc";
       const modifiedColor = d3Hsl(baseColor);
-      modifiedColor.l += d.depth === 1 ? 0 : d.depth * 0.1; // Lighten the color for deeper nodes
+      modifiedColor.l += d.depth === 1 ? 0 : d.depth * 0.1;
       return modifiedColor.toString();
     };
 
+    const zoomBehavior = zoom()
+      .scaleExtent([0.1, 5])
+      .on("zoom", (event) => {
+        svgGroup.attr("transform", event.transform);
+      });
+
+    svg.call(zoomBehavior);
+
     /**
-     * Zooms to a node and adjusts the position and visibility of the elements.
+     * Function to zoom and adjust element positions dynamically.
      */
-    const zoomTo = (v: [number, number, number]) => {
-      const k = width / v[2]; // Scale factor
+    const zoomTo = (v: [number, number, number], isInitial = false) => {
+      const k = width / v[2];
       view = v;
 
-      // Transition circles to their new positions and sizes
-      svgGroup
+      const transition = isInitial ? svgGroup : svgGroup.transition().duration(750);
+
+      transition
         .selectAll("circle")
-        .transition()
-        .duration(750)
         .attr("cx", (d) => (d.x - v[0]) * k)
         .attr("cy", (d) => (d.y - v[1]) * k)
         .attr("r", (d) => d.r * k);
 
-      // Transition text to their new positions and adjust visibility and content
-      svgGroup
+      transition
         .selectAll("text")
-        .transition()
-        .duration(750)
         .attr("x", (d) => (d.x - v[0]) * k)
         .attr("y", (d) => (d.y - v[1]) * k)
         .text((d) =>
           d === focus
-            ? d.data.name || "" // Show full name if fully zoomed in
+            ? d.data.name || ""
             : d.parent === focus
               ? d.data.name === "ENTITY" || d.data.name === "STUDY"
-                ? d.data.name // Always show "ENTITY" and "STUDY" labels fully
-                : d.data.name?.charAt(0) || "" // Show first character for group children
+                ? d.data.name
+                : d.data.name?.charAt(0) || ""
               : "",
         )
-        .style("fill-opacity", (d) => (d === focus || d.parent === focus ? 1 : 0)) // Set opacity based on visibility
-        .style("font-size", (d) => (d === focus ? "16px" : d.parent === focus ? "12px" : "8px")); // Adjust font size
+        .style("fill-opacity", (d) => (d === focus || d.parent === focus ? 1 : 0))
+        .style("font-size", (d) => (d === focus ? "16px" : d.parent === focus ? "12px" : "8px"));
     };
 
-    // Add circles for each node
+    // Add circles for nodes
     svgGroup
       .selectAll("circle")
       .data(root.descendants())
@@ -144,31 +151,46 @@ export const PackGraphViewUpdated: FC<TTypeGraphViewProps> = ({ data, searchKeyw
       .attr("r", (d) => d.r)
       .style("cursor", "pointer")
       .on("mouseover", function () {
-        select(this).attr("stroke", "yellow").attr("stroke-width", 2); // Highlight on hover
+        select(this).attr("stroke", "yellow").attr("stroke-width", 2);
       })
       .on("mouseout", function () {
-        select(this).attr("stroke", "white").attr("stroke-width", 1); // Reset highlight on mouse out
+        select(this).attr("stroke", "white").attr("stroke-width", 1);
       })
       .on("click", (event, d) => {
-        focus = d; // Update the focus node
-        zoomTo([focus.x, focus.y, focus.r * 2]); // Zoom to the clicked node
+        focus = d;
+        zoomTo([focus.x, focus.y, focus.r * 2]);
       });
 
-    // Add text labels for each node
+    // Add text labels for nodes
     svgGroup
       .selectAll("text")
-      .data(root.descendants().filter((d) => d.data.name !== "PackData")) // Exclude "PackData" label
+      .data(root.descendants().filter((d) => d.data.name !== "PackData"))
       .enter()
       .append("text")
       .attr("text-anchor", "middle")
       .attr("x", (d) => d.x)
       .attr("y", (d) => d.y)
       .style("font-size", "8px")
-      .style("fill-opacity", 0) // Start hidden
-      .text(""); // Initialize with empty text
+      .style("fill-opacity", 0)
+      .text("");
 
-    // Initialize zoom to the root node
-    zoomTo([root.x, root.y, root.r * 2]);
+    // Fit and center the graph initially
+    // Fit and center the graph initially
+    const bounds = svgGroup.node()?.getBBox();
+    if (bounds) {
+      const fullWidth = bounds.width;
+      const fullHeight = bounds.height;
+      const midX = bounds.x + fullWidth / 2;
+      const midY = bounds.y + fullHeight / 2;
+
+      const scale = Math.min(width / fullWidth, height / fullHeight) * 0.9;
+      const translateX = width / 2 - scale * midX;
+      const translateY = height / 2 - scale * midY;
+
+      svg.call(zoomBehavior.transform, zoomIdentity.translate(translateX, translateY).scale(scale));
+    }
+
+    zoomTo([root.x, root.y, root.r * 2], true);
   }, [data, searchKeyword]);
 
   return (
