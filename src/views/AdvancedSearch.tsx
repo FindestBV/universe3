@@ -141,6 +141,7 @@ export const AdvancedSearch: React.FC = () => {
                     {...item}
                     isSelected={selectedSearchItems.has(item.id)}
                     onSelect={handleSelectItem}
+                    connectedObjects={item.connectedObjects}
                   />
                 ))}
             </div>

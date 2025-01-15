@@ -12,7 +12,7 @@ import {
 import { FC, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-// import { FindestButton } from "../utilities/findest-button";
+import { FindestButton } from "../utilities/findest-button";
 
 export enum ObjectTypeEnum {
   Unknown = 0,
@@ -129,8 +129,8 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
 
     const modifiedData = getModifiedDataForTypeGraph(data, searchKeyword || "");
 
-    const width = container.clientWidth || 500;
-    const height = container.clientHeight || 500;
+    const width = container.clientWidth || 1000;
+    const height = container.clientHeight || 1000;
 
     const root = pack<TTypeGraphNodeDTO>().size([width, height]).padding(8)(
       hierarchy(modifiedData).sum((d) => d.size || 1),

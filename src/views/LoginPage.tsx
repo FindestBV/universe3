@@ -1,23 +1,25 @@
-import Login from '@/components/login';
-import logoUniverse from '@/assets/universe_logo_color.png';
-import { LoginImageSlider } from '@/components/login/login-image-slider';
+import logoUniverse from "@/assets/universe_logo_color.png";
+import Login from "@/components/login";
+import { LoginImageSlider } from "@/components/login/login-image-slider";
 
 export const LoginPage = () => {
   return (
-    <div className="grid grid-cols-5 w-full h-screen overflow-hidden"> {/* Changed to h-screen and added overflow-hidden */}
-      {/* Left Panel: 3/5 of the width */}
-      <div className="col-span-3 bg-[#395fa7] flex items-center justify-center">
-        <LoginImageSlider />
+    <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+        <a href="https://findest.com">
+          <img alt="Universe, by Findest" src={logoUniverse} className="mx-auto h-20 w-auto" />
+        </a>
       </div>
 
-      {/* Right Panel: 2/5 of the width */}
-      <div className="col-span-2 flex flex-col items-center justify-center">
-        <div className="flex mx-auto w-full p-6 items-center justify-center">
-          <a href="/" rel="preload"><img src={logoUniverse} alt="Findest logo" width="160px" height="50px" className="items-center justify-center" /></a>
-        </div>
-        <div className="w-full h-full max-w-md">
-          <Login />
-        </div>
+      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <Login />
+
+        <p className="mt-10 text-center text-sm/6 text-gray-400">
+          Forgot your password?{" "}
+          <a href="#" className="font-semibold text-black hover:text-blue-500">
+            Click here to reset
+          </a>
+        </p>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useGetLinkingQuery, useGetPageTypesQuery } from "@/api/activity/activityApi";
 import ForceDirectedGraphView from "@/components/shared/layout/force-directed-graph";
-import PackGraphView from "@/components/shared/layout/pack-graph";
+import PackGraphViewUpdated from "@/components/shared/layout/pack-graph-updated";
 import DataViewSearchBar from "@/components/shared/search/data-view-searchbar";
 import { FindestButton } from "@/components/shared/utilities/findest-button";
 import { useDebounceDataView } from "@/hooks/use-debounce-data-view";
@@ -162,9 +162,10 @@ export const DataView = () => {
           <ForceDirectedGraphView
             linkingData={filteredData && filteredData.length ? filteredData : linkingData}
             searchKeyword={searchKeyword}
+            isDashBoard={false}
           />
         ) : (
-          <PackGraphView data={filteredData} />
+          <PackGraphViewUpdated data={filteredData} isDashBoard={false} />
         )}
       </div>
     </motion.div>
