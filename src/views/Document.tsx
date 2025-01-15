@@ -155,7 +155,7 @@ export const Document: React.FC = () => {
                 <h4 className="pb-2 font-black">Document Abstract</h4>
                 <div className="flex flex-row gap-4">
                   <div className="w-3/4">
-                    <div>{fetchedDocument?.abstract || "No document information available."}</div>
+                    <p>{fetchedDocument?.abstract || "No document information available."}</p>
 
                     <Comments />
                   </div>
