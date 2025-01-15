@@ -7,114 +7,47 @@ import {
   scaleOrdinal,
   select,
   zoom,
+  zoomIdentity,
 } from "d3";
 
 import { FC, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { FindestButton } from "../utilities/findest-button";
-
-export enum ObjectTypeEnum {
-  Unknown = 0,
-  Entity = 1,
-  Document = 2,
-  Highlight = 3,
-  Study = 4,
-  Image = 5,
-  ScienceArticle = 6,
-  UsPatent = 7,
-  Weblink = 8,
-  MagPatent = 9,
-  Comment = 10,
-  File = 11,
-  Tenant = 12,
-  Organization = 13,
-  Case = 14,
-  Query = 15,
-}
 
 type TTypeGraphViewProps = {
   data?: TTypeGraphNodeDTO[];
   searchKeyword?: string;
 };
 
-export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) => {
+export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword, isDashBoard }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  const navigateToObject = (object: { objectType: ObjectTypeEnum; id: string }) => {
-    if (object.objectType === ObjectTypeEnum.Entity) {
-      navigate(`/library/entities/${object.id}`);
-    } else if (object.objectType === ObjectTypeEnum.Study) {
-      navigate(`/library/studies/${object.id}`);
-    }
-  };
-
+  /**
+   * Prepare data for the graph: groups nodes by "ENTITY" and "STUDY," filtered by the search keyword.
+   */
   const getModifiedDataForTypeGraph = (typeData: TTypeGraphNodeDTO[] = [], keyword: string) => {
     const lowerKeyword = keyword.toLowerCase();
 
-    const filteredData = typeData.map((a) => ({
-      ...a,
-      children: (a.children || []).filter(
-        (child) => child.name?.toLowerCase().includes(lowerKeyword), // Check child.name exists
+    const filteredData = typeData.map((node) => ({
+      ...node,
+      children: (node.children || []).filter((child) =>
+        child.name?.toLowerCase().includes(lowerKeyword),
       ),
     }));
 
-    const test = filteredData.map((a) => ({
-      ...a,
-      name: a.type || "Unnamed", // Ensure `a.type` is valid
-      children: (a.children || []).map((c) => ({
-        ...c,
-        objectType: a.objectType,
-        size: (a.children || []).length,
-      })),
-    }));
-
-    const entitygroups = test
-      .filter((d) => d.objectType === ObjectTypeEnum.Entity && d.name !== "Entity")
-      .map((a) => ({
-        ...a,
-        children: (a.children || []).map((c) => ({ ...c, size: (a.children || []).length })),
-      }));
-
-    const singleEntities = test
-      .find((d) => d.name === "Entity")
-      ?.children?.map((a) => ({
-        ...a,
-        size: 1,
-      }));
-
     const entityGroup = {
       name: "ENTITY",
-      children: [...entitygroups, ...(singleEntities ?? [])],
+      children: filteredData.filter((node) => node.objectType === 1),
     };
-
-    const studyGroups = test
-      .filter((d) => d.objectType === ObjectTypeEnum.Study && d.name !== "Study")
-      .map((a) => ({
-        ...a,
-        children: (a.children || []).map((c) => ({ ...c, size: (a.children || []).length })),
-      }));
-
-    const singleStudies = test
-      .find((d) => d.name === "Study")
-      ?.children?.map((a) => ({
-        ...a,
-        size: 1,
-      }));
 
     const studyGroup = {
       name: "STUDY",
-      children: [...studyGroups, ...(singleStudies ?? [])],
+      children: filteredData.filter((node) => node.objectType === 4),
     };
 
     return {
       name: "PackData",
-      size: 1,
-      children: [
-        entityGroup.children.length > 0 ? entityGroup : null,
-        studyGroup.children.length > 0 ? studyGroup : null,
-      ].filter((a) => a),
+      children: [entityGroup, studyGroup],
     };
   };
 
@@ -124,7 +57,7 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
     const container = containerRef.current;
     if (!container) return;
 
-    // Clear previous SVG
+    // Clear existing SVG content
     select(container).selectAll("svg").remove();
 
     const modifiedData = getModifiedDataForTypeGraph(data, searchKeyword || "");
@@ -132,51 +65,80 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
     const width = container.clientWidth || 1000;
     const height = container.clientHeight || 1000;
 
+    // Create hierarchical data and pack layout
     const root = pack<TTypeGraphNodeDTO>().size([width, height]).padding(8)(
       hierarchy(modifiedData).sum((d) => d.size || 1),
     );
 
+    let focus = root;
+    let view = [root.x, root.y, root.r * 2];
+
+    // Create the SVG element
     const svg = select(container)
       .append("svg")
-      .attr("viewBox", `0 0 ${width} ${height}`)
-      .style("width", "100%")
-      .style("height", "100%")
-      .call(
-        zoom().on("zoom", (event) => {
-          svgGroup.attr("transform", event.transform);
-        }),
-      );
+      .attr("width", width)
+      .attr("height", height)
+      .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
+      .style("background-color", "white");
 
     const svgGroup = svg.append("g");
 
     const color = scaleOrdinal<string>()
       .domain(["ENTITY", "STUDY", "PackData"])
-      .range(["#0099CC", "#800080", "rgb(242, 244, 248)"]); // Updated first circle color
+      .range(["#0099CC", "#800080", "rgb(242, 244, 248)"]);
 
     const calculateColor = (d: HierarchyCircularNode<TTypeGraphNodeDTO>) => {
-      const depth = d.depth;
-      while (d.depth > 1 && d.parent) {
-        d = d.parent;
+      let parent = d;
+      while (parent.depth > 1 && parent.parent) {
+        parent = parent.parent;
       }
-      const baseColor = color(d.data.name) || "#0099cc";
+      const baseColor = color(parent.data.name) || "#0099cc";
       const modifiedColor = d3Hsl(baseColor);
-      modifiedColor.l += depth === 1 ? 0 : depth * 0.1;
+      modifiedColor.l += d.depth === 1 ? 0 : d.depth * 0.1;
       return modifiedColor.toString();
     };
 
-    // Tooltip
-    const tooltip = select(container)
-      .append("div")
-      .attr("class", "tooltip")
-      .style("position", "absolute")
-      .style("visibility", "hidden")
-      .style("background-color", "white")
-      .style("padding", "5px")
-      .style("border-radius", "4px")
-      .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)")
-      .style("z-index", "10");
+    const zoomBehavior = zoom()
+      .scaleExtent([0.1, 5])
+      .on("zoom", (event) => {
+        svgGroup.attr("transform", event.transform);
+      });
 
-    // Draw circles
+    // svg.call(zoomBehavior);
+
+    /**
+     * Function to zoom and adjust element positions dynamically.
+     */
+    const zoomTo = (v: [number, number, number], isInitial = false) => {
+      const k = width / v[2];
+      view = v;
+
+      const transition = isInitial ? svgGroup : svgGroup.transition().duration(750);
+
+      transition
+        .selectAll("circle")
+        .attr("cx", (d) => (d.x - v[0]) * k)
+        .attr("cy", (d) => (d.y - v[1]) * k)
+        .attr("r", (d) => d.r * k);
+
+      transition
+        .selectAll("text")
+        .attr("x", (d) => (d.x - v[0]) * k)
+        .attr("y", (d) => (d.y - v[1]) * k)
+        .text((d) =>
+          d === focus
+            ? d.data.name || ""
+            : d.parent === focus
+              ? d.data.name === "ENTITY" || d.data.name === "STUDY"
+                ? d.data.name
+                : d.data.name?.charAt(0) || ""
+              : "",
+        )
+        .style("fill-opacity", (d) => (d === focus || d.parent === focus ? 1 : 0))
+        .style("font-size", (d) => (d === focus ? "16px" : d.parent === focus ? "12px" : "8px"));
+    };
+
+    // Add circles for nodes
     svgGroup
       .selectAll("circle")
       .data(root.descendants())
@@ -188,40 +150,47 @@ export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) 
       .attr("cy", (d) => d.y)
       .attr("r", (d) => d.r)
       .style("cursor", "pointer")
-      .on("click", (_, d: HierarchyCircularNode<TTypeGraphNodeDTO>) => {
-        if (d.data.id) navigateToObject({ objectType: d.data.objectType, id: d.data.id });
-      })
-      .on("mouseover", function (event, d) {
-        tooltip
-          .text(d.data.name)
-          .style("top", `${event.pageY - 10}px`)
-          .style("left", `${event.pageX + 10}px`)
-          .style("visibility", "visible");
+      .on("mouseover", function () {
         select(this).attr("stroke", "yellow").attr("stroke-width", 2);
       })
-      .on("mousemove", (event) => {
-        tooltip.style("top", `${event.pageY - 10}px`).style("left", `${event.pageX + 10}px`);
-      })
       .on("mouseout", function () {
-        tooltip.style("visibility", "hidden");
         select(this).attr("stroke", "white").attr("stroke-width", 1);
+      })
+      .on("click", (event, d) => {
+        focus = d;
+        zoomTo([focus.x, focus.y, focus.r * 2]);
       });
 
-    // Add labels for ENTITY and STUDY only
+    // Add text labels for nodes
     svgGroup
       .selectAll("text")
-      .data(root.descendants().filter((d) => d.data.name === "ENTITY" || d.data.name === "STUDY"))
+      .data(root.descendants().filter((d) => d.data.name !== "PackData"))
       .enter()
       .append("text")
+      .attr("text-anchor", "middle")
       .attr("x", (d) => d.x)
       .attr("y", (d) => d.y)
-      .attr("text-anchor", "middle")
-      .style("font-size", "16px")
-      .style("fill", "#252525")
-      .style("font-family", "IBM Plex Sans, sans-serif")
-      .style("font-weight", "bold")
-      .text((d) => d.data?.name);
-  }, [data, searchKeyword, navigate]);
+      .style("font-size", "8px")
+      .style("fill-opacity", 0)
+      .text("");
+
+    // Fit and center the graph initially
+    // Fit and center the graph initially
+    const bounds = svgGroup.node()?.getBBox();
+    if (bounds) {
+      const fullWidth = bounds.width;
+      const fullHeight = bounds.height;
+      const midX = bounds.x + fullWidth / 2;
+      const midY = bounds.y + fullHeight / 2;
+
+      const scale = isDashBoard ? 0.5 : Math.min(width / fullWidth, height / fullHeight) * 0.5;
+      const translateX = isDashBoard ? 0 : 0;
+      const translateY = isDashBoard ? 0 : 0;
+      svg.call(zoomBehavior.transform, zoomIdentity.translate(translateX, translateY).scale(scale));
+    }
+
+    zoomTo([root.x, root.y, root.r * 2], true);
+  }, [data, searchKeyword]);
 
   return (
     <div className="packGraphDashboard">
