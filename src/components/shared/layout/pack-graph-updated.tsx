@@ -108,7 +108,7 @@ export const PackGraphViewUpdated: FC<TTypeGraphViewProps> = ({
         svgGroup.attr("transform", event.transform);
       });
 
-    svg.call(zoomBehavior);
+    // svg.call(zoomBehavior);
 
     /**
      * Function to zoom and adjust element positions dynamically.
@@ -187,7 +187,7 @@ export const PackGraphViewUpdated: FC<TTypeGraphViewProps> = ({
       const midX = bounds.x + fullWidth / 2;
       const midY = bounds.y + fullHeight / 2;
 
-      const scale = isDashBoard ? 0.5 : Math.min(width / fullWidth, height / fullHeight) * 0.9;
+      const scale = isDashBoard ? 0.5 : Math.min(width / fullWidth, height / fullHeight) * 0.5;
       const translateX = isDashBoard ? 0 : 0;
       const translateY = isDashBoard ? 0 : 0;
       svg.call(zoomBehavior.transform, zoomIdentity.translate(translateX, translateY).scale(scale));
