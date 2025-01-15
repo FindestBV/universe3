@@ -13,7 +13,7 @@ import TableRow from "@tiptap/extension-table-row";
 import Text from "@tiptap/extension-text";
 import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { Download } from "lucide-react";
+import { Download, Grid, Plus } from "lucide-react";
 
 import { Key, useState } from "react";
 
@@ -157,7 +157,19 @@ export const Editor = ({
 
               {editor && (
                 <>
-                  <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
+                  <FloatingMenu
+                    editor={editor}
+                    tippyOptions={{ duration: 100 }}
+                    shouldShow={({ editor }) => editor.isFocused}
+                    className="sticky -ml-20 flex flex-row gap-2"
+                  >
+                    <Button className="bg-transparent p-1">
+                      <Plus size={20} />
+                    </Button>
+                    <Button className="bg-transparent p-1">
+                      <Grid size={20} />
+                    </Button>
+                  </FloatingMenu>
                   <EditorContent editor={editor} />
                   <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
                 </>
