@@ -165,7 +165,7 @@ export const DataView = () => {
             isDashBoard={false}
           />
         ) : (
-          <PackGraphViewUpdated data={filteredData} />
+          <PackGraphViewUpdated data={filteredData} isDashBoard={false} />
         )}
       </div>
     </motion.div>

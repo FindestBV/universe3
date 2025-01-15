@@ -18,7 +18,11 @@ type TTypeGraphViewProps = {
   searchKeyword?: string;
 };
 
-export const PackGraphViewUpdated: FC<TTypeGraphViewProps> = ({ data, searchKeyword }) => {
+export const PackGraphViewUpdated: FC<TTypeGraphViewProps> = ({
+  data,
+  searchKeyword,
+  isDashBoard,
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -183,10 +187,9 @@ export const PackGraphViewUpdated: FC<TTypeGraphViewProps> = ({ data, searchKeyw
       const midX = bounds.x + fullWidth / 2;
       const midY = bounds.y + fullHeight / 2;
 
-      const scale = Math.min(width / fullWidth, height / fullHeight) * 0.9;
-      const translateX = width / 2 - scale * midX;
-      const translateY = height / 2 - scale * midY;
-
+      const scale = isDashBoard ? 0.5 : Math.min(width / fullWidth, height / fullHeight) * 0.9;
+      const translateX = isDashBoard ? 0 : 0;
+      const translateY = isDashBoard ? 0 : 0;
       svg.call(zoomBehavior.transform, zoomIdentity.translate(translateX, translateY).scale(scale));
     }
 
