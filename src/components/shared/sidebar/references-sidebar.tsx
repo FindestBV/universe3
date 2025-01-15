@@ -155,8 +155,8 @@ export const ReferencesSidebar: React.FC<{
                     ? Object.entries(connectedInbox).map((doc, index) => (
                         <div key={index} className="mb-2 flex items-start gap-2">
                           <Link size={24} />
-                          <a href={"#"} className="font-bold">
-                            {doc[1]?.documentTitle}
+                          <a href={"#"} className="text-gray-700 hover:text-black">
+                            <p>{doc[1]?.documentTitle}</p>
                           </a>
                         </div>
                       ))
@@ -168,10 +168,10 @@ export const ReferencesSidebar: React.FC<{
                 <TabsContent value="documents">
                   {connectedObjects?.documents && connectedObjects.documents.length > 0
                     ? connectedObjects.documents.map((doc, index) => (
-                        <div key={index} className="mb-2 flex items-center gap-2">
+                        <div key={index} className="mb-2 flex items-start gap-2">
                           <Link size={24} />
-                          <a href={"#"} className="font-bold">
-                            {doc.title || "Untitled Document"}
+                          <a href={"#"} className="text-gray-700 hover:text-black">
+                            <p>{doc.title || "Untitled Document"}</p>
                           </a>
                         </div>
                       ))
