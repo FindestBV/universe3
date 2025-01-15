@@ -1,5 +1,5 @@
 import logoUniverse from "@/assets/universe_logo_color.png";
-import Login from "@/components/login";
+import Login from "@/components/shared/login";
 
 export const LoginPage = () => {
   return (
