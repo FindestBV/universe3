@@ -48,9 +48,15 @@ export const documentApi = api.injectEndpoints({
           const scienceArticles = await dispatch(
             api.endpoints?.getDocumentRelatedScienceArticles.initiate(document.id),
           ).unwrap();
+
+          const attachedFiles = await dispatch(
+            api.endpoints.getAttachedFiles.initiate(id),
+          ).unwrap();
+
           dispatch(
             api.util.updateQueryData("getDocumentById", id, (draft) => {
               draft.scienceArticles = scienceArticles;
+              draft.attachedFiles = attachedFiles;
             }),
           );
         } catch (error) {
@@ -66,6 +72,10 @@ export const documentApi = api.injectEndpoints({
 
     getConnectedObjects: builder.query<ConnectedObject[], { id: string; type: string }>({
       query: ({ id, type }) => `linking/${id}?objectType[]=${type}`,
+    }),
+
+    getAttachedFiles: builder.query<ConnectedObject[], { id: string }>({
+      query: (id) => `savedfile/linkedto/${id}`,
     }),
 
     // Document Inbox Items
