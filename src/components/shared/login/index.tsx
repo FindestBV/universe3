@@ -1,7 +1,6 @@
 import { setCredentials } from "@/api/auth/authSlice";
-// Adjust the import path for your store
-import { Loader } from "lucide-react";
 
+// Adjust the import path for your store
 import { useState } from "react";
 import { MutatingDots } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
@@ -93,7 +92,7 @@ const Login = () => {
                   className="mt-4 w-full rounded-md bg-[#395fa7] py-2 text-white hover:bg-[#38b2f6] focus:outline-none"
                   disabled={isLoading} // Disable button when loading
                 >
-                  NEXT
+                  LOG IN
                 </button>
               </div>
             </form>
