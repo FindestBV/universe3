@@ -168,7 +168,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
       const midY = bounds.y + fullHeight / 2;
 
       // Custom scaling and translation
-      const customScale = isDashBoard ? 0.075 : 0.2; // Adjust this for your preferred scale
+      const customScale = isDashBoard ? 0.075 : 0.15; // Adjust this for your preferred scale
       const customTranslateX = 0; // Adjust this for horizontal centering
       const customTranslateY = 0; // Adjust this for vertical centering
 
