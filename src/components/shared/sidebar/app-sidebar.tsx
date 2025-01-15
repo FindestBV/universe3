@@ -75,9 +75,16 @@ export function AppSidebar() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton tooltip="Inbox">
-                <a href="/inbox" className="flex items-center gap-2 text-white hover:text-black">
-                  <Inbox size={18} />
-                  {open && <span className="font-medium">Inbox</span>}
+                <a
+                  href="/inbox"
+                  className="group/link flex items-center gap-2 text-white hover:text-black"
+                >
+                  <Inbox size={18} className="text-white group-hover/link:text-black" />
+                  {open && (
+                    <span className="font-medium text-white group-hover/link:text-black">
+                      Inbox
+                    </span>
+                  )}
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>

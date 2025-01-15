@@ -119,11 +119,7 @@ export const Inbox: React.FC = () => {
               <button
                 type="button"
                 id="add-filter"
-                className={`group mb-2 mt-2 flex items-center justify-center gap-2 rounded-md border px-4 py-2 text-gray-800 shadow-sm transition-all duration-150 ${
-                  filters.length > 0
-                    ? "bg-blue-50 font-black"
-                    : "bg-gray hover:bg-blue-50 hover:font-black"
-                }`}
+                className={`bg-gray hover:font-black" } group mb-2 mt-2 flex items-center justify-center gap-2 rounded-md border px-2 py-1 text-gray-800 shadow-sm transition-all duration-150 hover:bg-gray-100`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -148,7 +144,7 @@ export const Inbox: React.FC = () => {
                   <DropdownMenuItem
                     key={option}
                     onClick={() => !filters.includes(option) && handleAddFilter(option)} // Prevent onClick if already selected
-                    className={`w-full px-8 py-2 ${
+                    className={`w-full px-8 py-1 ${
                       filters.includes(option)
                         ? "cursor-not-allowed bg-gray-200 text-gray-400" // Greyed out style for selected items
                         : "cursor-pointer hover:bg-gray-100" // Default style for unselected items
@@ -166,7 +162,7 @@ export const Inbox: React.FC = () => {
             id="studiesPerPage"
             value={documentsPerPage}
             onChange={handleDocumentsPerPageChange}
-            className="rounded-md border p-2 focus:border-blue-500 focus:ring-blue-500"
+            className="rounded-md border py-1.5 focus:border-blue-500 focus:ring-blue-500"
           >
             <option value={25}>25</option>
             <option value={20}>20</option>
