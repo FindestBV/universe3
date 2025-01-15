@@ -3,6 +3,7 @@ import { setCredentials } from "@/api/auth/authSlice";
 import { Loader } from "lucide-react";
 
 import { useState } from "react";
+import { MutatingDots } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -42,27 +43,35 @@ const Login = () => {
 
   return (
     <div className="flex h-full items-center justify-center bg-white">
-      <div className="mb-[26px] flex w-full max-w-[400px] flex-col justify-between bg-[#edf5ff] p-[30px] text-[#003171] shadow-[0_1px_4px_#b7b8d8]">
+      <div className="flex w-full max-w-[400px] flex-col justify-between rounded-md p-[30px] text-[#003171] shadow-[0_1px_4px_#b7b8d8]">
         {isLoading ? (
-          <div className="flex items-center justify-center">
+          <div className="flex flex-col items-center justify-center">
             {isLoading && (
               <>
-                <h2 className="mb-6 text-left text-2xl font-bold">
-                  Logging you into the Universe...
-                </h2>
-                <Loader className="animate-spin" />
+                <h2 className="mb-6 text-left text-2xl font-bold">Powering up...</h2>
+                <MutatingDots
+                  visible={true}
+                  height="100"
+                  width="100"
+                  color="#38b2f6"
+                  secondaryColor="#395fa7"
+                  radius="12.5"
+                  ariaLabel="mutating-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                />
               </>
             )}
           </div>
         ) : (
-          <div className="mb-0 flex w-full max-w-[400px] flex-col justify-between text-[#003171]">
-            <h2 className="mb-6 text-left text-2xl font-normal">Login</h2>
+          <div className="mb-0 flex w-full max-w-[400px] flex-col justify-between text-gray-700">
+            <h2 className="mb-6 text-center text-2xl font-bold">Sign into your Universe</h2>
             <form onSubmit={handleLogin} className="space-y-4">
               <input
                 type="email"
                 id="email"
                 name="email"
-                className="loginInput"
+                className="loginInput py-2"
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -81,7 +90,7 @@ const Login = () => {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="mt-4 w-1/4 rounded-md bg-green-500 py-2 text-white hover:bg-green-600 focus:outline-none"
+                  className="mt-4 w-full rounded-md bg-green-500 py-2 text-white hover:bg-green-600 focus:outline-none"
                   disabled={isLoading} // Disable button when loading
                 >
                   NEXT
