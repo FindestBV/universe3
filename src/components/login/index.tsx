@@ -83,7 +83,7 @@ const Login = () => {
 
               <div>
                 <input type="checkbox" name="rememberMe" />
-                <label htmlFor="rememberMe" className="pl-2">
+                <label htmlFor="rememberMe" className="pl-2 text-gray-400">
                   Remember Me
                 </label>
               </div>
