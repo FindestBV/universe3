@@ -64,7 +64,7 @@ const Login = () => {
             )}
           </div>
         ) : (
-          <div className="mb-0 flex w-full max-w-[400px] flex-col justify-between text-gray-700">
+          <div className="mb-0 flex w-full max-w-[500px] flex-col justify-between text-gray-700">
             <h2 className="mb-6 text-center text-2xl font-bold">Sign into your Universe</h2>
             <form onSubmit={handleLogin} className="space-y-4">
               <input
@@ -90,7 +90,7 @@ const Login = () => {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="mt-4 w-full rounded-md bg-green-500 py-2 text-white hover:bg-green-600 focus:outline-none"
+                  className="mt-4 w-full rounded-md bg-[#395fa7] py-2 text-white hover:bg-[#38b2f6] focus:outline-none"
                   disabled={isLoading} // Disable button when loading
                 >
                   NEXT
