@@ -11,16 +11,18 @@ import {
 } from "d3";
 
 import { FC, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+
+// import { useNavigate } from "react-router-dom";
 
 type TTypeGraphViewProps = {
   data?: TTypeGraphNodeDTO[];
   searchKeyword?: string;
+  isDashBoard?: boolean;
 };
 
 export const PackGraphView: FC<TTypeGraphViewProps> = ({ data, searchKeyword, isDashBoard }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   /**
    * Prepare data for the graph: groups nodes by "ENTITY" and "STUDY," filtered by the search keyword.

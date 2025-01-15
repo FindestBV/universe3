@@ -136,32 +136,30 @@ export function AppSidebar() {
           </SidebarMenu>
 
           {/* Advanced Search */}
-          <div className={`mb-4 mt-6 gap-6 ${!open ? "text-center" : ""}`}>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <AdvancedSearchModal />
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <AdvancedSearchModal />
+              </SidebarMenuButton>
+            </SidebarMenuItem>
 
-              <SidebarMenuItem>
-                <a href="/queries" className="flex items-center gap-2 text-white hover:text-black">
-                  <FileQuestion size={18} className="ml-2" />
-                  {open && <span className="font-medium">Advanced Search</span>}
-                </a>
-              </SidebarMenuItem>
+            <SidebarMenuItem>
+              <a href="/queries" className="flex items-center gap-2 text-white hover:text-black">
+                <FileQuestion size={18} className="ml-2" />
+                {open && <span className="font-medium">Advanced Search</span>}
+              </a>
+            </SidebarMenuItem>
 
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <GenerateReport
-                    leftContent={"Left"}
-                    rightContent={"Right"}
-                    className="text-white hover:text-blue-500"
-                  />
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </div>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <GenerateReport
+                  leftContent={"Left"}
+                  rightContent={"Right"}
+                  className="text-white hover:text-blue-500"
+                />
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
         </div>
       </SidebarContent>
 
