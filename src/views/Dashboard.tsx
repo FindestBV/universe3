@@ -221,7 +221,11 @@ export const Dashboard = () => {
                 </div>
               )}
               <OverlayPanel>
-                <PackGraphViewUpdated data={typesData} searchKeyword={searchKeyword} />
+                <PackGraphViewUpdated
+                  data={typesData}
+                  searchKeyword={searchKeyword}
+                  isDashBoard={true}
+                />
                 <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 ease-in-out hover:bg-opacity-50">
                   <div className="hidden text-center group-hover:block">
                     <FindestButton
