@@ -1,4 +1,5 @@
 import { useGetDocumentByIdQuery } from "@/api/documents/documentApi";
+import openAccessLogo from "@/assets/openAccessLogo.png";
 import { LinkedCounts } from "@/components/shared/cards/linked-counts";
 import ConnectToEntity from "@/components/shared/dialogs/connect-to-entity";
 import { SimilarDocumentModal } from "@/components/shared/dialogs/similar-document-modal";
@@ -23,7 +24,7 @@ import {
   Upload,
 } from "lucide-react";
 
-import { Key, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 export const Document: React.FC = () => {
@@ -32,7 +33,12 @@ export const Document: React.FC = () => {
   const { data: fetchedDocument } = useGetDocumentByIdQuery(id!, {
     refetchOnMountOrArgChange: false,
   });
+
+  console.log("fetched doc wth attachement (hopefully)", fetchedDocument);
+
   const scienceArticles = fetchedDocument?.scienceArticles;
+  const attachedFiles = fetchedDocument?.attachedFiles;
+
   const renderConnectedObjects =
     fetchedDocument &&
     Object.entries(fetchedDocument?.connectedObjects).map((o, i) => (
@@ -143,7 +149,9 @@ export const Document: React.FC = () => {
                 <TabsTrigger value="similarDocuments">
                   Similar Documents ({`${scienceArticles?.length ? scienceArticles.length : 0}`}){" "}
                 </TabsTrigger>
-                <TabsTrigger value="attachments">Attachments</TabsTrigger>
+                <TabsTrigger value="attachments">
+                  Attachments ({`${attachedFiles?.length ? attachedFiles.length : 0}`}){" "}
+                </TabsTrigger>
               </TabsList>
               <TabsContent value="documentInfo">
                 <LinkedCounts
@@ -226,13 +234,27 @@ export const Document: React.FC = () => {
                           >
                             <Button>Save</Button>
                             <div className="flex flex-col">
-                              <SimilarDocumentModal
-                                title={article.title}
-                                id={article.id}
-                                mainContents={article.mainContents}
-                                searchInformation={article.searchInformation}
-                                type="document"
-                              />
+                              <div
+                                className={`flex ${article.isOpenAccess ? "flex-row gap-2" : "flex-col"}`}
+                              >
+                                {article.isOpenAccess && (
+                                  <div className="mb-0 ml-2.5 mr-0 mt-2">
+                                    <img
+                                      className="openAccess_openAccessLogo__Q-5ld h-4"
+                                      src={openAccessLogo}
+                                      alt="Open Access Logo"
+                                    />
+                                  </div>
+                                )}
+                                <SimilarDocumentModal
+                                  title={article.title}
+                                  id={article.id}
+                                  mainContents={article.mainContents}
+                                  searchInformation={article.searchInformation}
+                                  type="document"
+                                  isOpenAccess={article.isOpenAccess}
+                                />
+                              </div>
                               {/* Publication Date and Authors */}
                               <div className="mt-2 flex flex-grow flex-wrap items-center gap-2">
                                 {/* Publication Date */}
@@ -268,6 +290,7 @@ export const Document: React.FC = () => {
               </TabsContent>
               <TabsContent value="attachments">
                 <h4 className="pb-2 font-black">Attachments</h4>
+                {fetchedDocument?.attachedFiles && "Stuff here"}
                 <div className="flex items-center justify-start gap-2 rounded-sm bg-slate-100 p-4">
                   <Upload size={14} />{" "}
                   <span>Add file (PDF, docx, pptx), maximum file size 50MB.</span>

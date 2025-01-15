@@ -181,6 +181,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   const currentPath = location.pathname;
   const isDocument = currentPath.includes("documents");
   const isEntity = currentPath.includes("entities");
+  const isStudy = currentPath.includes("studies");
 
   const handleCheckboxChange = (checked: boolean) => onSelect(id, checked);
   const handleCardClick = () => {
@@ -259,6 +260,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
               )}
               {isDocument && <DocumentLink url={url} />}
               {isEntity && renderFirstThreeParagraphs(description)}
+              {isStudy && renderFirstThreeParagraphs(description)}
             </div>
             <div className="innerCardContent__Links">
               <LinkedCounts
