@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
-import { ExternalLink, Trash2 } from "lucide-react";
+import { ExternalLink, Plus, Trash2 } from "lucide-react";
 
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -128,6 +128,10 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
   const navigateWithTransition = useNavigateWithTransition();
 
+  if (connectedObjects) {
+    console.log("generic card", connectedObjects);
+  }
+
   const renderFirstThreeParagraphs = (descriptionString: string) => {
     if (!descriptionString) {
       return <p>No content available.</p>;
@@ -240,7 +244,19 @@ export const GenericCard: React.FC<GenericCardProps> = ({
                 {name ? name : title}
               </h3>
 
-              {itemType == "advancedSearchItem" && <h5 className="iconText">Connections</h5>}
+              {itemType == "advancedSearchItem" && (
+                <div>
+                  <h5 className="iconText mb-2">Connections</h5>
+                  <div className="flex flex-row flex-wrap gap-2">
+                    {connectedObjects.map((obj) => {
+                      return <div className="connected-object Entity gap-2">{obj.name}</div>;
+                    })}
+                    <Button variant="ghost" className="flex flex-row gap-2">
+                      <Plus size={16} /> <i>Connect to entity or study</i>
+                    </Button>
+                  </div>
+                </div>
+              )}
               {isDocument && <DocumentLink url={url} />}
               {isEntity && renderFirstThreeParagraphs(description)}
             </div>
