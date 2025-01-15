@@ -134,15 +134,17 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
               </div>
             </div>
 
-            <div className={`flex`}>
-              <h1 className={`my-4 flex-1 text-3xl font-black text-black`}>
-                <img
-                  className="openAccess_openAccessLogo__Q-5ld h-4"
-                  src={openAccessLogo}
-                  alt="Open Access Logo"
-                />{" "}
-                {title || "Document"}
-              </h1>
+            <div className={`flex flex-row items-start gap-4 align-middle`}>
+              {isOpenAccess && (
+                <div className="mb-0 ml-2.5 mr-0 mt-2">
+                  <img
+                    className="openAccess_openAccessLogo__Q-5ld h-4"
+                    src={openAccessLogo}
+                    alt="Open Access Logo"
+                  />
+                </div>
+              )}
+              <h1 className={`flex-1 text-3xl font-black text-black`}>{title || "Document"}</h1>
             </div>
 
             {/* <h6 className="text-lg font-bold">Connections:</h6>
