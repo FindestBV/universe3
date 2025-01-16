@@ -169,6 +169,11 @@ export const Dashboard = () => {
                       >
                         SEE RELATIONS GRAPH
                       </FindestButton>
+                      <div className="RelationsGraphMeta mx-auto mt-2 w-1/2 rounded-sm bg-[#122448] p-2 text-white">
+                        <p className="text-xs">
+                          Relations between Entities and Studies in [Tenant] Universe
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </OverlayPanel>
@@ -233,6 +238,12 @@ export const Dashboard = () => {
                     >
                       SEE PAGE TYPE BREAKDOWN
                     </FindestButton>
+                    <div className="PackGraphMeta mx-auto mt-2 w-1/2 rounded-sm bg-[#122448] p-2 text-white">
+                      <p className="text-xs">
+                        Presentation of Entities and Studies in [Tenant] Universe, based on their
+                        types.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </OverlayPanel>
