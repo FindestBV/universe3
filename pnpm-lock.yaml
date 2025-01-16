@@ -375,6 +375,9 @@ importers:
       storybook:
         specifier: ^8.4.7
         version: 8.4.7(prettier@3.4.2)
+      storybook-figma:
+        specifier: ^0.1.2
+        version: 0.1.2
       tailwind:
         specifier: ^4.0.0
         version: 4.0.0
@@ -4863,6 +4866,9 @@ packages:
   stethoskop@1.0.0:
     resolution: {integrity: sha512-4JnZ+UmTs9SFfDjSHFlD/EoXcb1bfwntkt4h1ipNGrpxtRzmHTxOmdquCJvIrVu608Um7a09cGX0ZSOSllWJNQ==}
     deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+
+  storybook-figma@0.1.2:
+    resolution: {integrity: sha512-dWdvqCuOIbE4jA3avAhrx/j32lWzZ6blIOMHSbDv66Cd4SbogMBizbktrZXxP99/jULZboAz+/rAfQXMZtMhyQ==}
 
   storybook@8.4.7:
     resolution: {integrity: sha512-RP/nMJxiWyFc8EVMH5gp20ID032Wvk+Yr3lmKidoegto5Iy+2dVQnUoElZb2zpbVXNHWakGuAkfI0dY1Hfp/vw==}
@@ -10010,6 +10016,8 @@ snapshots:
   stethoskop@1.0.0:
     dependencies:
       node-statsd: 0.1.1
+
+  storybook-figma@0.1.2: {}
 
   storybook@8.4.7(prettier@3.4.2):
     dependencies:

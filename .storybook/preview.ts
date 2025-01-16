@@ -18,9 +18,25 @@ const preview: Preview = {
       storySort: {
         order: [
           "Getting Started",
-          ["Welcome", "Contributing", "Changelog", "Migration Guides", ["V1 to V2"]],
-          "Foundations",
-          ["Accessibility", "Color", "Elevation", "Grid", ["Overview", "*"], "Typography", "Icons"],
+          [
+            "Welcome",
+            "Contributing",
+            "Findest Glossary",
+            "Changelog",
+            "Migration Guides",
+            ["V1 to V2"],
+          ],
+          "Design Foundations",
+          [
+            "Visual System",
+            "Colors",
+            "Typography",
+            "Grid",
+            "Accessibility",
+            "Elevation",
+            ["Overview", "*"],
+            "Icons",
+          ],
           "Primitives",
           ["Overview", "*"],
           "Structure",
