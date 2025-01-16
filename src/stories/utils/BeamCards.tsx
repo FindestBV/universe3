@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const COLOR_CARD_NAMES = [
+const BEAM_CARD_NAMES = [
   { category: "All", name: "All", key: "#d4d4d8", shade: "200" },
   { category: "Guiding Light", name: "Guiding Light", key: "#3b82f6", shade: "500" },
   { category: "Lit Up", name: "Lit Up", key: "#22d3ee", shade: "500" },
@@ -13,8 +13,8 @@ export const BeamCards = () => {
   // Filter colors by category
   const filteredColors =
     activeCategory === "All"
-      ? COLOR_CARD_NAMES
-      : COLOR_CARD_NAMES.filter((color) => color.category === activeCategory);
+      ? BEAM_CARD_NAMES
+      : BEAM_CARD_NAMES.filter((color) => color.category === activeCategory);
 
   return (
     <div className="space-y-4">

@@ -29,7 +29,17 @@ const preview: Preview = {
           "Design Foundations",
           [
             "Visual System",
+            [
+              "Docs",
+              "Design Concept",
+              "Flashlight Concept",
+              "The Findest Beam",
+              "The Findest Light Effect",
+              "Beam Modes",
+              "Infographic Highlights",
+            ],
             "Colors",
+            ["Brand Primary", "Supportive Colors"],
             "Typography",
             "Grid",
             "Accessibility",

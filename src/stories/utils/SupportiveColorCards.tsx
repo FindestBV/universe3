@@ -2,17 +2,11 @@ import React, { useState } from "react";
 
 const COLOR_CARD_NAMES = [
   { category: "All", name: "All", key: "#d4d4d8", shade: "200" },
-  { category: "Findest Light", name: "Findest Light", key: "#FFFF00", shade: "500" },
-  { category: "Off White", name: "Off White", key: "#F9FAF9", shade: "500" },
-  { category: "Teal", name: "Teal", key: "#006A86", shade: "500" },
-  { category: "Blue Sky", name: "Blue Sky", key: "#84A7E2", shade: "500" },
-  { category: "Night Sky", name: "Night Sky", key: "#0A0C12", shade: "500" },
-  { category: "Burgundy", name: "Burgundy", key: "#4C0723", shade: "500" },
   { category: "Cold Glow", name: "Cold Glow" },
   { category: "Warm Glow", name: "Warm Glow" },
 ];
 
-export const ColorCards = () => {
+export const SupportiveColorCards = () => {
   const [activeCategory, setActiveCategory] = useState("All");
 
   // Filter colors by category
@@ -25,17 +19,7 @@ export const ColorCards = () => {
     <div className="space-y-4">
       {/* Filter Buttons */}
       <div className="flex flex-wrap gap-2">
-        {[
-          "All",
-          "Findest Light",
-          "Off White",
-          "Teal",
-          "Blue Sky",
-          "Night Sky",
-          "Burgundy",
-          "Cold Glow",
-          "Warm Glow",
-        ].map((category) => (
+        {["All", "Cold Glow", "Warm Glow"].map((category) => (
           <button
             key={category}
             className={`rounded-md border px-4 py-2 text-sm font-medium ${
@@ -55,7 +39,7 @@ export const ColorCards = () => {
         {filteredColors
           .filter((color) => color.name != "All")
           .map(({ name, key, shade, category }) => (
-            <ColorCard
+            <SupportiveColorCard
               key={name}
               colorName={name}
               colorHex={key}
@@ -68,7 +52,7 @@ export const ColorCards = () => {
   );
 };
 
-const ColorCard = ({ colorName, colorHex, colorShade }) => {
+const SupportiveColorCard = ({ colorName, colorHex, colorShade }) => {
   return (
     <section className="flex flex-col overflow-hidden rounded-lg border bg-gray-50 shadow">
       {/* Color Swatch */}
@@ -92,4 +76,4 @@ const ColorCard = ({ colorName, colorHex, colorShade }) => {
   );
 };
 
-export default ColorCards;
+export default SupportiveColorCards;
