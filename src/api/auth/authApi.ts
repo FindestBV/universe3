@@ -28,7 +28,7 @@ export const authApi = api.injectEndpoints({
 
     checkIsObjectSharedToUser: builder.query<void, { email: string; objectId: string }>({
       query: ({ email, objectId }) => ({
-        url: `object/shared/${objectId}`,
+        url: `object/common/${objectId}`,
         method: "POST",
         body: { email },
       }),

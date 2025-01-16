@@ -1,6 +1,6 @@
-import GenericCard from "@/components/shared/cards/generic-card";
-// import { EntityCard } from "@/components/shared/entity-card";
-import DocumentsSkeleton from "@/components/shared/loaders/documents-skeleton";
+import GenericCard from "@/components/common/cards/generic-card";
+// import { EntityCard } from "@/components/common/entity-card";
+import DocumentsSkeleton from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {

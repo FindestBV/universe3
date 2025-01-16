@@ -1,5 +1,5 @@
 import { currentUser } from "@/api/auth/authSlice";
-import UserAvatar from "@/components/shared/utilities/user-avatar";
+import UserAvatar from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 
 import { useState } from "react";

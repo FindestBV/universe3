@@ -3,8 +3,8 @@ import {
   useGetEntityConnectedDocsQuery,
 } from "@/api/documents/documentApi";
 import openAccessLogo from "@/assets/openAccessLogo.png";
-import LinkedCounts from "@/components/shared/cards/linked-counts";
-import UserAvatar from "@/components/shared/utilities/user-avatar";
+import LinkedCounts from "@/components/common/cards/linked-counts";
+import UserAvatar from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";

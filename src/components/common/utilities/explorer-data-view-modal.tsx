@@ -1,7 +1,7 @@
 import { useGetLinkingQuery, useGetPageTypesQuery } from "@/api/activity/activityApi";
-import ForceDirectedGraphView from "@/components/shared/layout/force-directed-graph";
-import PackGraphView from "@/components/shared/layout/pack-graph";
-import DataViewSearchBar from "@/components/shared/search/data-view-searchbar";
+import ForceDirectedGraphView from "@/components/common/layout/force-directed-graph";
+import PackGraphView from "@/components/common/layout/pack-graph";
+import DataViewSearchBar from "@/components/common/search/data-view-searchbar";
 import { useDebounce } from "@/hooks/use-debounce";
 import { motion } from "framer-motion";
 

@@ -1,8 +1,8 @@
-import GenericCard from "@/components/shared/cards/generic-card";
+import GenericCard from "@/components/common/cards/generic-card";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {
-  title: "Components/shared/cards/LinkedCounts",
+  title: "Components/common/cards/LinkedCounts",
   component: GenericCard,
   parameters: {
     docs: {

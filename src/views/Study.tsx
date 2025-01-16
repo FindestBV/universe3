@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useGetSideBarDocumentsQuery, useGetStudyByIdQuery } from "@/api/documents/documentApi";
-import Editor from "@/components/shared/editor/Editor";
-import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
+import Editor from "@/components/common/editor/Editor";
+import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 
 import { useEffect } from "react";
 import { useParams } from "react-router";

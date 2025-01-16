@@ -1,8 +1,8 @@
-import { DashboardHeader } from "@/components/shared/layout/dashboard-header";
+import { DashboardHeader } from "@/components/common/layout/dashboard-header";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {
-  title: "Components/shared/layout/DashboardHeader",
+  title: "Components/common/layout/DashboardHeader",
   component: DashboardHeader,
   decorators: [
     (Story) => (

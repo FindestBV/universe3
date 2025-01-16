@@ -1,9 +1,9 @@
-import { ForceDirectedGraphView } from "@/components/shared/layout/force-directed-graph";
-import { PackGraphView } from "@/components/shared/layout/pack-graph";
+import { ForceDirectedGraphView } from "@/components/common/layout/force-directed-graph";
+import { PackGraphView } from "@/components/common/layout/pack-graph";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {
-  title: "Components/shared/layout/graphs/PackGraph",
+  title: "Components/common/layout/graphs/PackGraph",
   component: PackGraph,
   parameters: {
     docs: {
