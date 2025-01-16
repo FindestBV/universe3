@@ -1,11 +1,11 @@
 import { useGetDocumentByIdQuery } from "@/api/documents/documentApi";
 import openAccessLogo from "@/assets/openAccessLogo.png";
-import { LinkedCounts } from "@/components/shared/cards/linked-counts";
-import ConnectToEntity from "@/components/shared/dialogs/connect-to-entity";
-import { SimilarDocumentModal } from "@/components/shared/dialogs/similar-document-modal";
-import Comments from "@/components/shared/layout/comments";
-import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
-import UserAvatar from "@/components/shared/utilities/user-avatar";
+import { LinkedCounts } from "@/components/common/cards/linked-counts";
+import ConnectToEntity from "@/components/common/dialogs/connect-to-entity";
+import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
+import Comments from "@/components/common/layout/comments";
+import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
+import UserAvatar from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

@@ -1,7 +1,7 @@
-import GenericCard from "@/components/shared/cards/generic-card";
-import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
-import { DocumentsSkeleton } from "@/components/shared/loaders/documents-skeleton";
-// import { StudyCard } from "@/components/shared/study-card";
+import GenericCard from "@/components/common/cards/generic-card";
+import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
+import { DocumentsSkeleton } from "@/components/common/loaders/documents-skeleton";
+// import { StudyCard } from "@/components/common/study-card";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {

@@ -1,8 +1,8 @@
-import { BentoGrid } from "@/components/shared/layout/bento-grid";
+import { BentoGrid } from "@/components/common/layout/bento-grid";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {
-  title: "Components/shared/layout/BentoGrid",
+  title: "Components/common/layout/BentoGrid",
   component: BentoGrid,
   // decorators: [
   //   (Story) => (

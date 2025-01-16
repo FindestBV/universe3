@@ -9,7 +9,7 @@ import {
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {
-  title: "Components/shared/dialogs/Dialog",
+  title: "Components/common/dialogs/Dialog",
   component: Dialog,
   parameters: {
     docs: {

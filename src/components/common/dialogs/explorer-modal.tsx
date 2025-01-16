@@ -1,4 +1,4 @@
-import ExplorerDataViewModal from "@/components/shared/utilities/explorer-data-view-modal";
+import ExplorerDataViewModal from "@/components/common/utilities/explorer-data-view-modal";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ChartNetwork } from "lucide-react";

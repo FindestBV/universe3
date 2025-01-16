@@ -1,9 +1,9 @@
-import { CreateNewItem, NewItem } from "@/components/shared/cards/create-new-item";
+import { CreateNewItem, NewItem } from "@/components/common/cards/create-new-item";
 import { Meta, StoryObj } from "@storybook/react";
 import { BookOpen, Users } from "lucide-react";
 
 const meta: Meta<typeof CreateNewItem> = {
-  title: "Components/shared/cards/CreateNewItem",
+  title: "Components/common/cards/CreateNewItem",
   component: CreateNewItem,
   parameters: {
     docs: {

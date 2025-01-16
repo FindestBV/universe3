@@ -1,8 +1,8 @@
-import Editor from "@/components/shared/editor/editor";
+import Editor from "@/components/common/editor/editor";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {
-  title: "Components/shared/editor/Editor",
+  title: "Components/common/editor/Editor",
   component: Editor,
   parameters: {
     docs: {

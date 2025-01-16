@@ -1,8 +1,8 @@
-import { Comments } from "@/components/shared/layout/comments";
+import { Comments } from "@/components/common/layout/comments";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {
-  title: "Components/shared/layout/Comments",
+  title: "Components/common/layout/Comments",
   component: Comments,
   decorators: [
     (Story) => (
