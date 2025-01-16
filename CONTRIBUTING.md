@@ -8,17 +8,17 @@ making a pull request that may not align with the project roadmap.
 
 ## Contribution Prerequisites
 
-- You have [Node.js](https://nodejs.org/en/) at version >= v20 and [Yarn](https://yarnpkg.com/en/) at v1.2.0+ installed.
+- You have [Node.js](https://nodejs.org/en/) at version >= v20 and [pnpm](https://pnpmpkg.com/en/) at v1.2.0+ installed.
 - You are familiar with [Git](https://git-scm.com).
 
 **Before submitting your pull request** make sure the following requirements are fulfilled:
 
 - Fork the repository and create your new branch from `develop`.
-- Run `yarn` in the root of the repository.
+- Run `pnpm` in the root of the repository.
 - If you've fixed a bug or added code that should be tested, please make sure to add tests
 - Ensure the following test suites are passing:
-  - `yarn test:unit`
-- Make sure your code lints by running `yarn lint`.
+  - `pnpm test:unit`
+- Make sure your code lints by running `pnpm lint`.
 
 ## Development Workflow
 
@@ -40,9 +40,9 @@ cd design-system
 Go to the root of the repository.
 
 ```bash
-yarn install
-yarn build
-yarn develop
+pnpm install
+pnpm build
+pnpm develop
 ```
 
 Storybook will be running on `localhost:6006` for you to test your changes to components or their documentation.
@@ -117,7 +117,7 @@ Once your Pull Request has been reviewed and is ready to be merged you will need
 
 ### Adding Changesets
 
-We use [Changesets](https://github.com/changesets/changesets) to manage our releasees, there's an automated prompt to help you make the right decisions in what your changeset should be, to activate this use the command `yarn release:add`.
+We use [Changesets](https://github.com/changesets/changesets) to manage our releasees, there's an automated prompt to help you make the right decisions in what your changeset should be, to activate this use the command `pnpm release:add`.
 
 You should then select the "bump" type, we use semver versioning which the spec can be found [here](https://semver.org/). The TLDR is:
 
@@ -125,7 +125,7 @@ You should then select the "bump" type, we use semver versioning which the spec 
 - minor – you've added new backward compatible functionality
 - major – you've made a breaking change
 
-If you want to release a pre-release you can signify this by using `yarn prerelease:enter <tag>`, this will set changesets up for pre-releases, a tag could be `beta` for instance. You'll see this error:
+If you want to release a pre-release you can signify this by using `pnpm prerelease:enter <tag>`, this will set changesets up for pre-releases, a tag could be `beta` for instance. You'll see this error:
 
 ```shell
 `changeset pre enter` cannot be run when in pre mode
@@ -148,19 +148,19 @@ if we're already in pre-release mode, this is fine and you should continue.
 
 ### Available commands
 
-- `yarn develop` Develop the project.
-- `yarn clean` Clean the project (remove dist & node_modules).
-- `yarn build` Build the project.
-- `yarn lint` Check the codebase for lint errors.
-- `yarn format` Automatically fix lint errors.
-- `yarn prettier:check` Check the codebase for pretty-ness.
-- `yarn prettier:write` Fix any prettier issues.
-- `yarn test:ts`: Run the TypeScript tests.
-- `yarn test:unit` Run the design system tests.
+- `pnpm develop` Develop the project.
+- `pnpm clean` Clean the project (remove dist & node_modules).
+- `pnpm build` Build the project.
+- `pnpm lint` Check the codebase for lint errors.
+- `pnpm format` Automatically fix lint errors.
+- `pnpm prettier:check` Check the codebase for pretty-ness.
+- `pnpm prettier:write` Fix any prettier issues.
+- `pnpm test:ts`: Run the TypeScript tests.
+- `pnpm test:unit` Run the design system tests.
 
 ## Linking the design system
 
-We recommend you use [`yalc`](https://github.com/wclr/yalc). If you're working in a monorepo setup (e.g. the Findest monorepo), then ensure you use the `--pure` option and follow the [advanced guide](https://github.com/wclr/yalc#use-with-yarnpnpm-workspaces). This works a lot better than `yarn link`.
+We recommend you use [`yalc`](https://github.com/wclr/yalc). If you're working in a monorepo setup (e.g. the Findest monorepo), then ensure you use the `--pure` option and follow the [advanced guide](https://github.com/wclr/yalc#use-with-pnpmpnpm-workspaces). This works a lot better than `pnpm link`.
 
 ### Example steps
 
