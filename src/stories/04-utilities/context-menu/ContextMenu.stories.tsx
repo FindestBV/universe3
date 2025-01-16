@@ -3,7 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { BookOpen, Users } from "lucide-react";
 
 const meta: Meta = {
-  title: "Components/shared/layout/Context Menu",
+  title: "Components/common/layout/Context Menu",
   component: ContextMenu,
   parameters: {
     docs: {

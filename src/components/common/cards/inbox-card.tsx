@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/api/documents/documentApi";
 import openAccessLogo from "@/assets/openAccessLogo.png";
-import { UserAvatar } from "@/components/shared/utilities/user-avatar";
+import { UserAvatar } from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";

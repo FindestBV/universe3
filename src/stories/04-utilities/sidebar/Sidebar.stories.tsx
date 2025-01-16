@@ -1,5 +1,5 @@
 import { Sidebar } from "@/components/ui/sidebar";
-// import { AppSidebar } from '@/components/shared/sidebar/app-sidebar';
+// import { AppSidebar } from '@/components/common/sidebar/app-sidebar';
 
 import { Meta, StoryObj } from "@storybook/react";
 

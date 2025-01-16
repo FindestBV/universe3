@@ -1,6 +1,6 @@
 import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/api/documents/documentApi";
-import { AddLinkToItem } from "@/components/shared/dialogs/add-link-to-item";
-import { UserAvatar } from "@/components/shared/utilities/user-avatar";
+import { AddLinkToItem } from "@/components/common/dialogs/add-link-to-item";
+import { UserAvatar } from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";

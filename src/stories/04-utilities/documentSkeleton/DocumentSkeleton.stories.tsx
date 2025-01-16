@@ -1,8 +1,8 @@
-import { DocumentSkeleton } from "@/components/shared/loaders/document-skeleton";
+import { DocumentSkeleton } from "@/components/common/loaders/document-skeleton";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {
-  title: "Components/shared/loaders/DocumentSkeleton",
+  title: "Components/common/loaders/DocumentSkeleton",
   component: DocumentSkeleton,
   decorators: [
     (Story) => (

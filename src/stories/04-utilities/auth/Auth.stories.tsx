@@ -5,7 +5,7 @@ import { Auth } from "./Auth";
 // Adjust the import path if needed
 
 const meta: Meta<typeof Auth> = {
-  title: "Components/shared/utilities/Auth",
+  title: "Components/common/utilities/Auth",
   component: Auth,
   parameters: {
     docs: {

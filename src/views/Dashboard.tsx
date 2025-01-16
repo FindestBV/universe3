@@ -5,11 +5,11 @@ import {
   useGetPageTypesQuery,
 } from "@/api/activity/activityApi";
 import { currentUser } from "@/api/auth/authSlice";
-import ForceDirectedGraphView from "@/components/shared/layout/force-directed-graph";
-import { OverlayPanel } from "@/components/shared/layout/overlay-panel";
-import PackGraphView from "@/components/shared/layout/pack-graph";
-import { FindestButton } from "@/components/shared/utilities/findest-button";
-import UserAvatar from "@/components/shared/utilities/user-avatar";
+import ForceDirectedGraphView from "@/components/common/layout/force-directed-graph";
+import { OverlayPanel } from "@/components/common/layout/overlay-panel";
+import PackGraphView from "@/components/common/layout/pack-graph";
+import { FindestButton } from "@/components/common/utilities/findest-button";
+import UserAvatar from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

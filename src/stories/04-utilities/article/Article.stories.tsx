@@ -1,8 +1,8 @@
-import ArticleTest from "@/components/shared/layout/article-test";
+import ArticleTest from "@/components/common/layout/article-test";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof ArticleTest> = {
-  title: "Components/shared/layout/Article",
+  title: "Components/common/layout/Article",
   component: ArticleTest,
   parameters: {
     docs: {

@@ -1,4 +1,4 @@
-import { ListPagination } from "@/components/shared/layout/list-pagination";
+import { ListPagination } from "@/components/common/layout/list-pagination";
 
 export const Queries = () => (
   <div className="flex h-full w-full flex-col px-12 max-sm:px-4">
