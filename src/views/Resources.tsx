@@ -44,6 +44,7 @@ export const Resources = () => {
 
             {/* Profile Tab */}
             <TabsContent value="profile" className="py-4">
+              <p>Terms of the Universe (Glossary)</p>
               <p>Link to docs</p>
             </TabsContent>
 
