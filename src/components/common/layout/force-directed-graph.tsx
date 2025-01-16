@@ -183,10 +183,10 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
 
   return (
     <div style={{ width: "auto", height: "100vh" }}>
-      <ul className="absolute z-20 ml-0 mt-2">
+      {/* <ul className="absolute z-20 ml-0 mt-2">
         <li className="text-black">Entity</li>
         <li>Study</li>
-      </ul>
+      </ul> */}
       <svg ref={containerRef} />
     </div>
   );
