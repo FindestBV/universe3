@@ -35,6 +35,9 @@
     }
 
     &[contenteditable="true"] {
+
+      @apply lg:px-12;
+
       .custom-image {
         &:not(.has-focus):hover {
           .custom-image-caption {
