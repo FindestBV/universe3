@@ -97,7 +97,7 @@ export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewProps
             <>
               <PanelHeadline>Preview</PanelHeadline>
               <div
-                className="relative mb-4 ml-2.5 max-h-[14rem] overflow-y-auto border-l-4 border-neutral-100 bg-white px-4 text-base text-black dark:border-neutral-700 dark:bg-black dark:text-white"
+                className="relative mb-4 ml-2.5 max-h-[14rem] overflow-y-auto border-l-4 border-neutral-100 bg-white px-4 text-base text-black dark:border-neutral-700 dark:bg-white dark:text-black"
                 dangerouslySetInnerHTML={{
                   __html: tryParseToTiptapHTML(generatedText, editor) ?? "",
                 }}
