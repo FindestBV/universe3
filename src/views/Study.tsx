@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useGetSideBarDocumentsQuery, useGetStudyByIdQuery } from "@/api/documents/documentApi";
+import { BlockEditor } from "@/components/common/editor/BlockEditor";
 import Editor from "@/components/common/editor/Editor";
 import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 
@@ -50,7 +51,7 @@ export const Study: React.FC = () => {
         <>
           <div className="flex h-screen w-auto">
             <div className="w-full flex-col">
-              <Editor
+              <BlockEditor
                 type={"study"}
                 title={fetchedStudy?.title}
                 content={parsedDescription}
@@ -58,6 +59,7 @@ export const Study: React.FC = () => {
                 connectedObjects={connectedDocs}
                 connectedQueries={connectedStudies}
                 connectedComments={connectedComments}
+                ydoc={undefined}
               />
             </div>
           </div>
