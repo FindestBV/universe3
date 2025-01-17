@@ -1,10 +1,9 @@
-import { toggleSidebar } from "@/api/utilities/sidebarSlice";
 import SimilarDocumentModal from "@/components/common/dialogs/similar-document-modal";
 import ReferencesSidebar from "@/components/common/sidebar/references-sidebar";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
-import { useBlockEditor } from "@/hooks/useBlockEditor";
+import { useBlockEditor } from "@/hooks/use-block-editor";
 import { useSidebar } from "@/hooks/useSidebar";
 import { TiptapCollabProvider } from "@hocuspocus/provider";
 import { Mark } from "@tiptap/core";
@@ -24,7 +23,7 @@ import { Key } from "history";
 import { Download } from "lucide-react";
 import * as Y from "yjs";
 
-import React, { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import Comments from "../../layout/comments";
 import CustomImage from "../custom-image";
@@ -84,6 +83,12 @@ export const BlockEditor = ({
     setIsSidebarCollapsed((prev) => !prev);
   };
 
+  const handlePotentialClose = useCallback(() => {
+    if (window.innerWidth < 1024) {
+      onClose();
+    }
+  }, []);
+
   const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
   console.log("Parsed Content:", JSON.stringify(parsedContent, null, 2));
 
@@ -120,21 +125,20 @@ export const BlockEditor = ({
       PlaceholderExtension,
       StarterKit,
     ],
-    content: parsedContent ||
-      defaultContent || {
-        type: "doc",
-        content: [
-          {
-            type: "paragraph",
-            content: [
-              {
-                type: "text",
-                text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text addinglinks,\n images, files and tables and even utilizing IGOR<sup>AI</sup>. The right sidebar provides otions to include references, \n highlights and images from connected documents. \n Have fun creating!",
-              },
-            ],
-          },
-        ],
-      },
+    content: parsedContent || {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [
+            {
+              type: "text",
+              text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text addinglinks,\n images, files and tables and even utilizing IGOR<sup>AI</sup>. The right sidebar provides otions to include references, \n highlights and images from connected documents. \n Have fun creating!",
+            },
+          ],
+        },
+      ],
+    },
 
     onUpdate({ editor }) {
       const value = editor.getHTML();
@@ -152,6 +156,7 @@ export const BlockEditor = ({
 
   return (
     <div className="flex h-screen pb-8" ref={menuContainerRef}>
+      {/* <Sidebar isOpen={leftSidebar.isOpen} onClose={leftSidebar.close} editor={editor} /> */}
       <div className="relative flex h-full flex-1 flex-col overflow-hidden">
         <EditorHeader
           editor={editor}
@@ -242,6 +247,7 @@ export const BlockEditor = ({
               connectedDocs={connectedDocs}
               connectedObjects={connectedObjects}
               connectedInbox={connectedInbox}
+              editor={editor}
             />
           </div>
         </div>

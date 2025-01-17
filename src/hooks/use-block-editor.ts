@@ -61,21 +61,20 @@ export const useBlockEditor = ({
       immediatelyRender: true,
       shouldRerenderOnTransaction: false,
       autofocus: true,
-      content: parsedContent ||
-        defaultContent || {
-          type: "doc",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  type: "text",
-                  text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text addinglinks,\n images, files and tables and even utilizing IGOR<sup>AI</sup>. The right sidebar provides otions to include references, \n highlights and images from connected documents. \n Have fun creating!",
-                },
-              ],
-            },
-          ],
-        },
+      content: parsedContent || {
+        type: "doc",
+        content: [
+          {
+            type: "paragraph",
+            content: [
+              {
+                type: "text",
+                text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text addinglinks,\n images, files and tables and even utilizing IGOR<sup>AI</sup>. The right sidebar provides otions to include references, \n highlights and images from connected documents. \n Have fun creating!",
+              },
+            ],
+          },
+        ],
+      },
       onCreate: (ctx) => {
         if (provider && !provider.isSynced) {
           provider.on("synced", () => {
