@@ -197,7 +197,6 @@ export const ReferencesSidebar: React.FC<{
             <TabsContent value="onThisPage">
               <div class="flex h-full flex-col justify-between">
                 <div>
-                  <h1>Table of Contents.</h1>
                   <TableOfContents editor={editor} />
                 </div>
                 <div>
