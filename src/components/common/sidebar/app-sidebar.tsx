@@ -146,34 +146,6 @@ export function AppSidebar() {
 
             <SidebarGroupContent>
               <SidebarMenu>
-                <ul
-                  className={`${
-                    open ? "mt-4 gap-4 md:ml-6" : "ml-0 gap-4 space-y-2 pl-2 md:mt-4"
-                  } flex flex-col`}
-                >
-                  <AdvancedSearchModal />
-                  <li>
-                    <a
-                      href="/library/entities"
-                      className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
-                    >
-                      <Fingerprint size={16} />
-                      <span className="group-data-[collapsible=icon]:hidden">Entities</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/library/studies"
-                      className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
-                    >
-                      <BookOpenCheck size={16} />
-                      <span className="group-data-[collapsible=icon]:hidden">Studies</span>
-                    </a>
-                  </li>
-                </ul>
-              </SidebarMenu>
-
-              <SidebarMenu>
                 <SidebarMenuItem>
                   <a
                     href="/queries"
