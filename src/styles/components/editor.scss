@@ -27,6 +27,10 @@
   }
 
   &.ProseMirror {
+
+    @apply xl:px-10;
+
+
     p:first-child:last-child {
       &.is-editor-empty {
         position: relative;
@@ -35,8 +39,6 @@
     }
 
     &[contenteditable="true"] {
-
-      @apply lg:px-12;
 
       .custom-image {
         &:not(.has-focus):hover {
