@@ -21,8 +21,8 @@ import React from "react";
 import { ReferencesSearchbar } from "../search/references-searchbar";
 
 export const ReferencesSidebar: React.FC<{
-  onToggleSidebar: () => void;
-  isCollapsed: boolean;
+  onToggleSidebar?: () => void;
+  isCollapsed?: boolean;
   connectedDocs?: string;
   connectedInbox?: string;
   connectedObjects?: string;
@@ -195,7 +195,7 @@ export const ReferencesSidebar: React.FC<{
 
             {/* On This Page Tab Content */}
             <TabsContent value="onThisPage">
-              <div class="flex h-full flex-col justify-between">
+              <div className="flex h-[100vh] flex-col gap-20">
                 <div>
                   <TableOfContents editor={editor} />
                 </div>
