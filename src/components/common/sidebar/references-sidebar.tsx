@@ -1,3 +1,4 @@
+import { TableOfContents } from "@/components/common/editor/TableOfContents";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import {
@@ -25,9 +26,12 @@ export const ReferencesSidebar: React.FC<{
   connectedDocs?: string;
   connectedInbox?: string;
   connectedObjects?: string;
-}> = ({ onToggleSidebar, isCollapsed, connectedInbox, connectedObjects }) => {
+  editor?: string;
+}> = ({ onToggleSidebar, isCollapsed, connectedInbox, connectedObjects, editor }) => {
   const [activeMainTab, setActiveMainTab] = useState<string>("references"); // Main tab
   const [activeSubTab, setActiveSubTab] = useState<string>("documents"); // Sub-tab for references
+
+  console.log("here is the editor object", TableOfContents);
 
   const toggleActiveSubTab = (tab) => {
     if (isCollapsed) {
@@ -194,6 +198,7 @@ export const ReferencesSidebar: React.FC<{
               <div class="flex h-full flex-col justify-between">
                 <div>
                   <h1>Table of Contents.</h1>
+                  <TableOfContents editor={editor} />
                 </div>
                 <div>
                   <ul>
