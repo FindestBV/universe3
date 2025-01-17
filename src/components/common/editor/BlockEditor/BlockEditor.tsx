@@ -31,7 +31,6 @@ import { LinkMenu } from "../menus";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
 import { TextMenu } from "../menus/TextMenu";
 import PlaceholderExtension from "../placeholder-extension";
-import { Sidebar } from "../Sidebar";
 import { Button } from "../ui/Button";
 import { EditorHeader } from "./components/EditorHeader";
 

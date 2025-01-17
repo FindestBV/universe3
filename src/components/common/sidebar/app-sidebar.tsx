@@ -1,5 +1,5 @@
 import { currentUser, logout } from "@/api/auth/authSlice";
-import { setSidebarState } from "@/api/utilities/sidebarSlice";
+// import { setSidebarState } from "@/api/utilities/sidebarSlice";
 import logoUniverse from "@/assets/universe_logo_white.png";
 import {
   DropdownMenu,
@@ -102,7 +102,7 @@ export function AppSidebar() {
             <SidebarMenu>
               <ul
                 className={`${
-                  open ? "mt-4 gap-4 md:ml-6" : "ml-0 gap-4 space-y-2 pl-2 md:mt-4"
+                  open ? "gap-4 md:ml-6" : "ml-0 gap-4 space-y-2 pl-2 md:mt-4"
                 } flex flex-col`}
               >
                 <li>
