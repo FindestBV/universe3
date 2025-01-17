@@ -12,6 +12,8 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -91,76 +93,114 @@ export function AppSidebar() {
           </SidebarMenu>
 
           {/* Universe Menu */}
-          <SidebarMenu>
-            <SidebarMenuItem className={`${!open && "hidden"}`}>
-              <SidebarMenuButton tooltip="Universe">
-                <div className={`flex items-center gap-2 text-white hover:text-black`}>
-                  <Calendar size={18} />
-                  {open && <span className="font-medium">Universe</span>}
-                </div>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <ul
-              className={`${
-                open ? "mt-4 gap-4 md:ml-6" : "ml-0 gap-4 space-y-2 pl-2 md:mt-4"
-              } flex flex-col`}
-            >
-              <li>
-                <a
-                  href="/library/documents"
-                  className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
-                >
-                  <FileText size={16} />
-                  <span className="group-data-[collapsible=icon]:hidden">Documents</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/library/entities"
-                  className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
-                >
-                  <Fingerprint size={16} />
-                  <span className="group-data-[collapsible=icon]:hidden">Entities</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/library/studies"
-                  className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
-                >
-                  <BookOpenCheck size={16} />
-                  <span className="group-data-[collapsible=icon]:hidden">Studies</span>
-                </a>
-              </li>
-            </ul>
-          </SidebarMenu>
+          <SidebarGroupLabel>
+            <Bot width={18} color={"white"} />
+            <h1 className="text-md ml-2 font-black">Universe</h1>
+          </SidebarGroupLabel>
 
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <ul
+                className={`${
+                  open ? "mt-4 gap-4 md:ml-6" : "ml-0 gap-4 space-y-2 pl-2 md:mt-4"
+                } flex flex-col`}
+              >
+                <li>
+                  <a
+                    href="/library/documents"
+                    className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
+                  >
+                    <FileText size={16} />
+                    <span className="group-data-[collapsible=icon]:hidden">Documents</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/library/entities"
+                    className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
+                  >
+                    <Fingerprint size={16} />
+                    <span className="group-data-[collapsible=icon]:hidden">Entities</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/library/studies"
+                    className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
+                  >
+                    <BookOpenCheck size={16} />
+                    <span className="group-data-[collapsible=icon]:hidden">Studies</span>
+                  </a>
+                </li>
+              </ul>
+            </SidebarMenu>
+          </SidebarGroupContent>
           {/* Advanced Search */}
           <div className={`mb-4 mt-6 gap-6 ${!open ? "text-center" : ""}`}>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
+            <SidebarGroupLabel className="my-4">
+              <Bot width={18} color={"white"} />
+              <h1 className="text-md ml-2 font-black">
+                IGOR<sup>AI</sup> search
+              </h1>
+            </SidebarGroupLabel>
+
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <ul
+                  className={`${
+                    open ? "mt-4 gap-4 md:ml-6" : "ml-0 gap-4 space-y-2 pl-2 md:mt-4"
+                  } flex flex-col`}
+                >
                   <AdvancedSearchModal />
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+                  <li>
+                    <a
+                      href="/library/entities"
+                      className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
+                    >
+                      <Fingerprint size={16} />
+                      <span className="group-data-[collapsible=icon]:hidden">Entities</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/library/studies"
+                      className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
+                    >
+                      <BookOpenCheck size={16} />
+                      <span className="group-data-[collapsible=icon]:hidden">Studies</span>
+                    </a>
+                  </li>
+                </ul>
+              </SidebarMenu>
 
-              <SidebarMenuItem>
-                <a href="/queries" className="flex items-center gap-2 text-white hover:text-black">
-                  <FileQuestion size={18} className="ml-2" />
-                  {open && <span className="font-medium">Advanced Search</span>}
-                </a>
-              </SidebarMenuItem>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <a
+                    href="/queries"
+                    className="flex items-center gap-2 text-white hover:text-black"
+                  >
+                    <FileQuestion size={18} className="ml-2" />
+                    {open && <span className="font-medium">Advanced Search</span>}
+                  </a>
+                </SidebarMenuItem>
 
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <GenerateReport
-                    leftContent={"Left"}
-                    rightContent={"Right"}
-                    className="text-white hover:text-blue-500"
-                  />
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    <AdvancedSearchModal />
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    <GenerateReport
+                      leftContent={"Left"}
+                      rightContent={"Right"}
+                      className="text-white hover:text-blue-500"
+                    />
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
           </div>
         </div>
       </SidebarContent>
