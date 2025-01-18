@@ -376,7 +376,7 @@ importers:
         specifier: ^9.14.0
         version: 9.18.0
       '@storybook/addon-docs':
-        specifier: ^8.4.7
+        specifier: ^8.5.0
         version: 8.5.0(@types/react@18.3.18)(storybook@8.5.0(prettier@3.4.2))
       '@storybook/addon-essentials':
         specifier: ^8.4.7

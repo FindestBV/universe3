@@ -13,6 +13,6 @@ const baseQuery = fetchBaseQuery({
 export const api = createApi({
   reducerPath: "api",
   baseQuery,
-  tagTypes: ["SavedDocument", "SearchResults", "Auth", "Entity", "Language"], // Add shared tag types
+  tagTypes: ["SavedDocument", "SearchResults", "Auth", "Entity", "Language", "Draft"], // Add shared tag types
   endpoints: () => ({}), // Empty endpoints to extend
 });

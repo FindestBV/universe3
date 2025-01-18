@@ -1,5 +1,5 @@
 // src/features/documentApi.ts
-import type { ConnectedObject, Entity, SavedDocumentResponse, Study } from "@/types/types";
+import type { ConnectedObject, Draft, Entity, SavedDocumentResponse, Study } from "@/types/types";
 
 import { api } from "../api";
 
@@ -19,6 +19,65 @@ export const documentApi = api.injectEndpoints({
         },
       }),
       providesTags: ["SavedDocument"],
+    }),
+
+    /* Create Draft (test) */
+
+    createDraft: builder.mutation({
+      query: (initialData: { title?: string; content?: string; createdAt?: string }) => {
+        // Ensure default fields are provided
+        const payload = {
+          content: initialData.content || "Content goes here, we'll remove the title", // Default empty content
+          createdAt: initialData.createdAt || new Date().toISOString(), // Default to current timestamp
+        };
+
+        return {
+          url: "https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments",
+          method: "POST",
+          body: payload,
+        };
+      },
+      invalidatesTags: ["Draft"], // Invalidate cached drafts
+    }),
+
+    updateDraft: builder.mutation({
+      query: ({ id, content, updatedAt }) => ({
+        url: `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/${id}`,
+        method: "PUT",
+        body: { content, updatedAt },
+      }),
+      async onQueryStarted({ id, content, updatedAt }, { dispatch, queryFulfilled }) {
+        if (!id) {
+          console.error("No ID provided for updateDraft");
+          return;
+        }
+        const patchResult = dispatch(
+          api.util.updateQueryData("fetchDraft", id, (draft) => {
+            if (draft) {
+              draft.content = content;
+              draft.updatedAt = updatedAt;
+            }
+          }),
+        );
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          console.error("Failed to update draft:", error);
+          patchResult.undo();
+        }
+      },
+      invalidatesTags: (result, error, { id }) => [{ type: "Draft", id }],
+    }),
+
+    fetchDraft: builder.query({
+      query: (id) =>
+        `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/${id}`,
+      transformResponse: (response) => ({
+        ...response,
+        id: String(response.id), // Ensure ID is a string
+        content: response.content || "", // Ensure content is serializable
+      }),
+      providesTags: (result, error, id) => [{ type: "Draft", id }],
     }),
 
     /* 
@@ -325,5 +384,8 @@ export const {
   useGetStudyConnectedQueriesQuery,
   useGetStudyConnectedDocsQuery,
   useGetStudyConnectedCommentsQuery,
+  useCreateDraftMutation,
+  useUpdateDraftMutation,
+  useFetchDraftQuery,
   usePrefetch,
 } = documentApi;

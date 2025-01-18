@@ -85,3 +85,5 @@ export const ContentItemMenu = ({ editor }: ContentItemMenuProps) => {
     </DragHandle>
   );
 };
+
+export default ContentItemMenu;
