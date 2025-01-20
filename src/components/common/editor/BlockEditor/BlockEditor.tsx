@@ -24,7 +24,7 @@ import { Key } from "history";
 import { Download } from "lucide-react";
 import * as Y from "yjs";
 
-import { useCallback, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Comments from "../../layout/comments";
 import CustomImage from "../custom-image";
@@ -83,6 +83,8 @@ export const BlockEditor = ({
   const [createDraft] = useCreateDraftMutation();
   const [updateDraft] = useUpdateDraftMutation();
   const [currentId, setCurrentId] = useState<string | null>(null);
+  const [lastSavedContent, setLastSavedContent] = useState<string | null>(null); // To track changes
+  const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
 
   console.log("current item id", id);
 
@@ -154,28 +156,71 @@ export const BlockEditor = ({
   });
 
   const saveContent = async () => {
-    // const editorContent = editor.getHTML();
-    const editorContent = editor.getJSON();
-    if (id) {
-      // Update existing draft
-      // console.log(currentId);
-      try {
-        await updateDraft({ id: id, content: editorContent, updatedAt: new Date().toISOString() });
+    const editorContent = editor.getJSON(); // Get content in JSON format
+
+    // Check if content has changed
+    if (lastSavedContent && JSON.stringify(editorContent) === lastSavedContent) {
+      console.log("No changes detected, skipping save.");
+      return;
+    }
+
+    try {
+      if (currentId) {
+        // Update existing draft
+        await updateDraft({
+          id: currentId,
+          content: editorContent,
+          updatedAt: new Date().toISOString(),
+        });
         console.log("Draft updated successfully");
-      } catch (error) {
-        console.error("Error updating draft:", error);
-      }
-    } else {
-      // Create new draft
-      try {
+      } else {
+        // Create new draft
         const response = await createDraft({ content: editorContent });
         setCurrentId(response.data.id); // Save returned numeric ID
         console.log("Draft created with ID:", response.data.id);
-      } catch (error) {
-        console.error("Error creating draft:", error);
       }
+      setLastSavedContent(JSON.stringify(editorContent)); // Update last saved content
+    } catch (error) {
+      console.error("Error saving draft:", error);
     }
   };
+
+  // AutoSave logic
+  useEffect(() => {
+    autoSaveInterval.current = setInterval(saveContent, 10000); // Save every 10 seconds
+
+    return () => {
+      // Cleanup on unmount
+      if (autoSaveInterval.current) {
+        clearInterval(autoSaveInterval.current);
+      }
+    };
+  }, [editor, currentId, lastSavedContent]);
+
+  //  With Button
+  // const saveContent = async () => {
+  //   // const editorContent = editor.getHTML();
+  //   const editorContent = editor.getJSON();
+  //   if (id) {
+  //     // Update existing draft
+  //     // console.log(currentId);
+  //     try {
+  //       await updateDraft({ id: id, content: editorContent, updatedAt: new Date().toISOString() });
+  //       console.log("Draft updated successfully");
+  //     } catch (error) {
+  //       console.error("Error updating draft:", error);
+  //     }
+  //   } else {
+  //     // Create new draft
+  //     try {
+  //       const response = await createDraft({ content: editorContent });
+  //       setCurrentId(response.data.id); // Save returned numeric ID
+  //       console.log("Draft created with ID:", response.data.id);
+  //     } catch (error) {
+  //       console.error("Error creating draft:", error);
+  //     }
+  //   }
+  // };
 
   // const saveContent = async () => {
   //   if (!editor) return;
