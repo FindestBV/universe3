@@ -1,4 +1,5 @@
 import { currentUser, logout } from "@/api/auth/authSlice";
+import { useGetStudyByIdQuery } from "@/api/documents/documentApi";
 import { setEditingState } from "@/api/documents/documentSlice";
 // import { setSidebarState } from "@/api/utilities/sidebarSlice";
 import logoUniverse from "@/assets/universe_logo_white.png";
@@ -45,10 +46,19 @@ export function AppSidebar() {
   const dispatch = useDispatch();
   const { isEditing, documentId } = useSelector((state: RootState) => state.document);
 
-  console.log("is editing", isEditing);
-  {
-    isEditing ? console.log("Editing started for document Id", documentId) : "nah";
-  }
+  // console.log("is editing", isEditing);
+  // {
+  //   isEditing ? console.log("Editing started for document Id", documentId) : "nah";
+  // }
+
+  const { data: fetchedStudy, isLoading: fetchedStudyIsLoading } = useGetStudyByIdQuery(
+    documentId,
+    {
+      refetchOnMountOrArgChange: false, // Prevents automatic refetching
+    },
+  );
+
+  console.log("fetchedEntities", fetchedStudy?.entities);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -61,7 +71,25 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon" className="bg-gray-900 text-white">
-      {isEditing ? <h1>EDITING {`${documentId}`}</h1> : <h3>NOT EDITING</h3>}
+      {isEditing ? (
+        <>
+          <h1>EDITING {`${documentId}`}</h1>
+          <h3>{fetchedStudy?.title}</h3>
+          <ul className="ml-4 list-disc">
+            {fetchedStudy && fetchedStudy?.entities.length > 0
+              ? fetchedStudy?.entities.map((doc, index) => (
+                  <li key={index} className="mb-2">
+                    <a href={"#"} className="text-xs text-white hover:text-black">
+                      <p>{doc.title || "Untitled Document"}</p>
+                    </a>
+                  </li>
+                ))
+              : "No connected entities."}
+          </ul>
+        </>
+      ) : (
+        <h3>NOT EDITING</h3>
+      )}
 
       {/* Sidebar Header */}
       <div className="mx-auto flex w-full items-center justify-center p-4">
