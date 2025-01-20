@@ -1,5 +1,5 @@
 // src/features/documentApi.ts
-import type { ConnectedObject, Entity, SavedDocumentResponse, Study } from "@/types/types";
+import type { ConnectedObject, Draft, Entity, SavedDocumentResponse, Stud } from "@/types/types";
 
 import { api } from "../api";
 
@@ -92,6 +92,22 @@ export const documentApi = api.injectEndpoints({
         },
       }),
       providesTags: ["SavedDocument"],
+    }),
+
+    createDraft: builder.mutation({
+      query: (initialData: { content?: string; createdAt?: string }) => {
+        const payload = {
+          content: initialData.content || "Content will go here",
+          createdAt: initialData.createdAt || new Date().toISOString(),
+        };
+
+        return {
+          url: "https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments",
+          method: "POST",
+          body: payload,
+        };
+      },
+      invalidatesTags: ["Draft"], // Invalidate cached drafts
     }),
 
     // Entities
@@ -314,6 +330,7 @@ export const {
   useGetSideBarDocumentsQuery,
   useGetConnectedObjectsQuery,
   useLazyGetConnectedObjectsQuery,
+  useCreateDraftMutation,
   useGetEntitiesQuery,
   useGetEntityByIdQuery,
   useGetStudiesQuery,
