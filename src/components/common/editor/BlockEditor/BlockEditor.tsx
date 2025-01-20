@@ -1,3 +1,4 @@
+import { useCreateDraftMutation } from "@/api/documents/documentApi";
 import SimilarDocumentModal from "@/components/common/dialogs/similar-document-modal";
 import ReferencesSidebar from "@/components/common/sidebar/references-sidebar";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
@@ -77,22 +78,16 @@ export const BlockEditor = ({
 }) => {
   const menuContainerRef = useRef(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  const [createDraft] = useCreateDraftMutation();
 
   const toggleSidebar = () => {
     setIsSidebarCollapsed((prev) => !prev);
   };
 
-  const handlePotentialClose = useCallback(() => {
-    if (window.innerWidth < 1024) {
-      onClose();
-    }
-  }, []);
-
   const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
   console.log("Parsed Content:", JSON.stringify(parsedContent, null, 2));
 
   const leftSidebar = useSidebar();
-  // const { editor, users, collabState } = useBlockEditor({ aiToken, ydoc, provider })
 
   const { editor, users, collabState } = useBlockEditor({
     aiToken,
@@ -132,22 +127,36 @@ export const BlockEditor = ({
           content: [
             {
               type: "text",
-              text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text addinglinks,\n images, files and tables and even utilizing IGOR<sup>AI</sup>. The right sidebar provides otions to include references, \n highlights and images from connected documents. \n Have fun creating!",
+              text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text adding links, images, files, and tables.",
             },
           ],
         },
       ],
     },
-
     onUpdate({ editor }) {
-      const value = editor.getHTML();
-      console.log("Editor HTML:", value); // Check rendered HTML
-      console.log("Editor JSON:", editor.getJSON()); // Check internal JSON structure
-      onChange(value);
+      const updatedHTML = editor.getHTML();
+      const updatedJSON = editor.getJSON();
+      console.log("Content Updated (HTML):", updatedHTML);
+      console.log("Content Updated (JSON):", updatedJSON);
     },
   });
 
-  console.log("parsed content", parsedContent);
+  const saveContent = async () => {
+    if (!editor) return;
+
+    const currentHTML = editor.getHTML();
+    const currentJSON = editor.getJSON();
+
+    console.log("Saved Content (HTML):", currentHTML);
+    console.log("Saved Content (JSON):", currentJSON);
+
+    try {
+      await createDraft({ content: currentHTML });
+      console.log("Draft successfully saved!");
+    } catch (error) {
+      console.error("Failed to save draft:", error);
+    }
+  };
 
   if (!editor) {
     return <p>Loading editor...</p>;
@@ -155,7 +164,6 @@ export const BlockEditor = ({
 
   return (
     <div className="flex h-screen pb-8" ref={menuContainerRef}>
-      {/* <Sidebar isOpen={leftSidebar.isOpen} onClose={leftSidebar.close} editor={editor} /> */}
       <div className="relative flex h-full flex-1 flex-col overflow-hidden">
         <EditorHeader
           editor={editor}
@@ -177,7 +185,9 @@ export const BlockEditor = ({
               <TableRowMenu editor={editor} appendTo={menuContainerRef} />
               <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
               <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
-
+              <div className="flex justify-end p-4">
+                <Button onClick={saveContent}>Save Changes</Button>
+              </div>
               <div className="editorContentContainer" id="linkedDocuments">
                 <h3 className="itemTitle flex items-center gap-4">
                   Linked documents <Download size={16} />
@@ -191,14 +201,12 @@ export const BlockEditor = ({
                             title={doc.title}
                             id={doc.id}
                             type="linkedObjects"
-                            isOpenAccess={doc.isOpenAccess}
                           />
                         </div>
                       ),
                     )
                   : "no connected objects"}
               </div>
-
               <div className="editorContentContainer" id="connectedQueries">
                 <h3 className="itemTitle">Connected Queries</h3>
                 <p className="iconText">Connections:</p>
@@ -231,7 +239,6 @@ export const BlockEditor = ({
                     ))}
                 </div>
               </div>
-
               <div className="editorContentContainer" id="connectedComments">
                 <Comments connectedComments={connectedComments} />
               </div>
