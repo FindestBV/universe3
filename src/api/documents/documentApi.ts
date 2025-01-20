@@ -1,5 +1,5 @@
 // src/features/documentApi.ts
-import type { ConnectedObject, Draft, Entity, SavedDocumentResponse, Stud } from "@/types/types";
+import type { ConnectedObject, Entity, SavedDocumentResponse, Study } from "@/types/types";
 
 import { api } from "../api";
 
@@ -115,7 +115,7 @@ export const documentApi = api.injectEndpoints({
     // Update the active record drawn from drafts.
     updateDraft: builder.mutation({
       query: ({ id, content, updatedAt }: { id: string; content: string; updatedAt: string }) => ({
-        url: `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/5`,
+        url: `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/1`,
         method: "PUT",
         body: { content, updatedAt },
       }),
@@ -144,7 +144,7 @@ export const documentApi = api.injectEndpoints({
 
     fetchDraft: builder.query({
       query: (id: string) =>
-        `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/5`,
+        `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/1`,
       providesTags: (result, error, id) => [{ type: "Draft", id }],
     }),
 
