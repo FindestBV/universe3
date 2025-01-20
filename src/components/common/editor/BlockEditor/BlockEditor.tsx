@@ -1,4 +1,4 @@
-import { useCreateDraftMutation } from "@/api/documents/documentApi";
+import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
 import SimilarDocumentModal from "@/components/common/dialogs/similar-document-modal";
 import ReferencesSidebar from "@/components/common/sidebar/references-sidebar";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
@@ -57,6 +57,7 @@ export const BlockEditor = ({
   provider,
   type,
   content,
+  id,
   title,
   connectedDocs,
   connectedInbox,
@@ -68,6 +69,7 @@ export const BlockEditor = ({
   ydoc: Y.Doc | null;
   provider?: TiptapCollabProvider | null | undefined;
   type?: string;
+  id?: string;
   content?: string;
   title?: string;
   connectedDocs?: string;
@@ -79,6 +81,10 @@ export const BlockEditor = ({
   const menuContainerRef = useRef(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [createDraft] = useCreateDraftMutation();
+  const [updateDraft] = useUpdateDraftMutation();
+  const [currentId, setCurrentId] = useState<string | null>(null);
+
+  console.log("current item id", id);
 
   const toggleSidebar = () => {
     setIsSidebarCollapsed((prev) => !prev);
@@ -138,25 +144,55 @@ export const BlockEditor = ({
       const updatedJSON = editor.getJSON();
       console.log("Content Updated (HTML):", updatedHTML);
       console.log("Content Updated (JSON):", updatedJSON);
+      try {
+        console.log("currentId:", id);
+        updateDraft({ id: id, content: updatedJSON });
+      } catch (error) {
+        console.error("You're a fucking idiot Ro", error);
+      }
     },
   });
 
   const saveContent = async () => {
-    if (!editor) return;
-
-    const currentHTML = editor.getHTML();
-    const currentJSON = editor.getJSON();
-
-    console.log("Saved Content (HTML):", currentHTML);
-    console.log("Saved Content (JSON):", currentJSON);
-
-    try {
-      await createDraft({ content: currentHTML });
-      console.log("Draft successfully saved!");
-    } catch (error) {
-      console.error("Failed to save draft:", error);
+    // const editorContent = editor.getHTML();
+    const editorContent = editor.getJSON();
+    if (id) {
+      // Update existing draft
+      // console.log(currentId);
+      try {
+        await updateDraft({ id: id, content: editorContent, updatedAt: new Date().toISOString() });
+        console.log("Draft updated successfully");
+      } catch (error) {
+        console.error("Error updating draft:", error);
+      }
+    } else {
+      // Create new draft
+      try {
+        const response = await createDraft({ content: editorContent });
+        setCurrentId(response.data.id); // Save returned numeric ID
+        console.log("Draft created with ID:", response.data.id);
+      } catch (error) {
+        console.error("Error creating draft:", error);
+      }
     }
   };
+
+  // const saveContent = async () => {
+  //   if (!editor) return;
+
+  //   const currentHTML = editor.getHTML();
+  //   const currentJSON = editor.getJSON();
+
+  //   console.log("Saved Content (HTML):", currentHTML);
+  //   console.log("Saved Content (JSON):", currentJSON);
+
+  //   try {
+  //     await createDraft({ id: id, content: currentJSON });
+  //     console.log("Draft successfully saved!");
+  //   } catch (error) {
+  //     console.error("Failed to save draft:", error);
+  //   }
+  // };
 
   if (!editor) {
     return <p>Loading editor...</p>;
