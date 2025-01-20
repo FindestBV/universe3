@@ -1,0 +1,25 @@
+.sliding-panel {
+    position: absolute;
+    top: 0;
+    right: -300px; /* Start hidden on the right */
+    width: 0px;
+    height: 100%;
+    background-color: #1a202c;
+    color: white;
+    transition: right 0.3s ease-in-out; /* Smooth slide-in */
+    padding: 16px;
+    z-index: 1000;
+    top: 6em;
+  }
+  
+  .sliding-panel-open {
+    right: 0; /* Slide into view */
+    width: 350px;
+  }
+  
+  .sliding-panel-closed {
+    right: -300px; /* Slide out of view */
+    width: 0px;
+  }
+  
+  

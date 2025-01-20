@@ -1,6 +1,5 @@
 import { currentUser, logout } from "@/api/auth/authSlice";
-import { setEditingState } from "@/api/documents/documentSlice";
-// import { setSidebarState } from "@/api/utilities/sidebarSlice";
+// ShadCN Tabs component
 import logoUniverse from "@/assets/universe_logo_white.png";
 import {
   DropdownMenu,
@@ -20,11 +19,11 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RootState } from "@/store";
 import {
   BookOpenCheck,
   Bot,
-  Calendar,
   ChevronUp,
   FileQuestion,
   FileText,
@@ -45,24 +44,16 @@ export function AppSidebar() {
   const dispatch = useDispatch();
   const { isEditing, documentId } = useSelector((state: RootState) => state.document);
 
-  console.log("is editing", isEditing);
-  {
-    isEditing ? console.log("Editing started for document Id", documentId) : "nah";
-  }
-
   const handleLogout = () => {
     dispatch(logout());
   };
 
   useEffect(() => {
-    console.log("is open", open);
-    // dispatch(setSidebarState(open));
+    console.log("Sidebar is open:", open);
   }, [open]);
 
   return (
     <Sidebar collapsible="icon" className="bg-gray-900 text-white">
-      {isEditing ? <h1>EDITING {`${documentId}`}</h1> : <h3>NOT EDITING</h3>}
-
       {/* Sidebar Header */}
       <div className="mx-auto flex w-full items-center justify-center p-4">
         <a href="/dashboard" rel="preload">
@@ -78,144 +69,114 @@ export function AppSidebar() {
         </a>
       </div>
 
-      {/* Sidebar Content */}
-      <SidebarContent
-        className={`mt-8 flex min-h-0 flex-1 flex-col justify-between ${open ? "p-4" : "p-2"}`}
-      >
-        <div className={`flex flex-col gap-8 ${open ? "items-start" : "items-center"}`}>
-          {/* Inbox Menu */}
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton tooltip="Inbox">
-                <a
-                  href="/inbox"
-                  className="group/link flex items-center gap-2 text-white hover:text-black"
-                >
-                  <Inbox size={18} className="text-white group-hover/link:text-black" />
-                  {open && (
-                    <span className="font-medium text-white group-hover/link:text-black">
-                      Inbox
-                    </span>
-                  )}
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
+      {/* Tabs Section */}
+      <Tabs defaultValue="main" className="w-full">
+        {/* Tabs List */}
+        <TabsList className="flex w-full">
+          <TabsTrigger value="main" className="flex-1">
+            Main Menu
+          </TabsTrigger>
+          {isEditing && (
+            <TabsTrigger value="editing" className="flex-1">
+              Editing
+            </TabsTrigger>
+          )}
+        </TabsList>
 
-          {/* Universe Menu */}
-          <SidebarGroupLabel>
-            <Bot width={18} color={"white"} />
-            <h1 className="text-md ml-2 font-black">Universe</h1>
-          </SidebarGroupLabel>
-
-          <SidebarGroupContent>
+        {/* Main Menu Content */}
+        <TabsContent value="main" className="mt-4">
+          <SidebarContent
+            className={`flex flex-col gap-8 ${open ? "items-start" : "items-center"}`}
+          >
             <SidebarMenu>
-              <ul
-                className={`${
-                  open ? "gap-4 md:ml-6" : "ml-0 gap-4 space-y-2 pl-2 md:mt-4"
-                } flex flex-col`}
-              >
-                <li>
+              <SidebarMenuItem>
+                <SidebarMenuButton tooltip="Inbox">
                   <a
-                    href="/library/documents"
-                    className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
+                    href="/inbox"
+                    className="group/link flex items-center gap-2 text-white hover:text-black"
                   >
-                    <FileText size={16} />
-                    <span className="group-data-[collapsible=icon]:hidden">Documents</span>
+                    <Inbox size={18} className="text-white group-hover/link:text-black" />
+                    {open && (
+                      <span className="font-medium text-white group-hover/link:text-black">
+                        Inbox
+                      </span>
+                    )}
                   </a>
-                </li>
-                <li>
-                  <a
-                    href="/library/entities"
-                    className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
-                  >
-                    <Fingerprint size={16} />
-                    <span className="group-data-[collapsible=icon]:hidden">Entities</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/library/studies"
-                    className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
-                  >
-                    <BookOpenCheck size={16} />
-                    <span className="group-data-[collapsible=icon]:hidden">Studies</span>
-                  </a>
-                </li>
-              </ul>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
-          </SidebarGroupContent>
-          {/* Advanced Search */}
-          <div className={`mb-4 mt-6 gap-6 ${!open ? "text-center" : ""}`}>
-            <SidebarGroupLabel className="my-4">
+
+            <SidebarGroupLabel>
               <Bot width={18} color={"white"} />
-              <h1 className="text-md ml-2 font-black">
-                IGOR<sup>AI</sup> search
-              </h1>
+              <h1 className="text-md ml-2 font-black">Universe</h1>
             </SidebarGroupLabel>
 
             <SidebarGroupContent>
               <SidebarMenu>
-                <SidebarMenuItem>
-                  <a
-                    href="/queries"
-                    className="flex items-center gap-2 text-white hover:text-black"
-                  >
-                    <FileQuestion size={18} className="ml-2" />
-                    {open && <span className="font-medium">Advanced Search</span>}
-                  </a>
-                </SidebarMenuItem>
-
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <AdvancedSearchModal />
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <GenerateReport
-                      leftContent={"Left"}
-                      rightContent={"Right"}
-                      className="text-white hover:text-blue-500"
-                    />
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                <ul
+                  className={`${
+                    open ? "gap-4 md:ml-6" : "ml-0 gap-4 space-y-2 pl-2 md:mt-4"
+                  } flex flex-col`}
+                >
+                  <li>
+                    <a
+                      href="/library/documents"
+                      className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
+                    >
+                      <FileText size={16} />
+                      <span className="group-data-[collapsible=icon]:hidden">Documents</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/library/entities"
+                      className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
+                    >
+                      <Fingerprint size={16} />
+                      <span className="group-data-[collapsible=icon]:hidden">Entities</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/library/studies"
+                      className={`flex items-center gap-2 rounded-md text-white transition-all duration-150 hover:bg-white ${open ? "md:p-2" : ""} hover:text-black`}
+                    >
+                      <BookOpenCheck size={16} />
+                      <span className="group-data-[collapsible=icon]:hidden">Studies</span>
+                    </a>
+                  </li>
+                </ul>
               </SidebarMenu>
             </SidebarGroupContent>
-          </div>
-        </div>
-      </SidebarContent>
+          </SidebarContent>
+        </TabsContent>
+
+        {/* Editing Content */}
+        {isEditing && (
+          <TabsContent value="editing" className="mt-4">
+            <h1 className="text-lg font-bold">Editing Document: {documentId}</h1>
+            <p className="text-sm text-gray-300">Details about the editing process go here.</p>
+          </TabsContent>
+        )}
+      </Tabs>
 
       {/* Sidebar Footer */}
       <SidebarFooter className="p-2">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              tooltip="Profile"
-              className={`${!open ? "items-center justify-center" : "items-center justify-start"} flex`}
-            >
+            <SidebarMenuButton className={`flex ${!open ? "justify-center" : "justify-start"}`}>
               <UserAvatar username={user} />
-              {open && (
-                <span className="font-medium group-data-[collapsible=icon]:hidden">Profile</span>
-              )}
+              {open && <span className="font-medium">Profile</span>}
               <ChevronUp className="ml-auto hidden" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          <DropdownMenuContent
-            side="top"
-            className="w-[--radix-popper-anchor-width] bg-gray-800 text-white"
-          >
+          <DropdownMenuContent side="top" className="bg-gray-800 text-white">
             <DropdownMenuItem>
               <a href="/inbox">{user ? `${user}'s` : ""} Inbox</a>
             </DropdownMenuItem>
             <Separator />
             <DropdownMenuItem>
               <a href="/resources">Resources</a>
-            </DropdownMenuItem>
-            <Separator />
-            <DropdownMenuItem>
-              <a href="/admin">Admin</a>
             </DropdownMenuItem>
             <Separator />
             <DropdownMenuItem>
