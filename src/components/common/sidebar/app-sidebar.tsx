@@ -1,4 +1,5 @@
 import { currentUser, logout } from "@/api/auth/authSlice";
+import { setEditingState } from "@/api/documents/documentSlice";
 // import { setSidebarState } from "@/api/utilities/sidebarSlice";
 import logoUniverse from "@/assets/universe_logo_white.png";
 import {
@@ -19,6 +20,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { RootState } from "@/store";
 import {
   BookOpenCheck,
   Bot,
@@ -41,6 +43,12 @@ export function AppSidebar() {
   const { open } = useSidebar();
   const user = useSelector(currentUser);
   const dispatch = useDispatch();
+  const { isEditing, documentId } = useSelector((state: RootState) => state.document);
+
+  console.log("is editing", isEditing);
+  {
+    isEditing ? console.log("Editing started for document Id", documentId) : "nah";
+  }
 
   const handleLogout = () => {
     dispatch(logout());
@@ -53,6 +61,8 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon" className="bg-gray-900 text-white">
+      {isEditing ? <h1>EDITING {`${documentId}`}</h1> : <h3>NOT EDITING</h3>}
+
       {/* Sidebar Header */}
       <div className="mx-auto flex w-full items-center justify-center p-4">
         <a href="/dashboard" rel="preload">
