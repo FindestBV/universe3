@@ -111,7 +111,7 @@ export const documentApi = api.injectEndpoints({
 
     updateDraft: builder.mutation({
       query: ({ id, content, updatedAt }: { id: string; content: string; updatedAt: string }) => ({
-        url: `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/3`,
+        url: `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/2`,
         method: "PUT",
         body: { content, updatedAt },
       }),
@@ -140,7 +140,7 @@ export const documentApi = api.injectEndpoints({
 
     fetchDraft: builder.query({
       query: (id: string) =>
-        `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/3`,
+        `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/2`,
       providesTags: (result, error, id) => [{ type: "Draft", id }],
     }),
 

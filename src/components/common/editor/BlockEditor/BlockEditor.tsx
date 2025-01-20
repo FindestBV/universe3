@@ -266,9 +266,9 @@ export const BlockEditor = ({
               <TableRowMenu editor={editor} appendTo={menuContainerRef} />
               <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
               <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
-              <div className="flex justify-end p-4">
+              {/* <div className="flex justify-end p-4">
                 <Button onClick={saveContent}>Save Changes</Button>
-              </div>
+              </div> */}
               <div className="editorContentContainer" id="linkedDocuments">
                 <h3 className="itemTitle flex items-center gap-4">
                   Linked documents <Download size={16} />
