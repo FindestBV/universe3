@@ -100,7 +100,6 @@ export const documentApi = api.injectEndpoints({
           content: initialData.content || "Content will go here",
           createdAt: initialData.createdAt || new Date().toISOString(),
         };
-
         return {
           url: "https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments",
           method: "POST",
@@ -108,6 +107,41 @@ export const documentApi = api.injectEndpoints({
         };
       },
       invalidatesTags: ["Draft"], // Invalidate cached drafts
+    }),
+
+    updateDraft: builder.mutation({
+      query: ({ id, content, updatedAt }: { id: string; content: string; updatedAt: string }) => ({
+        url: `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/3`,
+        method: "PUT",
+        body: { content, updatedAt },
+      }),
+      async onQueryStarted({ id, content, updatedAt }, { dispatch, queryFulfilled }) {
+        if (!id) {
+          console.error("No ID provided to update the draft");
+          return;
+        }
+        const patchedResult = dispatch(
+          api.util.updateQueryData("fetchDraft", id, (draft: any) => {
+            if (draft) {
+              draft.content = content;
+              draft.updatedAt = updatedAt;
+            }
+          }),
+        );
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          console.error("Failed to update draft:", error);
+          patchedResult.undo();
+        }
+      },
+      invalidatesTags: (result, error, { id }) => [{ type: "Draft", id }],
+    }),
+
+    fetchDraft: builder.query({
+      query: (id: string) =>
+        `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/3`,
+      providesTags: (result, error, id) => [{ type: "Draft", id }],
     }),
 
     // Entities
@@ -331,6 +365,7 @@ export const {
   useGetConnectedObjectsQuery,
   useLazyGetConnectedObjectsQuery,
   useCreateDraftMutation,
+  useUpdateDraftMutation,
   useGetEntitiesQuery,
   useGetEntityByIdQuery,
   useGetStudiesQuery,
