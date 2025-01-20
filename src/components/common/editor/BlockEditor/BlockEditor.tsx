@@ -1,4 +1,5 @@
 import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
+import { setEditingState } from "@/api/documents/documentSlice";
 import SimilarDocumentModal from "@/components/common/dialogs/similar-document-modal";
 import ReferencesSidebar from "@/components/common/sidebar/references-sidebar";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
@@ -25,6 +26,7 @@ import { Download } from "lucide-react";
 import * as Y from "yjs";
 
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import Comments from "../../layout/comments";
 import CustomImage from "../custom-image";
@@ -59,11 +61,13 @@ export const BlockEditor = ({
   content,
   id,
   title,
+  connectedEntities,
   connectedDocs,
   connectedInbox,
   connectedObjects,
   connectedQueries,
   connectedComments,
+  connectedStudies,
 }: {
   aiToken?: string;
   ydoc: Y.Doc | null;
@@ -72,11 +76,13 @@ export const BlockEditor = ({
   id?: string;
   content?: string;
   title?: string;
+  connectedEntities?: string;
   connectedDocs?: string;
   connectedInbox?: string;
   connectedObjects?: string;
   connectedQueries?: string;
   connectedComments?: string;
+  connectedStudies?: string;
 }) => {
   const menuContainerRef = useRef(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
@@ -85,8 +91,7 @@ export const BlockEditor = ({
   const [currentId, setCurrentId] = useState<string | null>(null);
   const [lastSavedContent, setLastSavedContent] = useState<string | null>(null); // To track changes
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
-
-  console.log("current item id", id);
+  const dispatch = useDispatch();
 
   const toggleSidebar = () => {
     setIsSidebarCollapsed((prev) => !prev);
@@ -185,9 +190,39 @@ export const BlockEditor = ({
     }
   };
 
+  const isEditing = useSelector((state: RootState) => state.document.isEditing);
+
+  const handleEditStart = () => {
+    console.log("Editing started for document:", id);
+
+    // Validate `id`
+    if (!id || typeof id !== "string") {
+      console.error("Invalid document ID provided:", id);
+      return;
+    }
+
+    // Dispatch with the correct payload
+    dispatch(setEditingState({ isEditing: true, documentId: id }));
+  };
+
+  const handleStopEditing = () => {
+    console.log("Editing stopped for document:", id);
+
+    // Validate `id`
+    if (!id || typeof id !== "string") {
+      console.error("Invalid document ID provided:", id);
+      return;
+    }
+
+    // Dispatch with the correct payload
+    dispatch(setEditingState({ isEditing: false, documentId: id }));
+  };
+
   // AutoSave logic
   useEffect(() => {
-    autoSaveInterval.current = setInterval(saveContent, 10000); // Save every 10 seconds
+    if (isEditing) {
+      autoSaveInterval.current = setInterval(saveContent, 10000); // Save every 10 seconds
+    }
 
     return () => {
       // Cleanup on unmount
@@ -195,7 +230,11 @@ export const BlockEditor = ({
         clearInterval(autoSaveInterval.current);
       }
     };
-  }, [editor, currentId, lastSavedContent]);
+  }, [editor, currentId, lastSavedContent, isEditing]);
+
+  useEffect(() => {
+    console.log("editor", editor);
+  }, [editor]);
 
   //  With Button
   // const saveContent = async () => {
@@ -222,23 +261,6 @@ export const BlockEditor = ({
   //   }
   // };
 
-  // const saveContent = async () => {
-  //   if (!editor) return;
-
-  //   const currentHTML = editor.getHTML();
-  //   const currentJSON = editor.getJSON();
-
-  //   console.log("Saved Content (HTML):", currentHTML);
-  //   console.log("Saved Content (JSON):", currentJSON);
-
-  //   try {
-  //     await createDraft({ id: id, content: currentJSON });
-  //     console.log("Draft successfully saved!");
-  //   } catch (error) {
-  //     console.error("Failed to save draft:", error);
-  //   }
-  // };
-
   if (!editor) {
     return <p>Loading editor...</p>;
   }
@@ -257,6 +279,11 @@ export const BlockEditor = ({
       <div className="flex flex-row">
         <div className="relative flex h-screen flex-row gap-10">
           <div className={`${isSidebarCollapsed ? "w-full" : "w-3/4"}`}>
+            {isEditing ? (
+              <button onClick={handleStopEditing}>Stop</button>
+            ) : (
+              <button onClick={handleEditStart}>EDIT</button>
+            )}
             <div className="flex flex-col justify-between">
               <EditorContent editor={editor} className="h-screen flex-1 p-16" />
               <ContentItemMenu editor={editor} />
@@ -266,9 +293,7 @@ export const BlockEditor = ({
               <TableRowMenu editor={editor} appendTo={menuContainerRef} />
               <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
               <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
-              {/* <div className="flex justify-end p-4">
-                <Button onClick={saveContent}>Save Changes</Button>
-              </div> */}
+
               <div className="editorContentContainer" id="linkedDocuments">
                 <h3 className="itemTitle flex items-center gap-4">
                   Linked documents <Download size={16} />
@@ -334,6 +359,8 @@ export const BlockEditor = ({
               connectedDocs={connectedDocs}
               connectedObjects={connectedObjects}
               connectedInbox={connectedInbox}
+              connectedEntities={connectedEntities}
+              connectedStudies={connectedStudies}
               editor={editor}
             />
           </div>
