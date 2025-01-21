@@ -21,7 +21,7 @@ import React from "react";
 import { ReferencesSearchbar } from "../search/references-searchbar";
 
 export const ReferencesSidebar: React.FC<{
-  onToggleSidebar?: () => void;
+  onToggleInnerSidebar?: () => void;
   isCollapsed?: boolean;
   connectedEntities?: string;
   connectedDocs?: string;
@@ -31,7 +31,7 @@ export const ReferencesSidebar: React.FC<{
   connectedStudies?: string;
   editor?: string;
 }> = ({
-  onToggleSidebar,
+  toggleInnerSidebar,
   isCollapsed,
   connectedEntities,
   connectedInbox,
@@ -48,9 +48,6 @@ export const ReferencesSidebar: React.FC<{
   console.log("connected Studues", connectedStudies);
 
   const toggleActiveSubTab = (tab) => {
-    if (isCollapsed) {
-      onToggleSidebar();
-    }
     setActiveMainTab(tab);
   };
 
