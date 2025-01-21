@@ -84,7 +84,7 @@ export const BlockEditor = ({
   connectedStudies?: string;
 }) => {
   const menuContainerRef = useRef(null);
-  const [isLeftSideBarOpen, setIsLeftSidebarOpen] = useState<boolean>(true);
+  const [isLeftSideBarOpen, setIsLeftSidebarOpen] = useState<boolean>(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [createDraft] = useCreateDraftMutation();
   const [updateDraft] = useUpdateDraftMutation();
@@ -193,7 +193,7 @@ export const BlockEditor = ({
 
   return (
     <div className="flex pb-8" ref={menuContainerRef}>
-      {isEditing ? <TOCSidebar editor={editor} isOpen={true} /> : ""}
+      {isLeftSideBarOpen || isEditing ? <TOCSidebar editor={editor} isOpen={true} /> : null}
       <div className="relative flex h-full max-w-full flex-1 flex-col">
         <EditorHeader
           editor={editor}
