@@ -523,7 +523,7 @@
 }
 
 .referenceSidebar{
-  @apply relative flex flex-col border-l border-gray-200 transition-all duration-300
+  @apply relative flex flex-col border-l border-gray-200 transition-all duration-300 min-w-[350px] max-w-[350px]
 }
 
 table {

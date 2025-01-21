@@ -259,7 +259,7 @@ export const BlockEditor = ({
           />
           <div className="flex flex-row">
             <div className="mainEditor">
-              <EditorContent editor={editor} className="flex overflow-y-hidden py-16" />
+              <EditorContent editor={editor} className="flex overflow-y-hidden py-16 max-lg:px-8" />
               <ContentItemMenu editor={editor} />
               <LinkMenu editor={editor} appendTo={menuContainerRef} />
               <TextMenu editor={editor} />
@@ -271,7 +271,6 @@ export const BlockEditor = ({
             <div className="referenceSidebar">
               <ReferencesSidebar
                 onToggleSidebar={toggleSidebar}
-                isCollapsed={isSidebarCollapsed}
                 connectedDocs={connectedDocs}
                 connectedObjects={connectedObjects}
                 connectedInbox={connectedInbox}
