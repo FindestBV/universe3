@@ -21,7 +21,7 @@ import React from "react";
 import { ReferencesSearchbar } from "../search/references-searchbar";
 
 export const ReferencesSidebar: React.FC<{
-  onToggleInnerSidebar?: () => void;
+  onToggleSidebar?: () => void;
   isCollapsed?: boolean;
   connectedEntities?: string;
   connectedDocs?: string;
@@ -31,7 +31,7 @@ export const ReferencesSidebar: React.FC<{
   connectedStudies?: string;
   editor?: string;
 }> = ({
-  toggleInnerSidebar,
+  onToggleSidebar,
   isCollapsed,
   connectedEntities,
   connectedInbox,

@@ -267,7 +267,7 @@ export const BlockEditor = ({
           </div>
           <div className="referenceSidebar">
             <ReferencesSidebar
-              // onToggleSidebar={toggleSidebar}
+              onToggleSidebar={toggleSidebar}
               isCollapsed={leftSidebar.isOpen}
               connectedDocs={connectedDocs}
               connectedObjects={connectedObjects}

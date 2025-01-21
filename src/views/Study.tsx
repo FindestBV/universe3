@@ -21,6 +21,7 @@ export const Study: React.FC = () => {
   const connectedDocs = fetchedStudy && fetchedStudy?.connectedDocs;
   const connectedComments = fetchedStudy && fetchedStudy?.connectedComments;
   const inboxQuery = fetchedStudy && fetchedStudy?.connectedInboxItems;
+  const connectedEntities = fetchedStudy && fetchedStudy?.connectedInboxItems;
 
   if (fetchedStudy?.description) {
     console.log("fetched study full obj", fetchedStudy);
@@ -57,7 +58,7 @@ export const Study: React.FC = () => {
                 id={fetchedStudy?.id}
                 title={fetchedStudy?.title}
                 content={parsedDescription}
-                connectedEntities={fetchedStudy?.entities}
+                connectedEntities={connectedEntities}
                 connectedInbox={inboxQuery}
                 connectedObjects={connectedDocs}
                 connectedQueries={connectedStudies}
