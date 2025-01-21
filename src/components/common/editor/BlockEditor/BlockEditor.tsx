@@ -24,7 +24,7 @@ import { Key } from "history";
 import { Download } from "lucide-react";
 import * as Y from "yjs";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Comments from "../../layout/comments";
@@ -99,29 +99,45 @@ export const BlockEditor = ({
 
   const leftSidebar = useSidebar();
 
-  const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
-  // console.log("Parsed Content:", JSON.stringify(parsedContent, null, 2));
+  const parsedContent = useMemo(() => {
+    try {
+      return typeof content === "string" ? JSON.parse(content) : content;
+    } catch (e) {
+      console.error("Invalid content JSON:", e);
+      return { type: "doc", content: [] };
+    }
+  }, [content]);
 
-  const { editor, users, collabState } = useBlockEditor({
-    aiToken,
-    ydoc,
-    provider,
-    extensions: [
-      Link.configure({
-        openOnClick: true,
-      }),
+  const saveContent = useCallback(async () => {
+    const editorContent = editor?.getJSON();
+    if (!editorContent || JSON.stringify(editorContent) === lastSavedContent) {
+      console.log("No changes detected, skipping save.");
+      return;
+    }
+
+    try {
+      if (currentId) {
+        await updateDraft({ id: currentId, content: editorContent });
+        console.log("Draft updated successfully");
+      } else {
+        const response = await createDraft({ content: editorContent });
+        setCurrentId(response.data.id);
+        console.log("Draft created with ID:", response.data.id);
+      }
+      setLastSavedContent(JSON.stringify(editorContent));
+    } catch (error) {
+      console.error("Error saving draft:", error);
+    }
+  }, [lastSavedContent, updateDraft, createDraft]);
+
+  const extensions = useMemo(
+    () => [
+      StarterKit,
+      Link.configure({ openOnClick: true }),
       Document,
-      Paragraph.configure({
-        HTMLAttributes: {
-          class: "editor_paragraph",
-        },
-      }),
-      Heading.configure({
-        levels: [1, 2, 3, 4, 5, 6],
-      }),
-      Table.configure({
-        resizable: true,
-      }),
+      Paragraph.configure({ HTMLAttributes: { class: "editor_paragraph" } }),
+      Heading.configure({ levels: [1, 2, 3, 4, 5, 6] }),
+      Table.configure({ resizable: true }),
       TableRow,
       TableHeader,
       TableCell,
@@ -130,8 +146,15 @@ export const BlockEditor = ({
       CustomImage,
       Rating,
       PlaceholderExtension,
-      StarterKit,
     ],
+    [],
+  );
+
+  const { editor, users, collabState } = useBlockEditor({
+    aiToken,
+    ydoc,
+    provider,
+    extensions,
     content: parsedContent || {
       type: "doc",
       content: [
@@ -147,190 +170,59 @@ export const BlockEditor = ({
       ],
     },
     onUpdate({ editor }) {
-      const updatedHTML = editor.getHTML();
       const updatedJSON = editor.getJSON();
-      console.log("Content Updated (HTML):", updatedHTML);
-      console.log("Content Updated (JSON):", updatedJSON);
-      try {
-        console.log("currentId:", id);
-        updateDraft({ id: id, content: updatedJSON });
-      } catch (error) {
-        console.error("You're a fucking idiot Ro", error);
-      }
+      saveContent(updatedJSON);
     },
   });
 
-  const saveContent = async () => {
-    const editorContent = editor.getJSON(); // Get content in JSON format
-
-    // Check if content has changed
-    if (lastSavedContent && JSON.stringify(editorContent) === lastSavedContent) {
-      console.log("No changes detected, skipping save.");
-      return;
-    }
-
-    try {
-      if (currentId) {
-        // Update existing draft
-        await updateDraft({
-          id: currentId,
-          content: editorContent,
-          updatedAt: new Date().toISOString(),
-        });
-        console.log("Draft updated successfully");
-      } else {
-        // Create new draft
-        const response = await createDraft({ content: editorContent });
-        setCurrentId(response.data.id); // Save returned numeric ID
-        console.log("Draft created with ID:", response.data.id);
-      }
-      setLastSavedContent(JSON.stringify(editorContent)); // Update last saved content
-    } catch (error) {
-      console.error("Error saving draft:", error);
-    }
-  };
-
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
 
-  // AutoSave logic
   useEffect(() => {
     if (isEditing) {
       autoSaveInterval.current = setInterval(saveContent, 10000); // Save every 10 seconds
     }
-
     return () => {
-      // Cleanup on unmount
-      if (autoSaveInterval.current) {
-        clearInterval(autoSaveInterval.current);
-      }
+      if (autoSaveInterval.current) clearInterval(autoSaveInterval.current);
     };
-  }, [editor, currentId, lastSavedContent, isEditing]);
-
-  useEffect(() => {
-    console.log("editor", editor);
-  }, [editor]);
-
-  //  With Button
-  // const saveContent = async () => {
-  //   // const editorContent = editor.getHTML();
-  //   const editorContent = editor.getJSON();
-  //   if (id) {
-  //     // Update existing draft
-  //     // console.log(currentId);
-  //     try {
-  //       await updateDraft({ id: id, content: editorContent, updatedAt: new Date().toISOString() });
-  //       console.log("Draft updated successfully");
-  //     } catch (error) {
-  //       console.error("Error updating draft:", error);
-  //     }
-  //   } else {
-  //     // Create new draft
-  //     try {
-  //       const response = await createDraft({ content: editorContent });
-  //       setCurrentId(response.data.id); // Save returned numeric ID
-  //       console.log("Draft created with ID:", response.data.id);
-  //     } catch (error) {
-  //       console.error("Error creating draft:", error);
-  //     }
-  //   }
-  // };
+  }, [isEditing, saveContent]);
 
   if (!editor) {
     return <p>Loading editor...</p>;
   }
 
   return (
-    <div className="flex pb-8" ref={menuContainerRef}>
-      <div className="flex h-full" ref={menuContainerRef}>
-        <Sidebar isOpen={leftSidebar?.isOpen} onClose={leftSidebar.close} editor={editor} />
-        <div className="relative flex h-full max-w-full flex-1 flex-col overflow-hidden">
-          <EditorHeader
-            editor={editor}
-            collabState={collabState}
-            users={users}
-            isSidebarOpen={leftSidebar.isOpen}
-            toggleSidebar={leftSidebar.toggle}
-            documentId={id}
-          />
-          <div className="flex flex-row">
-            <div className="mainEditor">
-              <EditorContent editor={editor} className="flex overflow-y-hidden py-16 md:px-8" />
-              <ContentItemMenu editor={editor} />
-              <LinkMenu editor={editor} appendTo={menuContainerRef} />
-              <TextMenu editor={editor} />
-              <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
-              <TableRowMenu editor={editor} appendTo={menuContainerRef} />
-              <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
-              <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
-
-              <div className="editorContentContainer" id="linkedDocuments">
-                <h3 className="itemTitle flex items-center gap-4">
-                  Linked documents <Download size={16} />
-                </h3>
-
-                {connectedObjects &&
-                connectedObjects?.documents &&
-                connectedObjects.documents.length > 0
-                  ? connectedObjects.documents.map(
-                      (doc: { title: Key | null | undefined; id: string }) => (
-                        <div key={doc.title}>
-                          <SimilarDocumentModal
-                            title={doc.title}
-                            id={doc.id}
-                            type="linkedObjects"
-                          />
-                        </div>
-                      ),
-                    )
-                  : "no connected objects"}
-              </div>
-              <div className="editorContentContainer" id="connectedQueries">
-                <h3 className="itemTitle">Connected Queries</h3>
-                <p className="iconText">Connections:</p>
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {connectedQueries &&
-                    (connectedQueries[0]?.connectedObjects &&
-                    connectedQueries[0].connectedObjects?.length > 0 ? (
-                      connectedQueries[0].connectedObjects.map(
-                        (obj: {
-                          id: Key | null | undefined;
-                          name: string;
-                          mainContents: unknown;
-                          searchInformation: unknown;
-                        }) => (
-                          <SimilarDocumentModal
-                            key={obj.id}
-                            id={obj.id}
-                            title={obj.name}
-                            mainContents={obj.mainContents}
-                            searchInformation={obj.searchInformation}
-                            type="entity"
-                          />
-                        ),
-                      )
-                    ) : (
-                      <div className="flex flex-row-reverse items-center gap-4">
-                        <Button variant="ghost">Connect a query</Button>
-                        <p className="text-gray-500">No connected objects</p>
-                      </div>
-                    ))}
-                </div>
-              </div>
-              <div className="editorContentContainer" id="connectedComments">
-                <Comments connectedComments={connectedComments} />
-              </div>
-            </div>
-            <div className="referenceSidebar">
-              <ReferencesSidebar
-                onToggleSidebar={toggleSidebar}
-                connectedDocs={connectedDocs}
-                connectedObjects={connectedObjects}
-                connectedInbox={connectedInbox}
-                connectedEntities={connectedEntities}
-                connectedStudies={connectedStudies}
-                editor={editor}
-              />
-            </div>
+    <div className="flex h-screen pb-8" ref={menuContainerRef}>
+      <Sidebar isOpen={!leftSidebar.isOpen} onClose={leftSidebar.close} editor={editor} />
+      <div className="relative flex h-full max-w-full flex-1 flex-col overflow-hidden">
+        <EditorHeader
+          editor={editor}
+          collabState={collabState}
+          users={users}
+          isSidebarOpen={leftSidebar.isOpen}
+          toggleSidebar={leftSidebar.toggle}
+          documentId={id}
+        />
+        <div className="flex flex-row">
+          <div className="mainEditor">
+            <EditorContent editor={editor} className="flex overflow-y-hidden py-16 max-lg:px-8" />
+            <ContentItemMenu editor={editor} />
+            <LinkMenu editor={editor} appendTo={menuContainerRef} />
+            <TextMenu editor={editor} />
+            <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
+            <TableRowMenu editor={editor} appendTo={menuContainerRef} />
+            <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
+            <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
+          </div>
+          <div className="referenceSidebar">
+            <ReferencesSidebar
+              onToggleSidebar={toggleSidebar}
+              connectedDocs={connectedDocs}
+              connectedObjects={connectedObjects}
+              connectedInbox={connectedInbox}
+              connectedEntities={connectedEntities}
+              connectedStudies={connectedStudies}
+              editor={editor}
+            />
           </div>
         </div>
       </div>
