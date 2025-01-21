@@ -84,16 +84,16 @@ export const BlockEditor = ({
   connectedStudies?: string;
 }) => {
   const menuContainerRef = useRef(null);
-  // const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [createDraft] = useCreateDraftMutation();
   const [updateDraft] = useUpdateDraftMutation();
   const [currentId, setCurrentId] = useState<string | null>(null);
   const [lastSavedContent, setLastSavedContent] = useState<string | null>(null); // To track changes
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
 
-  // const toggleSidebar = () => {
-  //   setIsSidebarCollapsed((prev) => !prev);
-  // };
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed((prev) => !prev);
+  };
 
   const leftSidebar = useSidebar();
 
@@ -263,13 +263,13 @@ export const BlockEditor = ({
           </div>
           <div className="referenceSidebar">
             <ReferencesSidebar
-              // onToggleSidebar={toggleSidebar}
+              onToggleSidebar={toggleSidebar}
               connectedDocs={connectedDocs}
               connectedObjects={connectedObjects}
               connectedInbox={connectedInbox}
               connectedEntities={connectedEntities}
               connectedStudies={connectedStudies}
-              // editor={editor}
+              editor={editor}
             />
           </div>
         </div>
