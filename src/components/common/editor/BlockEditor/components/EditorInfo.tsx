@@ -181,7 +181,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
               <DropdownMenuItem
                 key={index}
                 onClick={option.command}
-                className={`cursor-pointer rounded p-2 text-sm ${
+                className={`cursor-pointer rounded p-2 text-left text-sm ${
                   option.isActive ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
                 }`}
               >
