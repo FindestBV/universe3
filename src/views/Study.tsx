@@ -17,10 +17,10 @@ export const Study: React.FC = () => {
 
   console.log("fetchedStudy", fetchedStudy);
 
-  const connectedStudies = fetchedStudy?.connectedStudies;
-  const connectedDocs = fetchedStudy?.connectedDocs;
-  const connectedComments = fetchedStudy?.connectedComments;
-  const inboxQuery = fetchedStudy?.connectedInboxItems;
+  const connectedStudies = fetchedStudy && fetchedStudy?.connectedStudies;
+  const connectedDocs = fetchedStudy && fetchedStudy?.connectedDocs;
+  const connectedComments = fetchedStudy && fetchedStudy?.connectedComments;
+  const inboxQuery = fetchedStudy && fetchedStudy?.connectedInboxItems;
 
   if (fetchedStudy?.description) {
     console.log("fetched study full obj", fetchedStudy);
