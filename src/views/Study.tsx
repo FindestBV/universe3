@@ -56,7 +56,7 @@ export const Study: React.FC = () => {
                 id={fetchedStudy?.id}
                 title={fetchedStudy?.title}
                 content={parsedDescription}
-                connectedEntities={fetchedStudy.entities}
+                connectedEntities={fetchedStudy?.entities}
                 connectedInbox={inboxQuery}
                 connectedObjects={connectedDocs}
                 connectedQueries={connectedStudies}
