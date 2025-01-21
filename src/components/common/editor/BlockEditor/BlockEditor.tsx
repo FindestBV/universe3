@@ -97,6 +97,7 @@ export const BlockEditor = ({
   };
 
   const toggleInnerSidebar = () => {
+    console.log(isSidebarCollapsed);
     setIsSidebarCollapsed(!isSidebarCollapsed);
   };
 
@@ -110,7 +111,7 @@ export const BlockEditor = ({
   }, [content]);
 
   const saveContent = useCallback(
-    async (content) => {
+    async (content: any) => {
       if (JSON.stringify(content) === lastSavedContent) {
         console.log("No changes detected.");
         return;
@@ -118,7 +119,10 @@ export const BlockEditor = ({
 
       try {
         if (currentId) {
-          await updateDraft({ id: currentId, content });
+          await updateDraft({
+            id: currentId,
+            content,
+          });
         } else {
           const response = await createDraft({ content });
           setCurrentId(response.data.id);
@@ -128,7 +132,7 @@ export const BlockEditor = ({
         console.error("Error saving content:", error);
       }
     },
-    [currentId, lastSavedContent, updateDraft, createDraft],
+    [currentId, lastSavedContent, updateDraft, createDraft, content],
   );
 
   const extensions = useMemo(
@@ -193,7 +197,6 @@ export const BlockEditor = ({
 
   return (
     <div className="flex pb-8" ref={menuContainerRef}>
-      {isLeftSideBarOpen || isEditing ? <TOCSidebar editor={editor} isOpen={true} /> : null}
       <div className="relative flex h-full max-w-full flex-1 flex-col">
         <EditorHeader
           editor={editor}
@@ -203,7 +206,14 @@ export const BlockEditor = ({
           toggleLeftSidebar={toggleLeftSideBar}
           documentId={id}
         />
-        <div className="flex flex-row">
+        <div className="flex flex-row overflow-hidden">
+          {isLeftSideBarOpen && (
+            <TOCSidebar
+              editor={editor}
+              isOpen={isLeftSideBarOpen}
+              className={"duration-150 ease-linear"}
+            />
+          )}
           <div className="mainEditor">
             <EditorContent
               key={editor?.view?.id || "editor"}
@@ -268,10 +278,11 @@ export const BlockEditor = ({
               <Comments connectedComments={connectedComments} />
             </div>
           </div>
-          <div className="referenceSidebar">
+          <div className={`referenceSidebar ${isSidebarCollapsed ? "collapsed" : ""}`}>
             <ReferencesSidebar
               onToggleInnerSidebar={toggleInnerSidebar}
-              // isCollapsed={isSidebarCollapsed}
+              isCollapsed={isSidebarCollapsed}
+              connectedEntities={connectedEntities}
               connectedDocs={connectedDocs}
               connectedObjects={connectedObjects}
               connectedInbox={connectedInbox}

@@ -15,11 +15,11 @@ import {
   X,
 } from "lucide-react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 
 export const ReferencesSidebar: React.FC<{
-  onToggleSidebar?: () => void;
+  onToggleInnerSidebar?: () => void;
   isCollapsed?: boolean;
   connectedEntities?: string;
   connectedDocs?: string;
@@ -29,7 +29,7 @@ export const ReferencesSidebar: React.FC<{
   connectedStudies?: string;
   editor?: string;
 }> = ({
-  onToggleSidebar,
+  onToggleInnerSidebar,
   isCollapsed,
   connectedEntities,
   connectedInbox,
@@ -41,18 +41,17 @@ export const ReferencesSidebar: React.FC<{
   const [activeMainTab, setActiveMainTab] = useState<string>("references"); // Main tab
   const [activeSubTab, setActiveSubTab] = useState<string>("documents"); // Sub-tab for references
 
-  console.log("here is the editor object", TableOfContents);
-  console.log("connectedEntities?", connectedEntities);
-  console.log("connected Studues", connectedStudies);
+  // console.log("here is the editor object", TableOfContents);
+  console.log("here is the ontoggle object", onToggleInnerSidebar);
 
-  const toggleActiveSubTab = (tab) => {
+  const toggleActiveSubTab = (tab: React.SetStateAction<string>) => {
     if (isCollapsed) {
-      onToggleSidebar();
+      onToggleInnerSidebar();
     }
     setActiveMainTab(tab);
   };
 
-  const scrollToSection = (sectionId) => {
+  const scrollToSection = (sectionId: string) => {
     console.log("scrollto", sectionId);
     const sectionElement = document.querySelector(sectionId); // Find the section
     if (sectionElement) {
@@ -64,10 +63,14 @@ export const ReferencesSidebar: React.FC<{
     }
   };
 
+  // useEffect(() => {
+  //   console.log('hmmmmm')
+  // },[onToggleInnerSidebar])
+
   return (
     <>
       {/* Persistent Panel */}
-      <div className="absolute top-0 z-10 -ml-14 mt-4 flex h-[100px] flex-col items-center gap-4 bg-white p-4 shadow-md">
+      <div className="absolute top-0 z-10 -ml-14 flex h-[100px] flex-col items-center gap-4 bg-white p-4 shadow-md">
         {/* Toggle Main Tabs */}
         <button
           onClick={() => toggleActiveSubTab("references")}
@@ -91,7 +94,7 @@ export const ReferencesSidebar: React.FC<{
               className="fixed right-0"
               onClick={() => {
                 console.log("X button clicked, toggling sidebar");
-                onToggleSidebar();
+                onToggleInnerSidebar();
               }}
             >
               <X size={20} />
@@ -175,7 +178,7 @@ export const ReferencesSidebar: React.FC<{
                         <div key={index} className="mb-2 flex items-start gap-2">
                           <Link size={24} />
                           <a href={"#"} className="text-gray-700 hover:text-black">
-                            <p>{doc[1]?.documentTitle}</p>
+                            <p className="text-sm">{doc[1]?.documentTitle}</p>
                           </a>
                         </div>
                       ))
@@ -190,14 +193,16 @@ export const ReferencesSidebar: React.FC<{
                 )}
                 <TabsContent value="documents">
                   {connectedObjects?.documents && connectedObjects.documents.length > 0
-                    ? connectedObjects.documents.map((doc, index) => (
-                        <div key={index} className="mb-2 flex items-start gap-2">
-                          <Link size={24} />
-                          <a href={"#"} className="text-gray-700 hover:text-black">
-                            <p className="text-sm">{doc.title || "Untitled Document"}</p>
-                          </a>
-                        </div>
-                      ))
+                    ? connectedObjects.documents.map(
+                        (doc: { title: any }, index: React.Key | null | undefined) => (
+                          <div key={index} className="mb-2 flex items-start gap-2">
+                            <Link size={24} />
+                            <a href={"#"} className="text-gray-700 hover:text-black">
+                              <p className="text-sm">{doc.title || "Untitled Document"}</p>
+                            </a>
+                          </div>
+                        ),
+                      )
                     : "No connected objects."}
                 </TabsContent>
                 <TabsContent value="attachments">
@@ -205,28 +210,32 @@ export const ReferencesSidebar: React.FC<{
                 </TabsContent>
                 <TabsContent value="entities">
                   {connectedEntities && connectedEntities.length > 0
-                    ? connectedEntities.map((doc, index) => (
-                        <div key={index} className="mb-2 flex items-start gap-2">
-                          <Link size={24} />
-                          <a href={"#"} className="text-gray-700 hover:text-black">
-                            <small>Entity</small>
-                            <p className="text-sm">{doc.title || "Untitled Document"}</p>
-                          </a>
-                        </div>
-                      ))
+                    ? connectedEntities.map(
+                        (doc: { title: any }, index: React.Key | null | undefined) => (
+                          <div key={index} className="mb-2 flex items-start gap-2">
+                            <Link size={24} />
+                            <a href={"#"} className="text-gray-700 hover:text-black">
+                              <small>Entity</small>
+                              <p className="text-sm">{doc.title || "Untitled Document"}</p>
+                            </a>
+                          </div>
+                        ),
+                      )
                     : "No connected entities."}
                 </TabsContent>
                 <TabsContent value="studies">
                   {connectedStudies && connectedStudies.length > 0
-                    ? connectedStudies.map((doc, index) => (
-                        <div key={index} className="mb-2 flex items-start gap-2">
-                          <Link size={24} />
-                          <a href={"#"} className="text-gray-700 hover:text-black">
-                            <small>Study/Queries</small>
-                            <p>{doc.name || "Untitled Document"}</p>
-                          </a>
-                        </div>
-                      ))
+                    ? connectedStudies.map(
+                        (doc: { name: any }, index: React.Key | null | undefined) => (
+                          <div key={index} className="mb-2 flex items-start gap-2">
+                            <Link size={24} />
+                            <a href={"#"} className="text-gray-700 hover:text-black">
+                              <small>Study/Queries</small>
+                              <p className="text-sm">{doc.name || "Untitled Document"}</p>
+                            </a>
+                          </div>
+                        ),
+                      )
                     : "No connected studies."}
                 </TabsContent>
               </Tabs>

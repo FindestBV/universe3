@@ -518,12 +518,23 @@
 
 }
 
+.editorHeader{
+  @apply flex flex-none flex-row items-center border-b border-neutral-200 bg-white py-2 pl-3 pr-3 text-black dark:border-neutral-200 dark:bg-white dark:text-black sticky top-16 z-[50]; 
+
+}
+
+
+
 .editorMainContent{
   @apply z-10 mb-16 h-auto flex-col px-12 transition-all duration-300; 
 }
 
 .referenceSidebar{
-  @apply relative flex flex-col border-l border-gray-200 transition-all duration-300 min-w-[350px] max-w-[350px]
+  @apply relative flex flex-col border-l border-gray-200 transition-all duration-300 min-w-[350px] max-w-[350px];
+
+  &.collapsed{
+    @apply min-w-0 max-w-0;
+  }
 }
 
 table {

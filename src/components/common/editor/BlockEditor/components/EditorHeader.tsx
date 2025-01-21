@@ -1,8 +1,8 @@
 import { WebSocketStatus } from "@hocuspocus/provider";
 import { Editor } from "@tiptap/core";
 import { useEditorState } from "@tiptap/react";
+import { List } from "lucide-react";
 
-import { Icon } from "../../ui/Icon";
 import { Toolbar } from "../../ui/Toolbar";
 import { EditorUser } from "../types";
 import { EditorInfo } from "./EditorInfo";
@@ -36,7 +36,7 @@ export const EditorHeader = ({
   });
 
   return (
-    <div className="flex flex-none flex-row items-center border-b border-neutral-200 bg-white py-2 pl-3 pr-3 text-black dark:border-neutral-200 dark:bg-white dark:text-black">
+    <div className="editorHeader">
       <div className="flex flex-row items-center gap-x-1.5">
         <div className="flex items-center gap-x-1.5">
           <Toolbar.Button
@@ -45,7 +45,7 @@ export const EditorHeader = ({
             active={isSidebarOpen}
             className={isSidebarOpen ? "bg-transparent" : ""}
           >
-            <Icon name={isSidebarOpen ? "PanelLeftClose" : "PanelLeft"} />
+            <List size={24} />
           </Toolbar.Button>
         </div>
       </div>
