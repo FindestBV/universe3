@@ -13,15 +13,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import {
-  Bot,
-  Folder,
-  Forward,
-  type LucideIcon,
-  MoreHorizontal,
-  Search,
-  Trash2,
-} from "lucide-react";
+import { Bot, Folder, type LucideIcon, Microscope } from "lucide-react";
 
 import AdvancedSearchModal from "../../dialogs/advanced-search-modal";
 import AskIgorModal from "../../dialogs/ask-igor";
@@ -45,7 +37,7 @@ export function NavProjects({
         <SidebarMenuItem key={"advancedSearch"}>
           <SidebarMenuButton asChild>
             <a href={"/queries"}>
-              <Search size="24" />
+              <Microscope size="24" />
               <span>Advanced Search</span>
             </a>
           </SidebarMenuButton>

@@ -185,7 +185,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      {isEditing ? (
+      {/* {isEditing ? (
         <>
           <h1>EDITING {`${documentId}`}</h1>
           <h3>{fetchedStudy?.title}</h3>
@@ -201,7 +201,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               : "No connected entities."}
           </ul>
         </>
-      ) : null}
+      ) : null} */}
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
