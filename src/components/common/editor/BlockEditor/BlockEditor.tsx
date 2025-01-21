@@ -92,12 +92,12 @@ export const BlockEditor = ({
   const [lastSavedContent, setLastSavedContent] = useState<string | null>(null); // To track changes
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
 
+  // const toggleSidebar = toggleSidebar();
+  const leftSidebar = useSidebar();
+
   const toggleInnerSidebar = () => {
     setIsSidebarCollapsed((prev) => !prev);
   };
-
-  // const toggleSidebar = toggleSidebar();
-  const leftSidebar = useSidebar();
 
   const parsedContent = useMemo(() => {
     try {
@@ -270,7 +270,7 @@ export const BlockEditor = ({
           <div className="referenceSidebar">
             <ReferencesSidebar
               onToggleInnerSidebar={toggleInnerSidebar}
-              isCollapsed={leftSidebar.isOpen}
+              isCollapsed={isSidebarCollapsed}
               connectedDocs={connectedDocs}
               connectedObjects={connectedObjects}
               connectedInbox={connectedInbox}
