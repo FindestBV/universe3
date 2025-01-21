@@ -192,7 +192,7 @@ export const BlockEditor = ({
 
   return (
     <div className="flex pb-8" ref={menuContainerRef}>
-      <Sidebar isOpen={leftSidebar.isOpen} onClose={leftSidebar.close} editor={editor} />
+      {/* <Sidebar isOpen={leftSidebar.isOpen} onClose={leftSidebar.close} editor={editor} /> */}
       <div className="relative flex h-full max-w-full flex-1 flex-col">
         <EditorHeader
           editor={editor}
