@@ -84,7 +84,7 @@ export const BlockEditor = ({
   connectedStudies?: string;
 }) => {
   const menuContainerRef = useRef(null);
-  // const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [createDraft] = useCreateDraftMutation();
   const [updateDraft] = useUpdateDraftMutation();
   const [currentId, setCurrentId] = useState<string | null>(null);
@@ -100,33 +100,33 @@ export const BlockEditor = ({
   const parsedContent = useMemo(() => {
     try {
       return typeof content === "string" ? JSON.parse(content) : content;
-    } catch (e) {
-      console.error("Invalid content JSON:", e);
+    } catch (error) {
+      console.error("Invalid content JSON:", error);
       return { type: "doc", content: [] };
     }
   }, [content]);
 
-  const saveContent = useCallback(async () => {
-    const editorContent = editor?.getJSON();
-    if (!editorContent || JSON.stringify(editorContent) === lastSavedContent) {
-      console.log("No changes detected, skipping save.");
-      return;
-    }
-
-    try {
-      if (currentId) {
-        await updateDraft({ id: currentId, content: editorContent });
-        console.log("Draft updated successfully");
-      } else {
-        const response = await createDraft({ content: editorContent });
-        setCurrentId(response.data.id);
-        console.log("Draft created with ID:", response.data.id);
+  const saveContent = useCallback(
+    async (content) => {
+      if (JSON.stringify(content) === lastSavedContent) {
+        console.log("No changes detected.");
+        return;
       }
-      setLastSavedContent(JSON.stringify(editorContent));
-    } catch (error) {
-      console.error("Error saving draft:", error);
-    }
-  }, [currentId, lastSavedContent, updateDraft, createDraft]);
+
+      try {
+        if (currentId) {
+          await updateDraft({ id: currentId, content });
+        } else {
+          const response = await createDraft({ content });
+          setCurrentId(response.data.id);
+        }
+        setLastSavedContent(JSON.stringify(content));
+      } catch (error) {
+        console.error("Error saving content:", error);
+      }
+    },
+    [currentId, lastSavedContent, updateDraft, createDraft],
+  );
 
   const extensions = useMemo(
     () => [
@@ -202,7 +202,11 @@ export const BlockEditor = ({
         />
         <div className="flex flex-row">
           <div className="mainEditor">
-            <EditorContent editor={editor} className="flex overflow-y-scroll py-16 md:px-8" />
+            <EditorContent
+              key={editor?.view?.id || "editor"}
+              editor={editor}
+              className="flex overflow-y-scroll py-16 md:px-8"
+            />
             <ContentItemMenu editor={editor} />
             <LinkMenu editor={editor} appendTo={menuContainerRef} />
             <TextMenu editor={editor} />
@@ -263,13 +267,11 @@ export const BlockEditor = ({
           </div>
           <div className="referenceSidebar">
             <ReferencesSidebar
-              onToggleSidebar={toggleSidebar}
+              // onToggleSidebar={toggleSidebar}
+              isCollapsed={leftSidebar.isOpen}
               connectedDocs={connectedDocs}
               connectedObjects={connectedObjects}
               connectedInbox={connectedInbox}
-              // connectedEntities={connectedEntities}
-              connectedStudies={connectedStudies}
-              editor={editor}
             />
           </div>
         </div>
