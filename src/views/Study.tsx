@@ -49,14 +49,14 @@ export const Study: React.FC = () => {
         <DocumentSkeleton />
       ) : (
         <>
-          <div className="flex h-screen w-auto">
+          <div className="flex h-screen w-full overflow-y-scroll">
             <div className="w-full flex-col">
               <BlockEditor
                 type={"study"}
                 id={fetchedStudy?.id}
                 title={fetchedStudy?.title}
                 content={parsedDescription}
-                connectedEntities={fetchedStudy.entities}
+                connectedEntities={fetchedStudy?.entities}
                 connectedInbox={inboxQuery}
                 connectedObjects={connectedDocs}
                 connectedQueries={connectedStudies}

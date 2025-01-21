@@ -241,13 +241,9 @@ export const BlockEditor = ({
   }
 
   return (
-    <div className="flex h-screen pb-8" ref={menuContainerRef}>
+    <div className="flex pb-8" ref={menuContainerRef}>
       <div className="flex h-full" ref={menuContainerRef}>
-        <Sidebar
-          isOpen={leftSidebar && !leftSidebar.isOpen}
-          onClose={leftSidebar.close}
-          editor={editor}
-        />
+        <Sidebar isOpen={leftSidebar?.isOpen} onClose={leftSidebar.close} editor={editor} />
         <div className="relative flex h-full max-w-full flex-1 flex-col overflow-hidden">
           <EditorHeader
             editor={editor}
@@ -259,7 +255,7 @@ export const BlockEditor = ({
           />
           <div className="flex flex-row">
             <div className="mainEditor">
-              <EditorContent editor={editor} className="flex overflow-y-hidden py-16 max-lg:px-8" />
+              <EditorContent editor={editor} className="flex overflow-y-hidden py-16 md:px-8" />
               <ContentItemMenu editor={editor} />
               <LinkMenu editor={editor} appendTo={menuContainerRef} />
               <TextMenu editor={editor} />
@@ -267,6 +263,63 @@ export const BlockEditor = ({
               <TableRowMenu editor={editor} appendTo={menuContainerRef} />
               <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
               <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
+
+              <div className="editorContentContainer" id="linkedDocuments">
+                <h3 className="itemTitle flex items-center gap-4">
+                  Linked documents <Download size={16} />
+                </h3>
+
+                {connectedObjects &&
+                connectedObjects?.documents &&
+                connectedObjects.documents.length > 0
+                  ? connectedObjects.documents.map(
+                      (doc: { title: Key | null | undefined; id: string }) => (
+                        <div key={doc.title}>
+                          <SimilarDocumentModal
+                            title={doc.title}
+                            id={doc.id}
+                            type="linkedObjects"
+                          />
+                        </div>
+                      ),
+                    )
+                  : "no connected objects"}
+              </div>
+              <div className="editorContentContainer" id="connectedQueries">
+                <h3 className="itemTitle">Connected Queries</h3>
+                <p className="iconText">Connections:</p>
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {connectedQueries &&
+                    (connectedQueries[0]?.connectedObjects &&
+                    connectedQueries[0].connectedObjects?.length > 0 ? (
+                      connectedQueries[0].connectedObjects.map(
+                        (obj: {
+                          id: Key | null | undefined;
+                          name: string;
+                          mainContents: unknown;
+                          searchInformation: unknown;
+                        }) => (
+                          <SimilarDocumentModal
+                            key={obj.id}
+                            id={obj.id}
+                            title={obj.name}
+                            mainContents={obj.mainContents}
+                            searchInformation={obj.searchInformation}
+                            type="entity"
+                          />
+                        ),
+                      )
+                    ) : (
+                      <div className="flex flex-row-reverse items-center gap-4">
+                        <Button variant="ghost">Connect a query</Button>
+                        <p className="text-gray-500">No connected objects</p>
+                      </div>
+                    ))}
+                </div>
+              </div>
+              <div className="editorContentContainer" id="connectedComments">
+                <Comments connectedComments={connectedComments} />
+              </div>
             </div>
             <div className="referenceSidebar">
               <ReferencesSidebar
