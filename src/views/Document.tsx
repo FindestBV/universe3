@@ -1,10 +1,11 @@
 import { useGetDocumentByIdQuery } from "@/api/documents/documentApi";
-import { LinkedCounts } from "@/components/shared/cards/linked-counts";
-import Comments from "@/components/shared/layout/comments";
-import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
-import ConnectToEntity from "@/components/shared/modals/connect-to-entity";
-import { SimilarDocumentModal } from "@/components/shared/modals/similar-document-modal";
-import UserAvatar from "@/components/shared/utilities/user-avatar";
+import openAccessLogo from "@/assets/openAccessLogo.png";
+import { LinkedCounts } from "@/components/common/cards/linked-counts";
+import ConnectToEntity from "@/components/common/dialogs/connect-to-entity";
+import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
+import Comments from "@/components/common/layout/comments";
+import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
+import UserAvatar from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,6 +16,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ExternalLink,
+  File,
   List,
   MoreHorizontal,
   Network,
@@ -23,7 +25,7 @@ import {
   Upload,
 } from "lucide-react";
 
-import { Key, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 export const Document: React.FC = () => {
@@ -32,7 +34,12 @@ export const Document: React.FC = () => {
   const { data: fetchedDocument } = useGetDocumentByIdQuery(id!, {
     refetchOnMountOrArgChange: false,
   });
+
+  console.log("fetched doc wth attachement (hopefully)", fetchedDocument);
+
   const scienceArticles = fetchedDocument?.scienceArticles;
+  const attachedFiles = fetchedDocument?.attachedFiles;
+
   const renderConnectedObjects =
     fetchedDocument &&
     Object.entries(fetchedDocument?.connectedObjects).map((o, i) => (
@@ -78,6 +85,11 @@ export const Document: React.FC = () => {
         </DropdownMenu>
       </div>
     ));
+
+  const openFile = (file) => {
+    console.log(file.url);
+    // window.location.href = file.url;
+  };
 
   useEffect(() => {
     if (fetchedDocument) {
@@ -143,7 +155,9 @@ export const Document: React.FC = () => {
                 <TabsTrigger value="similarDocuments">
                   Similar Documents ({`${scienceArticles?.length ? scienceArticles.length : 0}`}){" "}
                 </TabsTrigger>
-                <TabsTrigger value="attachments">Attachments</TabsTrigger>
+                <TabsTrigger value="attachments">
+                  Attachments ({`${attachedFiles?.length ? attachedFiles.length : 0}`}){" "}
+                </TabsTrigger>
               </TabsList>
               <TabsContent value="documentInfo">
                 <LinkedCounts
@@ -155,7 +169,7 @@ export const Document: React.FC = () => {
                 <h4 className="pb-2 font-black">Document Abstract</h4>
                 <div className="flex flex-row gap-4">
                   <div className="w-3/4">
-                    <div>{fetchedDocument?.abstract || "No document information available."}</div>
+                    <p>{fetchedDocument?.abstract || "No document information available."}</p>
 
                     <Comments />
                   </div>
@@ -226,13 +240,27 @@ export const Document: React.FC = () => {
                           >
                             <Button>Save</Button>
                             <div className="flex flex-col">
-                              <SimilarDocumentModal
-                                title={article.title}
-                                id={article.id}
-                                mainContents={article.mainContents}
-                                searchInformation={article.searchInformation}
-                                type="document"
-                              />
+                              <div
+                                className={`flex ${article.isOpenAccess ? "flex-row gap-2" : "flex-col"}`}
+                              >
+                                {article.isOpenAccess && (
+                                  <div className="mb-0 ml-2.5 mr-0 mt-2">
+                                    <img
+                                      className="openAccess_openAccessLogo__Q-5ld h-4"
+                                      src={openAccessLogo}
+                                      alt="Open Access Logo"
+                                    />
+                                  </div>
+                                )}
+                                <SimilarDocumentModal
+                                  title={article.title}
+                                  id={article.id}
+                                  mainContents={article.mainContents}
+                                  searchInformation={article.searchInformation}
+                                  type="document"
+                                  isOpenAccess={article.isOpenAccess}
+                                />
+                              </div>
                               {/* Publication Date and Authors */}
                               <div className="mt-2 flex flex-grow flex-wrap items-center gap-2">
                                 {/* Publication Date */}
@@ -268,13 +296,38 @@ export const Document: React.FC = () => {
               </TabsContent>
               <TabsContent value="attachments">
                 <h4 className="pb-2 font-black">Attachments</h4>
-                <div className="flex items-center justify-start gap-2 rounded-sm bg-slate-100 p-4">
-                  <Upload size={14} />{" "}
-                  <span>Add file (PDF, docx, pptx), maximum file size 50MB.</span>
-                </div>
-                <Button className="primary mt-2 bg-blue-500 p-4 text-white hover:bg-slate-200">
-                  Add File
-                </Button>
+                {fetchedDocument?.attachedFiles && fetchedDocument?.attachedFiles.length > 0 ? (
+                  <>
+                    <div className="mb-4 flex items-center justify-start gap-2 rounded-sm bg-slate-100 p-4">
+                      <ul>
+                        {fetchedDocument.attachedFiles.map((file) => {
+                          console.log(file);
+                          return (
+                            <li className="flex flex-row items-center gap-4">
+                              <File size={16} />{" "}
+                              <span>
+                                {file.title}.{file.fileExtension}
+                              </span>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                    <Button className="primary mt-2 bg-blue-500 p-4 text-white hover:bg-blue-300">
+                      PREVIEW FILE
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-start gap-2 rounded-sm bg-slate-100 p-4">
+                      <Upload size={14} />{" "}
+                      <span>Add file (PDF, docx, pptx), maximum file size 50MB.</span>
+                    </div>
+                    <Button className="primary mt-2 bg-blue-500 p-4 text-white hover:bg-slate-200">
+                      Add File
+                    </Button>
+                  </>
+                )}
               </TabsContent>
             </Tabs>
           </div>

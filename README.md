@@ -27,6 +27,28 @@ Wide open for discussion, this is encouraged, as the whole team will need to hav
 - **shadcn/ui** - Beautifully designed components that you can copy and paste into your apps.
 - **i18n Support** - Supports mutlilingual labels and routing.
 
+## REPO RULES:
+
+During the initial phase of development, there was a single developer establishing the fundamental setup for the project. As this expands and matures, we're hoping to onboard more devs onto this flow and to do so in both an inclusive and non-intrusive way.
+
+## Primary Branch
+
+The primary branch from which the project is published is:
+
+<pre>
+   <code>
+   findest/dev-prototype
+   </code>
+</pre>
+
+- this will eventually be changed to main/production, but to encourage adoption of incumbent workflows, this branch requires a pull request for any/all changes being merged to primary branch.
+
+Developers invited to clone the repo, checkout and create a new feature branch off of findest/dev-prototype. Until such a time as convention changes this, new and feature-branches should be created with the format:
+
+[contributor-name]/FN-XXXX-brief-description-of-tasks
+
+- branches will be configured to be auto-deleted when merges complete.
+
 ## ⚙️ Prerequisites
 
 Make sure you have the following installed on your development machine:
@@ -85,6 +107,7 @@ The project structure follows a standard React application layout:
 
 ```
 universe3/
+  ├── .storybook           # Storybook
   ├── node_modules/        # Project dependencies
   ├── public/              # Public
   ├── src/
@@ -112,6 +135,7 @@ universe3/
   │   |   └── search/      # Search
   │   |   └── activity/    # Activity
   │   |   └── utilities/   # Utility - it does something, but probably best stored separately
+  |   ├── stories          # Catch-all (for now) of Storybook config (WIP)
   |   ├── styles/          # CSS stylesheets
   │   |   └── colors/
   │   |   └── components/

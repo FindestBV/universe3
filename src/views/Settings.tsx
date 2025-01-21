@@ -1,10 +1,11 @@
 import { currentUser, userEmail } from "@/api/auth/authSlice";
-import ArticleTest from "@/components/shared/layout/article-test";
-import BentoGrid from "@/components/shared/layout/bento-grid";
-import ImageTiles from "@/components/shared/layout/image-tiles";
-import LanguageSelector from "@/components/shared/layout/language-selector";
-import ProfileCardTest from "@/components/shared/layout/profile-card-test";
-import Settings from "@/components/shared/user/settings";
+import LinkedObjects from "@/components/common/cards/linked-objects";
+import ArticleTest from "@/components/common/layout/article-test";
+import BentoGrid from "@/components/common/layout/bento-grid";
+import ImageTiles from "@/components/common/layout/image-tiles";
+import LanguageSelector from "@/components/common/layout/language-selector";
+import ProfileCardTest from "@/components/common/layout/profile-card-test";
+import Settings from "@/components/common/user/settings";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 
@@ -57,6 +58,8 @@ export const SettingsPage = () => {
 
             {/* Profile Tab */}
             <TabsContent value="profile" className="py-4">
+              <LinkedObjects linkedObjects={{}} id={""} />
+
               <Settings user={user} />
               <form className="space-y-4">
                 <div>

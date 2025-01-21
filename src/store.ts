@@ -3,6 +3,7 @@ import { activityApi } from "@/api/activity/activityApi";
 import { authApi } from "@/api/auth/authApi";
 import authSlice from "@/api/auth/authSlice";
 import { documentApi } from "@/api/documents/documentApi";
+import documentSlice from "@/api/documents/documentSlice";
 import { searchApi } from "@/api/search/searchApi";
 import languageReducer from "@/api/utilities/languageSlice";
 import sidebarReducer from "@/api/utilities/sidebarSlice";
@@ -36,10 +37,11 @@ export const rootReducer = combineReducers({
   auth: authSlice,
   activities: activityApi,
   search: searchApi,
-  documents: documentApi,
+  document: documentSlice,
   language: languageReducer,
   sidebar: sidebarReducer,
   [authApi.reducerPath]: authApi.reducer,
+  [document.reducerPath]: documentApi.reducer,
 }) as Reducer;
 
 // Persist the combined reducer

@@ -48,9 +48,15 @@ export const documentApi = api.injectEndpoints({
           const scienceArticles = await dispatch(
             api.endpoints?.getDocumentRelatedScienceArticles.initiate(document.id),
           ).unwrap();
+
+          const attachedFiles = await dispatch(
+            api.endpoints.getAttachedFiles.initiate(id),
+          ).unwrap();
+
           dispatch(
             api.util.updateQueryData("getDocumentById", id, (draft) => {
               draft.scienceArticles = scienceArticles;
+              draft.attachedFiles = attachedFiles;
             }),
           );
         } catch (error) {
@@ -68,6 +74,10 @@ export const documentApi = api.injectEndpoints({
       query: ({ id, type }) => `linking/${id}?objectType[]=${type}`,
     }),
 
+    getAttachedFiles: builder.query<ConnectedObject[], { id: string }>({
+      query: (id) => `savedfile/linkedto/${id}`,
+    }),
+
     // Document Inbox Items
     getMyDocumentInbox: builder.query<SavedDocumentResponse, string>({
       query: () => ({
@@ -82,6 +92,60 @@ export const documentApi = api.injectEndpoints({
         },
       }),
       providesTags: ["SavedDocument"],
+    }),
+
+    // INITIAL. BELOW IS A WIP.
+
+    createDraft: builder.mutation({
+      query: (initialData: { content?: string; createdAt?: string }) => {
+        const payload = {
+          content: initialData.content || "Default/FB content",
+          createdAt: initialData.createdAt || new Date().toISOString(),
+        };
+        return {
+          // change to correct endpoint
+          url: "https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments",
+          method: "POST",
+          body: payload,
+        };
+      },
+      invalidatesTags: ["Draft"], // Invalidate cached drafts
+    }),
+
+    // Update the active record drawn from drafts.
+    updateDraft: builder.mutation({
+      query: ({ id, content, updatedAt }: { id: string; content: string; updatedAt: string }) => ({
+        url: `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/1`,
+        method: "PUT",
+        body: { content, updatedAt },
+      }),
+      async onQueryStarted({ id, content, updatedAt }, { dispatch, queryFulfilled }) {
+        if (!id) {
+          console.error("No ID provided to update the draft");
+          return;
+        }
+        const patchedResult = dispatch(
+          api.util.updateQueryData("fetchDraft", id, (draft: any) => {
+            if (draft) {
+              draft.content = content;
+              draft.updatedAt = updatedAt;
+            }
+          }),
+        );
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          console.error("Failed to update draft:", error);
+          patchedResult.undo();
+        }
+      },
+      invalidatesTags: (result, error, { id }) => [{ type: "Draft", id }],
+    }),
+
+    fetchDraft: builder.query({
+      query: (id: string) =>
+        `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/1`,
+      providesTags: (result, error, id) => [{ type: "Draft", id }],
     }),
 
     // Entities
@@ -304,6 +368,8 @@ export const {
   useGetSideBarDocumentsQuery,
   useGetConnectedObjectsQuery,
   useLazyGetConnectedObjectsQuery,
+  useCreateDraftMutation,
+  useUpdateDraftMutation,
   useGetEntitiesQuery,
   useGetEntityByIdQuery,
   useGetStudiesQuery,

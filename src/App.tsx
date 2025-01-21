@@ -1,7 +1,7 @@
 // Imports
 import { currentUser } from "@/api/auth/authSlice";
-import { DashboardHeader } from "@/components/shared/layout/dashboard-header";
-import { AppSidebar } from "@/components/shared/sidebar/app-sidebar";
+import { DashboardHeader } from "@/components/common/layout/dashboard-header";
+import { AppSidebar } from "@/components/common/sidebar/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { persistor, store } from "@/store";
 import Dashboard from "@/views/Dashboard";

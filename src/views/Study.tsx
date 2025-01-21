@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useGetSideBarDocumentsQuery, useGetStudyByIdQuery } from "@/api/documents/documentApi";
-import Editor from "@/components/shared/editor/Editor";
-import DocumentSkeleton from "@/components/shared/loaders/document-skeleton";
+import { BlockEditor } from "@/components/common/editor/BlockEditor";
+import Editor from "@/components/common/editor/Editor";
+import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 
 import { useEffect } from "react";
 import { useParams } from "react-router";
@@ -50,14 +51,18 @@ export const Study: React.FC = () => {
         <>
           <div className="flex h-screen w-auto">
             <div className="w-full flex-col">
-              <Editor
+              <BlockEditor
                 type={"study"}
+                id={fetchedStudy?.id}
                 title={fetchedStudy?.title}
                 content={parsedDescription}
+                connectedEntities={fetchedStudy.entities}
                 connectedInbox={inboxQuery}
                 connectedObjects={connectedDocs}
                 connectedQueries={connectedStudies}
                 connectedComments={connectedComments}
+                connectedStudies={connectedStudies}
+                ydoc={undefined}
               />
             </div>
           </div>

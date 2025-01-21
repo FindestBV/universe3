@@ -5,11 +5,11 @@ import {
   useGetPageTypesQuery,
 } from "@/api/activity/activityApi";
 import { currentUser } from "@/api/auth/authSlice";
-import ForceDirectedGraphView from "@/components/shared/layout/force-directed-graph";
-import { OverlayPanel } from "@/components/shared/layout/overlay-panel";
-import PackGraphView from "@/components/shared/layout/pack-graph";
-import { FindestButton } from "@/components/shared/utilities/findest-button";
-import UserAvatar from "@/components/shared/utilities/user-avatar";
+import ForceDirectedGraphView from "@/components/common/layout/force-directed-graph";
+import { OverlayPanel } from "@/components/common/layout/overlay-panel";
+import PackGraphView from "@/components/common/layout/pack-graph";
+import { FindestButton } from "@/components/common/utilities/findest-button";
+import UserAvatar from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -153,7 +153,11 @@ export const Dashboard = () => {
                 </div>
               ) : (
                 <OverlayPanel>
-                  <ForceDirectedGraphView initialNodes={nodes} linkingData={linkingData} />
+                  <ForceDirectedGraphView
+                    initialNodes={nodes}
+                    linkingData={linkingData}
+                    isDashBoard={true}
+                  />
                   <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 ease-in-out hover:bg-opacity-50">
                     <div className="hidden text-center group-hover:block">
                       <FindestButton
@@ -165,6 +169,11 @@ export const Dashboard = () => {
                       >
                         SEE RELATIONS GRAPH
                       </FindestButton>
+                      <div className="RelationsGraphMeta mx-auto mt-2 w-1/2 rounded-sm bg-[#122448] p-2 text-white">
+                        <p className="text-xs">
+                          Relations between Entities and Studies in [Tenant] Universe
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </OverlayPanel>
@@ -217,7 +226,7 @@ export const Dashboard = () => {
                 </div>
               )}
               <OverlayPanel>
-                <PackGraphView data={typesData} searchKeyword={searchKeyword} />
+                <PackGraphView data={typesData} searchKeyword={searchKeyword} isDashBoard={true} />
                 <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 ease-in-out hover:bg-opacity-50">
                   <div className="hidden text-center group-hover:block">
                     <FindestButton
@@ -229,6 +238,12 @@ export const Dashboard = () => {
                     >
                       SEE PAGE TYPE BREAKDOWN
                     </FindestButton>
+                    <div className="PackGraphMeta mx-auto mt-2 w-1/2 rounded-sm bg-[#122448] p-2 text-white">
+                      <p className="text-xs">
+                        Presentation of Entities and Studies in [Tenant] Universe, based on their
+                        types.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </OverlayPanel>

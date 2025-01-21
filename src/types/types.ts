@@ -92,6 +92,13 @@ export interface SavedDocumentResponse {
   total: number;
 }
 
+export interface Draft {
+  id?: string;
+  type?: string;
+  createdAt?: string;
+  content?: string;
+}
+
 export interface ConnectedObject {
   id: string | null | undefined;
   name: string | React.ReactNode;
