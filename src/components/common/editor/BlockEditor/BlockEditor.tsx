@@ -243,7 +243,11 @@ export const BlockEditor = ({
   return (
     <div className="flex h-screen pb-8" ref={menuContainerRef}>
       <div className="flex h-full" ref={menuContainerRef}>
-        <Sidebar isOpen={leftSidebar.isOpen} onClose={leftSidebar.close} editor={editor} />
+        <Sidebar
+          isOpen={leftSidebar && !leftSidebar.isOpen}
+          onClose={leftSidebar.close}
+          editor={editor}
+        />
         <div className="relative flex h-full max-w-full flex-1 flex-col overflow-hidden">
           <EditorHeader
             editor={editor}
@@ -253,14 +257,30 @@ export const BlockEditor = ({
             toggleSidebar={leftSidebar.toggle}
             documentId={id}
           />
-          <EditorContent editor={editor} className="flex overflow-y-hidden py-16" />
-          <ContentItemMenu editor={editor} />
-          <LinkMenu editor={editor} appendTo={menuContainerRef} />
-          <TextMenu editor={editor} />
-          <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
-          <TableRowMenu editor={editor} appendTo={menuContainerRef} />
-          <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
-          <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
+          <div className="flex flex-row">
+            <div className="mainEditor">
+              <EditorContent editor={editor} className="flex overflow-y-hidden py-16" />
+              <ContentItemMenu editor={editor} />
+              <LinkMenu editor={editor} appendTo={menuContainerRef} />
+              <TextMenu editor={editor} />
+              <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
+              <TableRowMenu editor={editor} appendTo={menuContainerRef} />
+              <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
+              <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
+            </div>
+            <div className="referenceSidebar">
+              <ReferencesSidebar
+                onToggleSidebar={toggleSidebar}
+                isCollapsed={isSidebarCollapsed}
+                connectedDocs={connectedDocs}
+                connectedObjects={connectedObjects}
+                connectedInbox={connectedInbox}
+                connectedEntities={connectedEntities}
+                connectedStudies={connectedStudies}
+                editor={editor}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
