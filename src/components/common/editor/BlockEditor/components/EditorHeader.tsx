@@ -9,7 +9,7 @@ import { EditorInfo } from "./EditorInfo";
 
 export type EditorHeaderProps = {
   isSidebarOpen?: boolean;
-  toggleSidebar?: () => void;
+  toggleLeftSidebar?: () => void;
   editor: Editor;
   collabState: WebSocketStatus;
   users: EditorUser[];
@@ -21,7 +21,7 @@ export const EditorHeader = ({
   collabState,
   users,
   isSidebarOpen,
-  toggleSidebar,
+  toggleLeftSidebar,
   documentId,
 }: EditorHeaderProps) => {
   const { characters, words } = useEditorState({
@@ -41,7 +41,7 @@ export const EditorHeader = ({
         <div className="flex items-center gap-x-1.5">
           <Toolbar.Button
             tooltip={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
-            onClick={toggleSidebar}
+            onClick={toggleLeftSidebar}
             active={isSidebarOpen}
             className={isSidebarOpen ? "bg-transparent" : ""}
           >

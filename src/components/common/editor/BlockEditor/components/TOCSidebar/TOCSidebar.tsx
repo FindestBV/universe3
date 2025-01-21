@@ -3,9 +3,9 @@ import { Editor } from "@tiptap/react";
 
 import { memo, useCallback } from "react";
 
-import { TableOfContents } from "../TableOfContents";
+import { TableOfContents } from "../../../TableOfContents";
 
-export const Sidebar = memo(
+export const TOCSidebar = memo(
   ({ editor, isOpen, onClose }: { editor: Editor; isOpen?: boolean; onClose: () => void }) => {
     const handlePotentialClose = useCallback(() => {
       if (window.innerWidth < 1024) {
@@ -32,4 +32,6 @@ export const Sidebar = memo(
   },
 );
 
-Sidebar.displayName = "TableOfContentSidepanel";
+TOCSidebar.displayName = "TableOfContentSidepanel";
+
+export default TOCSidebar;

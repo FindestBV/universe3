@@ -1,12 +1,10 @@
 import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
-import { toggleInnerSidebar } from "@/api/utilities/sidebarSlice";
+// import { toggleInnerSidebar } from "@/api/utilities/sidebarSlice";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
-import ReferencesSidebar from "@/components/common/sidebar/references-sidebar";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
 import { useBlockEditor } from "@/hooks/use-block-editor";
-import { useSidebar } from "@/hooks/useSidebar";
 import { TiptapCollabProvider } from "@hocuspocus/provider";
 import { Mark } from "@tiptap/core";
 import Document from "@tiptap/extension-document";
@@ -28,14 +26,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Comments from "../../layout/comments";
+import ReferencesSidebar from "../BlockEditor/components/ReferencesSidebar";
 import CustomImage from "../custom-image";
 import { LinkMenu } from "../menus";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
 import { TextMenu } from "../menus/TextMenu";
 import PlaceholderExtension from "../placeholder-extension";
-import { Sidebar } from "../Sidebar";
 import { Button } from "../ui/Button";
 import { EditorHeader } from "./components/EditorHeader";
+import { TOCSidebar } from "./components/TOCSidebar";
 
 export const Rating = Mark.create({
   name: "rating",
@@ -85,6 +84,7 @@ export const BlockEditor = ({
   connectedStudies?: string;
 }) => {
   const menuContainerRef = useRef(null);
+  const [isLeftSideBarOpen, setIsLeftSidebarOpen] = useState<boolean>(true);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [createDraft] = useCreateDraftMutation();
   const [updateDraft] = useUpdateDraftMutation();
@@ -92,11 +92,12 @@ export const BlockEditor = ({
   const [lastSavedContent, setLastSavedContent] = useState<string | null>(null); // To track changes
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
 
-  // const toggleSidebar = toggleSidebar();
-  const leftSidebar = useSidebar();
+  const toggleLeftSideBar = () => {
+    setIsLeftSidebarOpen(!isLeftSideBarOpen);
+  };
 
   const toggleInnerSidebar = () => {
-    setIsSidebarCollapsed((prev) => !prev);
+    setIsSidebarCollapsed(!isSidebarCollapsed);
   };
 
   const parsedContent = useMemo(() => {
@@ -192,14 +193,14 @@ export const BlockEditor = ({
 
   return (
     <div className="flex pb-8" ref={menuContainerRef}>
-      {/* <Sidebar isOpen={leftSidebar.isOpen} onClose={leftSidebar.close} editor={editor} /> */}
+      {isEditing ? <TOCSidebar editor={editor} isOpen={true} /> : ""}
       <div className="relative flex h-full max-w-full flex-1 flex-col">
         <EditorHeader
           editor={editor}
           collabState={collabState}
           users={users}
-          isSidebarOpen={leftSidebar.isOpen}
-          toggleSidebar={leftSidebar.toggle}
+          isSidebarOpen={isLeftSideBarOpen}
+          toggleLeftSidebar={toggleLeftSideBar}
           documentId={id}
         />
         <div className="flex flex-row">
@@ -207,7 +208,7 @@ export const BlockEditor = ({
             <EditorContent
               key={editor?.view?.id || "editor"}
               editor={editor}
-              className="flex overflow-y-scroll py-16 md:px-8"
+              className="flex overflow-y-scroll px-16 py-16"
             />
             <ContentItemMenu editor={editor} />
             <LinkMenu editor={editor} appendTo={menuContainerRef} />
@@ -270,7 +271,7 @@ export const BlockEditor = ({
           <div className="referenceSidebar">
             <ReferencesSidebar
               onToggleInnerSidebar={toggleInnerSidebar}
-              isCollapsed={isSidebarCollapsed}
+              // isCollapsed={isSidebarCollapsed}
               connectedDocs={connectedDocs}
               connectedObjects={connectedObjects}
               connectedInbox={connectedInbox}
