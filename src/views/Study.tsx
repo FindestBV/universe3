@@ -49,7 +49,7 @@ export const Study: React.FC = () => {
         <DocumentSkeleton />
       ) : (
         <>
-          <div className="flex h-screen w-auto">
+          <div className="flex w-auto">
             <div className="w-full flex-col">
               <BlockEditor
                 type={"study"}

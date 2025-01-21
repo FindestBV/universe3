@@ -1,6 +1,5 @@
 import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
 import { setEditingState } from "@/api/documents/documentSlice";
-import SimilarDocumentModal from "@/components/common/dialogs/similar-document-modal";
 import ReferencesSidebar from "@/components/common/sidebar/references-sidebar";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
