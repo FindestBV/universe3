@@ -84,7 +84,7 @@ export const BlockEditor = ({
   connectedStudies?: string;
 }) => {
   const menuContainerRef = useRef(null);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  // const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [createDraft] = useCreateDraftMutation();
   const [updateDraft] = useUpdateDraftMutation();
   const [currentId, setCurrentId] = useState<string | null>(null);
@@ -126,7 +126,7 @@ export const BlockEditor = ({
     } catch (error) {
       console.error("Error saving draft:", error);
     }
-  }, [lastSavedContent, updateDraft, createDraft]);
+  }, [currentId, lastSavedContent, updateDraft, createDraft]);
 
   const extensions = useMemo(
     () => [
@@ -202,7 +202,7 @@ export const BlockEditor = ({
         />
         <div className="flex flex-row">
           <div className="mainEditor">
-            <EditorContent editor={editor} className="flex overflow-y-scroll py-16 max-lg:px-8" />
+            <EditorContent editor={editor} className="flex overflow-y-scroll py-16 md:px-8" />
             <ContentItemMenu editor={editor} />
             <LinkMenu editor={editor} appendTo={menuContainerRef} />
             <TextMenu editor={editor} />
@@ -267,7 +267,7 @@ export const BlockEditor = ({
               connectedDocs={connectedDocs}
               connectedObjects={connectedObjects}
               connectedInbox={connectedInbox}
-              connectedEntities={connectedEntities}
+              // connectedEntities={connectedEntities}
               connectedStudies={connectedStudies}
               editor={editor}
             />

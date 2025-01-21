@@ -15,6 +15,8 @@ export const Study: React.FC = () => {
     refetchOnMountOrArgChange: false, // Prevents automatic refetching
   });
 
+  console.log("fetchedStudy", fetchedStudy);
+
   const connectedStudies = fetchedStudy?.connectedStudies;
   const connectedDocs = fetchedStudy?.connectedDocs;
   const connectedComments = fetchedStudy?.connectedComments;
