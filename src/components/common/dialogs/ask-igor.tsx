@@ -17,7 +17,7 @@ const AskIgorModal: React.FC = () => {
       </DialogTrigger>
 
       {/* Dialog Content */}
-      <DialogContent className="flex h-[80vh] max-w-5xl flex-col overflow-hidden rounded-lg bg-white p-0 shadow-lg md:flex-row">
+      <DialogContent className="z-[999] flex h-[80vh] max-w-5xl flex-col overflow-hidden rounded-lg bg-white p-0 shadow-lg md:flex-row">
         <Tabs defaultValue="tab1" className="flex h-full w-full flex-row">
           {/* Left Panel */}
           <div className="w-full flex-shrink-0 bg-[#7b35c1] p-4 text-white md:w-1/3">

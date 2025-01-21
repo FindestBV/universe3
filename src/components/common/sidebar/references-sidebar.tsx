@@ -69,7 +69,7 @@ export const ReferencesSidebar: React.FC<{
   return (
     <>
       {/* Persistent Panel */}
-      <div className="absolute top-0 z-10 -ml-14 flex h-[100px] flex-col items-center gap-4 bg-white p-4 shadow-md">
+      <div className="absolute top-0 z-10 -ml-14 mt-4 flex h-[100px] flex-col items-center gap-4 bg-white p-4 shadow-md">
         {/* Toggle Main Tabs */}
         <button
           onClick={() => toggleActiveSubTab("references")}
@@ -177,7 +177,7 @@ export const ReferencesSidebar: React.FC<{
                         <div key={index} className="mb-2 flex items-start gap-2">
                           <Link size={24} />
                           <a href={"#"} className="text-gray-700 hover:text-black">
-                            <p>{doc[1]?.documentTitle}</p>
+                            <p className="text-sm">{doc[1]?.documentTitle}</p>
                           </a>
                         </div>
                       ))
@@ -196,7 +196,7 @@ export const ReferencesSidebar: React.FC<{
                         <div key={index} className="mb-2 flex items-start gap-2">
                           <Link size={24} />
                           <a href={"#"} className="text-gray-700 hover:text-black">
-                            <p>{doc.title || "Untitled Document"}</p>
+                            <p className="text-sm">{doc.title || "Untitled Document"}</p>
                           </a>
                         </div>
                       ))
@@ -212,7 +212,7 @@ export const ReferencesSidebar: React.FC<{
                           <Link size={24} />
                           <a href={"#"} className="text-gray-700 hover:text-black">
                             <small>Entity</small>
-                            <p>{doc.title || "Untitled Document"}</p>
+                            <p className="text-sm">{doc.title || "Untitled Document"}</p>
                           </a>
                         </div>
                       ))
