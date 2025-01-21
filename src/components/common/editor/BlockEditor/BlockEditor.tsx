@@ -1,4 +1,5 @@
 import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
+import { toggleInnerSidebar } from "@/api/utilities/sidebarSlice";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
 import ReferencesSidebar from "@/components/common/sidebar/references-sidebar";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
@@ -91,10 +92,11 @@ export const BlockEditor = ({
   const [lastSavedContent, setLastSavedContent] = useState<string | null>(null); // To track changes
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
 
-  const toggleSidebar = () => {
+  const toggleInnerSidebar = () => {
     setIsSidebarCollapsed((prev) => !prev);
   };
 
+  // const toggleSidebar = toggleSidebar();
   const leftSidebar = useSidebar();
 
   const parsedContent = useMemo(() => {
@@ -267,11 +269,12 @@ export const BlockEditor = ({
           </div>
           <div className="referenceSidebar">
             <ReferencesSidebar
-              onToggleSidebar={toggleSidebar}
+              onToggleInnerSidebar={toggleInnerSidebar}
               isCollapsed={leftSidebar.isOpen}
               connectedDocs={connectedDocs}
               connectedObjects={connectedObjects}
               connectedInbox={connectedInbox}
+              editor={editor}
             />
           </div>
         </div>

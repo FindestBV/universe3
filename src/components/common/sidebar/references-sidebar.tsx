@@ -1,3 +1,4 @@
+import { toggleInnerSidebar } from "@/api/utilities/sidebarSlice";
 import { TableOfContents } from "@/components/common/editor/TableOfContents";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
@@ -21,7 +22,7 @@ import React from "react";
 import { ReferencesSearchbar } from "../search/references-searchbar";
 
 export const ReferencesSidebar: React.FC<{
-  onToggleSidebar?: () => void;
+  onToggleInnerSidebar?: () => void;
   isCollapsed?: boolean;
   connectedEntities?: string;
   connectedDocs?: string;
@@ -31,7 +32,7 @@ export const ReferencesSidebar: React.FC<{
   connectedStudies?: string;
   editor?: string;
 }> = ({
-  onToggleSidebar,
+  onToggleInnerSidebar,
   isCollapsed,
   connectedEntities,
   connectedInbox,
@@ -83,193 +84,187 @@ export const ReferencesSidebar: React.FC<{
       </div>
 
       {/* Sidebar Content */}
-      {!isCollapsed && (
-        <div className="flex flex-col p-4 transition-all duration-300">
-          <div className="flex flex-row justify-between">
-            <Button
-              className="fixed right-0"
-              onClick={() => {
-                console.log("X button clicked, toggling sidebar");
-                onToggleSidebar();
-              }}
-            >
-              <X size={20} />
-            </Button>
-            <h3 className="mb-4 text-xl font-bold">
-              {activeMainTab === "references" ? "References" : "On This Page"}
-            </h3>
-          </div>
-
-          {/* Main Tabs */}
-          <Tabs
-            defaultValue="references"
-            value={activeMainTab}
-            onValueChange={setActiveMainTab}
-            className="mt-4"
+      <div className="flex flex-col p-4 transition-all duration-300">
+        <div className="flex flex-row justify-between">
+          <Button
+            className="fixed right-0"
+            onClick={() => {
+              console.log("X button clicked, toggling sidebar");
+              // toggleInnerSidebar();
+            }}
           >
-            {/* References Tab Content */}
-            <TabsContent value="references">
-              <ReferencesSearchbar />
-
-              <Tabs
-                defaultValue="documents"
-                value={activeSubTab}
-                onValueChange={setActiveSubTab}
-                className="mt-4"
-              >
-                <TabsList className="mb-4 inline-flex h-10 w-full items-center justify-start gap-4 rounded-none border-b border-[#f1f1f1] bg-transparent p-1 text-muted-foreground">
-                  <TabsTrigger value="inbox">
-                    <Inbox
-                      size={16}
-                      className={activeSubTab === "inbox" ? "text-black" : "text-muted-foreground"}
-                    />
-                  </TabsTrigger>
-                  {connectedHighlights && (
-                    <TabsTrigger value="highlights">
-                      <Highlighter
-                        size={16}
-                        className={
-                          activeSubTab === "highlights" ? "text-black" : "text-muted-foreground"
-                        }
-                      />
-                    </TabsTrigger>
-                  )}
-                  <TabsTrigger value="documents">
-                    <FileText
-                      size={16}
-                      className={
-                        activeSubTab === "documents" ? "text-black" : "text-muted-foreground"
-                      }
-                    />
-                  </TabsTrigger>
-
-                  <TabsTrigger value="attachments">
-                    <Paperclip
-                      size={16}
-                      className={
-                        activeSubTab === "attachments" ? "text-black" : "text-muted-foreground"
-                      }
-                    />
-                  </TabsTrigger>
-                  <TabsTrigger value="entities">
-                    <Fingerprint
-                      size={16}
-                      className={
-                        activeSubTab === "entities" ? "text-black" : "text-muted-foreground"
-                      }
-                    />
-                  </TabsTrigger>
-                  <TabsTrigger value="studies">
-                    <BookOpenCheck
-                      size={16}
-                      className={
-                        activeSubTab === "studies" ? "text-black" : "text-muted-foreground"
-                      }
-                    />
-                  </TabsTrigger>
-                </TabsList>
-                <TabsContent value="inbox">
-                  {connectedInbox
-                    ? Object.entries(connectedInbox).map((doc, index) => (
-                        <div key={index} className="mb-2 flex items-start gap-2">
-                          <Link size={24} />
-                          <a href={"#"} className="text-gray-700 hover:text-black">
-                            <p className="text-sm">{doc[1]?.documentTitle}</p>
-                          </a>
-                        </div>
-                      ))
-                    : "No connected inbox items."}
-                </TabsContent>
-                {connectedHighlights && (
-                  <>
-                    <TabsContent value="highlights">
-                      <h1>Highlights Content</h1>
-                    </TabsContent>
-                  </>
-                )}
-                <TabsContent value="documents">
-                  {connectedObjects?.documents && connectedObjects.documents.length > 0
-                    ? connectedObjects.documents.map((doc, index) => (
-                        <div key={index} className="mb-2 flex items-start gap-2">
-                          <Link size={24} />
-                          <a href={"#"} className="text-gray-700 hover:text-black">
-                            <p className="text-sm">{doc.title || "Untitled Document"}</p>
-                          </a>
-                        </div>
-                      ))
-                    : "No connected objects."}
-                </TabsContent>
-                <TabsContent value="attachments">
-                  <h1>Attachments Content</h1>
-                </TabsContent>
-                <TabsContent value="entities">
-                  {connectedEntities && connectedEntities.length > 0
-                    ? connectedEntities.map((doc, index) => (
-                        <div key={index} className="mb-2 flex items-start gap-2">
-                          <Link size={24} />
-                          <a href={"#"} className="text-gray-700 hover:text-black">
-                            <small>Entity</small>
-                            <p className="text-sm">{doc.title || "Untitled Document"}</p>
-                          </a>
-                        </div>
-                      ))
-                    : "No connected entities."}
-                </TabsContent>
-                <TabsContent value="studies">
-                  {connectedStudies && connectedStudies.length > 0
-                    ? connectedStudies.map((doc, index) => (
-                        <div key={index} className="mb-2 flex items-start gap-2">
-                          <Link size={24} />
-                          <a href={"#"} className="text-gray-700 hover:text-black">
-                            <small>Study/Queries</small>
-                            <p>{doc.name || "Untitled Document"}</p>
-                          </a>
-                        </div>
-                      ))
-                    : "No connected studies."}
-                </TabsContent>
-              </Tabs>
-            </TabsContent>
-
-            {/* On This Page Tab Content */}
-            <TabsContent value="onThisPage">
-              <div className="flex h-[100vh] flex-col gap-20">
-                <div>
-                  <TableOfContents editor={editor} />
-                </div>
-                <div>
-                  <ul>
-                    <li>
-                      <a
-                        className="cursor-pointer"
-                        onClick={() => scrollToSection("#linkedDocuments")}
-                      >
-                        Linked
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        className="cursor-pointer"
-                        onClick={() => scrollToSection("#connectedQueries")}
-                      >
-                        Queries
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        className="cursor-pointer"
-                        onClick={() => scrollToSection("#connectedComments")}
-                      >
-                        Comments
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </TabsContent>
-          </Tabs>
+            <X size={20} />
+          </Button>
+          <h3 className="mb-4 text-xl font-bold">
+            {activeMainTab === "references" ? "References" : "On This Page"}
+          </h3>
         </div>
-      )}
+
+        {/* Main Tabs */}
+        <Tabs
+          defaultValue="references"
+          value={activeMainTab}
+          onValueChange={setActiveMainTab}
+          className="mt-4"
+        >
+          {/* References Tab Content */}
+          <TabsContent value="references">
+            <ReferencesSearchbar />
+
+            <Tabs
+              defaultValue="documents"
+              value={activeSubTab}
+              onValueChange={setActiveSubTab}
+              className="mt-4"
+            >
+              <TabsList className="mb-4 inline-flex h-10 w-full items-center justify-start gap-4 rounded-none border-b border-[#f1f1f1] bg-transparent p-1 text-muted-foreground">
+                <TabsTrigger value="inbox">
+                  <Inbox
+                    size={16}
+                    className={activeSubTab === "inbox" ? "text-black" : "text-muted-foreground"}
+                  />
+                </TabsTrigger>
+                {connectedHighlights && (
+                  <TabsTrigger value="highlights">
+                    <Highlighter
+                      size={16}
+                      className={
+                        activeSubTab === "highlights" ? "text-black" : "text-muted-foreground"
+                      }
+                    />
+                  </TabsTrigger>
+                )}
+                <TabsTrigger value="documents">
+                  <FileText
+                    size={16}
+                    className={
+                      activeSubTab === "documents" ? "text-black" : "text-muted-foreground"
+                    }
+                  />
+                </TabsTrigger>
+
+                <TabsTrigger value="attachments">
+                  <Paperclip
+                    size={16}
+                    className={
+                      activeSubTab === "attachments" ? "text-black" : "text-muted-foreground"
+                    }
+                  />
+                </TabsTrigger>
+                <TabsTrigger value="entities">
+                  <Fingerprint
+                    size={16}
+                    className={activeSubTab === "entities" ? "text-black" : "text-muted-foreground"}
+                  />
+                </TabsTrigger>
+                <TabsTrigger value="studies">
+                  <BookOpenCheck
+                    size={16}
+                    className={activeSubTab === "studies" ? "text-black" : "text-muted-foreground"}
+                  />
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="inbox">
+                {connectedInbox
+                  ? Object.entries(connectedInbox).map((doc, index) => (
+                      <div key={index} className="mb-2 flex items-start gap-2">
+                        <Link size={24} />
+                        <a href={"#"} className="text-gray-700 hover:text-black">
+                          <p className="text-sm">{doc[1]?.documentTitle}</p>
+                        </a>
+                      </div>
+                    ))
+                  : "No connected inbox items."}
+              </TabsContent>
+              {connectedHighlights && (
+                <>
+                  <TabsContent value="highlights">
+                    <h1>Highlights Content</h1>
+                  </TabsContent>
+                </>
+              )}
+              <TabsContent value="documents">
+                {connectedObjects?.documents && connectedObjects.documents.length > 0
+                  ? connectedObjects.documents.map((doc, index) => (
+                      <div key={index} className="mb-2 flex items-start gap-2">
+                        <Link size={24} />
+                        <a href={"#"} className="text-gray-700 hover:text-black">
+                          <p className="text-sm">{doc.title || "Untitled Document"}</p>
+                        </a>
+                      </div>
+                    ))
+                  : "No connected objects."}
+              </TabsContent>
+              <TabsContent value="attachments">
+                <h1>Attachments Content</h1>
+              </TabsContent>
+              <TabsContent value="entities">
+                {connectedEntities && connectedEntities.length > 0
+                  ? connectedEntities.map((doc, index) => (
+                      <div key={index} className="mb-2 flex items-start gap-2">
+                        <Link size={24} />
+                        <a href={"#"} className="text-gray-700 hover:text-black">
+                          <small>Entity</small>
+                          <p className="text-sm">{doc.title || "Untitled Document"}</p>
+                        </a>
+                      </div>
+                    ))
+                  : "No connected entities."}
+              </TabsContent>
+              <TabsContent value="studies">
+                {connectedStudies && connectedStudies.length > 0
+                  ? connectedStudies.map((doc, index) => (
+                      <div key={index} className="mb-2 flex items-start gap-2">
+                        <Link size={24} />
+                        <a href={"#"} className="text-gray-700 hover:text-black">
+                          <small>Study/Queries</small>
+                          <p>{doc.name || "Untitled Document"}</p>
+                        </a>
+                      </div>
+                    ))
+                  : "No connected studies."}
+              </TabsContent>
+            </Tabs>
+          </TabsContent>
+
+          {/* On This Page Tab Content */}
+          <TabsContent value="onThisPage">
+            <div className="flex h-[100vh] flex-col gap-20">
+              <div>
+                <TableOfContents editor={editor} />
+              </div>
+              <div>
+                <ul>
+                  <li>
+                    <a
+                      className="cursor-pointer"
+                      onClick={() => scrollToSection("#linkedDocuments")}
+                    >
+                      Linked
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="cursor-pointer"
+                      onClick={() => scrollToSection("#connectedQueries")}
+                    >
+                      Queries
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="cursor-pointer"
+                      onClick={() => scrollToSection("#connectedComments")}
+                    >
+                      Comments
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
     </>
   );
 };

@@ -12,7 +12,7 @@ const sidebarSlice = createSlice({
   name: "sidebar",
   initialState,
   reducers: {
-    toggleSidebar(state) {
+    toggleInnerSidebar(state) {
       console.log("sidebar state", state);
       state.sidebarOpen = !state.sidebarOpen;
     },
@@ -22,5 +22,5 @@ const sidebarSlice = createSlice({
   },
 });
 
-export const { toggleSidebar, setSidebarState } = sidebarSlice.actions;
+export const { toggleInnerSidebar, setSidebarState } = sidebarSlice.actions;
 export default sidebarSlice.reducer;
