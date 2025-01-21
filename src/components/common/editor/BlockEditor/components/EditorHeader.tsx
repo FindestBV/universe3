@@ -13,6 +13,7 @@ export type EditorHeaderProps = {
   editor: Editor;
   collabState: WebSocketStatus;
   users: EditorUser[];
+  documentId?: string;
 };
 
 export const EditorHeader = ({
@@ -21,6 +22,7 @@ export const EditorHeader = ({
   users,
   isSidebarOpen,
   toggleSidebar,
+  documentId,
 }: EditorHeaderProps) => {
   const { characters, words } = useEditorState({
     editor,
@@ -34,7 +36,7 @@ export const EditorHeader = ({
   });
 
   return (
-    <div className="flex flex-none flex-row items-center justify-between border-b border-neutral-200 bg-white py-2 pl-6 pr-3 text-black dark:border-neutral-800 dark:bg-white dark:text-black">
+    <div className="flex flex-none flex-row items-center border-b border-neutral-200 bg-white py-2 pl-3 pr-3 text-black dark:border-neutral-200 dark:bg-white dark:text-black">
       <div className="flex flex-row items-center gap-x-1.5">
         <div className="flex items-center gap-x-1.5">
           <Toolbar.Button
@@ -47,7 +49,13 @@ export const EditorHeader = ({
           </Toolbar.Button>
         </div>
       </div>
-      <EditorInfo characters={characters} words={words} collabState={collabState} users={users} />
+      <EditorInfo
+        characters={characters}
+        words={words}
+        collabState={collabState}
+        users={users}
+        id={documentId}
+      />
     </div>
   );
 };

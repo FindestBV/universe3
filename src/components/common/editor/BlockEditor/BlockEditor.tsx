@@ -34,6 +34,7 @@ import { LinkMenu } from "../menus";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
 import { TextMenu } from "../menus/TextMenu";
 import PlaceholderExtension from "../placeholder-extension";
+import { Sidebar } from "../Sidebar";
 import { Button } from "../ui/Button";
 import { EditorHeader } from "./components/EditorHeader";
 
@@ -97,10 +98,10 @@ export const BlockEditor = ({
     setIsSidebarCollapsed((prev) => !prev);
   };
 
+  const leftSidebar = useSidebar();
+
   const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
   // console.log("Parsed Content:", JSON.stringify(parsedContent, null, 2));
-
-  const leftSidebar = useSidebar();
 
   const { editor, users, collabState } = useBlockEditor({
     aiToken,
@@ -192,32 +193,6 @@ export const BlockEditor = ({
 
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
 
-  const handleEditStart = () => {
-    console.log("Editing started for document:", id);
-
-    // Validate `id`
-    if (!id || typeof id !== "string") {
-      console.error("Invalid document ID provided:", id);
-      return;
-    }
-
-    // Dispatch with the correct payload
-    dispatch(setEditingState({ isEditing: true, documentId: id }));
-  };
-
-  const handleStopEditing = () => {
-    console.log("Editing stopped for document:", id);
-
-    // Validate `id`
-    if (!id || typeof id !== "string") {
-      console.error("Invalid document ID provided:", id);
-      return;
-    }
-
-    // Dispatch with the correct payload
-    dispatch(setEditingState({ isEditing: false, documentId: id }));
-  };
-
   // AutoSave logic
   useEffect(() => {
     if (isEditing) {
@@ -267,103 +242,39 @@ export const BlockEditor = ({
 
   return (
     <div className="flex h-screen pb-8" ref={menuContainerRef}>
-      <div className="relative flex h-full flex-1 flex-col overflow-hidden">
-        <EditorHeader
-          editor={editor}
-          collabState={collabState}
-          users={users}
-          isSidebarOpen={leftSidebar.isOpen}
-          toggleSidebar={leftSidebar.toggle}
-        />
-      </div>
-      <div className="flex flex-row">
-        <div className="relative flex h-screen flex-row gap-10">
-          <div className={`${isSidebarCollapsed ? "w-full" : "w-3/4"}`}>
-            {isEditing ? (
-              <button onClick={handleStopEditing}>Stop</button>
-            ) : (
-              <button onClick={handleEditStart}>EDIT</button>
-            )}
-            <div className="flex flex-col justify-between">
-              <EditorContent editor={editor} className="h-screen flex-1 p-16" />
-              <ContentItemMenu editor={editor} />
-              <LinkMenu editor={editor} appendTo={menuContainerRef} />
-              <TextMenu editor={editor} />
-              <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
-              <TableRowMenu editor={editor} appendTo={menuContainerRef} />
-              <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
-              <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
-
-              <div className="editorContentContainer" id="linkedDocuments">
-                <h3 className="itemTitle flex items-center gap-4">
-                  Linked documents <Download size={16} />
-                </h3>
-
-                {connectedObjects?.documents && connectedObjects.documents.length > 0
-                  ? connectedObjects.documents.map(
-                      (doc: { title: Key | null | undefined; id: string }) => (
-                        <div key={doc.title}>
-                          <SimilarDocumentModal
-                            title={doc.title}
-                            id={doc.id}
-                            type="linkedObjects"
-                          />
-                        </div>
-                      ),
-                    )
-                  : "no connected objects"}
-              </div>
-              <div className="editorContentContainer" id="connectedQueries">
-                <h3 className="itemTitle">Connected Queries</h3>
-                <p className="iconText">Connections:</p>
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {connectedQueries &&
-                    (connectedQueries[0]?.connectedObjects &&
-                    connectedQueries[0].connectedObjects.length > 0 ? (
-                      connectedQueries[0].connectedObjects.map(
-                        (obj: {
-                          id: Key | null | undefined;
-                          name: string;
-                          mainContents: unknown;
-                          searchInformation: unknown;
-                        }) => (
-                          <SimilarDocumentModal
-                            key={obj.id}
-                            id={obj.id}
-                            title={obj.name}
-                            mainContents={obj.mainContents}
-                            searchInformation={obj.searchInformation}
-                            type="entity"
-                          />
-                        ),
-                      )
-                    ) : (
-                      <div className="flex flex-row-reverse items-center gap-4">
-                        <Button variant="ghost">Connect a query</Button>
-                        <p className="text-gray-500">No connected objects</p>
-                      </div>
-                    ))}
-                </div>
-              </div>
-              <div className="editorContentContainer" id="connectedComments">
-                <Comments connectedComments={connectedComments} />
-              </div>
-            </div>
-          </div>
-          <div
-            className={`referenceSidebar ${isSidebarCollapsed ? "opacity-1" : "w-1/4 opacity-100"}`}
-          >
-            <ReferencesSidebar
-              onToggleSidebar={toggleSidebar}
-              isCollapsed={isSidebarCollapsed}
-              connectedDocs={connectedDocs}
-              connectedObjects={connectedObjects}
-              connectedInbox={connectedInbox}
-              connectedEntities={connectedEntities}
-              connectedStudies={connectedStudies}
-              editor={editor}
-            />
-          </div>
+      <div className="flex h-full" ref={menuContainerRef}>
+        <Sidebar isOpen={leftSidebar.isOpen} onClose={leftSidebar.close} editor={editor} />
+        <div className="relative flex h-full flex-1 flex-col overflow-hidden">
+          <EditorHeader
+            editor={editor}
+            collabState={collabState}
+            users={users}
+            isSidebarOpen={leftSidebar.isOpen}
+            toggleSidebar={leftSidebar.toggle}
+            documentId={id}
+          />
+          <EditorContent editor={editor} className="flex-1 overflow-y-auto py-16" />
+          <ContentItemMenu editor={editor} />
+          <LinkMenu editor={editor} appendTo={menuContainerRef} />
+          <TextMenu editor={editor} />
+          <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
+          <TableRowMenu editor={editor} appendTo={menuContainerRef} />
+          <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
+          <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
+        </div>
+        <div
+          className={`referenceSidebar ${isSidebarCollapsed ? "opacity-1" : "w-1/4 opacity-100"}`}
+        >
+          <ReferencesSidebar
+            onToggleSidebar={toggleSidebar}
+            isCollapsed={isSidebarCollapsed}
+            connectedDocs={connectedDocs}
+            connectedObjects={connectedObjects}
+            connectedInbox={connectedInbox}
+            connectedEntities={connectedEntities}
+            connectedStudies={connectedStudies}
+            editor={editor}
+          />
         </div>
       </div>
     </div>

@@ -69,7 +69,7 @@ export const ReferencesSidebar: React.FC<{
   return (
     <>
       {/* Persistent Panel */}
-      <div className="absolute top-0 z-10 -ml-14 mt-4 flex h-[100px] flex-col items-center gap-4 bg-white p-4 shadow-md">
+      <div className="absolute top-10 z-10 -ml-14 mt-4 flex h-[100px] flex-col items-center gap-4 bg-white p-4 shadow-md">
         {/* Toggle Main Tabs */}
         <button
           onClick={() => toggleActiveSubTab("references")}
