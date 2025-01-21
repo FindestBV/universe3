@@ -13,8 +13,6 @@ import {
   Bold,
   ChevronDown,
   ChevronUp,
-  Eye,
-  FilePenLine,
   Grid2x2,
   ImagePlus,
   Italic,
@@ -44,7 +42,7 @@ export type EditorInfoProps = {
   id?: string;
 };
 
-export const EditorInfo = memo(({ characters, collabState, users, words, id }: EditorInfoProps) => {
+export const EditorInfo = memo(({ id }: EditorInfoProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   // const isEditing = useSelector((state: RootState) => state.document.isEditing);
 
@@ -168,7 +166,7 @@ export const EditorInfo = memo(({ characters, collabState, users, words, id }: E
   ];
 
   return (
-    <div className="flex items-center">
+    <div className="flex w-full items-center justify-between">
       <div className="mr-4 flex flex-row justify-center gap-2 border-r border-neutral-200 pr-4 text-right dark:border-neutral-200">
         <AskIgorModal />
         <DropdownMenu onOpenChange={(open) => setIsDropdownOpen(open)}>

@@ -41,14 +41,14 @@ const ViewEditSwitch = ({ id }) => {
   };
 
   return (
-    <div className="flex items-center">
+    <div className="button-group flex items-center">
       <div className="rounded-sm"></div>
       <button
         onClick={handleStopEditing}
         className={`flex items-center gap-2 border px-2 py-1 ${
           isEditMode
             ? "border-gray-300 bg-white text-gray-700"
-            : "border-blue-500 bg-blue-500 text-white"
+            : "border-yellow-500 bg-yellow-500 text-white"
         }`}
         aria-label="Switch to View Mode"
       >
@@ -60,7 +60,7 @@ const ViewEditSwitch = ({ id }) => {
         onClick={handleEditStart}
         className={`flex items-center gap-2 border px-2 py-1 ${
           isEditMode
-            ? "border-blue-500 bg-blue-500 text-white"
+            ? "border-green-500 bg-green-500 text-white"
             : "border-gray-300 bg-white text-gray-700"
         }`}
         aria-label="Switch to Edit Mode"

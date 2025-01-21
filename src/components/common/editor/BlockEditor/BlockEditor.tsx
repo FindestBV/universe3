@@ -244,7 +244,7 @@ export const BlockEditor = ({
     <div className="flex h-screen pb-8" ref={menuContainerRef}>
       <div className="flex h-full" ref={menuContainerRef}>
         <Sidebar isOpen={leftSidebar.isOpen} onClose={leftSidebar.close} editor={editor} />
-        <div className="relative flex h-full flex-1 flex-col overflow-hidden">
+        <div className="relative flex h-full max-w-full flex-1 flex-col overflow-hidden">
           <EditorHeader
             editor={editor}
             collabState={collabState}
@@ -253,7 +253,7 @@ export const BlockEditor = ({
             toggleSidebar={leftSidebar.toggle}
             documentId={id}
           />
-          <EditorContent editor={editor} className="flex-1 overflow-y-auto py-16" />
+          <EditorContent editor={editor} className="flex overflow-y-hidden py-16" />
           <ContentItemMenu editor={editor} />
           <LinkMenu editor={editor} appendTo={menuContainerRef} />
           <TextMenu editor={editor} />
@@ -261,20 +261,6 @@ export const BlockEditor = ({
           <TableRowMenu editor={editor} appendTo={menuContainerRef} />
           <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
           <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
-        </div>
-        <div
-          className={`referenceSidebar ${isSidebarCollapsed ? "opacity-1" : "w-1/4 opacity-100"}`}
-        >
-          <ReferencesSidebar
-            onToggleSidebar={toggleSidebar}
-            isCollapsed={isSidebarCollapsed}
-            connectedDocs={connectedDocs}
-            connectedObjects={connectedObjects}
-            connectedInbox={connectedInbox}
-            connectedEntities={connectedEntities}
-            connectedStudies={connectedStudies}
-            editor={editor}
-          />
         </div>
       </div>
     </div>
