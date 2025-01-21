@@ -23,15 +23,29 @@ import { ReferencesSearchbar } from "../search/references-searchbar";
 export const ReferencesSidebar: React.FC<{
   onToggleSidebar?: () => void;
   isCollapsed?: boolean;
+  connectedEntities?: string;
   connectedDocs?: string;
   connectedInbox?: string;
+  connectedHighlights?: string;
   connectedObjects?: string;
+  connectedStudies?: string;
   editor?: string;
-}> = ({ onToggleSidebar, isCollapsed, connectedInbox, connectedObjects, editor }) => {
+}> = ({
+  onToggleSidebar,
+  isCollapsed,
+  connectedEntities,
+  connectedInbox,
+  connectedHighlights,
+  connectedObjects,
+  connectedStudies,
+  editor,
+}) => {
   const [activeMainTab, setActiveMainTab] = useState<string>("references"); // Main tab
   const [activeSubTab, setActiveSubTab] = useState<string>("documents"); // Sub-tab for references
 
   console.log("here is the editor object", TableOfContents);
+  console.log("connectedEntities?", connectedEntities);
+  console.log("connected Studues", connectedStudies);
 
   const toggleActiveSubTab = (tab) => {
     if (isCollapsed) {
@@ -113,14 +127,16 @@ export const ReferencesSidebar: React.FC<{
                       className={activeSubTab === "inbox" ? "text-black" : "text-muted-foreground"}
                     />
                   </TabsTrigger>
-                  <TabsTrigger value="highlights">
-                    <Highlighter
-                      size={16}
-                      className={
-                        activeSubTab === "highlights" ? "text-black" : "text-muted-foreground"
-                      }
-                    />
-                  </TabsTrigger>
+                  {connectedHighlights && (
+                    <TabsTrigger value="highlights">
+                      <Highlighter
+                        size={16}
+                        className={
+                          activeSubTab === "highlights" ? "text-black" : "text-muted-foreground"
+                        }
+                      />
+                    </TabsTrigger>
+                  )}
                   <TabsTrigger value="documents">
                     <FileText
                       size={16}
@@ -129,6 +145,7 @@ export const ReferencesSidebar: React.FC<{
                       }
                     />
                   </TabsTrigger>
+
                   <TabsTrigger value="attachments">
                     <Paperclip
                       size={16}
@@ -166,9 +183,13 @@ export const ReferencesSidebar: React.FC<{
                       ))
                     : "No connected inbox items."}
                 </TabsContent>
-                <TabsContent value="highlights">
-                  <h1>Highlights Content</h1>
-                </TabsContent>
+                {connectedHighlights && (
+                  <>
+                    <TabsContent value="highlights">
+                      <h1>Highlights Content</h1>
+                    </TabsContent>
+                  </>
+                )}
                 <TabsContent value="documents">
                   {connectedObjects?.documents && connectedObjects.documents.length > 0
                     ? connectedObjects.documents.map((doc, index) => (
@@ -185,10 +206,30 @@ export const ReferencesSidebar: React.FC<{
                   <h1>Attachments Content</h1>
                 </TabsContent>
                 <TabsContent value="entities">
-                  <h1>Entities Content</h1>
+                  {connectedEntities && connectedEntities.length > 0
+                    ? connectedEntities.map((doc, index) => (
+                        <div key={index} className="mb-2 flex items-start gap-2">
+                          <Link size={24} />
+                          <a href={"#"} className="text-gray-700 hover:text-black">
+                            <small>Entity</small>
+                            <p>{doc.title || "Untitled Document"}</p>
+                          </a>
+                        </div>
+                      ))
+                    : "No connected entities."}
                 </TabsContent>
                 <TabsContent value="studies">
-                  <h1>Studies Content</h1>
+                  {connectedStudies && connectedStudies.length > 0
+                    ? connectedStudies.map((doc, index) => (
+                        <div key={index} className="mb-2 flex items-start gap-2">
+                          <Link size={24} />
+                          <a href={"#"} className="text-gray-700 hover:text-black">
+                            <small>Study/Queries</small>
+                            <p>{doc.name || "Untitled Document"}</p>
+                          </a>
+                        </div>
+                      ))
+                    : "No connected studies."}
                 </TabsContent>
               </Tabs>
             </TabsContent>

@@ -1,3 +1,5 @@
+import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
+import { setEditingState } from "@/api/documents/documentSlice";
 import SimilarDocumentModal from "@/components/common/dialogs/similar-document-modal";
 import ReferencesSidebar from "@/components/common/sidebar/references-sidebar";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
@@ -23,7 +25,8 @@ import { Key } from "history";
 import { Download } from "lucide-react";
 import * as Y from "yjs";
 
-import { useCallback, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import Comments from "../../layout/comments";
 import CustomImage from "../custom-image";
@@ -56,43 +59,48 @@ export const BlockEditor = ({
   provider,
   type,
   content,
+  id,
   title,
+  connectedEntities,
   connectedDocs,
   connectedInbox,
   connectedObjects,
   connectedQueries,
   connectedComments,
+  connectedStudies,
 }: {
   aiToken?: string;
   ydoc: Y.Doc | null;
   provider?: TiptapCollabProvider | null | undefined;
   type?: string;
+  id?: string;
   content?: string;
   title?: string;
+  connectedEntities?: string;
   connectedDocs?: string;
   connectedInbox?: string;
   connectedObjects?: string;
   connectedQueries?: string;
   connectedComments?: string;
+  connectedStudies?: string;
 }) => {
   const menuContainerRef = useRef(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  const [createDraft] = useCreateDraftMutation();
+  const [updateDraft] = useUpdateDraftMutation();
+  const [currentId, setCurrentId] = useState<string | null>(null);
+  const [lastSavedContent, setLastSavedContent] = useState<string | null>(null); // To track changes
+  const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
+  const dispatch = useDispatch();
 
   const toggleSidebar = () => {
     setIsSidebarCollapsed((prev) => !prev);
   };
 
-  const handlePotentialClose = useCallback(() => {
-    if (window.innerWidth < 1024) {
-      onClose();
-    }
-  }, []);
-
   const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
-  console.log("Parsed Content:", JSON.stringify(parsedContent, null, 2));
+  // console.log("Parsed Content:", JSON.stringify(parsedContent, null, 2));
 
   const leftSidebar = useSidebar();
-  // const { editor, users, collabState } = useBlockEditor({ aiToken, ydoc, provider })
 
   const { editor, users, collabState } = useBlockEditor({
     aiToken,
@@ -132,22 +140,126 @@ export const BlockEditor = ({
           content: [
             {
               type: "text",
-              text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text addinglinks,\n images, files and tables and even utilizing IGOR<sup>AI</sup>. The right sidebar provides otions to include references, \n highlights and images from connected documents. \n Have fun creating!",
+              text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text adding links, images, files, and tables.",
             },
           ],
         },
       ],
     },
-
     onUpdate({ editor }) {
-      const value = editor.getHTML();
-      console.log("Editor HTML:", value); // Check rendered HTML
-      console.log("Editor JSON:", editor.getJSON()); // Check internal JSON structure
-      onChange(value);
+      const updatedHTML = editor.getHTML();
+      const updatedJSON = editor.getJSON();
+      console.log("Content Updated (HTML):", updatedHTML);
+      console.log("Content Updated (JSON):", updatedJSON);
+      try {
+        console.log("currentId:", id);
+        updateDraft({ id: id, content: updatedJSON });
+      } catch (error) {
+        console.error("You're a fucking idiot Ro", error);
+      }
     },
   });
 
-  console.log("parsed content", parsedContent);
+  const saveContent = async () => {
+    const editorContent = editor.getJSON(); // Get content in JSON format
+
+    // Check if content has changed
+    if (lastSavedContent && JSON.stringify(editorContent) === lastSavedContent) {
+      console.log("No changes detected, skipping save.");
+      return;
+    }
+
+    try {
+      if (currentId) {
+        // Update existing draft
+        await updateDraft({
+          id: currentId,
+          content: editorContent,
+          updatedAt: new Date().toISOString(),
+        });
+        console.log("Draft updated successfully");
+      } else {
+        // Create new draft
+        const response = await createDraft({ content: editorContent });
+        setCurrentId(response.data.id); // Save returned numeric ID
+        console.log("Draft created with ID:", response.data.id);
+      }
+      setLastSavedContent(JSON.stringify(editorContent)); // Update last saved content
+    } catch (error) {
+      console.error("Error saving draft:", error);
+    }
+  };
+
+  const isEditing = useSelector((state: RootState) => state.document.isEditing);
+
+  const handleEditStart = () => {
+    console.log("Editing started for document:", id);
+
+    // Validate `id`
+    if (!id || typeof id !== "string") {
+      console.error("Invalid document ID provided:", id);
+      return;
+    }
+
+    // Dispatch with the correct payload
+    dispatch(setEditingState({ isEditing: true, documentId: id }));
+  };
+
+  const handleStopEditing = () => {
+    console.log("Editing stopped for document:", id);
+
+    // Validate `id`
+    if (!id || typeof id !== "string") {
+      console.error("Invalid document ID provided:", id);
+      return;
+    }
+
+    // Dispatch with the correct payload
+    dispatch(setEditingState({ isEditing: false, documentId: id }));
+  };
+
+  // AutoSave logic
+  useEffect(() => {
+    if (isEditing) {
+      autoSaveInterval.current = setInterval(saveContent, 10000); // Save every 10 seconds
+    }
+
+    return () => {
+      // Cleanup on unmount
+      if (autoSaveInterval.current) {
+        clearInterval(autoSaveInterval.current);
+      }
+    };
+  }, [editor, currentId, lastSavedContent, isEditing]);
+
+  useEffect(() => {
+    console.log("editor", editor);
+  }, [editor]);
+
+  //  With Button
+  // const saveContent = async () => {
+  //   // const editorContent = editor.getHTML();
+  //   const editorContent = editor.getJSON();
+  //   if (id) {
+  //     // Update existing draft
+  //     // console.log(currentId);
+  //     try {
+  //       await updateDraft({ id: id, content: editorContent, updatedAt: new Date().toISOString() });
+  //       console.log("Draft updated successfully");
+  //     } catch (error) {
+  //       console.error("Error updating draft:", error);
+  //     }
+  //   } else {
+  //     // Create new draft
+  //     try {
+  //       const response = await createDraft({ content: editorContent });
+  //       setCurrentId(response.data.id); // Save returned numeric ID
+  //       console.log("Draft created with ID:", response.data.id);
+  //     } catch (error) {
+  //       console.error("Error creating draft:", error);
+  //     }
+  //   }
+  // };
 
   if (!editor) {
     return <p>Loading editor...</p>;
@@ -155,7 +267,6 @@ export const BlockEditor = ({
 
   return (
     <div className="flex h-screen pb-8" ref={menuContainerRef}>
-      {/* <Sidebar isOpen={leftSidebar.isOpen} onClose={leftSidebar.close} editor={editor} /> */}
       <div className="relative flex h-full flex-1 flex-col overflow-hidden">
         <EditorHeader
           editor={editor}
@@ -168,6 +279,11 @@ export const BlockEditor = ({
       <div className="flex flex-row">
         <div className="relative flex h-screen flex-row gap-10">
           <div className={`${isSidebarCollapsed ? "w-full" : "w-3/4"}`}>
+            {isEditing ? (
+              <button onClick={handleStopEditing}>Stop</button>
+            ) : (
+              <button onClick={handleEditStart}>EDIT</button>
+            )}
             <div className="flex flex-col justify-between">
               <EditorContent editor={editor} className="h-screen flex-1 p-16" />
               <ContentItemMenu editor={editor} />
@@ -191,14 +307,12 @@ export const BlockEditor = ({
                             title={doc.title}
                             id={doc.id}
                             type="linkedObjects"
-                            isOpenAccess={doc.isOpenAccess}
                           />
                         </div>
                       ),
                     )
                   : "no connected objects"}
               </div>
-
               <div className="editorContentContainer" id="connectedQueries">
                 <h3 className="itemTitle">Connected Queries</h3>
                 <p className="iconText">Connections:</p>
@@ -231,7 +345,6 @@ export const BlockEditor = ({
                     ))}
                 </div>
               </div>
-
               <div className="editorContentContainer" id="connectedComments">
                 <Comments connectedComments={connectedComments} />
               </div>
@@ -246,6 +359,8 @@ export const BlockEditor = ({
               connectedDocs={connectedDocs}
               connectedObjects={connectedObjects}
               connectedInbox={connectedInbox}
+              connectedEntities={connectedEntities}
+              connectedStudies={connectedStudies}
               editor={editor}
             />
           </div>

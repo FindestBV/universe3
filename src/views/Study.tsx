@@ -53,12 +53,15 @@ export const Study: React.FC = () => {
             <div className="w-full flex-col">
               <BlockEditor
                 type={"study"}
+                id={fetchedStudy?.id}
                 title={fetchedStudy?.title}
                 content={parsedDescription}
+                connectedEntities={fetchedStudy.entities}
                 connectedInbox={inboxQuery}
                 connectedObjects={connectedDocs}
                 connectedQueries={connectedStudies}
                 connectedComments={connectedComments}
+                connectedStudies={connectedStudies}
                 ydoc={undefined}
               />
             </div>
