@@ -9,7 +9,7 @@ const AskIgorModal: React.FC = () => {
       {/* Trigger to Open Dialog */}
       <DialogTrigger asChild>
         <div>
-          <button className="flex items-center gap-1 rounded-md border border-gray-300 bg-white p-2 font-bold text-[#7b35c1] hover:bg-gray-200">
+          <button className="flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-2 font-bold text-[#7b35c1] hover:bg-[#7b35c1] hover:text-white">
             <Bot className="h-4" />
             {/* <span className="md:block hidden">Ask IGOR<sup>AI</sup></span> */}
           </button>
