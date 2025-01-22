@@ -209,7 +209,7 @@ export const BlockEditor = ({
           documentId={id}
         />
         <div className="flex flex-row overflow-hidden">
-          {isLeftSideBarOpen && isBlockEditor ? (
+          {isEditing && isBlockEditor ? (
             <TOCSidebar
               editor={editor}
               isOpen={isBlockEditor}
@@ -282,10 +282,10 @@ export const BlockEditor = ({
               <Comments connectedComments={connectedComments} />
             </div>
           </div>
-          <div className={`referenceSidebar ${isSidebarCollapsed ? "collapsed" : ""}`}>
+          <div className={`referenceSidebar ${isEditing ? "" : "collapsed"}`}>
             <ReferencesSidebar
               onToggleInnerSidebar={toggleInnerSidebar}
-              isCollapsed={isSidebarCollapsed}
+              isCollapsed={!isEditing}
               connectedEntities={connectedEntities}
               connectedDocs={connectedDocs}
               connectedObjects={connectedObjects}

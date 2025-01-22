@@ -1,3 +1,4 @@
+import { toggleInnerSidebar } from "@/api/utilities/sidebarSlice";
 import { TableOfContents } from "@/components/common/editor/TableOfContents";
 import { ReferencesSearchbar } from "@/components/common/search/references-searchbar";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import {
 
 import { useEffect, useState } from "react";
 import React from "react";
+import { useSelector } from "react-redux";
 
 export const ReferencesSidebar: React.FC<{
   onToggleInnerSidebar?: () => void;
@@ -40,7 +42,7 @@ export const ReferencesSidebar: React.FC<{
 }) => {
   const [activeMainTab, setActiveMainTab] = useState<string>("references"); // Main tab
   const [activeSubTab, setActiveSubTab] = useState<string>("documents"); // Sub-tab for references
-
+  const isEditing = useSelector((state: RootState) => state.document.isEditing);
   // console.log("here is the editor object", TableOfContents);
   console.log("here is the ontoggle object", onToggleInnerSidebar);
 
@@ -63,9 +65,9 @@ export const ReferencesSidebar: React.FC<{
     }
   };
 
-  // useEffect(() => {
-  //   console.log('hmmmmm')
-  // },[onToggleInnerSidebar])
+  useEffect(() => {
+    toggleInnerSidebar();
+  }, []);
 
   return (
     <>
