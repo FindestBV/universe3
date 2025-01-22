@@ -160,6 +160,7 @@ export const BlockEditor = ({
     aiToken,
     ydoc,
     provider,
+    type,
     extensions,
     content: parsedContent || {
       type: "doc",
@@ -209,7 +210,11 @@ export const BlockEditor = ({
         />
         <div className="flex flex-row overflow-hidden">
           {isLeftSideBarOpen && isBlockEditor ? (
-            <TOCSidebar editor={editor} isOpen={isBlockEditor} />
+            <TOCSidebar
+              editor={editor}
+              isOpen={isBlockEditor}
+              connectedEntities={connectedEntities}
+            />
           ) : (
             ""
           )}

@@ -1,12 +1,24 @@
 import { cn } from "@/lib/utils";
 import { Editor } from "@tiptap/react";
+import { Link } from "lucide-react";
 
 import { memo, useCallback } from "react";
 
-import { TableOfContents } from "../../../TableOfContents";
+// import { TableOfContents } from "../../../TableOfContents";
 
 export const TOCSidebar = memo(
-  ({ editor, isOpen, onClose }: { editor: Editor; isOpen?: boolean; onClose: () => void }) => {
+  ({
+    editor,
+    isOpen,
+    onClose,
+    connectedEntities,
+  }: {
+    id?: string;
+    editor: Editor;
+    isOpen?: boolean;
+    onClose: () => void;
+    connectedEntities;
+  }) => {
     const handlePotentialClose = useCallback(() => {
       if (window.innerWidth < 1024) {
         onClose();
@@ -16,14 +28,30 @@ export const TOCSidebar = memo(
     const windowClassName = cn(
       "tocSideBar",
       !isOpen && "border-r-transparent tocSidebar transition-all duration-150 w-0",
-      isOpen && "w-64 border-r border-r-neutral-200 dark:border-r-neutral-200",
+      isOpen && "w-full border-r border-r-neutral-200 dark:border-r-neutral-200",
     );
+
+    console.log("explorer editor", editor);
 
     return (
       <div className={windowClassName}>
         <div className="h-full w-full overflow-hidden">
           <div className="h-full w-full overflow-auto p-6">
-            <TableOfContents onItemClick={handlePotentialClose} editor={editor} />
+            <h3 className="iconText py-1">EXPLORER</h3>
+
+            <ul className="flex flex-col-reverse">
+              {connectedEntities && connectedEntities.length > 0
+                ? connectedEntities.map(
+                    (doc: { title: string }, index: React.Key | null | undefined) => (
+                      <li key={index} className="mb-2 flex items-start gap-2">
+                        <a href={"#"} className="text-gray-700 hover:text-black">
+                          <p className="text-sm">{doc.title || "Untitled Document"}</p>
+                        </a>
+                      </li>
+                    ),
+                  )
+                : "No connected entities."}
+            </ul>
           </div>
         </div>
       </div>
