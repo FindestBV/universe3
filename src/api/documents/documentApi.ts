@@ -198,9 +198,9 @@ export const documentApi = api.injectEndpoints({
             api.endpoints.getEntityConnectedQueries.initiate(id),
           ).unwrap();
           // get connected comments associated with this item Id
-          const connectedComments = await dispatch(
-            api.endpoints.getEntityConnectedComments.initiate(id),
-          ).unwrap();
+          // const connectedComments = await dispatch(
+          //   api.endpoints.getEntityConnectedComments.initiate(id),
+          // ).unwrap();
 
           /* 
             upDateQueryData will then take the result of the initial query and appends the result of the actual actions.
@@ -214,7 +214,7 @@ export const documentApi = api.injectEndpoints({
               draft.connectedInboxItems = inboxItems;
               draft.connectedDocs = connectedDocs;
               draft.connectedQueries = connectedQueries;
-              draft.connectedComments = connectedComments;
+              // draft.connectedComments = connectedComments;
             }),
           );
         } catch (error) {

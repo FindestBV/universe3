@@ -23,7 +23,7 @@ import { Key } from "history";
 import { Download } from "lucide-react";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import Comments from "../../layout/comments";
 import ReferencesSidebar from "../BlockEditor/components/ReferencesSidebar";
@@ -53,9 +53,6 @@ export const Rating = Mark.create({
 });
 
 export const BlockEditor = ({
-  aiToken,
-  ydoc,
-  provider,
   type,
   content,
   id,
@@ -68,9 +65,6 @@ export const BlockEditor = ({
   connectedComments,
   connectedStudies,
 }: {
-  aiToken?: string;
-  ydoc?: any;
-  provider?: TiptapCollabProvider | null | undefined;
   type?: string;
   id?: string;
   content?: string;
@@ -104,30 +98,21 @@ export const BlockEditor = ({
 
   const parsedContent = useMemo(() => {
     try {
-      if (type === "study") {
-        return typeof content === "string" ? JSON.parse(content) : content;
-      } else if (type === "entity") {
-        return JSON.stringify(content);
+      // Parse content if it's a string, otherwise use it as is
+      if (typeof content === "string" || content.tupe === "doc") {
+        return JSON.parse(content);
       }
-      return null;
+      // Ensure it has the required structure
+      if (content && typeof content === "object" && content?.type === "doc") {
+        return content;
+      }
+      // Fallback for invalid content
+      return { type: "doc", content: [] };
     } catch (error) {
-      // console.error("Error parsing content:", error);
-      return null;
+      console.error("Error parsing content:", error);
+      return { type: "doc", content: [] }; // Default fallback
     }
-  }, [content, type]);
-
-  const defaultContent = {
-    type: "doc",
-    content: [
-      {
-        type: "paragraph",
-        content: [{ type: "text", text: "This is the default paragraph text." }],
-      },
-    ],
-  };
-
-  console.log("nonparesed", content);
-  console.log("parsedContent on BlockEditor", parsedContent);
+  }, [content]);
 
   const saveContent = useCallback(
     async (content: any) => {
@@ -154,8 +139,9 @@ export const BlockEditor = ({
     [currentId, lastSavedContent, updateDraft, createDraft, content],
   );
 
-  const extensions = useMemo(
-    () => [
+  const { editor, collabState, users } = useBlockEditor({
+    type,
+    extensions: [
       StarterKit,
       Link.configure({ openOnClick: true }),
       Document,
@@ -167,35 +153,24 @@ export const BlockEditor = ({
       TableCell,
       Text,
       Image,
-      CustomImage,
+      CustomImage, // Ensure CustomImage is included here
       Rating,
       PlaceholderExtension,
     ],
-    [],
-  );
-
-  const { editor, users, collabState } = useBlockEditor({
-    aiToken,
-    ydoc,
-    provider,
-    type,
-    extensions,
-    content: parsedContent
-      ? parsedContent
-      : {
-          type: "doc",
+    content: parsedContent || {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
           content: [
             {
-              type: "paragraph",
-              content: [
-                {
-                  type: "text",
-                  text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text adding links, images, files, and tables.",
-                },
-              ],
+              type: "text",
+              text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text addinglinks,\n images, files and tables and even utilizing IGOR<sup>AI</sup>. The right sidebar provides otions to include references, \n highlights and images from connected documents. \n Have fun creating!",
             },
           ],
         },
+      ],
+    },
     onUpdate({ editor }) {
       const updatedJSON = editor.getJSON();
       saveContent(updatedJSON);

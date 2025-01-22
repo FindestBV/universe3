@@ -35,11 +35,13 @@ export const Study: React.FC = () => {
 
   useEffect(() => {
     if (fetchedStudy) {
-      console.log("fetched", fetchedStudy);
+      console.log("blooper", typeof parsedDescription);
       console.log("study connections", connectedStudies);
       console.log("study queries", connectedDocs);
       console.log("study inbox", inboxQuery);
       console.log("connected comments", connectedComments);
+      console.log("connectedEntities", connectedEntities);
+      console.log("blooper", parsedDescription);
     }
 
     window.scroll(0, 0);

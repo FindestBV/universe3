@@ -35,6 +35,7 @@ export const useBlockEditor = ({
   connectedObjects,
   connectedQueries,
   connectedComments,
+  extensions,
 }: {
   aiToken?: string;
   ydoc: YDoc | null;
@@ -49,55 +50,45 @@ export const useBlockEditor = ({
   connectedObjects?: string;
   connectedQueries?: string;
   connectedComments?: string;
+  extensions?: string;
 }) => {
   const [collabState, setCollabState] = useState<WebSocketStatus>(
     provider ? WebSocketStatus.Connecting : WebSocketStatus.Disconnected,
   );
-
+  console.log("Unparsed Content:", type);
   const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
   console.log("Parsed Content:", JSON.stringify(parsedContent, null, 2));
-
-  const defaultContent = {
-    type: "doc",
-    content: [
-      {
-        type: "paragraph",
-        content: [{ type: "text", text: "This is the default paragraph text." }],
-      },
-    ],
-  };
 
   const editor = useEditor(
     {
       immediatelyRender: true,
       shouldRerenderOnTransaction: false,
       autofocus: true,
-      content: parsedContent ||
-        defaultContent || {
-          type: "doc",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  type: "text",
-                  text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text addinglinks,\n images, files and tables and even utilizing IGOR<sup>AI</sup>. The right sidebar provides otions to include references, \n highlights and images from connected documents. \n Have fun creating!",
-                },
-              ],
-            },
-          ],
-        },
+      content: parsedContent || {
+        type: "doc",
+        content: [
+          {
+            type: "paragraph",
+            content: [
+              {
+                type: "text",
+                text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text addinglinks,\n images, files and tables and even utilizing IGOR<sup>AI</sup>. The right sidebar provides otions to include references, \n highlights and images from connected documents. \n Have fun creating!",
+              },
+            ],
+          },
+        ],
+      },
       onCreate: (ctx) => {
         if (provider && !provider.isSynced) {
           provider.on("synced", () => {
             setTimeout(() => {
               if (ctx.editor.isEmpty) {
-                ctx.editor.commands.setContent(content);
+                ctx.editor.commands.setContent(parsedContent);
               }
             }, 0);
           });
         } else if (ctx.editor.isEmpty) {
-          ctx.editor.commands.setContent(content);
+          ctx.editor.commands.setContent(parsedContent);
           ctx.editor.commands.focus("start", { scrollIntoView: true });
         }
       },

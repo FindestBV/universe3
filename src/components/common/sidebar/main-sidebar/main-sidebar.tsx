@@ -1,6 +1,6 @@
 import { currentUser, logout } from "@/api/auth/authSlice";
 import { useGetStudyByIdQuery } from "@/api/documents/documentApi";
-import { setEditingState } from "@/api/documents/documentSlice";
+// import { setEditingState } from "@/api/documents/documentSlice";
 import AdvancedSearchModal from "@/components/common/dialogs/advanced-search-modal";
 // import GenerateReport from "@/components/common/dialogs/generate-report-modal";
 import UserAvatar from "@/components/common/utilities/user-avatar";
@@ -22,19 +22,11 @@ import {
 } from "@/components/ui/sidebar";
 import {
   AudioWaveform,
-  BookOpen,
-  Bot,
   ChevronUp,
   Command,
-  Frame,
   GalleryVerticalEnd,
-  Home,
-  Inbox,
-  Map,
   MessageCircleQuestion,
-  PieChart,
   Search,
-  Settings2,
   SquareTerminal,
 } from "lucide-react";
 
@@ -176,8 +168,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       refetchOnMountOrArgChange: false, // Prevents automatic refetching
     },
   );
-
-  console.log("fetchedEntities", fetchedStudy?.entities);
 
   const handleLogout = () => {
     dispatch(logout());

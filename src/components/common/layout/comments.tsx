@@ -28,8 +28,12 @@ export const Comments = ({ connectedComments }: any) => {
       <div className="comments-list">
         <div className="flex w-full gap-6 rounded-sm border border-[#f1f1f1] p-4">
           {connectedComments?.comments && connectedComments.comments.length > 0 ? (
-            connectedComments.comments.map((comment: string, index: number) => (
-              <div key={comment.index} className="flex w-full">
+            [
+              ...new Map(
+                connectedComments.comments.map((comment: any) => [comment.id, comment]),
+              ).values(),
+            ].map((comment: any) => (
+              <div key={comment.id} className="flex w-full">
                 <UserAvatar username={comment?.username} />
                 <div className="comment comment-card group w-full">
                   <div className="flex justify-between">
