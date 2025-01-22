@@ -64,7 +64,6 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
       refetchDocument();
       refetchConnectedDocuments();
     }
-    console.log("is open access", isOpenAccess);
   }, [isOpen, refetchDocument, refetchConnectedDocuments]);
 
   // If type is "linkedObjects," render as a GenericCard

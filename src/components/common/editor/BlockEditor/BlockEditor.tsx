@@ -69,7 +69,7 @@ export const BlockEditor = ({
   connectedStudies,
 }: {
   aiToken?: string;
-  ydoc: Y.Doc | null;
+  ydoc?: any;
   provider?: TiptapCollabProvider | null | undefined;
   type?: string;
   id?: string;
@@ -104,12 +104,30 @@ export const BlockEditor = ({
 
   const parsedContent = useMemo(() => {
     try {
-      return typeof content === "string" ? JSON.parse(content) : content;
+      if (type === "study") {
+        return typeof content === "string" ? JSON.parse(content) : content;
+      } else if (type === "entity") {
+        return JSON.stringify(content);
+      }
+      return null;
     } catch (error) {
-      console.error("Invalid content JSON:", error);
-      return { type: "doc", content: [] };
+      // console.error("Error parsing content:", error);
+      return null;
     }
-  }, [content]);
+  }, [content, type]);
+
+  const defaultContent = {
+    type: "doc",
+    content: [
+      {
+        type: "paragraph",
+        content: [{ type: "text", text: "This is the default paragraph text." }],
+      },
+    ],
+  };
+
+  console.log("nonparesed", content);
+  console.log("parsedContent on BlockEditor", parsedContent);
 
   const saveContent = useCallback(
     async (content: any) => {
@@ -162,20 +180,22 @@ export const BlockEditor = ({
     provider,
     type,
     extensions,
-    content: parsedContent || {
-      type: "doc",
-      content: [
-        {
-          type: "paragraph",
+    content: parsedContent
+      ? parsedContent
+      : {
+          type: "doc",
           content: [
             {
-              type: "text",
-              text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text adding links, images, files, and tables.",
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text adding links, images, files, and tables.",
+                },
+              ],
             },
           ],
         },
-      ],
-    },
     onUpdate({ editor }) {
       const updatedJSON = editor.getJSON();
       saveContent(updatedJSON);

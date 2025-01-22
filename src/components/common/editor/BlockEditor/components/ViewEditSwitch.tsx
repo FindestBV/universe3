@@ -36,7 +36,7 @@ const ViewEditSwitch = ({ id }) => {
       return;
     }
 
-    dispatch(setEditingState({ isEditing: true, documentId: id }));
+    dispatch(setEditingState({ isEditing: false, documentId: id }));
   };
 
   return (

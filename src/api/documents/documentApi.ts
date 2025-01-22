@@ -176,6 +176,7 @@ export const documentApi = api.injectEndpoints({
 
       query: (id) => ({
         url: `entity/${id}`,
+        providesTags: (result, error, id) => [{ type: "Entity", id }],
       }),
 
       // onQuery started:
@@ -302,6 +303,7 @@ export const documentApi = api.injectEndpoints({
     getStudyById: builder.query<Study, void>({
       query: (id) => ({
         url: `study/${id}`,
+        providesTags: (result, error, id) => [{ type: "Study", id }],
       }),
 
       async onQueryStarted(id, { dispatch }) {

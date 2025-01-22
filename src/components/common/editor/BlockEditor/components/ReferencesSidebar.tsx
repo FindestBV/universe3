@@ -43,9 +43,6 @@ export const ReferencesSidebar: React.FC<{
   const [activeMainTab, setActiveMainTab] = useState<string>("references"); // Main tab
   const [activeSubTab, setActiveSubTab] = useState<string>("documents"); // Sub-tab for references
 
-  // console.log("here is the editor object", TableOfContents);
-  console.log("here is the ontoggle object", onToggleInnerSidebar);
-
   const toggleActiveSubTab = (tab: React.SetStateAction<string>) => {
     if (isCollapsed) {
       onToggleInnerSidebar();
