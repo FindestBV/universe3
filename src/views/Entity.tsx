@@ -21,6 +21,7 @@ export const Entity: React.FC = () => {
   const connectedObjects = fetchedEntity && fetchedEntity?.connectedDocs;
   const connectedQueries = fetchedEntity && fetchedEntity?.connectedQueries;
   const connectedComments = fetchedEntity && fetchedEntity?.connectedComments;
+  const connectedEntities = fetchedEntity && fetchedEntity?.entities;
 
   if (fetchedEntity) {
     console.log("fetched entity full obj", fetchedEntity.description);
@@ -60,7 +61,8 @@ export const Entity: React.FC = () => {
                 connectedInbox={inboxQuery}
                 connectedQueries={connectedQueries}
                 connectedComments={connectedComments}
-                // connectedEntities={fetchedEntity?.entities}
+                connectedEntities={fetchedEntity?.entities}
+                connectedStudies={connectedObjects}
               />
             </div>
           </div>

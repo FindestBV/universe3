@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useGetStudyByIdQuery } from "@/api/documents/documentApi";
-import { BlockEditor } from "@/components/common/editor/BlockEditor";
+import { BlockEditor } from "@/components/common/editor/BlockEditor/BlockEditor";
 import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 
 import { useEffect } from "react";
