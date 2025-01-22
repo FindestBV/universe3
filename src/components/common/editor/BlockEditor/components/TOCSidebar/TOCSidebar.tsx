@@ -14,8 +14,8 @@ export const TOCSidebar = memo(
     }, [onClose, isOpen, editor]);
 
     const windowClassName = cn(
-      "absolute top-0 left-0 bg-white h-full lg:h-auto lg:relative z-10 w-0 duration-300 transition-all",
-      !isOpen && "border-r-transparent",
+      "tocSideBar",
+      !isOpen && "border-r-transparent tocSidebar transition-all duration-150 w-0",
       isOpen && "w-64 border-r border-r-neutral-200 dark:border-r-neutral-200",
     );
 

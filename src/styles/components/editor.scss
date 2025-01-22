@@ -529,11 +529,16 @@
   @apply z-10 mb-16 h-auto flex-col px-12 transition-all duration-300; 
 }
 
+.tocSideBar{
+  @apply absolute top-0 left-0 bg-white h-full lg:h-auto lg:relative z-10 w-0 duration-300 transition-all
+}
+
+
 .referenceSidebar{
   @apply relative flex flex-col border-l border-gray-200 transition-all duration-300 min-w-[350px] max-w-[350px];
 
   &.collapsed{
-    @apply min-w-0 max-w-0;
+    @apply min-w-4 max-w-4;
   }
 }
 
