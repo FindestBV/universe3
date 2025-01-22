@@ -10,6 +10,9 @@ import { useParams } from "react-router";
 
 export const Entity: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+
+  let parsedDescription: any = null;
+
   const { data: fetchedEntity, isLoading: fetchedEntityIsLoading } = useGetEntityByIdQuery(id, {
     refetchOnMountOrArgChange: false, // Prevents automatic refetching
   });
@@ -18,8 +21,6 @@ export const Entity: React.FC = () => {
   const connectedObjects = fetchedEntity && fetchedEntity?.connectedDocs;
   const connectedQueries = fetchedEntity && fetchedEntity?.connectedQueries;
   const connectedComments = fetchedEntity && fetchedEntity?.connectedComments;
-
-  let parsedDescription: any;
 
   if (fetchedEntity) {
     console.log("fetched entity full obj", fetchedEntity.description);

@@ -1,11 +1,9 @@
 import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
-// import { toggleInnerSidebar } from "@/api/utilities/sidebarSlice";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
 import { useBlockEditor } from "@/hooks/use-block-editor";
-import { TiptapCollabProvider } from "@hocuspocus/provider";
 import { Mark } from "@tiptap/core";
 import Document from "@tiptap/extension-document";
 import Heading from "@tiptap/extension-heading";
@@ -27,7 +25,7 @@ import { useSelector } from "react-redux";
 
 import Comments from "../../layout/comments";
 import ReferencesSidebar from "../BlockEditor/components/ReferencesSidebar";
-import CustomImage from "../custom-image";
+import CustomImage from "../customImage";
 import { LinkMenu } from "../menus";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
 import { TextMenu } from "../menus/TextMenu";
@@ -53,7 +51,6 @@ export const Rating = Mark.create({
 });
 
 export const BlockEditor = ({
-  type,
   content,
   id,
   title,
@@ -78,7 +75,7 @@ export const BlockEditor = ({
   connectedStudies?: string;
 }) => {
   const menuContainerRef = useRef(null);
-  const [isBlockEditor, setIsBlockEditor] = useState<boolean>(true);
+  // const [isBlockEditor, setIsBlockEditor] = useState<boolean>(true);
   const [isLeftSideBarOpen, setIsLeftSidebarOpen] = useState<boolean>(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [createDraft] = useCreateDraftMutation();
@@ -140,23 +137,22 @@ export const BlockEditor = ({
   );
 
   const { editor, collabState, users } = useBlockEditor({
-    type,
-    extensions: [
-      StarterKit,
-      Link.configure({ openOnClick: true }),
-      Document,
-      Paragraph.configure({ HTMLAttributes: { class: "editor_paragraph" } }),
-      Heading.configure({ levels: [1, 2, 3, 4, 5, 6] }),
-      Table.configure({ resizable: true }),
-      TableRow,
-      TableHeader,
-      TableCell,
-      Text,
-      Image,
-      CustomImage, // Ensure CustomImage is included here
-      Rating,
-      PlaceholderExtension,
-    ],
+    // extensions: [
+    //   StarterKit,
+    //   Link.configure({ openOnClick: true }),
+    //   Document,
+    //   Paragraph.configure({ HTMLAttributes: { class: "editor_paragraph" } }),
+    //   Heading.configure({ levels: [1, 2, 3, 4, 5, 6] }),
+    //   Table.configure({ resizable: true }),
+    //   TableRow,
+    //   TableHeader,
+    //   TableCell,
+    //   Text,
+    //   Image,
+    //   CustomImage, // Ensure CustomImage is included here
+    //   Rating,
+    //   PlaceholderExtension,
+    // ],
     content: parsedContent || {
       type: "doc",
       content: [
@@ -176,6 +172,11 @@ export const BlockEditor = ({
       saveContent(updatedJSON);
     },
   });
+
+  // Debugging: Check if `customImage` is in the editor schema
+  if (editor) {
+    console.log("schema nodes?", editor.schema.nodes);
+  }
 
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
 

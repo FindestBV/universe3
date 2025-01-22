@@ -21,7 +21,7 @@ import SimilarDocumentModal from "../dialogs/similar-document-modal";
 // import GenericCard from "../cards/generic-card";
 import Comments from "../layout/comments";
 import ReferencesSidebar from "../sidebar/references-sidebar";
-import CustomImage from "./custom-image";
+import CustomImage from "./customImage";
 import EditorToolbar from "./editor-toolbar";
 import PlaceholderExtension from "./placeholder-extension";
 
