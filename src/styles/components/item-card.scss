@@ -26,7 +26,11 @@
         }
 
         .innerCardContent{
-          @apply flex flex-1 flex-row gap-4;
+          @apply md:flex flex-1 flex-row gap-4;
+
+          p{
+            @apply text-sm md:text-base
+          }
 
           &__Detail{
             @apply flex flex-1 flex-col px-4; 

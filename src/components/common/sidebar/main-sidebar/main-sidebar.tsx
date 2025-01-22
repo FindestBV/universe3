@@ -2,7 +2,7 @@ import { currentUser, logout } from "@/api/auth/authSlice";
 import { useGetStudyByIdQuery } from "@/api/documents/documentApi";
 import { setEditingState } from "@/api/documents/documentSlice";
 import AdvancedSearchModal from "@/components/common/dialogs/advanced-search-modal";
-import GenerateReport from "@/components/common/dialogs/generate-report-modal";
+// import GenerateReport from "@/components/common/dialogs/generate-report-modal";
 import UserAvatar from "@/components/common/utilities/user-avatar";
 import {
   DropdownMenu,
@@ -28,6 +28,7 @@ import {
   Command,
   Frame,
   GalleryVerticalEnd,
+  Home,
   Inbox,
   Map,
   MessageCircleQuestion,
@@ -75,6 +76,10 @@ const data = {
       icon: SquareTerminal,
       isActive: true,
       items: [
+        {
+          title: "Home",
+          url: "/dashboard",
+        },
         {
           title: "Inbox",
           url: "/inbox",
