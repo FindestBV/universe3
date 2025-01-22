@@ -28,10 +28,16 @@ export const TOCSidebar = memo(
     }, [onClose, isOpen, editor]);
 
     const windowClassName = cn(
-      "tocSideBar",
-      !isOpen && "border-r-transparent tocSidebar transition-all duration-150 w-0",
-      isOpen && "min-w-64 max-w-80 w-full border-r border-r-neutral-200 dark:border-r-neutral-200",
+      "tocSidebar transition-all duration-150 min-w-0 max-w-0",
+      !isOpen && "border-r-transparent",
+      isOpen &&
+        "translate-x-0 min-w-64 max-w-80 w-full border-r border-r-neutral-200 dark:border-r-neutral-200",
     );
+
+    // const windowClassName = cn(
+    //   "tocSidebar transition-all duration-150 max-0",
+    //   isOpen ? "translate-x-0 w-64 border-r border-r-neutral-200 dark:border-r-neutral-200" : "-translate-x-full w-0",
+    // );
 
     console.log("explorer editor", editor);
 
@@ -40,7 +46,7 @@ export const TOCSidebar = memo(
         <div className="h-full w-full overflow-hidden">
           <div className="h-full w-full overflow-auto p-6">
             <h3 className="iconText mb-4 py-1">EXPLORER</h3>
-            <h4 className="mb-2">{title ? title : null}</h4>
+            <h4 className="mb-2 font-bold">{title ? title : null}</h4>
             <ul className="ml-2 flex flex-col-reverse">
               {connectedEntities && connectedEntities.length > 0
                 ? connectedEntities.map(

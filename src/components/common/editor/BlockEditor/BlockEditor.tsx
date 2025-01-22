@@ -209,16 +209,14 @@ export const BlockEditor = ({
           documentId={id}
         />
         <div className="flex flex-row overflow-hidden">
-          {isLeftSideBarOpen ? (
+          <div className={`${isLeftSideBarOpen ? "flex w-full" : "hidden w-0"}`}>
             <TOCSidebar
               editor={editor}
               isOpen={isLeftSideBarOpen}
               connectedEntities={connectedEntities}
               title={title}
             />
-          ) : (
-            ""
-          )}
+          </div>
           <div className="mainEditor">
             <EditorContent
               key={editor?.view?.id || "editor"}
