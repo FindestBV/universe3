@@ -37,14 +37,14 @@ export const TOCSidebar = memo(
       <div className={windowClassName}>
         <div className="h-full w-full overflow-hidden">
           <div className="h-full w-full overflow-auto p-6">
-            <h3 className="iconText py-1">EXPLORER</h3>
+            <h3 className="iconText mb-4 py-1">EXPLORER</h3>
 
             <ul className="flex flex-col-reverse">
               {connectedEntities && connectedEntities.length > 0
                 ? connectedEntities.map(
                     (doc: { title: string }, index: React.Key | null | undefined) => (
                       <li key={index} className="mb-2 flex items-start gap-2">
-                        <a href={"#"} className="text-gray-700 hover:text-black">
+                        <a href={"#"} className="text-gray-600 hover:text-black">
                           <p className="text-sm">{doc.title || "Untitled Document"}</p>
                         </a>
                       </li>

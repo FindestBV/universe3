@@ -282,10 +282,10 @@ export const BlockEditor = ({
               <Comments connectedComments={connectedComments} />
             </div>
           </div>
-          <div className={`referenceSidebar ${isEditing ? "" : "collapsed"}`}>
+          <div className={`referenceSidebar ${isSidebarCollapsed ? "collapsed" : ""}`}>
             <ReferencesSidebar
               onToggleInnerSidebar={toggleInnerSidebar}
-              isCollapsed={!isEditing}
+              isCollapsed={isSidebarCollapsed}
               connectedEntities={connectedEntities}
               connectedDocs={connectedDocs}
               connectedObjects={connectedObjects}

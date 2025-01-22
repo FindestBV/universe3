@@ -3,6 +3,8 @@ import { Editor } from "@tiptap/core";
 import { useEditorState } from "@tiptap/react";
 import { List } from "lucide-react";
 
+import { useSelector } from "react-redux";
+
 import { Toolbar } from "../../ui/Toolbar";
 import { EditorUser } from "../types";
 import { EditorInfo } from "./EditorInfo";
@@ -34,19 +36,22 @@ export const EditorHeader = ({
       return { characters: characters(), words: words() };
     },
   });
+  const isEditing = useSelector((state: RootState) => state.document.isEditing);
 
   return (
     <div className="editorHeader">
       <div className="flex flex-row items-center gap-x-1.5">
         <div className="flex items-center gap-x-1.5">
-          <Toolbar.Button
-            tooltip={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
-            onClick={toggleLeftSidebar}
-            active={isSidebarOpen}
-            className={isSidebarOpen ? "bg-transparent" : ""}
-          >
-            <List size={24} />
-          </Toolbar.Button>
+          {isEditing && (
+            <Toolbar.Button
+              tooltip={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
+              onClick={toggleLeftSidebar}
+              active={isSidebarOpen}
+              className={isSidebarOpen ? "bg-transparent" : ""}
+            >
+              <List size={24} />
+            </Toolbar.Button>
+          )}
         </div>
       </div>
       <EditorInfo
