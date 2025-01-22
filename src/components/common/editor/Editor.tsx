@@ -241,7 +241,7 @@ export const Editor = ({
           className={`referenceSidebar ${isSidebarCollapsed ? "opacity-1" : "w-1/4 opacity-100"}`}
         >
           <ReferencesSidebar
-            onToggleSidebar={toggleSidebar}
+            onToggleInnerSidebar={toggleSidebar}
             isCollapsed={isSidebarCollapsed}
             connectedDocs={connectedDocs}
             connectedObjects={connectedObjects}

@@ -84,6 +84,7 @@ export const BlockEditor = ({
   connectedStudies?: string;
 }) => {
   const menuContainerRef = useRef(null);
+  const [isBlockEditor, setIsBlockEditor] = useState<boolean>(true);
   const [isLeftSideBarOpen, setIsLeftSidebarOpen] = useState<boolean>(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [createDraft] = useCreateDraftMutation();
@@ -207,7 +208,11 @@ export const BlockEditor = ({
           documentId={id}
         />
         <div className="flex flex-row overflow-hidden">
-          {isLeftSideBarOpen && <TOCSidebar editor={editor} isOpen={true} />}
+          {isLeftSideBarOpen && isBlockEditor ? (
+            <TOCSidebar editor={editor} isOpen={isBlockEditor} />
+          ) : (
+            ""
+          )}
           <div className="mainEditor">
             <EditorContent
               key={editor?.view?.id || "editor"}

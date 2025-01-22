@@ -124,14 +124,14 @@ export const ReferencesSidebar: React.FC<{
                 <TabsList className="mb-4 inline-flex h-10 w-full items-center justify-start gap-4 rounded-none border-b border-[#f1f1f1] bg-transparent p-1 text-muted-foreground">
                   <TabsTrigger value="inbox">
                     <Inbox
-                      size={16}
+                      size={18}
                       className={activeSubTab === "inbox" ? "text-black" : "text-muted-foreground"}
                     />
                   </TabsTrigger>
                   {connectedHighlights && (
                     <TabsTrigger value="highlights">
                       <Highlighter
-                        size={16}
+                        size={18}
                         className={
                           activeSubTab === "highlights" ? "text-black" : "text-muted-foreground"
                         }
@@ -140,7 +140,7 @@ export const ReferencesSidebar: React.FC<{
                   )}
                   <TabsTrigger value="documents">
                     <FileText
-                      size={16}
+                      size={18}
                       className={
                         activeSubTab === "documents" ? "text-black" : "text-muted-foreground"
                       }
@@ -149,7 +149,7 @@ export const ReferencesSidebar: React.FC<{
 
                   <TabsTrigger value="attachments">
                     <Paperclip
-                      size={16}
+                      size={18}
                       className={
                         activeSubTab === "attachments" ? "text-black" : "text-muted-foreground"
                       }
@@ -157,7 +157,7 @@ export const ReferencesSidebar: React.FC<{
                   </TabsTrigger>
                   <TabsTrigger value="entities">
                     <Fingerprint
-                      size={16}
+                      size={18}
                       className={
                         activeSubTab === "entities" ? "text-black" : "text-muted-foreground"
                       }
@@ -165,7 +165,7 @@ export const ReferencesSidebar: React.FC<{
                   </TabsTrigger>
                   <TabsTrigger value="studies">
                     <BookOpenCheck
-                      size={16}
+                      size={18}
                       className={
                         activeSubTab === "studies" ? "text-black" : "text-muted-foreground"
                       }
@@ -176,7 +176,7 @@ export const ReferencesSidebar: React.FC<{
                   {connectedInbox
                     ? Object.entries(connectedInbox).map((doc, index) => (
                         <div key={index} className="mb-2 flex items-start gap-2">
-                          <Link size={24} />
+                          <Link size={18} />
                           <a href={"#"} className="text-gray-700 hover:text-black">
                             <p className="text-sm">{doc[1]?.documentTitle}</p>
                           </a>
@@ -196,7 +196,7 @@ export const ReferencesSidebar: React.FC<{
                     ? connectedObjects.documents.map(
                         (doc: { title: any }, index: React.Key | null | undefined) => (
                           <div key={index} className="mb-2 flex items-start gap-2">
-                            <Link size={24} />
+                            <Link size={18} />
                             <a href={"#"} className="text-gray-700 hover:text-black">
                               <p className="text-sm">{doc.title || "Untitled Document"}</p>
                             </a>
@@ -213,7 +213,7 @@ export const ReferencesSidebar: React.FC<{
                     ? connectedEntities.map(
                         (doc: { title: any }, index: React.Key | null | undefined) => (
                           <div key={index} className="mb-2 flex items-start gap-2">
-                            <Link size={24} />
+                            <Link size={18} />
                             <a href={"#"} className="text-gray-700 hover:text-black">
                               <small>Entity</small>
                               <p className="text-sm">{doc.title || "Untitled Document"}</p>

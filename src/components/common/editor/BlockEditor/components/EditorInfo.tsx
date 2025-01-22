@@ -2,6 +2,7 @@ import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import ShareObject from "@/components/common/dialogs/share-object";
 import UserAvatar from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
+import { RootState } from "@/store";
 import { WebSocketStatus } from "@hocuspocus/provider";
 import {
   DropdownMenu,
@@ -30,6 +31,7 @@ import {
 } from "lucide-react";
 
 import { memo, useState } from "react";
+import { useSelector } from "react-redux";
 
 import { EditorUser } from "../types";
 import ViewEditSwitch from "./ViewEditSwitch";
@@ -44,7 +46,7 @@ export type EditorInfoProps = {
 
 export const EditorInfo = memo(({ id }: EditorInfoProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-  // const isEditing = useSelector((state: RootState) => state.document.isEditing);
+  const isEditing = useSelector((state: RootState) => state.document.isEditing);
 
   if (!editor) return null;
 
@@ -168,50 +170,54 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
   return (
     <div className="flex w-full items-center justify-between">
       <div className="mr-4 flex flex-row justify-center gap-2 border-r border-neutral-200 pr-4 text-right dark:border-neutral-200">
-        <AskIgorModal />
-        <DropdownMenu onOpenChange={(open) => setIsDropdownOpen(open)}>
-          <DropdownMenuTrigger asChild>
-            <Button className="h-9 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400">
-              <Pilcrow size={16} />
-              {isDropdownOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="z-10 w-40 border border-gray-200 bg-white p-1 shadow-md">
-            {headingOptions.map((option, index) => (
-              <DropdownMenuItem
-                key={index}
-                onClick={option.command}
-                className={`cursor-pointer rounded p-2 text-left text-sm ${
-                  option.isActive ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
-                }`}
-              >
-                {option.label}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <span className="h-6 border-l border-gray-300"></span>
-        <div className="flex items-center space-x-2">
-          {buttons.map((btn, index) => (
-            <button
-              key={index}
-              onClick={btn.command}
-              className={`rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400 ${
-                btn.isActive && "bg-blue-100 text-blue-700"
-              }`}
-              aria-label={btn.label}
-            >
-              {btn.icon}
-            </button>
-          ))}
-        </div>
+        {isEditing ? (
+          <>
+            <AskIgorModal />
+            <DropdownMenu onOpenChange={(open) => setIsDropdownOpen(open)}>
+              <DropdownMenuTrigger asChild>
+                <Button className="h-9 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400">
+                  <Pilcrow size={16} />
+                  {isDropdownOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="z-10 w-40 border border-gray-200 bg-white p-1 shadow-md">
+                {headingOptions.map((option, index) => (
+                  <DropdownMenuItem
+                    key={index}
+                    onClick={option.command}
+                    className={`cursor-pointer rounded p-2 text-left text-sm ${
+                      option.isActive ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
+                    }`}
+                  >
+                    {option.label}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <span className="h-6 border-l border-gray-300"></span>
+            <div className="flex items-center space-x-2">
+              {buttons.map((btn, index) => (
+                <button
+                  key={index}
+                  onClick={btn.command}
+                  className={`rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400 ${
+                    btn.isActive && "bg-blue-100 text-blue-700"
+                  }`}
+                  aria-label={btn.label}
+                >
+                  {btn.icon}
+                </button>
+              ))}
+            </div>
+          </>
+        ) : null}
       </div>
       <div className="mr-2 flex items-center gap-2">
         <ViewEditSwitch id={id} />
 
         <span className="h-6 border-l border-gray-300"></span>
         <button
-          className="flex items-center gap-2 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400"
+          className="flex items-center gap-2 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200"
           aria-label="Pin"
         >
           <Pin size={16} />
