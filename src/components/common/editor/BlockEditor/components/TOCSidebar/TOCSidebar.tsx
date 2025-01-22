@@ -12,12 +12,14 @@ export const TOCSidebar = memo(
     isOpen,
     onClose,
     connectedEntities,
+    title,
   }: {
     id?: string;
     editor: Editor;
     isOpen?: boolean;
     onClose: () => void;
     connectedEntities;
+    title;
   }) => {
     const handlePotentialClose = useCallback(() => {
       if (window.innerWidth < 1024) {
@@ -28,7 +30,7 @@ export const TOCSidebar = memo(
     const windowClassName = cn(
       "tocSideBar",
       !isOpen && "border-r-transparent tocSidebar transition-all duration-150 w-0",
-      isOpen && "max-w-80 w-full border-r border-r-neutral-200 dark:border-r-neutral-200",
+      isOpen && "min-w-64 max-w-80 w-full border-r border-r-neutral-200 dark:border-r-neutral-200",
     );
 
     console.log("explorer editor", editor);
@@ -38,8 +40,8 @@ export const TOCSidebar = memo(
         <div className="h-full w-full overflow-hidden">
           <div className="h-full w-full overflow-auto p-6">
             <h3 className="iconText mb-4 py-1">EXPLORER</h3>
-
-            <ul className="flex flex-col-reverse">
+            <h4 className="mb-2">{title ? title : null}</h4>
+            <ul className="ml-2 flex flex-col-reverse">
               {connectedEntities && connectedEntities.length > 0
                 ? connectedEntities.map(
                     (doc: { title: string }, index: React.Key | null | undefined) => (

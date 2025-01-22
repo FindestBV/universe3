@@ -214,6 +214,7 @@ export const BlockEditor = ({
               editor={editor}
               isOpen={isLeftSideBarOpen}
               connectedEntities={connectedEntities}
+              title={title}
             />
           ) : (
             ""
