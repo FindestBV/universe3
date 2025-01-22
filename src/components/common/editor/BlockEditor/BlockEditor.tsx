@@ -209,10 +209,10 @@ export const BlockEditor = ({
           documentId={id}
         />
         <div className="flex flex-row overflow-hidden">
-          {isEditing && isBlockEditor ? (
+          {isLeftSideBarOpen ? (
             <TOCSidebar
               editor={editor}
-              isOpen={isBlockEditor}
+              isOpen={isLeftSideBarOpen}
               connectedEntities={connectedEntities}
             />
           ) : (

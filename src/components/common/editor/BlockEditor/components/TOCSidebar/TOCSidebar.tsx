@@ -28,7 +28,7 @@ export const TOCSidebar = memo(
     const windowClassName = cn(
       "tocSideBar",
       !isOpen && "border-r-transparent tocSidebar transition-all duration-150 w-0",
-      isOpen && "w-full border-r border-r-neutral-200 dark:border-r-neutral-200",
+      isOpen && "max-w-80 w-full border-r border-r-neutral-200 dark:border-r-neutral-200",
     );
 
     console.log("explorer editor", editor);

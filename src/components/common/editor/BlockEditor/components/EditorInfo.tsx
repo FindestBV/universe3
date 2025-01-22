@@ -213,7 +213,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
         ) : null}
       </div>
       <div className="mr-2 flex items-center gap-2">
-        <ViewEditSwitch id={id} />
+        <ViewEditSwitch id={id} isEditing={isEditing} />
 
         <span className="h-6 border-l border-gray-300"></span>
         <button

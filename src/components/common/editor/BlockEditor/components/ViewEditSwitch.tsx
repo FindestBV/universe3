@@ -36,8 +36,7 @@ const ViewEditSwitch = ({ id }) => {
       return;
     }
 
-    //   // Dispatch with the correct payload
-    dispatch(setEditingState({ isEditing: false, documentId: id }));
+    dispatch(setEditingState({ isEditing: true, documentId: id }));
   };
 
   return (
