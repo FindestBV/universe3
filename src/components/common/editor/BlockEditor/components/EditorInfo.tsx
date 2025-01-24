@@ -1,7 +1,9 @@
+import { setLockPage } from "@/api/documents/documentSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import ShareObject from "@/components/common/dialogs/share-object";
 import UserAvatar from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { RootState } from "@/store";
 import { WebSocketStatus } from "@hocuspocus/provider";
 import {
@@ -14,24 +16,29 @@ import {
   Bold,
   ChevronDown,
   ChevronUp,
+  Download,
   Grid2x2,
   ImagePlus,
   Italic,
   Link,
   List,
   ListOrdered,
+  Lock,
+  LockOpen,
   MoreHorizontal,
+  Network,
   Paperclip,
   Pilcrow,
   Pin,
   SquarePlus,
   Subscript,
   Superscript,
+  Trash,
   Underline,
 } from "lucide-react";
 
-import { memo, useState } from "react";
-import { useSelector } from "react-redux";
+import { memo, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { EditorUser } from "../types";
 import ViewEditSwitch from "./ViewEditSwitch";
@@ -47,6 +54,8 @@ export type EditorInfoProps = {
 export const EditorInfo = memo(({ id }: EditorInfoProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
+  const isLocked = useSelector((state: RootState) => state.document.isLocked);
+  const dispatch = useDispatch();
 
   if (!editor) return null;
 
@@ -167,6 +176,14 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
     },
   ];
 
+  const lockPage = (id) => {
+    dispatch(setLockPage({ isLocked: true, documentId: id }));
+  };
+
+  useEffect(() => {
+    console.log("is page locked?", isLocked);
+  }, [isLocked]);
+
   return (
     <div className="flex w-full items-center justify-between">
       <div className="mr-4 flex flex-row justify-center gap-2 border-r border-neutral-200 pr-4 text-right dark:border-neutral-200">
@@ -211,6 +228,11 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
             </div>
           </>
         ) : null}
+        {isLocked && (
+          <p className="flex items-center gap-2 text-red-700">
+            <Lock size={16} /> Page Locked
+          </p>
+        )}
       </div>
       <div className="mr-2 flex items-center gap-2">
         <ViewEditSwitch id={id} />
@@ -230,11 +252,39 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
               <MoreHorizontal />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-40 border border-gray-200 bg-white p-1 shadow-md">
-            <DropdownMenuItem>Open Page</DropdownMenuItem>
-            <DropdownMenuItem>Open Preview</DropdownMenuItem>
-            <DropdownMenuItem>Open in Tree View</DropdownMenuItem>
-            <DropdownMenuItem>Open in List View</DropdownMenuItem>
+          <DropdownMenuContent
+            className="w-50 border border-gray-200 bg-white p-4 shadow-md"
+            side="bottom"
+            align="end"
+          >
+            <DropdownMenuItem className="mb-1 flex items-center gap-3">
+              <Link size={16} />
+              Create Link
+            </DropdownMenuItem>
+            <DropdownMenuItem className="mb-1 flex items-center gap-3" onClick={() => lockPage(id)}>
+              <LockOpen size={16} />
+              Lock Page
+            </DropdownMenuItem>
+            <DropdownMenuItem className="mb-1 flex items-center gap-3">
+              <Download size={16} /> Export as DOCX
+            </DropdownMenuItem>
+            <DropdownMenuItem className="mb-1 flex items-center gap-3">
+              <Download size={16} />
+              Export as PDF
+            </DropdownMenuItem>
+            <DropdownMenuItem className="mb-1 flex items-center gap-3">
+              <Network size={16} />
+              Open in Tree View
+            </DropdownMenuItem>
+            <DropdownMenuItem className="mb-1 flex items-center gap-3">
+              <List size={16} />
+              Open in List View
+            </DropdownMenuItem>
+            <Separator className="my-2" />
+            <DropdownMenuItem className="flex items-center gap-3 text-red-700">
+              <Trash size={16} className="text-red-700" />
+              DELETE
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
         <UserAvatar username="Ronan" />

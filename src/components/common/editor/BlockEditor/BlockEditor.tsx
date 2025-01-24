@@ -82,7 +82,6 @@ export const BlockEditor = ({
   connectedStudies?: string;
 }) => {
   const menuContainerRef = useRef(null);
-  // const [isBlockEditor, setIsBlockEditor] = useState<boolean>(true);
   const [isLeftSideBarOpen, setIsLeftSidebarOpen] = useState<boolean>(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [createDraft] = useCreateDraftMutation();
@@ -103,7 +102,7 @@ export const BlockEditor = ({
   const parsedContent = useMemo(() => {
     try {
       // Parse content if it's a string, otherwise use it as is
-      if (typeof content === "string" || content.tupe === "doc") {
+      if (typeof content === "string" || content?.type === "doc") {
         return JSON.parse(content);
       }
       // Ensure it has the required structure

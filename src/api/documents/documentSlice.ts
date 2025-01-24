@@ -2,11 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface DocumentState {
   isEditing: boolean;
+  isLocked: boolean;
   documentId: string | null;
 }
 
 const initialState: DocumentState = {
   isEditing: false,
+  isLocked: false,
   documentId: null,
 };
 
@@ -25,8 +27,12 @@ const documentSlice = createSlice({
       state.isEditing = false;
       state.documentId = null;
     },
+    setLockPage(state) {
+      state.isLocked = false;
+      state.documentId = null;
+    },
   },
 });
 
-export const { setEditingState, resetEditingState } = documentSlice.actions;
+export const { setEditingState, resetEditingState, setLockPage } = documentSlice.actions;
 export default documentSlice.reducer;

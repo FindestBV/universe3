@@ -7,7 +7,7 @@ export const documentApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getSavedDocuments: builder.query<SavedDocumentResponse, { page: number; limit: number }>({
       query: ({ page, limit }) => ({
-        url: "saveddocument",
+        url: "saved-objects",
         params: {
           orderBy: 2,
           doIncludePatents: true,
