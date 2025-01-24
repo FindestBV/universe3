@@ -24,7 +24,7 @@ export const initialContent = {
       content: [
         {
           type: "text",
-          text: "Graph Goes Here",
+          text: "Graph Will Eventually Go Here",
         },
       ],
     },

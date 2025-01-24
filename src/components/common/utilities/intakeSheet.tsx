@@ -21,7 +21,7 @@ const IntakeSheetComponent: FC<NodeViewProps> = ({ node, updateAttributes }) => 
   }, [updateAttributes]);
 
   return (
-    <NodeViewWrapper className={styles.intakeSheet} contentEditable={false}>
+    <NodeViewWrapper className={"intakeSheet"} contentEditable={false}>
       {!node.attrs.confirmed ? (
         <div className={"card"}>
           <p>
