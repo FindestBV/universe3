@@ -29,6 +29,15 @@ export const initialContent = {
       ],
     },
     {
+      type: "customImage",
+      content: [
+        {
+          type: "text",
+          text: "Custom Image",
+        },
+      ],
+    },
+    {
       type: "intakeSheet",
       content: [
         {
