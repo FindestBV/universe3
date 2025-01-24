@@ -28,5 +28,14 @@ export const initialContent = {
         },
       ],
     },
+    {
+      type: "intakeSheet",
+      content: [
+        {
+          type: "text",
+          text: "Intake",
+        },
+      ],
+    },
   ],
 };

@@ -1,6 +1,7 @@
 import type { EditorUser } from "@/components/common/editor/BlockEditor/types";
 import CustomBlock from "@/components/common/editor/customblock-extension";
 import CustomGraphBlock from "@/components/common/editor/customgraphblock-extension";
+import IntakeSheetComponent from "@/components/common/utilities/intakeSheet";
 import { AiImage, AiWriter } from "@/extensions";
 import { Ai } from "@/extensions/Ai";
 import { ExtensionKit } from "@/extensions/extension-kit";
@@ -87,6 +88,7 @@ export const useBlockEditor = ({
         }),
         CustomBlock,
         CustomGraphBlock,
+        IntakeSheetComponent,
         provider && ydoc
           ? Collaboration.configure({
               document: ydoc,

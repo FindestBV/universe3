@@ -25,7 +25,7 @@ export const Study: React.FC = () => {
   // const connectedQueries = fetchedStudy && fetchedStudy?.connectedQueries;
 
   if (fetchedStudy?.description) {
-    console.log("fetched study full obj", fetchedStudy);
+    // console.log("fetched study full obj", fetchedStudy);
     try {
       parsedDescription = JSON.parse(fetchedStudy?.description);
       console.log("Parsed description:", parsedDescription);
@@ -36,12 +36,12 @@ export const Study: React.FC = () => {
 
   useEffect(() => {
     if (fetchedStudy) {
-      console.log("blooper", typeof parsedDescription);
-      console.log("study connections", connectedStudies);
-      console.log("study queries", connectedDocs);
-      console.log("study inbox", inboxQuery);
-      console.log("connected comments", connectedComments);
-      console.log("connectedEntities", connectedEntities);
+      // console.log("blooper", typeof parsedDescription);
+      // console.log("study connections", connectedStudies);
+      // console.log("study queries", connectedDocs);
+      // console.log("study inbox", inboxQuery);
+      // console.log("connected comments", connectedComments);
+      // console.log("connectedEntities", connectedEntities);
       console.log("blooper", parsedDescription);
     }
 
