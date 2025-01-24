@@ -19,5 +19,14 @@ export const initialContent = {
         },
       ],
     },
+    {
+      type: "customGraphBlock",
+      content: [
+        {
+          type: "text",
+          text: "Graph Goes Here",
+        },
+      ],
+    },
   ],
 };

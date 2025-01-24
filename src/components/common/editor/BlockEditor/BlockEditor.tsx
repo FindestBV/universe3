@@ -5,6 +5,7 @@ import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
 import { useBlockEditor } from "@/hooks/use-block-editor";
 import { Mark } from "@tiptap/core";
+import Blockquote from "@tiptap/extension-blockquote";
 import Bold from "@tiptap/extension-bold";
 import BulletList from "@tiptap/extension-bullet-list";
 import Document from "@tiptap/extension-document";
@@ -33,6 +34,7 @@ import { useSelector } from "react-redux";
 import Comments from "../../layout/comments";
 import ReferencesSidebar from "../BlockEditor/components/ReferencesSidebar";
 import CustomImage from "../customblock-extension";
+import CustomGraphBlock from "../customgraphblock-extension";
 import { LinkMenu } from "../menus";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
 import { TextMenu } from "../menus/TextMenu";
@@ -156,6 +158,8 @@ export const BlockEditor = ({
       TableCell,
       TableHeader,
       TableRow,
+      Blockquote,
+      CustomGraphBlock,
       ListItem.configure({
         HTMLAttributes: {
           class: "list-item",
@@ -228,6 +232,7 @@ export const BlockEditor = ({
   // Debugging: Check if `customImage` is in the editor schema
   if (editor) {
     console.log("schema nodes?", editor.schema.nodes);
+    console.log("editor in BlockEditor", editor);
   }
 
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
