@@ -58,6 +58,7 @@ export const Rating = Mark.create({
 });
 
 export const BlockEditor = ({
+  type,
   id,
   content,
   title,
@@ -67,7 +68,6 @@ export const BlockEditor = ({
   connectedObjects,
   connectedQueries,
   connectedComments,
-  connectedStudies,
 }: {
   type?: string;
   id?: string;
@@ -90,6 +90,8 @@ export const BlockEditor = ({
   const [lastSavedContent, setLastSavedContent] = useState<string | null>(null); // To track changes
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
 
+  console.log("block editor type", type);
+
   const toggleLeftSideBar = () => {
     setIsLeftSidebarOpen(!isLeftSideBarOpen);
   };
@@ -102,11 +104,12 @@ export const BlockEditor = ({
   const parsedContent = useMemo(() => {
     try {
       // Parse content if it's a string, otherwise use it as is
-      if (typeof content === "string" || content?.type === "doc") {
+      if (typeof content === "string" || typeof content === "doc") {
+        console.log(typeof content);
         return JSON.parse(content);
       }
       // Ensure it has the required structure
-      if (content && typeof content === "object" && content?.type === "doc") {
+      if (typeof content === "object") {
         return content;
       }
       // Fallback for invalid content

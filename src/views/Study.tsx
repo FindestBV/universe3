@@ -8,20 +8,21 @@ import { useParams } from "react-router";
 
 export const Study: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-
-  let parsedDescription: any = null;
+  console.log("astudy id", id);
 
   const { data: fetchedStudy, isLoading: fetchedStudyIsLoading } = useGetStudyByIdQuery(id, {
     refetchOnMountOrArgChange: false, // Prevents automatic refetching
   });
 
-  console.log("fetchedStudy", fetchedStudy);
+  let parsedDescription: any = null;
+  // console.log("fetchedStudy", fetchedStudy);
 
   const connectedStudies = fetchedStudy && fetchedStudy?.connectedStudies;
   const connectedDocs = fetchedStudy && fetchedStudy?.connectedDocs;
   const connectedComments = fetchedStudy && fetchedStudy?.connectedComments;
   const inboxQuery = fetchedStudy && fetchedStudy?.connectedInboxItems;
   const connectedEntities = fetchedStudy && fetchedStudy?.connectedInboxItems;
+  // const connectedQueries = fetchedStudy && fetchedStudy?.connectedQueries;
 
   if (fetchedStudy?.description) {
     console.log("fetched study full obj", fetchedStudy);
@@ -57,13 +58,13 @@ export const Study: React.FC = () => {
             <div className="w-full flex-col">
               <BlockEditor
                 type={"study"}
-                id={fetchedStudy?.id}
-                title={fetchedStudy?.title}
+                id={id}
+                // title={fetchedStudy?.title}
                 content={parsedDescription}
                 connectedEntities={fetchedStudy?.entities}
                 connectedInbox={inboxQuery}
                 connectedObjects={connectedDocs}
-                connectedQueries={connectedStudies}
+                // connectedQueries={connectedQueries}
                 connectedComments={connectedComments}
                 connectedStudies={connectedStudies}
                 ydoc={undefined}
