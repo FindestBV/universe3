@@ -14,7 +14,7 @@ import Text from "@tiptap/extension-text";
 import Underline from "@tiptap/extension-underline";
 import StarterKit from "@tiptap/starter-kit";
 
-import CustomImage from "./customImage";
+import CustomImage from "./customblock-extension";
 
 export const extensions = [
   Paragraph,

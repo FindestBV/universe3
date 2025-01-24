@@ -10,5 +10,14 @@ export const initialContent = {
         },
       ],
     },
+    {
+      type: "customBlock",
+      content: [
+        {
+          type: "text",
+          text: "TESTING TESTING",
+        },
+      ],
+    },
   ],
 };

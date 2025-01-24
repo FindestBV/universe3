@@ -32,7 +32,7 @@ import { useSelector } from "react-redux";
 
 import Comments from "../../layout/comments";
 import ReferencesSidebar from "../BlockEditor/components/ReferencesSidebar";
-import CustomImage from "../customImage";
+import CustomImage from "../customblock-extension";
 import { LinkMenu } from "../menus";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
 import { TextMenu } from "../menus/TextMenu";
@@ -104,7 +104,7 @@ export const BlockEditor = ({
   const parsedContent = useMemo(() => {
     try {
       // Parse content if it's a string, otherwise use it as is
-      if (typeof content === "string" || typeof content === "doc") {
+      if (typeof content === "string" || typeof content.type === "doc") {
         console.log(typeof content);
         return JSON.parse(content);
       }

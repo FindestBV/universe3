@@ -1,5 +1,5 @@
 import type { EditorUser } from "@/components/common/editor/BlockEditor/types";
-import CustomImage from "@/components/common/editor/customImage";
+import CustomBlock from "@/components/common/editor/customblock-extension";
 import { AiImage, AiWriter } from "@/extensions";
 import { Ai } from "@/extensions/Ai";
 import { ExtensionKit } from "@/extensions/extension-kit";
@@ -58,7 +58,7 @@ export const useBlockEditor = ({
   );
   // console.log("Unparsed Content:", type);
   const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
-  // console.log("Parsed Content:", JSON.stringify(parsedContent, null, 2));
+  console.log("Parsed Content:", JSON.stringify(parsedContent, null, 2));
 
   const editor = useEditor(
     {
@@ -84,7 +84,7 @@ export const useBlockEditor = ({
         ...ExtensionKit({
           provider,
         }),
-        CustomImage,
+        CustomBlock,
         provider && ydoc
           ? Collaboration.configure({
               document: ydoc,
