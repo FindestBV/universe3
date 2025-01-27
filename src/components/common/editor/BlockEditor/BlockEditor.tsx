@@ -235,6 +235,7 @@ export const BlockEditor = ({
     console.log("rendered rtitle", title);
     console.log("schema nodes?", editor.schema.nodes);
     console.log("editor in BlockEditor", editor);
+    console.log("editor in BlockEditor", connectedInbox);
   }
 
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
@@ -259,7 +260,7 @@ export const BlockEditor = ({
           editor={editor}
           collabState={collabState}
           users={users}
-          isSidebarOpen={isLeftSideBarOpen}
+          isSidebarOpen={isEditing}
           toggleLeftSidebar={toggleLeftSideBar}
           documentId={id}
         />
@@ -267,8 +268,8 @@ export const BlockEditor = ({
           <div className={`${isLeftSideBarOpen ? "flex" : "collapsed"}`}>
             <TOCSidebar
               editor={editor}
-              isOpen={isLeftSideBarOpen}
-              connectedEntities={connectedEntities}
+              isOpen={isEditing}
+              connectedEntities={connectedInbox}
               title={title}
             />
           </div>

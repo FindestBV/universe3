@@ -211,12 +211,12 @@ export const ReferencesSidebar: React.FC<{
                 <TabsContent value="entities">
                   {connectedEntities && connectedEntities.length > 0
                     ? connectedEntities.map(
-                        (doc: { title: any }, index: React.Key | null | undefined) => (
+                        (doc: { documentTitle: string }, index: React.Key | null | undefined) => (
                           <div key={index} className="mb-2 flex items-start gap-2">
                             <Link size={18} />
                             <a href={"#"} className="text-gray-700 hover:text-black">
                               <small>Entity</small>
-                              <p className="text-sm">{doc.title || "Untitled Document"}</p>
+                              <p className="text-sm">{doc.documentTitle || "Untitled Document"}</p>
                             </a>
                           </div>
                         ),

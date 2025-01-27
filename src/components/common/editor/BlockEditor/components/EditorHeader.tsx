@@ -40,7 +40,7 @@ export const EditorHeader = ({
 
   return (
     <div className="editorHeader">
-      <div className="flex flex-row items-center gap-x-1.5">
+      {/* <div className="flex flex-row items-center gap-x-1.5">
         <div className="flex items-center gap-x-1.5">
           {isEditing && (
             <Toolbar.Button
@@ -53,7 +53,7 @@ export const EditorHeader = ({
             </Toolbar.Button>
           )}
         </div>
-      </div>
+      </div> */}
       <EditorInfo
         characters={characters}
         words={words}

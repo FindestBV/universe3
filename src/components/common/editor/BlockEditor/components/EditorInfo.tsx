@@ -231,9 +231,12 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
       </div>
       <div className="mr-2 flex items-center gap-2">
         {isLocked ? (
-          <p className="flex items-center gap-2">
+          <button
+            className="flex items-center gap-2 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200"
+            aria-label="Pin"
+          >
             <Lock size={24} className="text-red-700" onClick={() => lockPage(id)} />
-          </p>
+          </button>
         ) : (
           <>
             <ViewEditSwitch id={id} />
@@ -248,6 +251,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
             </button>
             <ShareObject parentId={""} parentTitle={""} />
             <span className="h-6 border-l border-gray-300"></span>
+
             <button
               className="flex items-center gap-2 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200"
               aria-label="Pin"

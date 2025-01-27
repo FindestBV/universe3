@@ -28,7 +28,7 @@ export const TOCSidebar = memo(
     }, [onClose, isOpen, editor]);
 
     const windowClassName = cn(
-      "tocSidebar transition-all duration-300 ease-in-out min-w-0 max-w-0 w-0 opacity-0",
+      "tocSidebar transition-all duration-300 ease-in-out min-w-0 max-w-0 w-0 opacity-0 border-r border-r-neutral-200 dark:border-r-neutral-200",
       isOpen
         ? "translate-x-0 opacity-100 min-w-64 max-w-80 w-full border-r border-r-neutral-200 dark:border-r-neutral-200"
         : "opacity-0 translate-x-full",
@@ -43,10 +43,10 @@ export const TOCSidebar = memo(
             <ul className="ml-2 flex flex-col-reverse">
               {connectedEntities && connectedEntities.length > 0
                 ? connectedEntities.map(
-                    (doc: { title: string }, index: React.Key | null | undefined) => (
+                    (doc: { documentTitle: string }, index: React.Key | null | undefined) => (
                       <li key={index} className="mb-2 flex items-start gap-2">
                         <a href={"#"} className="text-gray-600 hover:text-black">
-                          <p className="text-sm">{doc.title || "Untitled Document"}</p>
+                          <p className="text-sm">{doc.documentTitle || "Untitled Document"}</p>
                         </a>
                       </li>
                     ),
