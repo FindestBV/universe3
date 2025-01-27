@@ -84,7 +84,7 @@ export const BlockEditor = ({
   connectedEntities?: string;
 }) => {
   const menuContainerRef = useRef(null);
-  const [isLeftSideBarOpen, setIsLeftSidebarOpen] = useState<boolean>(false);
+  const [isLeftSideBarOpen, setIsLeftSidebarOpen] = useState<boolean>(true);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [createDraft] = useCreateDraftMutation();
   const [updateDraft] = useUpdateDraftMutation();
@@ -254,13 +254,13 @@ export const BlockEditor = ({
   }
 
   return (
-    <div className="flex pb-8" ref={menuContainerRef}>
+    <div className="mb-4 flex" ref={menuContainerRef}>
       <div className="relative flex h-full max-w-full flex-1 flex-col">
         <EditorHeader
           editor={editor}
           collabState={collabState}
           users={users}
-          isSidebarOpen={isEditing}
+          isSidebarOpen={isLeftSideBarOpen}
           toggleLeftSidebar={toggleLeftSideBar}
           documentId={id}
         />
@@ -268,7 +268,7 @@ export const BlockEditor = ({
           <div className={`${isLeftSideBarOpen ? "flex" : "collapsed"}`}>
             <TOCSidebar
               editor={editor}
-              isOpen={isEditing}
+              isOpen={isLeftSideBarOpen}
               connectedEntities={connectedInbox}
               title={title}
             />

@@ -1,5 +1,6 @@
 import { setLockPage } from "@/api/documents/documentSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
+import LockPageConfirm from "@/components/common/dialogs/lock-page-confirm";
 import ShareObject from "@/components/common/dialogs/share-object";
 import UserAvatar from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
@@ -230,14 +231,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
         ) : null}
       </div>
       <div className="mr-2 flex items-center gap-2">
-        {isLocked ? (
-          <button
-            className="flex items-center gap-2 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200"
-            aria-label="Pin"
-          >
-            <Lock size={24} className="text-red-700" onClick={() => lockPage(id)} />
-          </button>
-        ) : (
+        {!isLocked ? (
           <>
             <ViewEditSwitch id={id} />
 
@@ -251,15 +245,9 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
             </button>
             <ShareObject parentId={""} parentTitle={""} />
             <span className="h-6 border-l border-gray-300"></span>
-
-            <button
-              className="flex items-center gap-2 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200"
-              aria-label="Pin"
-            >
-              <LockOpen size={24} className="text-yellow-700" onClick={() => lockPage(id)} />
-            </button>
           </>
-        )}
+        ) : null}
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="rotated" className="h-8 w-8 bg-transparent p-0">
@@ -291,13 +279,20 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
               <List size={16} />
               Open in List View
             </DropdownMenuItem>
-            <Separator className="my-2" />
-            <DropdownMenuItem className="flex items-center gap-3 text-red-700">
-              <Trash size={16} className="text-red-700" />
-              DELETE
-            </DropdownMenuItem>
+
+            {isEditing && (
+              <>
+                <Separator className="my-2" />
+                <DropdownMenuItem className="flex items-center gap-3 text-red-700">
+                  <Trash size={16} className="text-red-700" />
+                  DELETE
+                </DropdownMenuItem>
+              </>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
+        <LockPageConfirm isLocked={isLocked} id={id} />
+
         <UserAvatar username="Ronan" />
       </div>
     </div>
