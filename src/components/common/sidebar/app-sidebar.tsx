@@ -71,26 +71,6 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon" className="bg-gray-900 text-white">
-      {isEditing ? (
-        <>
-          <h1>EDITING {`${documentId}`}</h1>
-          <h3>{fetchedStudy?.title}</h3>
-          <ul className="ml-4 list-disc">
-            {fetchedStudy && fetchedStudy?.entities.length > 0
-              ? fetchedStudy?.entities.map((doc, index) => (
-                  <li key={index} className="mb-2">
-                    <a href={"#"} className="text-xs text-white hover:text-black">
-                      <p>{doc.title || "Untitled Document"}</p>
-                    </a>
-                  </li>
-                ))
-              : "No connected entities."}
-          </ul>
-        </>
-      ) : (
-        <h3>NOT EDITING</h3>
-      )}
-
       {/* Sidebar Header */}
       <div className="mx-auto flex w-full items-center justify-center p-4">
         <a href="/dashboard" rel="preload">

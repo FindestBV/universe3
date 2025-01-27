@@ -148,6 +148,7 @@ export const BlockEditor = ({
   );
 
   const { editor, collabState, users } = useBlockEditor({
+    title,
     extensions: [
       Paragraph,
       Document,
@@ -231,6 +232,7 @@ export const BlockEditor = ({
 
   // Debugging: Check if `customImage` is in the editor schema
   if (editor) {
+    console.log("rendered rtitle", title);
     console.log("schema nodes?", editor.schema.nodes);
     console.log("editor in BlockEditor", editor);
   }

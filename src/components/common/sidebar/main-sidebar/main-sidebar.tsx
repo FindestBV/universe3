@@ -180,23 +180,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      {/* {isEditing ? (
-        <>
-          <h1>EDITING {`${documentId}`}</h1>
-          <h3>{fetchedStudy?.title}</h3>
-          <ul className="ml-4 list-disc">
-            {fetchedStudy && fetchedStudy?.entities.length > 0
-              ? fetchedStudy?.entities.map((doc, index) => (
-                  <li key={index} className="mb-2">
-                    <a href={"#"} className="text-xs text-white hover:text-black">
-                      <p>{doc.title || "Untitled Document"}</p>
-                    </a>
-                  </li>
-                ))
-              : "No connected entities."}
-          </ul>
-        </>
-      ) : null} */}
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>

@@ -17,9 +17,9 @@ export const TOCSidebar = memo(
     id?: string;
     editor: Editor;
     isOpen?: boolean;
-    onClose: () => void;
-    connectedEntities;
-    title;
+    onClose?: () => void;
+    connectedEntities?: string;
+    title?: string;
   }) => {
     const handlePotentialClose = useCallback(() => {
       if (window.innerWidth < 1024) {
@@ -33,13 +33,6 @@ export const TOCSidebar = memo(
       isOpen &&
         "opacity-1 translate-x-0 min-w-64 max-w-80 w-full border-r border-r-neutral-200 dark:border-r-neutral-200",
     );
-
-    // const windowClassName = cn(
-    //   "tocSidebar transition-all duration-150 max-0",
-    //   isOpen ? "translate-x-0 w-64 border-r border-r-neutral-200 dark:border-r-neutral-200" : "-translate-x-full w-0",
-    // );
-
-    console.log("explorer editor", editor);
 
     return (
       <div className={windowClassName}>

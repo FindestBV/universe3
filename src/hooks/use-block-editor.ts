@@ -16,7 +16,7 @@ import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import { useEditor, useEditorState } from "@tiptap/react";
 import type { Doc as YDoc } from "yjs";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { userColors, userNames } from "../lib/constants";
 import { randomElement } from "../lib/utils";
@@ -62,15 +62,53 @@ export const useBlockEditor = ({
     provider ? WebSocketStatus.Connecting : WebSocketStatus.Disconnected,
   );
   // console.log("Unparsed Content:", type);
-  const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
-  console.log("Parsed Content:", JSON.stringify(parsedContent, null, 2));
+  const parsedContent = useMemo(() => {
+    try {
+      const parsed = typeof content === "string" ? JSON.parse(content) : content;
+      console.log("blockeditor, title", title);
+      // Define the title node
+      const titleNode = {
+        type: "heading",
+        attrs: { level: 1 },
+        content: [{ type: "text", text: title || "Untitled Document" }],
+      };
+
+      // Check if the first node is already a heading of level 1 (title)
+      if (parsed?.content?.[0]?.type === "heading" && parsed.content[0]?.attrs?.level === 1) {
+        // If a title exists, update its text
+        parsed.content[0].content = [{ type: "text", text: title || "Untitled Document" }];
+        return parsed;
+      }
+
+      // If no title exists, add the title node at the beginning of the content
+      return {
+        ...parsed,
+        content: [titleNode, ...(parsed?.content || [])],
+      };
+    } catch (error) {
+      console.error("Error parsing content:", error);
+
+      // Fallback content structure with title
+      return {
+        type: "doc",
+        content: [
+          {
+            type: "heading",
+            attrs: { level: 1 },
+            content: [{ type: "text", text: title || "Untitled Document" }],
+          },
+          ...(content || []),
+        ],
+      };
+    }
+  }, [content, title]);
 
   const editor = useEditor(
     {
       immediatelyRender: true,
       shouldRerenderOnTransaction: false,
       autofocus: true,
-      content: parsedContent,
+      content: parsedContent || initialContent,
       onCreate: (ctx) => {
         if (provider && !provider.isSynced) {
           provider.on("synced", () => {
