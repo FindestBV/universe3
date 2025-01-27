@@ -276,7 +276,7 @@ export const BlockEditor = ({
             <EditorContent
               key={editor?.view?.id || "editor"}
               editor={editor}
-              className="flex overflow-y-scroll px-16 py-16"
+              className="flex overflow-y-scroll py-16 md:px-16"
             />
             <ContentItemMenu editor={editor} />
             <LinkMenu editor={editor} appendTo={menuContainerRef} />
