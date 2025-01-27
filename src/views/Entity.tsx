@@ -22,10 +22,9 @@ export const Entity: React.FC = () => {
   const connectedQueries = fetchedEntity && fetchedEntity?.connectedQueries;
   const connectedComments = fetchedEntity && fetchedEntity?.connectedComments;
   const connectedEntities = fetchedEntity && fetchedEntity?.entities;
-  const entityTitle = fetchedEntity && fetchedEntity?.title;
 
   if (fetchedEntity) {
-    console.log("fetched entity full obj", fetchedEntity.description);
+    console.log("fetched entity full obj", fetchedEntity);
     try {
       parsedDescription = JSON.parse(fetchedEntity.description);
       console.log("Parsed description:", parsedDescription.content);
@@ -40,6 +39,7 @@ export const Entity: React.FC = () => {
       console.log("connectedObjects", connectedObjects);
       console.log("connectedQueries", connectedQueries);
       console.log("connectedComments", connectedComments);
+      console.log("connectedEntities", connectedEntities);
       console.log("blooper", parsedDescription);
     }
     window.scroll(0, 0);
