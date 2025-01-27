@@ -22,6 +22,7 @@ export const Entity: React.FC = () => {
   const connectedQueries = fetchedEntity && fetchedEntity?.connectedQueries;
   const connectedComments = fetchedEntity && fetchedEntity?.connectedComments;
   const connectedEntities = fetchedEntity && fetchedEntity?.entities;
+  const entityTitle = fetchedEntity && fetchedEntity?.title;
 
   if (fetchedEntity) {
     console.log("fetched entity full obj", fetchedEntity.description);

@@ -22,7 +22,7 @@ export const Study: React.FC = () => {
   const connectedComments = fetchedStudy && fetchedStudy?.connectedComments;
   const inboxQuery = fetchedStudy && fetchedStudy?.connectedInboxItems;
   const connectedEntities = fetchedStudy && fetchedStudy?.connectedInboxItems;
-  // const connectedQueries = fetchedStudy && fetchedStudy?.connectedQueries;
+  const studyTitle = fetchedStudy && fetchedStudy?.title;
 
   if (fetchedStudy?.description) {
     // console.log("fetched study full obj", fetchedStudy);
@@ -41,7 +41,7 @@ export const Study: React.FC = () => {
       // console.log("study queries", connectedDocs);
       // console.log("study inbox", inboxQuery);
       // console.log("connected comments", connectedComments);
-      // console.log("connectedEntities", connectedEntities);
+      console.log("title?", fetchedStudy?.title);
       console.log("blooper", parsedDescription);
     }
 
@@ -59,9 +59,9 @@ export const Study: React.FC = () => {
               <BlockEditor
                 type={"study"}
                 id={id}
-                // title={fetchedStudy?.title}
+                title={studyTitle}
                 content={parsedDescription}
-                connectedEntities={fetchedStudy?.entities}
+                // connectedEntities={fetchedStudy?.entities}
                 connectedInbox={inboxQuery}
                 connectedObjects={connectedDocs}
                 // connectedQueries={connectedQueries}

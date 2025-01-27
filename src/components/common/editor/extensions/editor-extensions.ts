@@ -1,3 +1,4 @@
+import Blockquote from "@tiptap/extension-blockquote";
 import Bold from "@tiptap/extension-bold";
 import BulletList from "@tiptap/extension-bullet-list";
 import Document from "@tiptap/extension-document";
@@ -14,13 +15,14 @@ import Text from "@tiptap/extension-text";
 import Underline from "@tiptap/extension-underline";
 import StarterKit from "@tiptap/starter-kit";
 
-import CustomImage from "./customImage";
+import CustomGraph from "./customgraphblock-extension";
 
 export const extensions = [
   Paragraph,
   Document,
   Image,
-  CustomImage,
+  Blockquote,
+  CustomGraph,
   Text,
   StarterKit,
   ListItem.configure({

@@ -29,10 +29,10 @@ import {
 
 import { useState } from "react";
 
-import AskIgorModal from "../dialogs/ask-igor";
-import MinimizableDialog from "../dialogs/minimizable-dialog";
-import ShareObject from "../dialogs/share-object";
-import UserAvatar from "../utilities/user-avatar";
+import AskIgorModal from "../../dialogs/ask-igor";
+import MinimizableDialog from "../../dialogs/minimizable-dialog";
+import ShareObject from "../../dialogs/share-object";
+import UserAvatar from "../../utilities/user-avatar";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const EditorToolbar = ({ editor }: { editor: any }) => {

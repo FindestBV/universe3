@@ -1,14 +1,16 @@
 import type { EditorUser } from "@/components/common/editor/BlockEditor/types";
-import CustomBlock from "@/components/common/editor/customblock-extension";
-import CustomGraphBlock from "@/components/common/editor/customgraphblock-extension";
-import CustomImage from "@/components/common/editor/customImage";
-import IntakeSheetComponent from "@/components/common/editor/intakesheet-extension";
+import CustomBlock from "@/components/common/editor/extensions/customblock-extension";
+import CustomGraphBlock from "@/components/common/editor/extensions/customgraphblock-extension";
+import CustomImage from "@/components/common/editor/extensions/customImage";
+import Title from "@/components/common/editor/extensions/customtitle-extension";
+import IntakeSheetComponent from "@/components/common/editor/extensions/intakesheet-extension";
 import { AiImage, AiWriter } from "@/extensions";
 import { Ai } from "@/extensions/Ai";
 import { ExtensionKit } from "@/extensions/extension-kit";
 import { initialContent } from "@/lib/data/initialContent";
 import { TiptapCollabProvider, WebSocketStatus } from "@hocuspocus/provider";
 import type { AnyExtension, Editor } from "@tiptap/core";
+import Blockquote from "@tiptap/extension-blockquote";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import { useEditor, useEditorState } from "@tiptap/react";
@@ -87,6 +89,8 @@ export const useBlockEditor = ({
         ...ExtensionKit({
           provider,
         }),
+        Title,
+        Blockquote,
         CustomBlock,
         CustomGraphBlock,
         IntakeSheetComponent,

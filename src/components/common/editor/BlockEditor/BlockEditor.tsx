@@ -33,12 +33,12 @@ import { useSelector } from "react-redux";
 
 import Comments from "../../layout/comments";
 import ReferencesSidebar from "../BlockEditor/components/ReferencesSidebar";
-import CustomImage from "../customblock-extension";
-import CustomGraphBlock from "../customgraphblock-extension";
+import CustomImage from "../extensions/customblock-extension";
+import CustomGraphBlock from "../extensions/customgraphblock-extension";
+import PlaceholderExtension from "../extensions/placeholder-extension";
 import { LinkMenu } from "../menus";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
 import { TextMenu } from "../menus/TextMenu";
-import PlaceholderExtension from "../placeholder-extension";
 import { Button } from "../ui/Button";
 import { EditorHeader } from "./components/EditorHeader";
 import { TOCSidebar } from "./components/TOCSidebar";
@@ -64,24 +64,24 @@ export const BlockEditor = ({
   id,
   content,
   title,
-  connectedEntities,
   connectedDocs,
   connectedInbox,
   connectedObjects,
   connectedQueries,
   connectedComments,
+  connectedEntities,
 }: {
   type?: string;
   id?: string;
   content?: string;
   title?: string;
-  connectedEntities?: string;
   connectedDocs?: string;
   connectedInbox?: string;
   connectedObjects?: string;
   connectedQueries?: string;
   connectedComments?: string;
   connectedStudies?: string;
+  connectedEntities?: string;
 }) => {
   const menuContainerRef = useRef(null);
   const [isLeftSideBarOpen, setIsLeftSidebarOpen] = useState<boolean>(false);
@@ -262,7 +262,7 @@ export const BlockEditor = ({
           documentId={id}
         />
         <div className="flex flex-row overflow-hidden">
-          <div className={`${isLeftSideBarOpen ? "flex w-full" : "hidden w-0"}`}>
+          <div className={`${isLeftSideBarOpen ? "flex" : "hidden w-0"}`}>
             <TOCSidebar
               editor={editor}
               isOpen={isLeftSideBarOpen}
@@ -270,7 +270,7 @@ export const BlockEditor = ({
               title={title}
             />
           </div>
-          <div className="mainEditor">
+          <div className="mainEditor w-full">
             <EditorContent
               key={editor?.view?.id || "editor"}
               editor={editor}
