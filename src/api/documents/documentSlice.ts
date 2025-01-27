@@ -27,8 +27,11 @@ const documentSlice = createSlice({
       state.isEditing = false;
       state.documentId = null;
     },
-    setLockPage(state) {
-      state.isLocked = false;
+    setLockPage: (
+      state,
+      action: PayloadAction<{ isLocked: boolean; documentId: string | null }>,
+    ) => {
+      state.isLocked = action.payload.isLocked;
       state.documentId = null;
     },
   },

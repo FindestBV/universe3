@@ -177,7 +177,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
   ];
 
   const lockPage = (id) => {
-    dispatch(setLockPage({ isLocked: true, documentId: id }));
+    dispatch(setLockPage({ isLocked: !isLocked, documentId: id }));
   };
 
   useEffect(() => {
@@ -187,7 +187,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
   return (
     <div className="flex w-full items-center justify-between">
       <div className="mr-4 flex flex-row justify-center gap-2 border-r border-neutral-200 pr-4 text-right dark:border-neutral-200">
-        {isEditing ? (
+        {isEditing && !isLocked ? (
           <>
             <AskIgorModal />
             <DropdownMenu onOpenChange={(open) => setIsDropdownOpen(open)}>
@@ -228,24 +228,34 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
             </div>
           </>
         ) : null}
-        {isLocked && (
-          <p className="flex items-center gap-2 text-red-700">
-            <Lock size={16} /> Page Locked
-          </p>
-        )}
       </div>
       <div className="mr-2 flex items-center gap-2">
-        <ViewEditSwitch id={id} />
+        {isLocked ? (
+          <p className="flex items-center gap-2 text-yellow-700">
+            <Lock size={24} className="text-yellow-700" onClick={() => lockPage(id)} />
+          </p>
+        ) : (
+          <>
+            <ViewEditSwitch id={id} />
 
-        <span className="h-6 border-l border-gray-300"></span>
-        <button
-          className="flex items-center gap-2 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200"
-          aria-label="Pin"
-        >
-          <Pin size={16} />
-          PIN
-        </button>
-        <ShareObject parentId={""} parentTitle={""} />
+            <span className="h-6 border-l border-gray-300"></span>
+            <button
+              className="flex items-center gap-2 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200"
+              aria-label="Pin"
+            >
+              <Pin size={16} />
+              PIN
+            </button>
+            <ShareObject parentId={""} parentTitle={""} />
+            <span className="h-6 border-l border-gray-300"></span>
+            <button
+              className="flex items-center gap-2 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200"
+              aria-label="Pin"
+            >
+              <LockOpen size={24} className="text-red-700" onClick={() => lockPage(id)} />
+            </button>
+          </>
+        )}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="rotated" className="h-8 w-8 bg-transparent p-0">
@@ -261,10 +271,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
               <Link size={16} />
               Create Link
             </DropdownMenuItem>
-            <DropdownMenuItem className="mb-1 flex items-center gap-3" onClick={() => lockPage(id)}>
-              <LockOpen size={16} />
-              Lock Page
-            </DropdownMenuItem>
+
             <DropdownMenuItem className="mb-1 flex items-center gap-3">
               <Download size={16} /> Export as DOCX
             </DropdownMenuItem>
