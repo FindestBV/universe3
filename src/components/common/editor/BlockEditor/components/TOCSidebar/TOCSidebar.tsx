@@ -28,10 +28,10 @@ export const TOCSidebar = memo(
     }, [onClose, isOpen, editor]);
 
     const windowClassName = cn(
-      "tocSidebar transition-all duration-150 min-w-0 max-w-0 w-0 opacity-0",
-      !isOpen && "border-r-transparent",
-      isOpen &&
-        "opacity-1 translate-x-0 min-w-64 max-w-80 w-full border-r border-r-neutral-200 dark:border-r-neutral-200",
+      "tocSidebar transition-all duration-300 ease-in-out min-w-0 max-w-0 w-0 opacity-0",
+      isOpen
+        ? "translate-x-0 opacity-100 min-w-64 max-w-80 w-full border-r border-r-neutral-200 dark:border-r-neutral-200"
+        : "opacity-0 translate-x-full",
     );
 
     return (

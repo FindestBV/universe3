@@ -264,7 +264,7 @@ export const BlockEditor = ({
           documentId={id}
         />
         <div className="flex flex-row overflow-hidden">
-          <div className={`${isLeftSideBarOpen ? "flex" : "hidden w-0"}`}>
+          <div className={`${isLeftSideBarOpen ? "flex" : "collapsed"}`}>
             <TOCSidebar
               editor={editor}
               isOpen={isLeftSideBarOpen}

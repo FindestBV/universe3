@@ -529,9 +529,19 @@
   @apply z-10 mb-16 h-auto flex-col px-12 transition-all duration-300; 
 }
 
-.tocSideBar{
-  @apply absolute top-0 left-0 bg-white h-full lg:h-auto lg:relative z-10 w-0 duration-300 transition-all
-}
+.tocSidebar {
+  @apply absolute top-0 left-0 bg-white h-full lg:h-auto lg:relative z-10 
+    w-0 opacity-0 transform translate-x-[-100%] 
+    duration-300 transition-all ease-in-out;
+  }
+
+  .tocSidebar-open {
+    @apply opacity-100 w-64 lg:w-80 transform translate-x-0 duration-300;
+  }
+
+  .tocSidebar-closed {
+    @apply opacity-0 w-0 transform translate-x-[-100%];
+  }
 
 
 .referenceSidebar{

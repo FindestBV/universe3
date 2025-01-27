@@ -231,8 +231,8 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
       </div>
       <div className="mr-2 flex items-center gap-2">
         {isLocked ? (
-          <p className="flex items-center gap-2 text-yellow-700">
-            <Lock size={24} className="text-yellow-700" onClick={() => lockPage(id)} />
+          <p className="flex items-center gap-2">
+            <Lock size={24} className="text-red-700" onClick={() => lockPage(id)} />
           </p>
         ) : (
           <>
@@ -252,7 +252,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
               className="flex items-center gap-2 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200"
               aria-label="Pin"
             >
-              <LockOpen size={24} className="text-red-700" onClick={() => lockPage(id)} />
+              <LockOpen size={24} className="text-yellow-700" onClick={() => lockPage(id)} />
             </button>
           </>
         )}
