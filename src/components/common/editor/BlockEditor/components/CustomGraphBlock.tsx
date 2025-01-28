@@ -18,7 +18,7 @@ export default () => {
       <NodeViewContent className="content is-editable" />
 
       {/* D3 chart rendered independently */}
-      <div className="chart-container max-w-full">
+      <div className="chart-container relative w-full overflow-y-scroll p-4">
         <BollingerBandsChart data={sampleData} />
       </div>
     </NodeViewWrapper>

@@ -226,7 +226,7 @@ export const BlockEditor = ({
   }
 
   return (
-    <div className="mb-4 flex" ref={menuContainerRef}>
+    <div className="flex" ref={menuContainerRef}>
       <div className="relative flex h-full max-w-full flex-1 flex-col">
         <EditorHeader
           editor={editor}

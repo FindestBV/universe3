@@ -70,7 +70,7 @@ export const useBlockEditor = ({
       const titleNode = {
         type: "heading",
         attrs: { level: 1 },
-        content: [{ type: "text", text: title || "Tosh Document" }],
+        content: [{ type: "text", text: title || "Enter a title..." }],
       };
 
       // Check if the first node is already a heading of level 1 (title)

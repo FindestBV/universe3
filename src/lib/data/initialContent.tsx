@@ -11,38 +11,11 @@ export const initialContent = {
       ],
     },
     {
-      type: "customBlock",
-      content: [
-        {
-          type: "text",
-          text: "TESTING TESTING",
-        },
-      ],
-    },
-    {
       type: "customGraphBlock",
       content: [
         {
           type: "text",
-          text: "Graph Will Eventually Go Here",
-        },
-      ],
-    },
-    {
-      type: "customImage",
-      content: [
-        {
-          type: "text",
-          text: "Custom Image",
-        },
-      ],
-    },
-    {
-      type: "intakeSheet",
-      content: [
-        {
-          type: "text",
-          text: "Intake",
+          text: "Custom Graph Data:",
         },
       ],
     },
