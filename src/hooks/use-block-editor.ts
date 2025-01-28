@@ -108,13 +108,13 @@ export const useBlockEditor = ({
       immediatelyRender: true,
       shouldRerenderOnTransaction: false,
       autofocus: true,
-      content: parsedContent || initialContent,
+      content: parsedContent,
       onCreate: (ctx) => {
         if (provider && !provider.isSynced) {
           provider.on("synced", () => {
             setTimeout(() => {
               if (ctx.editor.isEmpty) {
-                ctx.editor.commands.setContent(parsedContent);
+                ctx.editor.commands.setContent(initialContent);
               }
             }, 0);
           });

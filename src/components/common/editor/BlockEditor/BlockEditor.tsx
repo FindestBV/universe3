@@ -195,7 +195,7 @@ export const BlockEditor = ({
       PlaceholderExtension,
       CustomImage,
     ],
-    content: parsedContent || initialContent,
+    content: parsedContent,
     onUpdate({ editor }) {
       const updatedJSON = editor.getJSON();
       saveContent(updatedJSON);
@@ -213,7 +213,6 @@ export const BlockEditor = ({
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
 
   useEffect(() => {
-    console.log("editor get json", editor.getJSON());
     if (isEditing) {
       autoSaveInterval.current = setInterval(saveContent, 10000); // Save every 10 seconds
     }
