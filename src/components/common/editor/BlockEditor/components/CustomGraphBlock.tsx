@@ -796,12 +796,12 @@ export default () => {
   }, []);
 
   return (
-    <NodeViewWrapper className="custom-graph-component">
+    <NodeViewWrapper className="custom-graph-component max-width-full">
       {/* Editable content */}
       <NodeViewContent className="content is-editable" />
 
       {/* D3 chart rendered independently */}
-      <div className="chart-container relative w-full">
+      <div className="chart-container relative w-auto max-w-[1280px]">
         <LineChart data={chartData} />
       </div>
     </NodeViewWrapper>

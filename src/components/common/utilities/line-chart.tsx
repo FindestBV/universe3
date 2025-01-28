@@ -15,7 +15,7 @@ interface LineChartProps {
   height?: number;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ data, width = 900, height = 500 }) => {
+const LineChart: React.FC<LineChartProps> = ({ data, width = 940, height = 500 }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
@@ -151,7 +151,11 @@ const LineChart: React.FC<LineChartProps> = ({ data, width = 900, height = 500 }
       .text((d) => d.name);
   }, [data, width, height]);
 
-  return <svg ref={svgRef}></svg>;
+  return (
+    <div className="custom-graph-container">
+      <svg ref={svgRef}></svg>
+    </div>
+  );
 };
 
 export default LineChart;
