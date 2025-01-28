@@ -1,15 +1,15 @@
-import { BollingerBandsChart } from "@/components/common/utilities/bollinger-chart";
+// import { BollingerBandsChart } from "@/components/common/utilities/bollinger-chart";
+import { RadialStackedBarChart } from "@/components/common/utilities/radial-stacked-chart";
 import { NodeViewContent, NodeViewWrapper } from "@tiptap/react";
 
 export default () => {
-  const sampleData = [
-    { Date: new Date(2023, 0, 1), Close: 150 },
-    { Date: new Date(2023, 0, 2), Close: 155 },
-    { Date: new Date(2023, 0, 3), Close: 160 },
-    { Date: new Date(2023, 0, 4), Close: 158 },
-    { Date: new Date(2023, 0, 5), Close: 162 },
-    { Date: new Date(2023, 0, 6), Close: 159 },
-    { Date: new Date(2023, 0, 7), Close: 165 },
+  const mockData = [
+    { state: "California", age: "0-10", population: 5000000 },
+    { state: "California", age: "11-20", population: 3000000 },
+    { state: "Texas", age: "0-10", population: 4000000 },
+    { state: "Texas", age: "11-20", population: 2000000 },
+    { state: "Florida", age: "0-10", population: 3500000 },
+    { state: "Florida", age: "11-20", population: 1500000 },
   ];
 
   return (
@@ -19,7 +19,7 @@ export default () => {
 
       {/* D3 chart rendered independently */}
       <div className="chart-container relative w-full overflow-y-scroll p-4">
-        <BollingerBandsChart data={sampleData} />
+        <RadialStackedBarChart data={mockData} />
       </div>
     </NodeViewWrapper>
   );
