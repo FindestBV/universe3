@@ -211,6 +211,7 @@ export const BlockEditor = ({
   }
 
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
+  const isLocked = useSelector((state: RootState) => state.document.isLocked);
 
   useEffect(() => {
     if (isEditing) {
@@ -240,7 +241,7 @@ export const BlockEditor = ({
           <div className={`${isLeftSideBarOpen ? "flex" : "collapsed"}`}>
             <TOCSidebar
               editor={editor}
-              isOpen={isLeftSideBarOpen}
+              isOpen={isLeftSideBarOpen && !isLocked}
               connectedEntities={connectedInbox}
               title={title}
             />
@@ -309,10 +310,10 @@ export const BlockEditor = ({
               <Comments connectedComments={connectedComments} />
             </div>
           </div>
-          <div className={`referenceSidebar ${isSidebarCollapsed ? "collapsed" : ""}`}>
+          <div className={`referenceSidebar ${isSidebarCollapsed || isLocked ? "collapsed" : ""}`}>
             <ReferencesSidebar
               onToggleInnerSidebar={toggleInnerSidebar}
-              isCollapsed={isSidebarCollapsed}
+              isCollapsed={isSidebarCollapsed || isLocked}
               connectedEntities={connectedEntities}
               connectedDocs={connectedDocs}
               connectedObjects={connectedObjects}
