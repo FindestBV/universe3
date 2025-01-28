@@ -17,6 +17,7 @@ import { Bot, Folder, type LucideIcon, Microscope } from "lucide-react";
 
 import AdvancedSearchModal from "../../dialogs/advanced-search-modal";
 import AskIgorModal from "../../dialogs/ask-igor";
+import GenerateReport from "../../dialogs/generate-report-modal";
 
 export function NavProjects({
   projects,
@@ -46,6 +47,18 @@ export function NavProjects({
         <SidebarMenuItem key={"q-and-a"}>
           <SidebarMenuButton asChild>
             <AdvancedSearchModal />
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+
+        <SidebarMenuItem key={"generate-report"}>
+          <SidebarMenuButton asChild>
+            <GenerateReport
+              leftContent={undefined}
+              rightContent={undefined}
+              onClose={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
