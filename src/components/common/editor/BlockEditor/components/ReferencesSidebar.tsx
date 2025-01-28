@@ -70,7 +70,7 @@ export const ReferencesSidebar: React.FC<{
   return (
     <>
       {/* Persistent Panel */}
-      <div className="absolute top-0 z-10 -ml-14 flex h-[100px] flex-col items-center gap-4 bg-white p-4 shadow-md">
+      <div className="fixed z-10 -ml-14 flex h-[100px] flex-col items-center gap-4 bg-white p-4 shadow-md">
         {/* Toggle Main Tabs */}
         <button
           onClick={() => toggleActiveSubTab("references")}
@@ -88,7 +88,7 @@ export const ReferencesSidebar: React.FC<{
 
       {/* Sidebar Content */}
       {!isCollapsed && (
-        <div className="flex flex-col p-4 transition-all duration-300">
+        <div className="fixed flex flex-col p-4 transition-all duration-300">
           <div className="flex flex-row justify-between">
             <Button
               className="fixed right-0"

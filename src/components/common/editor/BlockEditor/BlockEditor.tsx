@@ -4,6 +4,7 @@ import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
 import { useBlockEditor } from "@/hooks/use-block-editor";
+import { initialContent } from "@/lib/data/initialContent";
 import { Mark } from "@tiptap/core";
 import Blockquote from "@tiptap/extension-blockquote";
 import Bold from "@tiptap/extension-bold";
@@ -42,22 +43,6 @@ import { TextMenu } from "../menus/TextMenu";
 import { Button } from "../ui/Button";
 import { EditorHeader } from "./components/EditorHeader";
 import { TOCSidebar } from "./components/TOCSidebar";
-
-export const Rating = Mark.create({
-  name: "rating",
-  addAttributes() {
-    return {
-      rating: { default: 0 },
-      sourceId: { default: null },
-      targetId: { default: null },
-      ratersCount: { default: 0 },
-      isRatingNeeded: { default: false },
-    };
-  },
-  renderHTML({ HTMLAttributes }) {
-    return ["span", { class: "rating", ...HTMLAttributes }, "⭐"];
-  },
-});
 
 export const BlockEditor = ({
   type,
@@ -118,7 +103,7 @@ export const BlockEditor = ({
       return { type: "doc", content: [] };
     } catch (error) {
       console.error("Error parsing content:", error);
-      return { type: "doc", content: [] }; // Default fallback
+      return { type: "doc", content: initialContent }; // Default fallback
     }
   }, [content]);
 
@@ -210,20 +195,21 @@ export const BlockEditor = ({
       PlaceholderExtension,
       CustomImage,
     ],
-    content: parsedContent || {
-      type: "doc",
-      content: [
-        {
-          type: "paragraph",
-          content: [
-            {
-              type: "text",
-              text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text addinglinks,\n images, files and tables and even utilizing IGOR<sup>AI</sup>. The right sidebar provides otions to include references, \n highlights and images from connected documents. \n Have fun creating!",
-            },
-          ],
-        },
-      ],
-    },
+    content: parsedContent ||
+      initialContent || {
+        type: "doc",
+        content: [
+          {
+            type: "paragraph",
+            content: [
+              {
+                type: "text",
+                text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text addinglinks,\n images, files and tables and even utilizing IGOR<sup>AI</sup>. The right sidebar provides otions to include references, \n highlights and images from connected documents. \n Have fun creating!",
+              },
+            ],
+          },
+        ],
+      },
     onUpdate({ editor }) {
       const updatedJSON = editor.getJSON();
       saveContent(updatedJSON);
@@ -273,7 +259,7 @@ export const BlockEditor = ({
               title={title}
             />
           </div>
-          <div className="mainEditor w-full">
+          <div className="mainEditor w-full bg-[#F9FAF9]">
             <EditorContent
               key={editor?.view?.id || "editor"}
               editor={editor}

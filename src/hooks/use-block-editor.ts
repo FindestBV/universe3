@@ -8,8 +8,9 @@ import { AiImage, AiWriter } from "@/extensions";
 import { Ai } from "@/extensions/Ai";
 import { ExtensionKit } from "@/extensions/extension-kit";
 import { initialContent } from "@/lib/data/initialContent";
-import { TiptapCollabProvider, WebSocketStatus } from "@hocuspocus/provider";
+import { type TiptapCollabProvider, WebSocketStatus } from "@hocuspocus/provider";
 import type { AnyExtension, Editor } from "@tiptap/core";
+import { Mark } from "@tiptap/core";
 import Blockquote from "@tiptap/extension-blockquote";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
@@ -26,6 +27,22 @@ declare global {
     editor: Editor | null;
   }
 }
+
+export const Rating = Mark.create({
+  name: "rating",
+  addAttributes() {
+    return {
+      rating: { default: 0 },
+      sourceId: { default: null },
+      targetId: { default: null },
+      ratersCount: { default: 0 },
+      isRatingNeeded: { default: false },
+    };
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["span", { class: "rating", ...HTMLAttributes }, "⭐"];
+  },
+});
 
 export const useBlockEditor = ({
   aiToken,
@@ -64,31 +81,35 @@ export const useBlockEditor = ({
   // console.log("Unparsed Content:", type);
   const parsedContent = useMemo(() => {
     try {
+      // Parse the provided content (if valid)
       const parsed = typeof content === "string" ? JSON.parse(content) : content;
-      console.log("blockeditor, title", title);
-      // Define the title node
+      console.log("initial content", initialContent);
+      // Check if content is effectively empty (undefined, null, or empty content array)
+      const isEmpty = !parsed || !parsed.content || parsed.content.length === 0;
+
+      // Define the title node with the provided title or default
       const titleNode = {
         type: "heading",
         attrs: { level: 1 },
         content: [{ type: "text", text: title || "Untitled Document" }],
       };
 
-      // Check if the first node is already a heading of level 1 (title)
-      if (parsed?.content?.[0]?.type === "heading" && parsed.content[0]?.attrs?.level === 1) {
-        // If a title exists, update its text
-        parsed.content[0].content = [{ type: "text", text: title || "Untitled Document" }];
-        return parsed;
-      }
+      // Use initialContent if empty, otherwise use parsed content
+      const baseContent = isEmpty ? initialContent : parsed.content;
 
-      // If no title exists, add the title node at the beginning of the content
+      // Ensure the first node is always the title
+      const contentWithoutTitle = baseContent.filter(
+        (node: any) => !(node.type === "heading" && node.attrs?.level === 1),
+      );
+
       return {
-        ...parsed,
-        content: [titleNode, ...(parsed?.content || [])],
+        type: "doc",
+        content: [titleNode, ...contentWithoutTitle],
       };
     } catch (error) {
       console.error("Error parsing content:", error);
 
-      // Fallback content structure with title
+      // Return default structure with title and initialContent
       return {
         type: "doc",
         content: [
@@ -97,7 +118,7 @@ export const useBlockEditor = ({
             attrs: { level: 1 },
             content: [{ type: "text", text: title || "Untitled Document" }],
           },
-          ...(content || []),
+          ...initialContent.content,
         ],
       };
     }
@@ -108,18 +129,16 @@ export const useBlockEditor = ({
       immediatelyRender: true,
       shouldRerenderOnTransaction: false,
       autofocus: true,
-      content: parsedContent || initialContent,
+      content: parsedContent,
       onCreate: (ctx) => {
         if (provider && !provider.isSynced) {
           provider.on("synced", () => {
-            setTimeout(() => {
-              if (ctx.editor.isEmpty) {
-                ctx.editor.commands.setContent(parsedContent);
-              }
-            }, 0);
+            if (ctx.editor.isEmpty) {
+              ctx.editor.commands.setContent(parsedContent);
+            }
           });
         } else if (ctx.editor.isEmpty) {
-          ctx.editor.commands.setContent(initialContent);
+          ctx.editor.commands.setContent(parsedContent);
           ctx.editor.commands.focus("start", { scrollIntoView: true });
         }
       },
@@ -132,6 +151,7 @@ export const useBlockEditor = ({
         CustomBlock,
         CustomGraphBlock,
         IntakeSheetComponent,
+        Rating,
         CustomImage,
         provider && ydoc
           ? Collaboration.configure({
