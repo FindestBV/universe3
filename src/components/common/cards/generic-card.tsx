@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
+import { useTruncateText } from "@/hooks/use-truncate-text";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { ExternalLink, Plus, Trash2 } from "lucide-react";
 
@@ -215,6 +216,8 @@ export const GenericCard: React.FC<GenericCardProps> = ({
     return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
   };
 
+  const truncatedText = useTruncateText(name || title, 280);
+
   return (
     <div className="itemCard">
       <div className={`innerCardMain ${isDocument ? "gap-4" : ""}`}>
@@ -247,7 +250,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
                   !isDocument ? "py-2" : ""
                 }`}
               >
-                {truncateText(name || title, 280)}
+                {truncatedText}
               </h3>
 
               {itemType == "advancedSearchItem" && (
