@@ -195,21 +195,7 @@ export const BlockEditor = ({
       PlaceholderExtension,
       CustomImage,
     ],
-    content: parsedContent ||
-      initialContent || {
-        type: "doc",
-        content: [
-          {
-            type: "paragraph",
-            content: [
-              {
-                type: "text",
-                text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text addinglinks,\n images, files and tables and even utilizing IGOR<sup>AI</sup>. The right sidebar provides otions to include references, \n highlights and images from connected documents. \n Have fun creating!",
-              },
-            ],
-          },
-        ],
-      },
+    content: parsedContent || initialContent,
     onUpdate({ editor }) {
       const updatedJSON = editor.getJSON();
       saveContent(updatedJSON);
@@ -227,6 +213,7 @@ export const BlockEditor = ({
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
 
   useEffect(() => {
+    console.log("editor get json", editor.getJSON());
     if (isEditing) {
       autoSaveInterval.current = setInterval(saveContent, 10000); // Save every 10 seconds
     }
