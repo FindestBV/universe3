@@ -7,7 +7,7 @@ const IntakeSheetComponent: FC<NodeViewProps> = ({ node, updateAttributes }) => 
     const today = new Date().toLocaleDateString();
     updateAttributes({
       confirmed: true,
-      confirmedBy: "user@example.com", // Static or replace with dynamic data
+      confirmedBy: "ronan.oleary@findest.eu", // Static or replace with dynamic data
       date: today,
     });
   }, [updateAttributes]);

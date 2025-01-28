@@ -113,7 +113,11 @@ export const Dashboard = () => {
                         {activity.type}
                       </p>
                     </div>
-                    <h3 className="font-bold">{activity.name}</h3>
+                    <h3 className="font-bold">
+                      {activity.name.length > 75
+                        ? `${activity.name.slice(0, 75)}...` // Limit to 50 characters and add ellipsis
+                        : activity.name}
+                    </h3>
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
