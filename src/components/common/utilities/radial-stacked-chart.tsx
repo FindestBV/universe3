@@ -73,8 +73,8 @@ export const RadialStackedBarChart: React.FC<RadialStackedBarChartProps> = ({ da
     svg.selectAll("*").remove(); // Clear existing chart
 
     svg
-      .attr("width", width)
-      .attr("height", height)
+      .attr("width", "100%")
+      .attr("height", "auto")
       .attr("viewBox", [-width / 2, -height / 2, width, height].join(" "))
       .style("font", "10px sans-serif");
 
