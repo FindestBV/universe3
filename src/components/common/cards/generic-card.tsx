@@ -211,11 +211,6 @@ export const GenericCard: React.FC<GenericCardProps> = ({
     console.log(`item with ${id} linked`);
   };
 
-  const truncateText = (text: string | undefined, maxLength: number) => {
-    if (!text) return "Untitled"; // Default fallback
-    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
-  };
-
   const truncatedText = useTruncateText(name || title, 280);
 
   return (
