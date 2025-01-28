@@ -27,7 +27,7 @@ const LineChart: React.FC<LineChartProps> = ({ data, width = 900, height = 500 }
       year: parseInt(d.year, 10),
     }));
 
-    const years = [2000, 2005, 2010, 2015, 2020, 2025]; // Fixed years for X-axis
+    const years = [2000, 2005, 2010, 2015, 2020]; // Fixed years for X-axis
     const topics = [...new Set(parsedData.map((d) => d.topic))]; // Unique topics (group by topic ID)
 
     // Group data by topic
@@ -56,7 +56,7 @@ const LineChart: React.FC<LineChartProps> = ({ data, width = 900, height = 500 }
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     // Define scales
-    const xScale = d3.scaleLinear().domain([2000, 2025]).range([0, chartWidth]);
+    const xScale = d3.scaleLinear().domain([2000, 2020]).range([0, chartWidth]);
     const yScale = d3.scaleLinear().domain([0, 15000]).range([chartHeight, 0]);
 
     // Add gridlines
