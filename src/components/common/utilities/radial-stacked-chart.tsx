@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import React, { useEffect, useRef } from "react";
 
 interface RadialStackedBarChartProps {
-  data: Array<{ state: string; age: string; population: number }>;
+  data: Array<{ topic: string; name: string; year: string; count: number }>;
 }
 
 export const RadialStackedBarChart: React.FC<RadialStackedBarChartProps> = ({ data }) => {
@@ -17,32 +17,38 @@ export const RadialStackedBarChart: React.FC<RadialStackedBarChartProps> = ({ da
     const innerRadius = 180;
     const outerRadius = Math.min(width, height) / 2;
 
-    // Deduplicate and process data
-    const aggregatedData = Array.from(
-      d3.rollup(
-        data,
-        (group) => d3.sum(group, (d) => d.population),
-        (d) => d.state,
-        (d) => d.age,
-      ),
-      ([state, ages]) => Array.from(ages, ([age, population]) => ({ state, age, population })),
-    ).flat();
+    // Group data by topic and transform into nested structure
+    const groupedData = Array.from(
+      d3.group(data, (d) => d.topic),
+      ([topic, records]) => ({
+        topic,
+        records: d3.rollup(
+          records,
+          (group) => d3.sum(group, (d) => d.count),
+          (d) => d.year,
+        ),
+      }),
+    );
 
+    // Stack the data by topic
     const series = d3
       .stack()
-      .keys(d3.union(aggregatedData.map((d) => d.age))) // Distinct age groups
-      .value(([_, D], key) => D.get(key)?.population || 0)(
-      d3.index(
-        aggregatedData,
-        (d) => d.state,
-        (d) => d.age,
-      ),
+      .keys(d3.union(data.map((d) => d.year))) // Unique years as keys
+      .value((record, year) => record[year] || 0)(
+      // Extract value for each year
+      groupedData.map(({ topic, records }) => {
+        const recordObj: any = { topic };
+        records.forEach((value, key) => {
+          recordObj[key] = value; // Add each year's value to the object
+        });
+        return recordObj;
+      }),
     );
 
     // Scales
     const x = d3
       .scaleBand()
-      .domain(aggregatedData.map((d) => d.state))
+      .domain(groupedData.map((d) => d.topic)) // Topics as domain
       .range([0, 2 * Math.PI])
       .align(0);
 
@@ -53,7 +59,7 @@ export const RadialStackedBarChart: React.FC<RadialStackedBarChartProps> = ({ da
 
     const color = d3
       .scaleOrdinal()
-      .domain(series.map((d) => d.key))
+      .domain(series.map((s) => s.key)) // Years as domain
       .range(
         d3.schemeSpectral[Math.min(series.length, 11)] || // Up to 11 colors
           d3.quantize(d3.interpolateSpectral, series.length), // Fallback
@@ -64,8 +70,8 @@ export const RadialStackedBarChart: React.FC<RadialStackedBarChartProps> = ({ da
       .arc<any>()
       .innerRadius((d) => y(d[0])!)
       .outerRadius((d) => y(d[1])!)
-      .startAngle((d) => x(d.data[0])!)
-      .endAngle((d) => x(d.data[0])! + x.bandwidth()!)
+      .startAngle((d) => x(d.data.topic)!)
+      .endAngle((d) => x(d.data.topic)! + x.bandwidth()!)
       .padAngle(1.5 / innerRadius)
       .padRadius(innerRadius);
 
@@ -78,7 +84,7 @@ export const RadialStackedBarChart: React.FC<RadialStackedBarChartProps> = ({ da
       .attr("viewBox", [-width / 2, -height / 2, width, height].join(" "))
       .style("font", "10px sans-serif");
 
-    // Series group
+    // Render series
     svg
       .append("g")
       .selectAll("g")
@@ -90,12 +96,9 @@ export const RadialStackedBarChart: React.FC<RadialStackedBarChartProps> = ({ da
       .join("path")
       .attr("d", arc)
       .append("title")
-      .text(
-        (d) =>
-          `${d.data[0]} ${d.key}\nPopulation: ${d.data[1].get(d.key)?.population.toLocaleString()}`,
-      );
+      .text((d) => `${d.data.topic}\nYear: ${d.key}\nCount: ${d3.format(",")(d[1] - d[0])}`);
 
-    // X-axis
+    // X-axis (topics)
     svg
       .append("g")
       .attr("text-anchor", "middle")
@@ -121,7 +124,7 @@ export const RadialStackedBarChart: React.FC<RadialStackedBarChartProps> = ({ da
           .text((d) => d),
       );
 
-    // Y-axis
+    // Y-axis (counts)
     svg
       .append("g")
       .attr("text-anchor", "middle")
@@ -130,7 +133,7 @@ export const RadialStackedBarChart: React.FC<RadialStackedBarChartProps> = ({ da
           .append("text")
           .attr("y", -y(y.ticks(5).pop()!))
           .attr("dy", "-1em")
-          .text("Population"),
+          .text("Count"),
       )
       .call((g) =>
         g
@@ -150,12 +153,7 @@ export const RadialStackedBarChart: React.FC<RadialStackedBarChartProps> = ({ da
               .append("text")
               .attr("y", (d) => -y(d))
               .attr("dy", "0.35em")
-              .attr("stroke", "#fff")
-              .attr("stroke-width", 5)
-              .text(y.tickFormat(5, "s"))
-              .clone(true)
-              .attr("fill", "#000")
-              .attr("stroke", "none"),
+              .text(d3.format(",")),
           ),
       );
 

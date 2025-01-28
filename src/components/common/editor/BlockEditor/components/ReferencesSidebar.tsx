@@ -273,6 +273,14 @@ export const ReferencesSidebar: React.FC<{
                         Comments
                       </a>
                     </li>
+                    <li>
+                      <a
+                        className="cursor-pointer"
+                        onClick={() => scrollToSection("#mainEditorStart")}
+                      >
+                        Back to Top
+                      </a>
+                    </li>
                   </ul>
                 </div>
               </div>

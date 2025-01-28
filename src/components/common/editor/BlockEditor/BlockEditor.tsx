@@ -245,7 +245,7 @@ export const BlockEditor = ({
               title={title}
             />
           </div>
-          <div className="mainEditor w-full bg-[#F9FAF9]">
+          <div className="mainEditor w-full bg-[#F9FAF9]" id="mainEditorStart">
             <EditorContent
               key={editor?.view?.id || "editor"}
               editor={editor}
