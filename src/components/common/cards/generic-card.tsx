@@ -210,6 +210,11 @@ export const GenericCard: React.FC<GenericCardProps> = ({
     console.log(`item with ${id} linked`);
   };
 
+  const truncateText = (text: string | undefined, maxLength: number) => {
+    if (!text) return "Untitled"; // Default fallback
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+  };
+
   return (
     <div className="itemCard">
       <div className={`innerCardMain ${isDocument ? "gap-4" : ""}`}>
@@ -242,7 +247,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
                   !isDocument ? "py-2" : ""
                 }`}
               >
-                {name ? name : title}
+                {truncateText(name || title, 280)}
               </h3>
 
               {itemType == "advancedSearchItem" && (
