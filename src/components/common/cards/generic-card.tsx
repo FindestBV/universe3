@@ -129,9 +129,9 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
   const navigateWithTransition = useNavigateWithTransition();
 
-  if (connectedObjects) {
-    console.log("generic card", connectedObjects);
-  }
+  // if (connectedObjects) {
+  //   console.log("generic card", connectedObjects);
+  // }
 
   const renderFirstThreeParagraphs = (descriptionString: string) => {
     if (!descriptionString) {
@@ -191,6 +191,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
       document: `/library/documents/${id}`,
       entity: `/library/entities/${id}`,
     };
+    // likely to be removed.
     navigateWithTransition(routes[itemType], {
       state: {
         id,

@@ -18,7 +18,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useTruncateText } from "@/hooks/use-truncate-text";
 import {
   List,
   Loader,
@@ -70,8 +69,6 @@ export const Dashboard = () => {
 
   const user = useSelector(currentUser);
 
-  const truncatedText = useTruncateText(activityData?.name, 50);
-
   return (
     <div className="max-sm:px- flex h-full w-full flex-col pb-11 pl-10 pr-5 pt-10">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -116,7 +113,11 @@ export const Dashboard = () => {
                         {activity.type}
                       </p>
                     </div>
-                    <h3 className="font-bold">{truncatedText}</h3>
+                    <h3 className="font-bold">
+                      {activity.name.length > 50
+                        ? `${activity.name.slice(0, 50)}...` // Limit to 50 characters and add ellipsis
+                        : activity.name}
+                    </h3>
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

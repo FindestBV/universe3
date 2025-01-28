@@ -67,11 +67,11 @@ export const useBlockEditor = ({
       const parsed = typeof content === "string" ? JSON.parse(content) : content;
       console.log("blockeditor, title", title);
       // Define the title node
-      const titleNode = {
-        type: "heading",
-        attrs: { level: 1 },
-        content: [{ type: "text", text: title || "Enter a title..." }],
-      };
+      // const titleNode = {
+      //   type: "heading",
+      //   attrs: { level: 1 },
+      //   content: [{ type: "text", text: title || "Enter a title..." }],
+      // };
 
       // Check if the first node is already a heading of level 1 (title)
       if (parsed?.content?.[0]?.type === "heading" && parsed.content[0]?.attrs?.level === 1) {
@@ -83,7 +83,7 @@ export const useBlockEditor = ({
       // If no title exists, add the title node at the beginning of the content
       return {
         ...parsed,
-        content: [titleNode, ...(parsed?.content || [])],
+        content: [...(parsed?.content || [])],
       };
     } catch (error) {
       console.error("Error parsing content:", error);
