@@ -5,7 +5,8 @@ import React, { useEffect, useRef } from "react";
 interface DataPoint {
   year: number;
   count: number;
-  topicName: string;
+  topic: string; // Topic ID
+  name: string; // Topic Name
 }
 
 interface LineChartProps {
@@ -14,27 +15,28 @@ interface LineChartProps {
   height?: number;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ data, width = 800, height = 500 }) => {
+const LineChart: React.FC<LineChartProps> = ({ data, width = 900, height = 500 }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
     if (!data.length) return;
 
-    // Convert string years to numbers
+    // Parse data and extract years and topic groups
     const parsedData = data.map((d) => ({
       ...d,
       year: parseInt(d.year, 10),
     }));
 
-    const years = [2000, 2005, 2010, 2015, 2020, 2025]; // Fixed X-Axis ticks
-    const topics = [...new Set(parsedData.map((d) => d.topicName))];
+    const years = [2000, 2005, 2010, 2015, 2020]; // Fixed years for X-axis
+    const topics = [...new Set(parsedData.map((d) => d.topic))]; // Unique topics (group by topic ID)
 
-    // Group data by topic and ensure all topics have entries for fixed years
-    const topicData = topics.map((topic) => ({
-      name: topic,
+    // Group data by topic
+    const groupedData = topics.map((topic) => ({
+      id: topic,
+      name: parsedData.find((d) => d.topic === topic)?.name || "Unknown",
       values: years.map((year) => ({
         year,
-        count: parsedData.find((d) => d.year === year && d.topicName === topic)?.count || 0,
+        count: parsedData.find((d) => d.year === year && d.topic === topic)?.count || 0,
       })),
     }));
 
@@ -43,7 +45,7 @@ const LineChart: React.FC<LineChartProps> = ({ data, width = 800, height = 500 }
     const chartWidth = width - margin.left - margin.right;
     const chartHeight = height - margin.top - margin.bottom;
 
-    // Select SVG and clear previous contents
+    // Clear previous SVG contents
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
@@ -57,7 +59,7 @@ const LineChart: React.FC<LineChartProps> = ({ data, width = 800, height = 500 }
     const xScale = d3.scaleLinear().domain([2000, 2025]).range([0, chartWidth]);
     const yScale = d3.scaleLinear().domain([0, 15000]).range([chartHeight, 0]);
 
-    // Add X grid lines
+    // Add gridlines
     g.append("g")
       .attr("class", "grid")
       .attr("transform", `translate(0, ${chartHeight})`)
@@ -71,7 +73,6 @@ const LineChart: React.FC<LineChartProps> = ({ data, width = 800, height = 500 }
       .selectAll("line")
       .attr("stroke", "#d3d3d3");
 
-    // Add Y grid lines
     g.append("g")
       .attr("class", "grid")
       .call(
@@ -84,18 +85,12 @@ const LineChart: React.FC<LineChartProps> = ({ data, width = 800, height = 500 }
       .selectAll("line")
       .attr("stroke", "#d3d3d3");
 
-    // Add X Axis
+    // Add axes
     g.append("g")
       .attr("transform", `translate(0, ${chartHeight})`)
       .call(d3.axisBottom(xScale).tickValues(years).tickFormat(d3.format("d")));
 
-    // Add Y Axis
-    g.append("g").call(
-      d3
-        .axisLeft(yScale)
-        .tickValues([0, 5000, 10000, 15000])
-        .tickFormat((d) => `${d / 1000}k`),
-    );
+    g.append("g").call(d3.axisLeft(yScale).tickFormat((d) => `${d / 1000}k`));
 
     // Define line generator
     const line = d3
@@ -107,14 +102,14 @@ const LineChart: React.FC<LineChartProps> = ({ data, width = 800, height = 500 }
     // Define color scale
     const color = d3.scaleOrdinal(d3.schemeCategory10);
 
-    // Draw lines
+    // Plot lines for each topic
     g.selectAll(".line")
-      .data(topicData)
+      .data(groupedData)
       .enter()
       .append("path")
       .attr("class", "line")
       .attr("fill", "none")
-      .attr("stroke", (d) => color(d.name)!)
+      .attr("stroke", (d) => color(d.id)!)
       .attr("stroke-width", 2)
       .attr("d", (d) => line(d.values)!);
 
@@ -135,18 +130,18 @@ const LineChart: React.FC<LineChartProps> = ({ data, width = 800, height = 500 }
 
     legend
       .selectAll("rect")
-      .data(topicData)
+      .data(groupedData)
       .enter()
       .append("rect")
       .attr("x", 0)
       .attr("y", (_, i) => i * 20)
       .attr("width", 10)
       .attr("height", 10)
-      .attr("fill", (d) => color(d.name)!);
+      .attr("fill", (d) => color(d.id)!);
 
     legend
       .selectAll("text")
-      .data(topicData)
+      .data(groupedData)
       .enter()
       .append("text")
       .attr("x", 15)
