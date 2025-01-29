@@ -11,6 +11,15 @@ export const initialContent = {
       ],
     },
     {
+      type: "customBlock",
+      content: [
+        {
+          type: "text",
+          text: "Custom Graph Data Ex.1",
+        },
+      ],
+    },
+    {
       type: "customGraphBlock",
       content: [
         {
