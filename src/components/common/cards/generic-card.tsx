@@ -216,7 +216,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
 
   console.log("images on generic-card?", images[0]?.path);
   const truncatedText = useTruncateText(name || title, 280);
-  let itemImage = images ? images[0]?.path : null;
+  const itemImage = images[0]?.path;
   return (
     <div className="itemCard">
       <div className={`innerCardMain ${isDocument ? "gap-4" : ""}`}>
@@ -279,9 +279,9 @@ export const GenericCard: React.FC<GenericCardProps> = ({
               />
             </div>
           </div>
-          {images ? (
-            <div className="w-1/4 self-center">
-              <img src={itemImage} alt={truncatedText} />
+          {isStudy && itemImage ? (
+            <div className="mt-6 w-1/4 self-start">
+              <img src={itemImage} alt={itemImage ?? truncatedText} />
             </div>
           ) : null}
           <div className="flex flex-row items-start gap-2">
