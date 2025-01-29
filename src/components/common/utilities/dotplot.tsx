@@ -38,7 +38,7 @@ const dataPoints = [
 const DotPlot: React.FC = () => {
   return (
     <div className="flex w-full items-center justify-center overflow-auto bg-gray-900 p-6 text-white">
-      <div className="relative">
+      <div className="relative min-h-[550px]">
         <h2 className="mb-4 text-center text-2xl font-medium">
           Publication Counts by Topic and Institution Type
         </h2>

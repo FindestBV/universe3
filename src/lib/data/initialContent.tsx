@@ -15,7 +15,7 @@ export const initialContent = {
       content: [
         {
           type: "text",
-          text: "Custom Graph Data Ex.1",
+          text: "Custom Graph Data Ex.2",
         },
       ],
     },
