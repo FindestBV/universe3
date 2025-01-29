@@ -62,42 +62,104 @@ export const useBlockEditor = ({
     provider ? WebSocketStatus.Connecting : WebSocketStatus.Disconnected,
   );
   // console.log("Unparsed Content:", type);
+  // const parsedContent = useMemo(() => {
+  //   try {
+  //     const parsed = typeof content === "string" ? JSON.parse(content) : content;
+  //     console.log("blockeditor, title", title);
+  //     // Define the title node
+  //     const titleNode = {
+  //       type: "heading",
+  //       attrs: { level: 1 },
+  //       content: [{ type: "text", text: title || "Enter a title..." }],
+  //     };
+
+  //     // Check if the first node is already a heading of level 1 (title)
+  //     if (parsed?.content?.[0]?.type === "heading" && parsed.content[0]?.attrs?.level === 1) {
+  //       // If a title exists, update its text
+  //       parsed.content[0].content = [{ type: "text", text: title || "Untitled Document" }];
+  //       return parsed;
+  //     }
+
+  //     // If no title exists, add the title node at the beginning of the content
+  //     return {
+  //       ...parsed,
+  //       content: [titleNode, ...(parsed?.content || [])],
+  //     };
+  //   } catch (error) {
+  //     console.error("Error parsing content:", error);
+
+  //     // Fallback content structure with title
+  //     return {
+  //       type: "doc",
+  //       content: [
+  //         {
+  //           type: "heading",
+  //           attrs: { level: 1 },
+  //           content: [{ type: "text", text: title || "Untitled Document" }],
+  //         },
+  //         ...(content || []),
+  //       ],
+  //     };
+  //   }
+  // }, [content, title]);
+
   const parsedContent = useMemo(() => {
     try {
       const parsed = typeof content === "string" ? JSON.parse(content) : content;
       console.log("blockeditor, title", title);
-      // Define the title node
-      const titleNode = {
-        type: "heading",
-        attrs: { level: 1 },
-        content: [{ type: "text", text: title || "Enter a title..." }],
-      };
 
-      // Check if the first node is already a heading of level 1 (title)
-      if (parsed?.content?.[0]?.type === "heading" && parsed.content[0]?.attrs?.level === 1) {
+      // Ensure parsed content exists and is an array
+      const parsedContentArray = Array.isArray(parsed?.content) ? parsed.content : [];
+
+      // Define the title node (only if title exists)
+      const titleNode = title
+        ? {
+            type: "heading",
+            attrs: { level: 1 },
+            content: [{ type: "text", text: title }],
+          }
+        : null;
+
+      // Check if the first node is already a heading of level 1
+      const firstNode = parsedContentArray[0];
+      if (firstNode?.type === "heading" && firstNode?.attrs?.level === 1) {
         // If a title exists, update its text
-        parsed.content[0].content = [{ type: "text", text: title || "Untitled Document" }];
-        return parsed;
+        if (title) {
+          firstNode.content = [{ type: "text", text: title }];
+        } else {
+          // If title is removed, remove the existing title node
+          return { ...parsed, content: parsedContentArray.slice(1) };
+        }
+        return { ...parsed, content: parsedContentArray };
       }
 
-      // If no title exists, add the title node at the beginning of the content
+      // If no title exists but title is provided, prepend the title node
       return {
         ...parsed,
-        content: [titleNode, ...(parsed?.content || [])],
+        content: titleNode
+          ? [titleNode, ...parsedContentArray]
+          : [titleNode, ...parsedContentArray],
       };
     } catch (error) {
       console.error("Error parsing content:", error);
 
-      // Fallback content structure with title
+      // If content is missing or invalid, return default structure
       return {
         type: "doc",
         content: [
+          ...(title
+            ? [
+                {
+                  type: "heading",
+                  attrs: { level: 1 },
+                  content: [{ type: "text", text: title }],
+                },
+              ]
+            : []),
           {
-            type: "heading",
-            attrs: { level: 1 },
-            content: [{ type: "text", text: title || "Untitled Document" }],
+            type: "paragraph",
+            content: [{ type: "text", text: "Start writing here..." }],
           },
-          ...(content || []),
         ],
       };
     }
