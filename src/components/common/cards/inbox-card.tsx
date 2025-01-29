@@ -161,7 +161,7 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
         />
 
         <Card key={id} className="flex flex-1 flex-row gap-4">
-          <div>{type || "Science"}</div>
+          <div>{type || "Webpage"}</div>
           <div className="flex flex-1 flex-col">
             <div className="w-auto cursor-pointer px-4" onClick={handleCardClick}>
               <div className="flex flex-row gap-2">
@@ -197,11 +197,11 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
             </div>
           </div>
 
-          {images && images[0]?.path ? (
+          {/* {images && images[0]?.path ? (
             <div className="w-1/4">
               <img src={images[0].path} alt={title} className="inbox-image" />
             </div>
-          ) : null}
+          ) : null} */}
 
           <div className="flex flex-row items-start gap-2">
             <div className="flex flex-row items-center gap-4">

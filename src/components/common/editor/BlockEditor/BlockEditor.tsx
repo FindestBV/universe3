@@ -250,10 +250,13 @@ export const BlockEditor = ({
             className={`mainEditor w-full bg-[#F9FAF9] ${isEditing ? "prose-editor" : ""}`}
             id="mainEditorStart"
           >
+            <div className="mx-2 pl-40 pt-10">
+              <p className="iconText font-black uppercase">{type ?? type}</p>
+            </div>
             <EditorContent
               key={editor?.view?.id || "editor"}
               editor={editor}
-              className="flex overflow-y-scroll py-16 md:px-16"
+              className="flex overflow-y-scroll pb-16 pt-8 md:px-16"
             />
             <ContentItemMenu editor={editor} />
             <LinkMenu editor={editor} appendTo={menuContainerRef} />
