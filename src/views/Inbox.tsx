@@ -186,6 +186,7 @@ export const Inbox: React.FC = () => {
                 {...doc}
                 isSelected={selectedDocs.has(doc.id)}
                 onSelect={handleSelectDoc}
+                images={doc.images}
               />
             ))}
           </div>
