@@ -184,6 +184,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   const isDocument = currentPath.includes("documents");
   const isEntity = currentPath.includes("entities");
   const isStudy = currentPath.includes("studies");
+  const isAdvancedSearch = currentPath.includes("queries");
 
   const handleCheckboxChange = (checked: boolean) => onSelect(id, checked);
   const handleCardClick = () => {
@@ -214,9 +215,8 @@ export const GenericCard: React.FC<GenericCardProps> = ({
     console.log(`item with ${id} linked`);
   };
 
-  console.log("images on generic-card?", images[0]?.path);
   const truncatedText = useTruncateText(name || title, 280);
-  const itemImage = images[0]?.path;
+  const itemImage = images && images[0]?.path;
   return (
     <div className="itemCard">
       <div className={`innerCardMain ${isDocument ? "gap-4" : ""}`}>
@@ -252,7 +252,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
                 {truncatedText}
               </h3>
 
-              {itemType == "advancedSearchItem" && (
+              {itemType === "advancedSearchItem" && (
                 <div>
                   <h5 className="iconText mb-2">Connections</h5>
                   <div className="flex flex-row flex-wrap gap-2">
