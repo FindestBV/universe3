@@ -42,7 +42,7 @@ export const ReferencesSidebar: React.FC<{
   editor,
 }) => {
   const [activeMainTab, setActiveMainTab] = useState<string>("references"); // Main tab
-  const [activeSubTab, setActiveSubTab] = useState<string>("documents"); // Sub-tab for references
+  const [activeSubTab, setActiveSubTab] = useState<string>("inbox"); // Sub-tab for references
 
   const toggleActiveSubTab = (tab: React.SetStateAction<string>) => {
     if (isCollapsed) {
