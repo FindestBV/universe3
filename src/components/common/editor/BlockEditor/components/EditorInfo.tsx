@@ -24,8 +24,6 @@ import {
   Link,
   List,
   ListOrdered,
-  Lock,
-  LockOpen,
   MoreHorizontal,
   Network,
   Paperclip,
@@ -54,6 +52,7 @@ export type EditorInfoProps = {
 
 export const EditorInfo = memo(({ id }: EditorInfoProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [isPinned, setIsPinned] = useState<boolean>(false);
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
   const isLocked = useSelector((state: RootState) => state.document.isLocked);
   const dispatch = useDispatch();
@@ -177,8 +176,8 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
     },
   ];
 
-  const lockPage = (id) => {
-    dispatch(setLockPage({ isLocked: !isLocked, documentId: id }));
+  const togglePin = (id) => {
+    setIsPinned(!isPinned);
   };
 
   useEffect(() => {
@@ -237,8 +236,9 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
 
             <span className="h-6 border-l border-gray-300"></span>
             <button
-              className="flex items-center gap-2 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200"
+              className={`flex items-center gap-2 rounded border border-gray-300 transition-all duration-150 ease-in-out ${isPinned ? "bg-[#4C0723] text-white" : "bg-white text-gray-700"} px-2 py-1 hover:bg-[#4C0723] hover:text-white`}
               aria-label="Pin"
+              onClick={() => togglePin()}
             >
               <Pin size={16} />
               PIN
