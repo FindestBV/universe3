@@ -123,6 +123,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   connectedObjects,
   searchInformation,
   linkedCounts = {},
+  images,
 }) => {
   // const navigate = useNavigate();
   const [prefetchedItems, setPrefetchedItems] = useState<Record<string, any>[]>([]);
@@ -204,6 +205,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
         connectedObjects,
         searchInformation,
         prefetchedItems,
+        images,
       },
     });
   };
@@ -212,8 +214,9 @@ export const GenericCard: React.FC<GenericCardProps> = ({
     console.log(`item with ${id} linked`);
   };
 
+  console.log("images on generic-card?", images[0]?.path);
   const truncatedText = useTruncateText(name || title, 280);
-
+  let itemImage = images ? images[0]?.path : null;
   return (
     <div className="itemCard">
       <div className={`innerCardMain ${isDocument ? "gap-4" : ""}`}>
@@ -276,6 +279,11 @@ export const GenericCard: React.FC<GenericCardProps> = ({
               />
             </div>
           </div>
+          {images ? (
+            <div className="w-1/4 self-center">
+              <img src={itemImage} alt={truncatedText} />
+            </div>
+          ) : null}
           <div className="flex flex-row items-start gap-2">
             <div className="flex flex-row items-center gap-4">
               <div className="time">{formatDate(dateCreated ? dateCreated : dateAdded)}</div>
