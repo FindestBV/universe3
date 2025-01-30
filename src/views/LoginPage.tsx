@@ -1,5 +1,6 @@
 import logoUniverse from "@/assets/universe_logo_color.png";
 import Login from "@/components/common/login";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 
 export const LoginPage = () => {
   return (
@@ -11,8 +12,16 @@ export const LoginPage = () => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <Login />
+        <p>Form</p>
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+        <p>End form</p>
 
+        <Login />
         <p className="mt-10 text-center text-sm/6 text-gray-400">
           Forgot your password?{" "}
           <a href="#" className="font-semibold text-black hover:text-blue-500">

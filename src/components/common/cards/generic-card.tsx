@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
+import { useObjectType } from "@/hooks/use-object-type";
 import { useTruncateText } from "@/hooks/use-truncate-text";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { ExternalLink, Plus, Trash2 } from "lucide-react";
@@ -112,6 +113,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   name,
   type,
   itemType,
+  savedDocumentType,
   description,
   dateAdded,
   dateCreated,
@@ -186,6 +188,10 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   const isStudy = currentPath.includes("studies");
   const isAdvancedSearch = currentPath.includes("queries");
 
+  console.log("savedDocumentType", savedDocumentType);
+  const { typeName } = useObjectType(savedDocumentType);
+  console.log("converted type", typeName);
+
   const handleCheckboxChange = (checked: boolean) => onSelect(id, checked);
   const handleCardClick = () => {
     const routes = {
@@ -238,7 +244,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
                 <div className="iconText py-1">
                   {itemType === "advancedSearchItem"
                     ? null
-                    : type === "StudyTypeUndefined"
+                    : type === "StudyTypeUndefined" || undefined
                       ? "Study"
                       : "Entity"}
                 </div>

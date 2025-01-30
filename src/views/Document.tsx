@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useObjectType } from "@/hooks/use-object-type";
 import {
   ExternalLink,
   File,
@@ -36,10 +37,10 @@ export const Document: React.FC = () => {
   });
 
   console.log("fetched doc wth attachement (hopefully)", fetchedDocument);
-
+  const { typeName, isDocument, isStudy } = useObjectType(fetchedDocument?.savedDocumentType);
   const scienceArticles = fetchedDocument?.scienceArticles;
   const attachedFiles = fetchedDocument?.attachedFiles;
-
+  console.log("type name on document", typeName);
   const renderConnectedObjects =
     fetchedDocument &&
     Object.entries(fetchedDocument?.connectedObjects).map((o, i) => (
@@ -93,6 +94,8 @@ export const Document: React.FC = () => {
 
   useEffect(() => {
     if (fetchedDocument) {
+      console.log("dfetched", fetchedDocument.savedDocumentType);
+
       const timer = setTimeout(() => {
         setIsLoading(false);
       }, 250); // Simulate loading delay

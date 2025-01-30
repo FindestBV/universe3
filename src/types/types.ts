@@ -18,6 +18,32 @@ export enum ObjectTypeEnum {
   Query = 15,
 }
 
+// Define as a const object for better type inference
+export const ObjectTypes = {
+  Unknown: 0,
+  Entity: 1,
+  Document: 2,
+  Highlight: 3,
+  Study: 4,
+  Image: 5,
+  ScienceArticle: 6,
+  UsPatent: 7,
+  Weblink: 8,
+  MagPatent: 9,
+  Comment: 10,
+  File: 11,
+  Tenant: 12,
+  Organization: 13,
+  Case: 14,
+  Query: 15,
+} as const;
+
+// Create a type from the values
+export type ObjectTypeValue = (typeof ObjectTypes)[keyof typeof ObjectTypes];
+
+// Create a type from the keys
+export type ObjectTypeName = keyof typeof ObjectTypes;
+
 export interface AuthResponse {
   user: {
     id: string;
