@@ -78,12 +78,13 @@ function AuthenticatedLayout() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/queries" element={<Queries />} />
                 <Route path="/overview" element={<Documents />} />
+                <Route path="/pages" element={<Pages />} />
                 <Route path="/pages/studies" element={<Studies />} />
                 <Route path="/pages/studies/:id" element={<Study />} />
                 <Route path="/sources" element={<Sources />} />
                 <Route path="/sources/:id" element={<Source />} />
-                <Route path="/pages" element={<Pages />} />
-                <Route path="/pages/entity/:id" element={<Page />} />
+                <Route path="/pages/entities" element={<Pages />} />
+                <Route path="/pages/entities/:id" element={<Page />} />
                 <Route path="/resources" element={<Resources />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/queries" element={<AdvancedSearch />} />

@@ -92,7 +92,7 @@ const data = {
         },
         {
           title: "Studies",
-          url: "/studies",
+          url: "/pages/studies",
         },
         {
           title: "My Workspace",

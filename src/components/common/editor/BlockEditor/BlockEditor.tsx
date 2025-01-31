@@ -263,13 +263,11 @@ export const BlockEditor = ({
               <Breadcrumb className="pb-4">
                 <BreadcrumbList>
                   <BreadcrumbItem>
-                    <BreadcrumbLink href="/library">Library</BreadcrumbLink>
+                    <BreadcrumbLink href="/library">Pages</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
-                    <BreadcrumbLink
-                      href={type === "study" ? "/library/studies" : "/library/entities"}
-                    >
+                    <BreadcrumbLink href={type === "study" ? "/pages/studies" : "/pages/entities"}>
                       {type === "study" ? "Studies" : "Entities"}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
