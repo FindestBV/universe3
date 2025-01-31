@@ -1,10 +1,19 @@
 import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
 import { useBlockEditor } from "@/hooks/use-block-editor";
 import { initialContent } from "@/lib/data/initialContent";
+import { RootState } from "@/store";
 import { Mark } from "@tiptap/core";
 import Blockquote from "@tiptap/extension-blockquote";
 import Bold from "@tiptap/extension-bold";
@@ -29,7 +38,7 @@ import { EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Download } from "lucide-react";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 import Comments from "../../layout/comments";
@@ -250,7 +259,33 @@ export const BlockEditor = ({
             className={`mainEditor w-full bg-[#F9FAF9] ${isEditing ? "prose-editor" : ""}`}
             id="mainEditorStart"
           >
-            <div className="mx-2 pl-40 pt-10">
+            <div className="mx-2 flex flex-col pl-40 pt-10">
+              <Breadcrumb className="pb-4">
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="/library">Library</BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink
+                      href={type === "study" ? "/library/studies" : "/library/entities"}
+                    >
+                      {type === "study" ? "Studies" : "Entities"}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+
+                  {title && (
+                    <>
+                      <BreadcrumbSeparator />
+                      <BreadcrumbItem>
+                        <BreadcrumbPage className="text-slate-500">
+                          {title ? title : type}
+                        </BreadcrumbPage>
+                      </BreadcrumbItem>
+                    </>
+                  )}
+                </BreadcrumbList>
+              </Breadcrumb>
               <p className="iconText font-black uppercase">{type ?? type}</p>
             </div>
             <EditorContent
