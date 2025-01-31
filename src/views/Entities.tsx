@@ -29,6 +29,7 @@ export const Entities: React.FC = () => {
     { refetchOnMountOrArgChange: true },
   );
 
+  // conseo
   const totalPages = data ? Math.ceil(data.totalCount / entitiesPerPage) : 1;
 
   const handlePageChange = (page: number) => setCurrentPage(page);
