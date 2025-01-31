@@ -28,7 +28,7 @@ import {
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
-export const Document: React.FC = () => {
+export const Source: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [isLoading, setIsLoading] = useState(true);
   const { data: fetchedDocument } = useGetDocumentByIdQuery(id!, {
@@ -337,4 +337,4 @@ export const Document: React.FC = () => {
   );
 };
 
-export default Document;
+export default Source;

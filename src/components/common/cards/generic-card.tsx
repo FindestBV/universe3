@@ -181,7 +181,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
 
   const location = useLocation();
   const currentPath = location.pathname;
-  const isDocument = currentPath.includes("documents");
+  const isSources = currentPath.includes("sources");
   const isEntity = currentPath.includes("entities");
   const isStudy = currentPath.includes("studies");
   const isAdvancedSearch = currentPath.includes("queries");
@@ -189,9 +189,9 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   const handleCheckboxChange = (checked: boolean) => onSelect(id, checked);
   const handleCardClick = () => {
     const routes = {
-      study: `/library/studies/${id}`,
-      document: `/library/documents/${id}`,
-      entity: `/library/entities/${id}`,
+      study: `/library/pages/${id}`,
+      source: `/library/sources/${id}`,
+      entity: `/library/pages/${id}`,
     };
     // likely to be removed.
     navigateWithTransition(routes[itemType], {
@@ -220,7 +220,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   const itemCaption = images && images[0]?.caption;
   return (
     <div className="itemCard">
-      <div className={`innerCardMain ${isDocument ? "gap-4" : ""}`}>
+      <div className={`innerCardMain ${isSources ? "gap-4" : ""}`}>
         {/* Checkbox */}
         <Checkbox
           id={`card-${id}`}
@@ -231,10 +231,10 @@ export const GenericCard: React.FC<GenericCardProps> = ({
 
         {/* Main Card */}
         <Card key={id} className="innerCardContent" onClick={handleCardClick}>
-          {isDocument && <div className="iconText">Science</div>}
+          {isSources && <div className="iconText">Science</div>}
           <div className="innerCardContent__Detail">
             <div className="w-auto cursor-pointer">
-              {!isDocument && (
+              {!isSources && (
                 <div className="iconText py-1">
                   {itemType === "advancedSearchItem"
                     ? null
@@ -244,10 +244,10 @@ export const GenericCard: React.FC<GenericCardProps> = ({
                 </div>
               )}
             </div>
-            <div className={`flex ${isDocument ? "flex-row gap-2" : "flex-col"}`}>
+            <div className={`flex ${isSources ? "flex-row gap-2" : "flex-col"}`}>
               <h3
                 className={`overflow-hidden text-ellipsis text-lg font-bold text-black ${
-                  !isDocument ? "py-2" : ""
+                  !isSources ? "py-2" : ""
                 }`}
               >
                 {truncatedText}
@@ -266,7 +266,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
                   </div>
                 </div>
               )}
-              {isDocument && <DocumentLink url={url} />}
+              {isSources && <DocumentLink url={url} />}
               {isEntity && renderFirstThreeParagraphs(description)}
               {isStudy && renderFirstThreeParagraphs(description)}
             </div>

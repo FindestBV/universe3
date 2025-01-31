@@ -19,14 +19,15 @@ import Admin from "./views/Admin";
 // Lazy-loaded views (TEMP! Will sort this out with some proper Routing )
 const AdvancedSearch = lazy(() => import("@/views/AdvancedSearch"));
 const Queries = lazy(() => import("@/views/Queries"));
-const Documents = lazy(() => import("@/views/Documents"));
-const Document = lazy(() => import("@/views/Document"));
+const Sources = lazy(() => import("@/views/Sources"));
+const Source = lazy(() => import("@/views/Source"));
 const Resources = lazy(() => import("@/views/Resources"));
+const Documents = lazy(() => import("@/views/Documents"));
 const Settings = lazy(() => import("@/views/Settings"));
 const Studies = lazy(() => import("@/views/Studies"));
 const Study = lazy(() => import("@/views/Study"));
-const Entities = lazy(() => import("@/views/Entities"));
-const Entity = lazy(() => import("@/views/Entity"));
+const Pages = lazy(() => import("@/views/Pages"));
+const Page = lazy(() => import("@/views/Page"));
 const NotFoundPage = lazy(() => import("@/views/NotFound"));
 const DataView = lazy(() => import("@/views/DataView"));
 const Inbox = lazy(() => import("@/views/Inbox"));
@@ -79,10 +80,10 @@ function AuthenticatedLayout() {
                 <Route path="/library/overview" element={<Documents />} />
                 <Route path="/library/studies" element={<Studies />} />
                 <Route path="/library/studies/:id" element={<Study />} />
-                <Route path="/library/documents" element={<Documents />} />
-                <Route path="/library/documents/:id" element={<Document />} />
-                <Route path="/library/entities" element={<Entities />} />
-                <Route path="/library/entities/:id" element={<Entity />} />
+                <Route path="/library/sources" element={<Sources />} />
+                <Route path="/library/sources/:id" element={<Source />} />
+                <Route path="/library/pages" element={<Pages />} />
+                <Route path="/library/pages/:id" element={<Page />} />
                 <Route path="/resources" element={<Resources />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/queries" element={<AdvancedSearch />} />

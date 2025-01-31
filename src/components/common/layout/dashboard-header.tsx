@@ -167,9 +167,9 @@ export const DashboardHeader = () => {
               </Tooltip>
             </TooltipProvider>
           </li> */}
-          <li>
+          {/* <li>
             <ExplorerModal />
-          </li>
+          </li> */}
 
           <li>
             <TooltipProvider>

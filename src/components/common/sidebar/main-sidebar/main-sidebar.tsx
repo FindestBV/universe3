@@ -73,20 +73,30 @@ const data = {
           url: "/dashboard",
         },
         {
-          title: "Inbox",
-          url: "/inbox",
+          title: "Sources",
+          url: "/library/sources",
         },
         {
-          title: "Documents",
-          url: "/library/documents",
-        },
-        {
-          title: "Entities",
-          url: "/library/entities",
+          title: "Pages",
+          url: "/library/pages",
+          items: [
+            {
+              title: "Entities",
+              url: "/library/pages/entities",
+            },
+            {
+              title: "Studies",
+              url: "/library/pages/studies",
+            },
+          ],
         },
         {
           title: "Studies",
           url: "/library/studies",
+        },
+        {
+          title: "My Workspace",
+          url: "/inbox",
         },
       ],
     },
