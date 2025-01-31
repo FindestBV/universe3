@@ -20,7 +20,7 @@ export const Entities: React.FC = () => {
   const [selectedEntities, setSelectedEntities] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [entitiesPerPage, setEntitiesPerPage] = useState(12);
-  const [tempLoading, setTempLoading] = useState(false);
+  const [_tempLoading, setTempLoading] = useState(false);
   const [filters, setFilters] = useState<string[]>([]);
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
