@@ -76,14 +76,14 @@ function AuthenticatedLayout() {
               <Routes location={location}>
                 {/* TEMP!! THIS WILL BE REFACTORED */}
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/library/queries" element={<Queries />} />
-                <Route path="/library/overview" element={<Documents />} />
-                <Route path="/library/studies" element={<Studies />} />
-                <Route path="/library/studies/:id" element={<Study />} />
-                <Route path="/library/sources" element={<Sources />} />
-                <Route path="/library/sources/:id" element={<Source />} />
-                <Route path="/library/pages" element={<Pages />} />
-                <Route path="/library/pages/:id" element={<Page />} />
+                <Route path="/queries" element={<Queries />} />
+                <Route path="/overview" element={<Documents />} />
+                <Route path="/pages/studies" element={<Studies />} />
+                <Route path="/pages/studies/:id" element={<Study />} />
+                <Route path="/sources" element={<Sources />} />
+                <Route path="/sources/:id" element={<Source />} />
+                <Route path="/pages" element={<Pages />} />
+                <Route path="/pages/entity/:id" element={<Page />} />
                 <Route path="/resources" element={<Resources />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/queries" element={<AdvancedSearch />} />

@@ -189,9 +189,9 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   const handleCheckboxChange = (checked: boolean) => onSelect(id, checked);
   const handleCardClick = () => {
     const routes = {
-      study: `/library/pages/${id}`,
-      source: `/library/sources/${id}`,
-      entity: `/library/pages/${id}`,
+      study: `/pages/studies/${id}`,
+      source: `/sources/${id}`,
+      entity: `/pages/entities/${id}`,
     };
     // likely to be removed.
     navigateWithTransition(routes[itemType], {

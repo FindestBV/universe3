@@ -74,25 +74,25 @@ const data = {
         },
         {
           title: "Sources",
-          url: "/library/sources",
+          url: "/sources",
         },
         {
           title: "Pages",
-          url: "/library/pages",
+          url: "/pages",
           items: [
             {
               title: "Entities",
-              url: "/library/pages/entities",
+              url: "/pages/entities",
             },
             {
               title: "Studies",
-              url: "/library/pages/studies",
+              url: "/pages/studies",
             },
           ],
         },
         {
           title: "Studies",
-          url: "/library/studies",
+          url: "/studies",
         },
         {
           title: "My Workspace",
