@@ -237,35 +237,49 @@ export function CreateItemModal() {
           {step === 2 && (
             // Details Panel
             <div className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="title">Title</Label>
-                <Input
-                  id="title"
-                  value={formData.title}
-                  onChange={(e) => updateFormData("title", e.target.value)}
-                  placeholder={`Enter ${formData.type} title`}
-                  className="w-full border border-gray-200 bg-white"
-                />
-              </div>
+              {formData.type != "page" && (
+                <div className="space-y-2">
+                  <Label htmlFor="title">Title</Label>
+                  <Input
+                    id="title"
+                    value={formData.title}
+                    onChange={(e) => updateFormData("title", e.target.value)}
+                    placeholder={`Enter ${formData.type} title`}
+                    className="w-full border border-gray-200 bg-white"
+                  />
+                </div>
+              )}
 
               {formData.type === "page" && (
-                <div className="space-y-2">
-                  <Label htmlFor="pageType">Page Type</Label>
-                  <Select
-                    value={formData.pageType || ""}
-                    onValueChange={(value) => updateFormData("pageType", value as PageType)}
-                  >
-                    <SelectTrigger className="w-full border border-gray-200 bg-white">
-                      <SelectValue placeholder="Select page type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="entity">Entity</SelectItem>
-                      <SelectItem value="document">Document</SelectItem>
-                      <SelectItem value="study">Study</SelectItem>
-                      <SelectItem value="webpage">Webpage</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="pageType">Page Type</Label>
+                    <Select
+                      value={formData.pageType || ""}
+                      onValueChange={(value) => updateFormData("pageType", value as PageType)}
+                    >
+                      <SelectTrigger className="w-full border border-gray-200 bg-white">
+                        <SelectValue placeholder="Select page type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="entity">Entity</SelectItem>
+                        <SelectItem value="document">Document</SelectItem>
+                        <SelectItem value="study">Study</SelectItem>
+                        <SelectItem value="webpage">Webpage</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="title">Title</Label>
+                    <Input
+                      id="title"
+                      value={formData.title}
+                      onChange={(e) => updateFormData("title", e.target.value)}
+                      placeholder={`Enter ${formData.type} title`}
+                      className="w-full border border-gray-200 bg-white"
+                    />
+                  </div>
+                </>
               )}
 
               {formData.type === "page" && formData.pageType === "webpage" && (
