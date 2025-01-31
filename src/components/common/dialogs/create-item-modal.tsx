@@ -124,7 +124,7 @@ export function CreateItemModal() {
       case 2:
         return (
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-500">I want to create a</span>
+            <span className="text-lg text-gray-500">I want to create a</span>
             <span className="text-2xl font-semibold capitalize text-[#006A86]">
               {formData.type}
             </span>
@@ -194,9 +194,9 @@ export function CreateItemModal() {
                   <FileText className="h-6 w-6 text-blue-500" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium group-hover:text-white">Page</h3>
+                  <h3 className="text-lg font-medium group-hover:text-white">Pages</h3>
                   <p className="text-sm text-gray-500 group-hover:text-white">
-                    Create a new Entity within your universe
+                    Create a new page within your universe. Choose to select type Entity or Study.
                   </p>
                 </div>
               </button>
