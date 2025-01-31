@@ -127,7 +127,7 @@ export function CreateItemModal() {
           </DialogClose>
         </div>
 
-        <div className="py-4">
+        <div className="pb-4">
           {step === 1 && (
             // Type Selection Panel
             <div className="grid grid-cols-1 gap-4">
