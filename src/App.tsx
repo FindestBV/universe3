@@ -18,7 +18,6 @@ import Admin from "./views/Admin";
 
 // Lazy-loaded views (TEMP! Will sort this out with some proper Routing )
 const AdvancedSearch = lazy(() => import("@/views/AdvancedSearch"));
-const Queries = lazy(() => import("@/views/Queries"));
 const Sources = lazy(() => import("@/views/Sources"));
 const Source = lazy(() => import("@/views/Source"));
 const Resources = lazy(() => import("@/views/Resources"));
