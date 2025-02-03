@@ -28,5 +28,23 @@ export const initialContent = {
         },
       ],
     },
+    // {
+    //   type: "maturityRadar",
+    //   content: [
+    //     {
+    //       type: "text",
+    //       text: "Custom Graph Data Ex.2",
+    //     },
+    //   ],
+    // },
+    // {
+    //   type: "requirementsTable",
+    //   content: [
+    //     {
+    //       type: "text",
+    //       text: "Custom Graph Data Ex.2",
+    //     },
+    //   ],
+    // },
   ],
 };

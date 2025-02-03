@@ -14,28 +14,7 @@ import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
 import { useBlockEditor } from "@/hooks/use-block-editor";
 import { initialContent } from "@/lib/data/initialContent";
 import { RootState } from "@/store";
-import { Mark } from "@tiptap/core";
-import Blockquote from "@tiptap/extension-blockquote";
-import Bold from "@tiptap/extension-bold";
-import BulletList from "@tiptap/extension-bullet-list";
-import Document from "@tiptap/extension-document";
-import Heading from "@tiptap/extension-heading";
-import Image from "@tiptap/extension-image";
-import Italic from "@tiptap/extension-italic";
-import Link from "@tiptap/extension-link";
-import ListItem from "@tiptap/extension-list-item";
-import OrderedList from "@tiptap/extension-ordered-list";
-import Paragraph from "@tiptap/extension-paragraph";
-import Subscript from "@tiptap/extension-subscript";
-import Superscript from "@tiptap/extension-superscript";
-import Table from "@tiptap/extension-table";
-import TableCell from "@tiptap/extension-table-cell";
-import TableHeader from "@tiptap/extension-table-header";
-import TableRow from "@tiptap/extension-table-row";
-import Text from "@tiptap/extension-text";
-import Underline from "@tiptap/extension-underline";
 import { EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import { Download } from "lucide-react";
 
 import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -43,9 +22,6 @@ import { useSelector } from "react-redux";
 
 import Comments from "../../layout/comments";
 import ReferencesSidebar from "../BlockEditor/components/ReferencesSidebar";
-import CustomImage from "../extensions/customblock-extension";
-import CustomGraphBlock from "../extensions/customgraphblock-extension";
-import PlaceholderExtension from "../extensions/placeholder-extension";
 import { LinkMenu } from "../menus";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
 import { TextMenu } from "../menus/TextMenu";
@@ -143,67 +119,6 @@ export const BlockEditor = ({
 
   const { editor, collabState, users } = useBlockEditor({
     title,
-    extensions: [
-      Paragraph,
-      Document,
-      Image,
-      Text,
-      StarterKit,
-      Table,
-      TableCell,
-      TableHeader,
-      TableRow,
-      Blockquote,
-      CustomGraphBlock,
-      ListItem.configure({
-        HTMLAttributes: {
-          class: "list-item",
-        },
-      }),
-      OrderedList.configure({
-        HTMLAttributes: {
-          class: "list-decimal",
-        },
-      }),
-      Superscript.configure({
-        HTMLAttributes: {
-          class: "superscript",
-        },
-      }),
-      Subscript.configure({
-        HTMLAttributes: {
-          class: "subscript",
-        },
-      }),
-      Bold.configure({
-        HTMLAttributes: {
-          class: "font-bold",
-        },
-      }),
-      Underline.configure({
-        HTMLAttributes: {
-          class: "underline",
-        },
-      }),
-      Italic.configure({
-        HTMLAttributes: {
-          class: "italic",
-        },
-      }),
-      BulletList.configure({
-        HTMLAttributes: {
-          class: "list-disc",
-        },
-      }),
-      Link.configure({
-        openOnClick: true,
-      }),
-      Heading.configure({
-        levels: [1, 2, 3, 4, 5, 6],
-      }),
-      PlaceholderExtension,
-      CustomImage,
-    ],
     content: parsedContent,
     onUpdate({ editor }) {
       const updatedJSON = editor.getJSON();

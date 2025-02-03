@@ -1,27 +1,40 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// Combine multiple calls to related endpoints on the one querySlice.
-import { useGetEntityByIdQuery } from "@/api/documents/documentApi";
+import {
+  useGetEntitiesQuery,
+  useGetEntityByIdQuery,
+  useGetStudiesQuery,
+} from "@/api/documents/documentApi";
 // Import TipTap Editor
 import BlockEditor from "@/components/common/editor/BlockEditor/BlockEditor";
 import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 
 import { useEffect } from "react";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 
 export const Page: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const location = useLocation();
 
   let parsedDescription: any = null;
 
-  const { data: fetchedEntity, isLoading: fetchedEntityIsLoading } = useGetEntityByIdQuery(id, {
-    refetchOnMountOrArgChange: false, // Prevents automatic refetching
-  });
+  // ✅ Determine whether to fetch "studies" or "entities" based on the URL
+  const isStudiesPage = location.pathname.includes("studies");
 
-  const inboxQuery = fetchedEntity && fetchedEntity?.connectedInboxItems;
-  const connectedObjects = fetchedEntity && fetchedEntity?.connectedDocs;
-  const connectedQueries = fetchedEntity && fetchedEntity?.connectedQueries;
-  const connectedComments = fetchedEntity && fetchedEntity?.connectedComments;
-  const connectedEntities = fetchedEntity && fetchedEntity?.entities;
+  // ✅ Conditional API query
+  const { data: fetchedEntity, isLoading: fetchedEntityIsLoading } = isStudiesPage
+    ? useGetStudiesQuery(id, { refetchOnMountOrArgChange: false })
+    : useGetEntityByIdQuery(id, { refetchOnMountOrArgChange: false });
+
+  // ✅ If it's entities, also fetch paginated list
+  const { data, isLoading, isError, error, refetch } = useGetEntitiesQuery(
+    { page: 1, limit: 10 }, // Adjust page and limit as needed
+    { refetchOnMountOrArgChange: true },
+  );
+
+  const inboxQuery = fetchedEntity?.connectedInboxItems;
+  const connectedObjects = fetchedEntity?.connectedDocs;
+  const connectedQueries = fetchedEntity?.connectedQueries;
+  const connectedComments = fetchedEntity?.connectedComments;
+  const connectedEntities = fetchedEntity?.entities;
 
   if (fetchedEntity) {
     console.log("fetched entity full obj", fetchedEntity);
@@ -54,7 +67,7 @@ export const Page: React.FC = () => {
           <div className="flex w-auto">
             <div className="w-full flex-col">
               <BlockEditor
-                type={"entity"}
+                type={isStudiesPage ? "study" : "entity"}
                 id={fetchedEntity?.id}
                 title={fetchedEntity?.title}
                 content={parsedDescription}
