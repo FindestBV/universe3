@@ -20,6 +20,7 @@ import { Download } from "lucide-react";
 import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
+import ConnectQuery from "../../dialogs/connect-query";
 import Comments from "../../layout/comments";
 import ReferencesSidebar from "../BlockEditor/components/ReferencesSidebar";
 import { LinkMenu } from "../menus";
@@ -254,7 +255,14 @@ export const BlockEditor = ({
                     )
                   ) : (
                     <div className="flex flex-row-reverse items-center gap-4">
-                      <Button variant="ghost">Connect a query</Button>
+                      <Button variant="outline">ADD QUERY</Button>
+                      <ConnectQuery
+                        attachToItem={function (id: string): void {
+                          throw new Error("Function not implemented.");
+                        }}
+                        parentId={""}
+                        parentTitle={""}
+                      />
                       <p className="text-gray-500">No connected objects</p>
                     </div>
                   ))}
