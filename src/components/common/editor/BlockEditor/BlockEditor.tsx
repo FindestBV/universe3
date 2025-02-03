@@ -268,7 +268,7 @@ export const BlockEditor = ({
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
                     <BreadcrumbLink href={type === "study" ? "/pages/studies" : "/pages/entities"}>
-                      {type === "study" ? "Studies" : "Entities"}
+                      Type: {type === "study" ? "Studies" : "Entities"}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
 
