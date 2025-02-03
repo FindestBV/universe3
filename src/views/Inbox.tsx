@@ -2,6 +2,14 @@ import { InboxCard } from "@/components/common/cards/inbox-card";
 import DocumentsSkeleton from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+// Import your Pagination components (adjust the import path as needed)
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,18 +27,17 @@ export const Inbox: React.FC = () => {
   const [selectedDocs, setSelectedDocs] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [documentsPerPage, setDocumentsPerPage] = useState(12);
-  const [tempLoading, setTempLoading] = useState(false); // Temporary loading state
-  const [filters, setFilters] = useState<string[]>([]); // State for filters
+  const [tempLoading, setTempLoading] = useState(false);
+  const [filters, setFilters] = useState<string[]>([]);
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const { data, isLoading, isError, error, refetch } = useGetMyDocumentInboxQuery(
-    { page: currentPage, limit: documentsPerPage },
+    { page: currentPage, limit: documentsPerPage, filters },
     { refetchOnMountOrArgChange: true },
   );
 
   const totalPages = data ? Math.ceil(data.totalCount / documentsPerPage) : 1;
 
-  const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
   const handlePreviousPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 
@@ -56,7 +63,7 @@ export const Inbox: React.FC = () => {
   const handleDocumentsPerPageChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = parseInt(e.target.value, 10);
     setDocumentsPerPage(value);
-    setCurrentPage(1); // Reset to first page
+    setCurrentPage(1);
     setTempLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 500));
     setTempLoading(false);
@@ -75,8 +82,13 @@ export const Inbox: React.FC = () => {
     setFilters(filters.filter((f) => f !== filter));
   };
 
+  // Calculate the range of documents currently shown.
+  const startRange = data ? (currentPage - 1) * documentsPerPage + 1 : 0;
+  const endRange = data ? Math.min(currentPage * documentsPerPage, data.totalCount) : 0;
+
   return (
     <div className="flex h-full w-full flex-col px-12 max-sm:px-4">
+      {/* Top Controls */}
       <div className="mb-2 flex items-center justify-between gap-1 rounded-lg">
         <div className="flex items-center gap-2">
           <Checkbox
@@ -104,7 +116,7 @@ export const Inbox: React.FC = () => {
                 <div
                   key={filter}
                   onClick={() => handleRemoveFilter(filter)}
-                  className="cursor-pointer rounded-md bg-blue-100 px-4 py-2 text-sm font-medium text-blue-800 transition hover:bg-red-100 hover:text-red-800"
+                  className="cursor-pointer rounded-md bg-blue-100 px-4 py-2 text-sm font-medium text-blue-800 transition"
                 >
                   {filter} ×
                 </div>
@@ -119,7 +131,7 @@ export const Inbox: React.FC = () => {
               <button
                 type="button"
                 id="add-filter"
-                className={`bg-gray hover:font-black" } group mb-2 mt-2 flex items-center justify-center gap-2 rounded-md border px-2 py-1 text-gray-800 shadow-sm transition-all duration-150 hover:bg-gray-100`}
+                className="group mb-2 mt-2 flex items-center justify-center gap-2 rounded-md border px-2 py-1 text-gray-800 shadow-sm transition-all duration-150 hover:bg-gray-100"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -143,11 +155,11 @@ export const Inbox: React.FC = () => {
                 {filterOptions.map((option) => (
                   <DropdownMenuItem
                     key={option}
-                    onClick={() => !filters.includes(option) && handleAddFilter(option)} // Prevent onClick if already selected
+                    onClick={() => !filters.includes(option) && handleAddFilter(option)}
                     className={`w-full px-8 py-1 ${
                       filters.includes(option)
-                        ? "cursor-not-allowed bg-gray-200 text-gray-400" // Greyed out style for selected items
-                        : "cursor-pointer hover:bg-gray-100" // Default style for unselected items
+                        ? "cursor-not-allowed bg-gray-200 text-gray-400"
+                        : "cursor-pointer hover:bg-gray-100"
                     }`}
                   >
                     {option}
@@ -157,6 +169,7 @@ export const Inbox: React.FC = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
+
         <div className="mr-[1.5em]">
           <select
             id="studiesPerPage"
@@ -173,6 +186,7 @@ export const Inbox: React.FC = () => {
         </div>
       </div>
 
+      {/* Document List */}
       <CardContent className="p-0">
         {isError && (
           <div className="text-red-600">Error loading documents: {JSON.stringify(error)}</div>
@@ -192,6 +206,27 @@ export const Inbox: React.FC = () => {
           </div>
         )}
       </CardContent>
+
+      {/* Pagination */}
+      {data && (
+        <div className="mr-[1.5em] mt-4 flex items-center justify-between">
+          {/* Item Range */}
+          <div className="text-sm text-gray-600">
+            {startRange}-{endRange} of {data.totalCount}
+          </div>
+          {/* Chevron Buttons */}
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious onClick={handlePreviousPage} disabled={currentPage === 1} />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationNext onClick={handleNextPage} disabled={currentPage === totalPages} />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 };
