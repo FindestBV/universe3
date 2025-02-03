@@ -1,5 +1,13 @@
 export const people = [
   {
+    name: "Ro O'Leary",
+    email: "ronan.oleary@findest.eu",
+    role: "Dev",
+    imageUrl: "https://ronan-oleary.com/assets/ro-bw.d434f415.png",
+    lastSeen: "3h ago",
+    lastSeenDateTime: "2023-01-23T13:23Z",
+  },
+  {
     name: "Leslie Alexander",
     email: "leslie.alexander@example.com",
     role: "Co-Founder / CEO",

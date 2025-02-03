@@ -55,7 +55,7 @@ export const Dashboard = () => {
     } else {
       redirRoute = "studies";
     }
-    navigate(`/library/${redirRoute}/${id}`, { state: { id } });
+    navigate(`/pages/${redirRoute}/${id}`, { state: { id } });
   };
 
   const formatTimeHHMM = (timestamp: string): string => {
