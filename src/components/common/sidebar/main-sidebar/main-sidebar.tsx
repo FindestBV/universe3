@@ -1,8 +1,6 @@
 import { currentUser, logout } from "@/api/auth/authSlice";
 import { useGetStudyByIdQuery } from "@/api/documents/documentApi";
-// import { setEditingState } from "@/api/documents/documentSlice";
 import AdvancedSearchModal from "@/components/common/dialogs/advanced-search-modal";
-// import GenerateReport from "@/components/common/dialogs/generate-report-modal";
 import UserAvatar from "@/components/common/utilities/user-avatar";
 import {
   DropdownMenu,
@@ -91,67 +89,11 @@ const data = {
           ],
         },
         {
-          title: "Studies",
-          url: "/pages/studies",
-        },
-        {
           title: "My Workspace",
           url: "/inbox",
         },
       ],
     },
-
-    //       title: "Quantum",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "Documentation",
-    //   url: "#",
-    //   icon: BookOpen,
-    //   items: [
-    //     {
-    //       title: "Introduction",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Get Started",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Tutorials",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Changelog",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "Settings",
-    //   url: "#",
-    //   icon: Settings2,
-    //   items: [
-    //     {
-    //       title: "General",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Team",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Billing",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Limits",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
   ],
   projects: [
     {
@@ -166,6 +108,7 @@ const data = {
     },
   ],
 };
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { open } = useSidebar();
   const user = useSelector(currentUser);
@@ -175,7 +118,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: fetchedStudy, isLoading: fetchedStudyIsLoading } = useGetStudyByIdQuery(
     documentId,
     {
-      refetchOnMountOrArgChange: false, // Prevents automatic refetching
+      refetchOnMountOrArgChange: false,
     },
   );
 
@@ -185,7 +128,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   useEffect(() => {
     console.log("is open", open);
-    // dispatch(setSidebarState(open));
   }, [open]);
 
   return (
@@ -194,6 +136,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
+        {/* ✅ Updated NavMain component to include the new "Studies" & "Navigation" sub-menu items */}
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
