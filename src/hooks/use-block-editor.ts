@@ -215,12 +215,6 @@ export const useBlockEditor = ({
               authorName: userName,
             })
           : undefined,
-        aiToken
-          ? AiImage.configure({
-              authorId: userId,
-              authorName: userName,
-            })
-          : undefined,
         aiToken ? Ai.configure({ token: aiToken }) : undefined,
       ].filter((e): e is AnyExtension => e !== undefined),
       editorProps: {
