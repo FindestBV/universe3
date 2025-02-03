@@ -99,7 +99,7 @@ export const DashboardHeader = () => {
                         // THIS IS A TEMPORARY PATCH.
                         // {activity.fullType === "StudyTypeUndefined" ? "studies" : "entities"}
                         navigateWithTransition(
-                          `/library/${activity.fullType === "StudyTypeUndefined" ? "studies" : "entities"}/${activity.id}`,
+                          `/pages/${activity.fullType === "StudyTypeUndefined" ? "studies" : "entities"}/${activity.id}`,
                         )
                       }
                     >

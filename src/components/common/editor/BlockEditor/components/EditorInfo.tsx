@@ -1,6 +1,7 @@
 import { setLockPage } from "@/api/documents/documentSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import LockPageConfirm from "@/components/common/dialogs/lock-page-confirm";
+import MinimizableDialog from "@/components/common/dialogs/minimizable-dialog";
 import ShareObject from "@/components/common/dialogs/share-object";
 import UserAvatar from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
@@ -244,6 +245,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
               PIN
             </button>
             <ShareObject parentId={""} parentTitle={""} />
+            <MinimizableDialog />
             <span className="h-6 border-l border-gray-300"></span>
           </>
         ) : null}

@@ -117,7 +117,7 @@ export const ReferencesSearchbar = () => {
           ].includes(item?.type)
             ? "Document"
             : item?.type || "Unknown",
-          url: item?.url || `/library/${key}/${item?.id}`,
+          url: item?.url || `/pages/${key}/${item?.id}`,
         })),
       )
       .filter((item) => item.id && item.name);
