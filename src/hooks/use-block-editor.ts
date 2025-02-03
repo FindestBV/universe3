@@ -10,6 +10,7 @@ import { ExtensionKit } from "@/extensions/extension-kit";
 import { initialContent } from "@/lib/data/initialContent";
 import { TiptapCollabProvider, WebSocketStatus } from "@hocuspocus/provider";
 import type { AnyExtension, Editor } from "@tiptap/core";
+import { Mark } from "@tiptap/core";
 import Blockquote from "@tiptap/extension-blockquote";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
@@ -26,6 +27,22 @@ declare global {
     editor: Editor | null;
   }
 }
+
+export const Rating = Mark.create({
+  name: "rating",
+  addAttributes() {
+    return {
+      rating: { default: 0 },
+      sourceId: { default: null },
+      targetId: { default: null },
+      ratersCount: { default: 0 },
+      isRatingNeeded: { default: false },
+    };
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["span", { class: "rating", ...HTMLAttributes }, "⭐"];
+  },
+});
 
 export const useBlockEditor = ({
   aiToken,
@@ -195,6 +212,7 @@ export const useBlockEditor = ({
         CustomGraphBlock,
         IntakeSheetComponent,
         CustomImage,
+        Rating,
         provider && ydoc
           ? Collaboration.configure({
               document: ydoc,
