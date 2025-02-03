@@ -17,6 +17,7 @@ const sidebarSlice = createSlice({
       state.sidebarOpen = !state.sidebarOpen;
     },
     setSidebarState(state, action: PayloadAction<boolean>) {
+      console.log("globalSidebar state", state);
       state.sidebarOpen = action.payload;
     },
   },
