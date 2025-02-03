@@ -46,7 +46,7 @@ const documentSlice = createSlice({
       action: PayloadAction<{ isLocked: boolean; documentId: string | null }>,
     ) => {
       state.isLocked = action.payload.isLocked;
-      state.documentId = action.payload.documentId;
+      state.documentId = null;
     },
     openDialog: (state, action: PayloadAction<{ documentId: string }>) => {
       state.isDialogOpen = true;
