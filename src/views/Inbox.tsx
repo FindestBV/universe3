@@ -2,14 +2,8 @@ import { InboxCard } from "@/components/common/cards/inbox-card";
 import DocumentsSkeleton from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-// Import your Pagination components (adjust the import path as needed)
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+// Import your Pagination buttons (assumed to render just the chevron icons)
+import { PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -82,23 +76,23 @@ export const Inbox: React.FC = () => {
     setFilters(filters.filter((f) => f !== filter));
   };
 
-  // Calculate the range of documents currently shown.
+  // Calculate the range of documents being shown.
   const startRange = data ? (currentPage - 1) * documentsPerPage + 1 : 0;
   const endRange = data ? Math.min(currentPage * documentsPerPage, data.totalCount) : 0;
 
   return (
     <div className="flex h-full w-full flex-col px-12 max-sm:px-4">
-      {/* Top Controls */}
-      <div className="mb-2 flex items-center justify-between gap-1 rounded-lg">
-        <div className="flex items-center gap-2">
+      {/* Top Row: Filter Controls and Pagination */}
+      <div className="mb-4 flex items-center justify-between gap-4 rounded-lg">
+        {/* Left side: Checkbox, Filters, and Studies-Per-Page select */}
+        <div className="flex items-center gap-4">
           <Checkbox
             id="select-all"
             checked={data ? selectedDocs.size === data.documents.length : false}
             onCheckedChange={(checked) => handleSelectAll(checked as boolean)}
-            className="ml-4"
           />
           {isChecked && (
-            <div className="ml-4 flex gap-2">
+            <div className="flex gap-2">
               <a href="#" className="linkedStudy">
                 <Link size={18} />
               </a>
@@ -107,11 +101,8 @@ export const Inbox: React.FC = () => {
               </a>
             </div>
           )}
-        </div>
-
-        <div className="mr-4 flex flex-grow items-center gap-4">
           {filters.length > 0 && (
-            <div className="ml-auto flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2">
               {filters.map((filter) => (
                 <div
                   key={filter}
@@ -123,15 +114,12 @@ export const Inbox: React.FC = () => {
               ))}
             </div>
           )}
-        </div>
-
-        <div className="flex items-center gap-1">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
                 type="button"
                 id="add-filter"
-                className="group mb-2 mt-2 flex items-center justify-center gap-2 rounded-md border px-2 py-1 text-gray-800 shadow-sm transition-all duration-150 hover:bg-gray-100"
+                className="group flex items-center gap-2 rounded-md border px-2 py-1 text-gray-800 shadow-sm transition-all duration-150 hover:bg-gray-100"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -168,9 +156,6 @@ export const Inbox: React.FC = () => {
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
-
-        <div className="mr-[1.5em]">
           <select
             id="studiesPerPage"
             value={documentsPerPage}
@@ -184,6 +169,21 @@ export const Inbox: React.FC = () => {
             <option value={5}>5</option>
           </select>
         </div>
+
+        {/* Right side: Pagination */}
+        {data && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">
+              {startRange}-{endRange} of {data.totalCount}
+            </span>
+            <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+              <PaginationPrevious />
+            </button>
+            <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+              <PaginationNext />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Document List */}
@@ -206,27 +206,6 @@ export const Inbox: React.FC = () => {
           </div>
         )}
       </CardContent>
-
-      {/* Pagination */}
-      {data && (
-        <div className="mr-[1.5em] mt-4 flex items-center justify-between">
-          {/* Item Range */}
-          <div className="text-sm text-gray-600">
-            {startRange}-{endRange} of {data.totalCount}
-          </div>
-          {/* Chevron Buttons */}
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious onClick={handlePreviousPage} disabled={currentPage === 1} />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext onClick={handleNextPage} disabled={currentPage === totalPages} />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
-      )}
     </div>
   );
 };
