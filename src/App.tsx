@@ -76,7 +76,6 @@ function AuthenticatedLayout() {
               <Routes location={location}>
                 {/* TEMP!! THIS WILL BE REFACTORED */}
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/queries" element={<Queries />} />
                 <Route path="/overview" element={<Documents />} />
                 <Route path="/pages" element={<Pages />} />
                 <Route path="/pages/studies" element={<Studies />} />

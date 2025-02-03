@@ -145,7 +145,7 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
   };
 
   const handleCardClick = () => {
-    navigate(`/library/documents/${id}`, {
+    navigate(`/sources/${id}`, {
       state: { id, url, title, type, abstract, createdByUsername, dateAdded },
     });
   };

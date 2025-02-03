@@ -1,7 +1,5 @@
 import { currentUser, userEmail } from "@/api/auth/authSlice";
 import LinkedObjects from "@/components/common/cards/linked-objects";
-import ArticleTest from "@/components/common/layout/article-test";
-import BentoGrid from "@/components/common/layout/bento-grid";
 import ImageTiles from "@/components/common/layout/image-tiles";
 import LanguageSelector from "@/components/common/layout/language-selector";
 import ProfileCardTest from "@/components/common/layout/profile-card-test";
@@ -58,8 +56,6 @@ export const SettingsPage = () => {
 
             {/* Profile Tab */}
             <TabsContent value="profile" className="py-4">
-              <LinkedObjects linkedObjects={{}} id={""} />
-
               <Settings user={user} />
               <form className="space-y-4">
                 <div>
@@ -128,8 +124,6 @@ export const SettingsPage = () => {
               </form>
             </TabsContent>
           </Tabs>
-
-          <BentoGrid />
         </div>
       </div>
     </motion.div>
