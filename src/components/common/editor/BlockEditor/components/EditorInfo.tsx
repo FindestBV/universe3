@@ -245,7 +245,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
               PIN
             </button>
             <ShareObject parentId={""} parentTitle={""} />
-            <MinimizableDialog />
+            <MinimizableDialog currentId={id} />
             <span className="h-6 border-l border-gray-300"></span>
           </>
         ) : null}

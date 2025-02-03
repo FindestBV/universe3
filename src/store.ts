@@ -28,7 +28,7 @@ const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHisto
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "language", "sidebar"], // Language must match key in combineReducers
+  whitelist: ["auth", "language", "sidebar", "document"], // Add "document"
 };
 
 // Combine reducers
