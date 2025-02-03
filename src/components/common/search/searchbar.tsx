@@ -184,7 +184,7 @@ export const SearchBar = () => {
                 key={tab}
                 onClick={() => handleTabChange(tab)}
                 className={`max-w-full flex-1 rounded-lg px-4 py-2 text-center ${
-                  selectedTab === tab ? "bg-blue-500 text-white" : "bg-gray-200"
+                  selectedTab === tab ? "bg-[#006A86] text-white" : "bg-gray-200"
                 } duration-200 hover:bg-gray-400 hover:text-gray-50`}
                 aria-pressed={selectedTab === tab}
               >

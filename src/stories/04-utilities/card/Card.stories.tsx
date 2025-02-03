@@ -35,7 +35,7 @@ export const Base: Story = {
         <p>This is the main content area of the card. You can include any elements or text here.</p>
       </CardContent>
       <CardFooter className="justify-end">
-        <button className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
+        <button className="rounded-md bg-[#006A86] px-4 py-2 text-white hover:bg-blue-600">
           Action
         </button>
       </CardFooter>

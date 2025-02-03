@@ -46,7 +46,7 @@
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
 
-    --accent: 219 49% 44%;
+    --accent: 193, 100%, 26%;
     --accent-foreground: 240 5.9% 10%;
 
     --destructive: 0 84.2% 60.2%;
@@ -78,13 +78,13 @@
 
     --sidebar-accent-foreground: 240 5.9% 10%;
 
-    --sidebar-border: 220 13% 91%;
+    --sidebar-border: 0, 0%, 98%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 219 49% 44%;
+    --background: 193, 100%, 26%;
     --foreground: 0 0% 98%;
 
     --muted: 240 3.7% 15.9%;
@@ -105,13 +105,13 @@
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
 
-    --accent: 219 49% 44%;
+    --accent: 193, 100%, 26%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --ring: 219 49% 44%;
+    --ring: 193, 100%, 26%;
 
     --chart-1: 220 70% 50%;
 
@@ -123,11 +123,11 @@
 
     --chart-5: 340 75% 55%;
 
-    --sidebar-background: 219 49% 44%;
+    --sidebar-background: 193, 100%, 26%;
 
     --sidebar-foreground: 240 4.8% 95.9%;
 
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary: 193, 100%, 26%;
 
     --sidebar-primary-foreground: 0 0% 100%;
 
@@ -135,7 +135,7 @@
 
     --sidebar-accent: 240 4.8% 95.9%;
 
-    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-border: 0, 0%, 98%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
@@ -353,7 +353,7 @@ html:has(.view-transition) {
 }
 
 .linkedCounts__item{
-  @apply w-[40px] flex justify-center items-center gap-1 rounded-sm hover:bg-blue-500 mb-4;
+  @apply w-[40px] flex justify-center items-center gap-1 rounded-sm hover:bg-[#006A86] mb-4;
 }
 
 .labelText{

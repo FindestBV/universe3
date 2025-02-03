@@ -98,7 +98,7 @@ const ExplorerDataViewModal = () => {
                   onClick={() => handleOptionSelect(label)}
                   className={`rounded px-4 py-2 ${
                     viewOptions[label] === selectedView
-                      ? "bg-blue-500 text-white"
+                      ? "bg-[#006A86] text-white"
                       : "bg-gray-200 text-gray-800"
                   }`}
                 >

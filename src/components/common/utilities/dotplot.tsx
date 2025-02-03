@@ -46,7 +46,7 @@ const DotPlot: React.FC = () => {
         {/* Legend */}
         <div className="mt-0 flex items-start justify-end gap-6">
           <div className="flex items-center gap-2">
-            <div className="h-4 w-4 rounded-full bg-blue-500 opacity-80" />
+            <div className="h-4 w-4 rounded-full bg-[#006A86] opacity-80" />
             <span className="text-sm">Education</span>
           </div>
           <div className="flex items-center gap-2">
@@ -98,7 +98,7 @@ const DotPlot: React.FC = () => {
                 <div
                   key={index}
                   className={`absolute rounded-full opacity-80 ${
-                    point.type === "education" ? "bg-blue-500" : "bg-red-500"
+                    point.type === "education" ? "bg-[#006A86]" : "bg-red-500"
                   }`}
                   style={{
                     width: `${point.size}px`,

@@ -93,7 +93,7 @@ export const CreateItemModal: React.FC = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          className="createNewButton bg-blue-500 uppercase hover:bg-blue-600"
+          className="createNewButton bg-[#006A86] uppercase hover:bg-blue-600"
           variant="secondary"
         >
           {t("createNew")}
@@ -136,7 +136,7 @@ export const CreateItemModal: React.FC = () => {
                 <Button variant="secondary" onClick={() => setSelectedItem(null)}>
                   {t("goBack")}
                 </Button>
-                <Button className="bg-blue-500 text-white hover:bg-blue-600">{t("create")}</Button>
+                <Button className="bg-[#006A86] text-white hover:bg-blue-600">{t("create")}</Button>
               </div>
             </div>
           )}

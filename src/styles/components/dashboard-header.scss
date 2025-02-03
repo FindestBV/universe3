@@ -4,6 +4,6 @@
 
   /* Indicator */
   .indicator {
-    @apply grid place-items-center absolute -top-1 -right-1 items-center justify-center text-[9px] rounded-full bg-[#007aff] w-[18px] h-[18px] text-white;
+    @apply grid place-items-center absolute -top-1 -right-1 items-center justify-center text-[9px] rounded-full bg-yellow-400 w-[18px] h-[18px] text-white;
   }
 }

@@ -126,7 +126,7 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
                 </a>
               </Button>
               <div className="flex items-center gap-2">
-                <Button className="rounded-md bg-blue-500 px-4 py-1 text-white hover:bg-blue-600">
+                <Button className="rounded-md bg-[#006A86] px-4 py-1 text-white hover:bg-blue-600">
                   Actions
                 </Button>
                 <UserAvatar username="Ro" />
