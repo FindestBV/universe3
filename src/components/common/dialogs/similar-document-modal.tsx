@@ -154,7 +154,7 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
                 connectedDocuments.map((doc: any) => (
                   <div key={doc.id} className="connected-object Entity">
                     <a
-                      href={`/library/entities/${doc.id}`}
+                      href={`/pages/entities/${doc.id}`}
                       className="text-blue-500 hover:underline"
                     >
                       {doc.title || "Unnamed Document"}
