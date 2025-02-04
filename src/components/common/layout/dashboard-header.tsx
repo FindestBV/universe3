@@ -3,6 +3,12 @@ import { useGetMyRecentActivityDropdownQuery } from "@/api/activity/activityApi"
 // import { currentUser } from "@/api/auth/authSlice";
 import { useGetMyDocumentInboxQuery } from "@/api/documents/documentApi";
 import { setSidebarState } from "@/api/utilities/sidebarSlice";
+import ActiveQueries from "@/components/common/dialogs/active-queries";
+// import { useTranslation } from "react-i18next";
+import CreateItemModal from "@/components/common/dialogs/create-item-modal";
+import HappinessSelector from "@/components/common/layout/happiness-selector";
+// import ExplorerModal from "@/components/common/dialogs/explorer-modal";
+import SearchBar from "@/components/common/search/searchbar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -25,12 +31,6 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-// import { useTranslation } from "react-i18next";
-import CreateItemModal from "../dialogs/create-item-modal";
-import ExplorerModal from "../dialogs/explorer-modal";
-import SearchBar from "../search/searchbar";
-import HappinessSelector from "./happiness-selector";
 
 interface DashboardHeader {
   className?: string;
@@ -180,7 +180,8 @@ export const DashboardHeader = () => {
           </li> */}
 
           <li>
-            <TooltipProvider>
+            <ActiveQueries />
+            {/* <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button className="relative" aria-label="Active queries">
@@ -198,7 +199,7 @@ export const DashboardHeader = () => {
                   <p>No active queries</p>
                 </TooltipContent>
               </Tooltip>
-            </TooltipProvider>
+            </TooltipProvider> */}
           </li>
         </ul>
       </div>
