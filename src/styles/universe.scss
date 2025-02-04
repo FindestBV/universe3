@@ -2,6 +2,7 @@
 /* This will be more modular */
 
 @use './colors/colors.scss';
+@use './components/active-queries.scss';
 @use './components/dashboard-header.scss';
 @use './components/data-view.scss';
 @use './components/inbox-card.scss';

@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+// import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import {
   Clock,
@@ -180,7 +180,7 @@ export const DashboardHeader = () => {
           </li> */}
 
           <li>
-            <ActiveQueries />
+            <ActiveQueries activeQueries={documentInbox ?? documentInbox} />
             {/* <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>

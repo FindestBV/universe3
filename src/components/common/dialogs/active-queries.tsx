@@ -11,45 +11,57 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Search } from "lucide-react";
+import { Loader, Pin, Search, SquareArrowOutUpRight, TriangleAlert } from "lucide-react";
 
-export function ActiveQueries() {
+import { Spinner } from "../editor/ui/Spinner";
+
+interface ActiveQueriesProps {
+  activeQueries?: [];
+}
+
+export const ActiveQueries: React.FC = ({ activeQueries }: ActiveQueriesProps) => {
+  console.log("activeQueries", activeQueries);
+
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" className="bg-primary">
-          <Search width={20} color="black" />
-        </Button>
+        <div className="relative">
+          {activeQueries && activeQueries.documents.length > 0 ? (
+            <span className="indicator">{activeQueries ? activeQueries.documents.length : 1}</span>
+          ) : null}
+
+          <Button variant="outline" className="border-none bg-[#006A86] text-white">
+            <Search width={20} className="text-white" />
+          </Button>
+        </div>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Edit profile</SheetTitle>
+          <SheetTitle className="text-black">Active Queries</SheetTitle>
           <SheetDescription>
-            Make changes to your profile here. Click save when you're done.
+            You currently have {activeQueries?.documents.length ?? 0} active queries
           </SheetDescription>
         </SheetHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
-          </div>
+        <div className="grid gap-2 py-4">
+          {activeQueries?.documents.map((d) => {
+            return (
+              <div key={d.id} className="activeQueries">
+                <div className="flex items-center gap-2">
+                  <SquareArrowOutUpRight size={20} className="hover:text-[#006A86]" />
+                  <Pin size={18} className="hover:text-[#006A86]" />
+                  <p className="text-sm font-bold">{d.title}</p>
+                </div>
+
+                <TriangleAlert size={18} />
+                <Loader className="h-5 w-5 animate-spin" />
+              </div>
+            );
+          })}
         </div>
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
-          </SheetClose>
-        </SheetFooter>
+        <SheetFooter></SheetFooter>
       </SheetContent>
     </Sheet>
   );
-}
+};
 
 export default ActiveQueries;
