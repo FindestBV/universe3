@@ -1,7 +1,7 @@
 import {
   useGetEntitiesQuery,
   useGetEntityByIdQuery,
-  useGetStudiesQuery,
+  useGetStudyByIdQuery,
 } from "@/api/documents/documentApi";
 // Import TipTap Editor
 import BlockEditor from "@/components/common/editor/BlockEditor/BlockEditor";
@@ -19,12 +19,10 @@ export const Page: React.FC = () => {
   // ✅ Determine whether to fetch "studies" or "entities" based on the URL
   const isStudiesPage = location.pathname.includes("studies");
 
-  // ✅ Conditional API query
   const { data: fetchedEntity, isLoading: fetchedEntityIsLoading } = isStudiesPage
-    ? useGetStudiesQuery(id, { refetchOnMountOrArgChange: false })
+    ? useGetStudyByIdQuery(id, { refetchOnMountOrArgChange: false })
     : useGetEntityByIdQuery(id, { refetchOnMountOrArgChange: false });
 
-  // ✅ If it's entities, also fetch paginated list
   const { data, isLoading, isError, error, refetch } = useGetEntitiesQuery(
     { page: 1, limit: 10 }, // Adjust page and limit as needed
     { refetchOnMountOrArgChange: true },

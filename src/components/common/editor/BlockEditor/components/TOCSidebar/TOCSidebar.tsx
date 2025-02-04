@@ -1,10 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Editor } from "@tiptap/react";
-import { Link, List } from "lucide-react";
 
 import { memo, useCallback } from "react";
-
-import { Toolbar } from "../../../ui/Toolbar";
 
 // import { TableOfContents } from "../../../TableOfContents";
 

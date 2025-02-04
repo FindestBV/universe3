@@ -1,11 +1,11 @@
 import { useAdvancedSearchQuery } from "@/api/search/searchApi";
 import GenericCard from "@/components/common/cards/generic-card";
 import CreateQueryDialog from "@/components/common/dialogs/create-query-dialog";
-import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
+// import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 import { DocumentsSkeleton } from "@/components/common/loaders/documents-skeleton";
 // import { StudyCard } from "@/components/common/study-card";
 import { CardContent } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
+// import { Checkbox } from "@/components/ui/checkbox";
 import { Search, Trash2 } from "lucide-react";
 
 import { useEffect, useState } from "react";
@@ -126,11 +126,11 @@ export const AdvancedSearch: React.FC = () => {
         </div> */}
 
         <CardContent className="p-0">
-          {isError && (
+          {/* {isError && (
             <div className="text-red-600">Error loading items: {JSON.stringify(error)}</div>
           )}
           {isLoading && <DocumentsSkeleton />}
-          {data && (
+          {data ? (
             <div>
               {advancedSearchData &&
                 advancedSearchData.queries.map((item) => (
@@ -145,7 +145,7 @@ export const AdvancedSearch: React.FC = () => {
                   />
                 ))}
             </div>
-          )}
+          ) : null} */}
         </CardContent>
       </div>
     </>

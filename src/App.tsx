@@ -24,7 +24,6 @@ const Resources = lazy(() => import("@/views/Resources"));
 const Documents = lazy(() => import("@/views/Documents"));
 const Settings = lazy(() => import("@/views/Settings"));
 const Studies = lazy(() => import("@/views/Studies"));
-const Study = lazy(() => import("@/views/Study"));
 const Pages = lazy(() => import("@/views/Pages"));
 const Page = lazy(() => import("@/views/Page"));
 const NotFoundPage = lazy(() => import("@/views/NotFound"));
@@ -78,7 +77,7 @@ function AuthenticatedLayout() {
                 <Route path="/overview" element={<Documents />} />
                 <Route path="/pages" element={<Pages />} />
                 <Route path="/pages/studies" element={<Studies />} />
-                <Route path="/pages/studies/:id" element={<Study />} />
+                <Route path="/pages/studies/:id" element={<Page />} />
                 <Route path="/sources" element={<Sources />} />
                 <Route path="/sources/:id" element={<Source />} />
                 <Route path="/pages/entities" element={<Pages />} />

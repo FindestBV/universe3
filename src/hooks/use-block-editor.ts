@@ -4,23 +4,16 @@ import CustomGraphBlock from "@/components/common/editor/extensions/customgraphb
 import CustomImage from "@/components/common/editor/extensions/customImage";
 import Title from "@/components/common/editor/extensions/customtitle-extension";
 import IntakeSheetComponent from "@/components/common/editor/extensions/intakesheet-extension";
-import { AiImage, AiWriter } from "@/extensions";
-import { Ai } from "@/extensions/Ai";
 import { ExtensionKit } from "@/extensions/extension-kit";
 import { initialContent } from "@/lib/data/initialContent";
 import { TiptapCollabProvider, WebSocketStatus } from "@hocuspocus/provider";
-import type { AnyExtension, Editor } from "@tiptap/core";
+import type { Editor } from "@tiptap/core";
 import { Mark } from "@tiptap/core";
 import Blockquote from "@tiptap/extension-blockquote";
-import Collaboration from "@tiptap/extension-collaboration";
-import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import { useEditor, useEditorState } from "@tiptap/react";
 import type { Doc as YDoc } from "yjs";
 
 import { useEffect, useMemo, useState } from "react";
-
-import { userColors, userNames } from "../lib/constants";
-import { randomElement } from "../lib/utils";
 
 declare global {
   interface Window {
@@ -78,47 +71,6 @@ export const useBlockEditor = ({
   const [collabState, setCollabState] = useState<WebSocketStatus>(
     provider ? WebSocketStatus.Connecting : WebSocketStatus.Disconnected,
   );
-  // console.log("Unparsed Content:", type);
-  // const parsedContent = useMemo(() => {
-  //   try {
-  //     const parsed = typeof content === "string" ? JSON.parse(content) : content;
-  //     console.log("blockeditor, title", title);
-  //     // Define the title node
-  //     const titleNode = {
-  //       type: "heading",
-  //       attrs: { level: 1 },
-  //       content: [{ type: "text", text: title || "Enter a title..." }],
-  //     };
-
-  //     // Check if the first node is already a heading of level 1 (title)
-  //     if (parsed?.content?.[0]?.type === "heading" && parsed.content[0]?.attrs?.level === 1) {
-  //       // If a title exists, update its text
-  //       parsed.content[0].content = [{ type: "text", text: title || "Untitled Document" }];
-  //       return parsed;
-  //     }
-
-  //     // If no title exists, add the title node at the beginning of the content
-  //     return {
-  //       ...parsed,
-  //       content: [titleNode, ...(parsed?.content || [])],
-  //     };
-  //   } catch (error) {
-  //     console.error("Error parsing content:", error);
-
-  //     // Fallback content structure with title
-  //     return {
-  //       type: "doc",
-  //       content: [
-  //         {
-  //           type: "heading",
-  //           attrs: { level: 1 },
-  //           content: [{ type: "text", text: title || "Untitled Document" }],
-  //         },
-  //         ...(content || []),
-  //       ],
-  //     };
-  //   }
-  // }, [content, title]);
 
   const parsedContent = useMemo(() => {
     try {
@@ -213,28 +165,7 @@ export const useBlockEditor = ({
         IntakeSheetComponent,
         CustomImage,
         Rating,
-        provider && ydoc
-          ? Collaboration.configure({
-              document: ydoc,
-            })
-          : undefined,
-        provider
-          ? CollaborationCursor.configure({
-              provider,
-              user: {
-                name: randomElement(userNames),
-                color: randomElement(userColors),
-              },
-            })
-          : undefined,
-        aiToken
-          ? AiWriter.configure({
-              authorId: userId,
-              authorName: userName,
-            })
-          : undefined,
-        aiToken ? Ai.configure({ token: aiToken }) : undefined,
-      ].filter((e): e is AnyExtension => e !== undefined),
+      ],
       editorProps: {
         attributes: {
           autocomplete: "off",
