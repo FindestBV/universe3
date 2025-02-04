@@ -2,7 +2,7 @@ export const people = [
   {
     name: "Ro O'Leary",
     email: "ronan.oleary@findest.eu",
-    role: "Dev",
+    role: "Developer/Old dude",
     imageUrl: "/assets/images/ro-bw.d434f415.png",
     lastSeen: "3h ago",
     lastSeenDateTime: "2023-01-23T13:23Z",
@@ -26,14 +26,14 @@ export const people = [
   {
     name: "Gizem Mağden",
     email: "gizem.magden@findest.eu",
-    role: "Developmer",
+    role: "Developer",
     imageUrl: "/assets/images/gizem.jpeg",
     lastSeen: null,
   },
   {
     name: "Guillaume Guirriec",
     email: "guillaume.guirriec@findest.eu",
-    role: "Back End Developer",
+    role: "Backend Developer",
     imageUrl: "/assets/images/guillaume.jpeg",
     lastSeen: "3h ago",
     lastSeenDateTime: "2023-01-23T13:23Z",
@@ -41,7 +41,7 @@ export const people = [
   {
     name: "Orhun Begendi",
     email: "orhun.begendi@efindest.eu",
-    role: "Designer",
+    role: "Lead Developer",
     imageUrl: "/assets/images/orhun.jpeg",
     lastSeen: "3h ago",
     lastSeenDateTime: "2023-01-23T13:23Z",
