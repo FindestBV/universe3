@@ -194,7 +194,7 @@ export function CreateItemModal() {
                   <FileText className="h-6 w-6 text-blue-500" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium group-hover:text-white">Pages</h3>
+                  <h3 className="text-lg font-medium group-hover:text-white">Page</h3>
                   <p className="text-sm text-gray-500 group-hover:text-white">
                     Create a new page within your universe. Choose to select type Entity or Study.
                   </p>
