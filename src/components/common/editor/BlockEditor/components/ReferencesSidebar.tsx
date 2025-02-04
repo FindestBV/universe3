@@ -9,6 +9,7 @@ import {
   Fingerprint,
   Highlighter,
   Inbox,
+  Info,
   Link,
   List,
   Paperclip,
@@ -192,51 +193,88 @@ export const ReferencesSidebar: React.FC<{
                   </>
                 )}
                 <TabsContent value="documents">
-                  {connectedObjects?.documents && connectedObjects.documents.length > 0
-                    ? connectedObjects.documents.map(
-                        (doc: { title: any }, index: React.Key | null | undefined) => (
-                          <div key={index} className="mb-2 flex items-start gap-2">
-                            <Link size={18} />
-                            <a href={"#"} className="text-gray-700 hover:text-black">
-                              <p className="text-sm">{doc.title || "Untitled Document"}</p>
-                            </a>
-                          </div>
-                        ),
-                      )
-                    : "No connected objects."}
+                  {connectedObjects?.documents && connectedObjects.documents.length > 0 ? (
+                    connectedObjects.documents.map(
+                      (doc: { title: any }, index: React.Key | null | undefined) => (
+                        <div key={index} className="mb-2 flex items-start gap-2">
+                          <Link size={18} />
+                          <a href={"#"} className="text-gray-700 hover:text-black">
+                            <p className="text-sm">{doc.title || "Untitled Document"}</p>
+                          </a>
+                        </div>
+                      ),
+                    )
+                  ) : (
+                    <div className="flex gap-2">
+                      <Info size={18} />
+                      <div>
+                        <p className="text-xs italic">
+                          Documents that are saved inside your Universe appear here.
+                          <br />
+                          <br />
+                          You add documents to this view by saving the using the browser extensino
+                          and adding a highlight, image or linking the document.
+                          <br />
+                          Highlights and images that you have saved from these documents can easily
+                          be injected into the current page.
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </TabsContent>
                 <TabsContent value="attachments">
                   <h1>Attachments Content</h1>
                 </TabsContent>
                 <TabsContent value="entities">
-                  {connectedEntities && connectedEntities.length > 0
-                    ? connectedEntities.map(
-                        (doc: { documentTitle: string }, index: React.Key | null | undefined) => (
-                          <div key={index} className="mb-2 flex items-start gap-2">
-                            <Link size={18} />
-                            <a href={"#"} className="text-gray-700 hover:text-black">
-                              <small>Entity</small>
-                              <p className="text-sm">{doc.documentTitle || "Untitled Document"}</p>
-                            </a>
-                          </div>
-                        ),
-                      )
-                    : "No connected entities."}
+                  {connectedEntities && connectedEntities.length > 0 ? (
+                    connectedEntities.map(
+                      (doc: { documentTitle: string }, index: React.Key | null | undefined) => (
+                        <div key={index} className="mb-2 flex items-start gap-2">
+                          <Link size={18} />
+                          <a href={"#"} className="text-gray-700 hover:text-black">
+                            <small>Entity</small>
+                            <p className="text-sm">{doc.documentTitle || "Untitled Document"}</p>
+                          </a>
+                        </div>
+                      ),
+                    )
+                  ) : (
+                    <div className="flex gap-2">
+                      <Info size={18} />
+                      <div>
+                        <p className="text-xs italic">
+                          Entities from your Universe appear here.
+                          <br />
+                          You can create entities from the Entities page in the library or using the
+                          browser extension!
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </TabsContent>
                 <TabsContent value="studies">
-                  {connectedStudies && connectedStudies.length > 0
-                    ? connectedStudies.map(
-                        (doc: { name: any }, index: React.Key | null | undefined) => (
-                          <div key={index} className="mb-2 flex items-start gap-2">
-                            <Link size={24} />
-                            <a href={"#"} className="text-gray-700 hover:text-black">
-                              <small>Study/Queries</small>
-                              <p className="text-sm">{doc.name || "Untitled Document"}</p>
-                            </a>
-                          </div>
-                        ),
-                      )
-                    : "No connected studies."}
+                  {connectedStudies && connectedStudies.length > 0 ? (
+                    connectedStudies.map(
+                      (doc: { name: any }, index: React.Key | null | undefined) => (
+                        <div key={index} className="mb-2 flex items-start gap-2">
+                          <Link size={24} />
+                          <a href={"#"} className="text-gray-700 hover:text-black">
+                            <small>Study/Queries</small>
+                            <p className="text-sm">{doc.name || "Untitled Document"}</p>
+                          </a>
+                        </div>
+                      ),
+                    )
+                  ) : (
+                    <>
+                      <p className="text-xs italic">Studies from your Universe appear here.</p>
+                      <br />
+                      <p className="text-xs italic">
+                        You can create studies from the Studies page in the library or using the
+                        browser extension!
+                      </p>
+                    </>
+                  )}
                 </TabsContent>
               </Tabs>
             </TabsContent>

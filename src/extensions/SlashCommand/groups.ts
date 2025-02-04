@@ -8,7 +8,7 @@ export const GROUPS: Group[] = [
       {
         name: "askIgor",
         label: "Ask Igor",
-        iconName: "Sparkles",
+        iconName: "Bot",
         description: "Let AI finish your thoughts",
         shouldBeHidden: (editor) => editor.isActive("columns"),
         action: (editor) => editor.chain().focus().setAiWriter().run(),
@@ -118,10 +118,40 @@ export const GROUPS: Group[] = [
         name: "visualizations",
         label: "Visualizations",
         iconName: "Flashlight",
-        description: "Code block with syntax highlighting",
+        description: "Insert a custom visualization block",
         shouldBeHidden: (editor) => editor.isActive("columns"),
-        action: (editor) => {
-          editor.chain().focus().setCodeBlock().run();
+        action: async (editor) => {
+          const visualizationId = `custom-visual-${Date.now()}`;
+
+          // Insert a placeholder div in the editor
+          editor
+            .chain()
+            .focus()
+            .insertContent(`<div id="${visualizationId}" data-type="custom-visualization"></div>`)
+            .run();
+
+          // Ensure the component is dynamically imported correctly
+          const React = (await import("react")).default;
+          const ReactDOM = await import("react-dom/client");
+          const module = await import(
+            "@/components/common/editor/BlockEditor/components/CustomBlock"
+          );
+
+          // Extract the default component properly
+          const CustomBlock = module.default || module;
+
+          // Check if CustomBlock is valid
+          if (typeof CustomBlock !== "function") {
+            console.error("CustomBlock is not a valid React component:", CustomBlock);
+            return;
+          }
+
+          // Locate the newly inserted div
+          const mountNode = document.getElementById(visualizationId);
+          if (mountNode) {
+            const root = ReactDOM.createRoot(mountNode);
+            root.render(React.createElement(CustomBlock, {}));
+          }
         },
       },
     ],
