@@ -806,7 +806,7 @@ const CustomBlock = ({ node, updateAttributes }) => {
             setChartData(topics);
 
             setLoading(false); // Stop loading after timeout
-          }, 2500); // 2.5s delay
+          }, 3500); // 2.5s delay
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -820,15 +820,12 @@ const CustomBlock = ({ node, updateAttributes }) => {
       {/* Editable content */}
       <NodeViewContent className="content is-editable" />
 
-      <div className="chart-container relative w-auto max-w-[1280px]">
+      <div className="chart-container relative w-auto max-w-full overflow-y-scroll">
         {/* Show loading message for 2.5s */}
         {loading ? (
-          <p>Loading chart data...</p>
+          <p>Loading visualisation data...</p>
         ) : (
-          <>
-            {dataOutput && <h1 className="text-black">Output: {dataOutput[0].id}</h1>}
-            {chartData.length > 0 && <LineChart data={chartData} text={"Topic"} />}
-          </>
+          <>{chartData.length > 0 && <LineChart data={chartData} text={"Topic"} />}</>
         )}
       </div>
     </NodeViewWrapper>
