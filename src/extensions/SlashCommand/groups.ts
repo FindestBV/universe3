@@ -131,6 +131,24 @@ export const GROUPS: Group[] = [
             .run();
         },
       },
+
+      {
+        name: "customGraphBlock",
+        label: "Graph Block",
+        iconName: "Flashlight",
+        description: "Insert a custom visualization block",
+        shouldBeHidden: (editor) => editor.isActive("columns"),
+        action: (editor) => {
+          editor
+            .chain()
+            .focus()
+            .insertContent({
+              type: "customGraphBlock",
+              attrs: { id: `custom-visual-${Date.now()}` },
+            })
+            .run();
+        },
+      },
     ],
   },
 

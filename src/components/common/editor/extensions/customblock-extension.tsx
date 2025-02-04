@@ -10,10 +10,23 @@ export default Node.create({
 
   content: "inline*",
 
+  addAttributes() {
+    return {
+      id: { default: null },
+      theme: { default: "light" }, // Example setting
+      dataUrl: { default: "" }, // API URL for fetching external data
+    };
+  },
+
   parseHTML() {
     return [
       {
-        tag: "custom-block-component",
+        tag: "div[data-type='custom-visualization']",
+        getAttrs: (dom) => ({
+          id: dom.getAttribute("id"),
+          theme: dom.getAttribute("data-theme"),
+          dataUrl: dom.getAttribute("data-url"),
+        }),
       },
     ];
   },
