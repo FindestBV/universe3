@@ -120,38 +120,15 @@ export const GROUPS: Group[] = [
         iconName: "Flashlight",
         description: "Insert a custom visualization block",
         shouldBeHidden: (editor) => editor.isActive("columns"),
-        action: async (editor) => {
-          const visualizationId = `custom-visual-${Date.now()}`;
-
-          // Insert a placeholder div in the editor
+        action: (editor) => {
           editor
             .chain()
             .focus()
-            .insertContent(`<div id="${visualizationId}" data-type="custom-visualization"></div>`)
+            .insertContent({
+              type: "customBlock",
+              attrs: { id: `custom-visual-${Date.now()}` },
+            })
             .run();
-
-          // Ensure the component is dynamically imported correctly
-          const React = (await import("react")).default;
-          const ReactDOM = await import("react-dom/client");
-          const module = await import(
-            "@/components/common/editor/BlockEditor/components/CustomBlock"
-          );
-
-          // Extract the default component properly
-          const CustomBlock = module.default || module;
-
-          // Check if CustomBlock is valid
-          if (typeof CustomBlock !== "function") {
-            console.error("CustomBlock is not a valid React component:", CustomBlock);
-            return;
-          }
-
-          // Locate the newly inserted div
-          const mountNode = document.getElementById(visualizationId);
-          if (mountNode) {
-            const root = ReactDOM.createRoot(mountNode);
-            root.render(React.createElement(CustomBlock, {}));
-          }
         },
       },
     ],
@@ -184,14 +161,20 @@ export const GROUPS: Group[] = [
       },
 
       {
-        name: "maturity-radar",
-        label: "Maturity Radar",
-        iconName: "Target",
-        aliases: ["maturity-radar"],
-        description: "Insert a table of contents",
+        name: "visualizations",
+        label: "Visualizations",
+        iconName: "Flashlight",
+        description: "Insert a custom visualization block",
         shouldBeHidden: (editor) => editor.isActive("columns"),
         action: (editor) => {
-          editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: false }).run();
+          editor
+            .chain()
+            .focus()
+            .insertContent({
+              type: "customBlock",
+              attrs: { id: `custom-visual-${Date.now()}` },
+            })
+            .run();
         },
       },
     ],
