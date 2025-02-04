@@ -115,8 +115,8 @@ export const GROUPS: Group[] = [
       },
 
       {
-        name: "visualizations",
-        label: "Visualizations",
+        name: "visualization",
+        label: "Visualization",
         iconName: "Flashlight",
         description: "Insert a custom visualization block",
         shouldBeHidden: (editor) => editor.isActive("columns"),
@@ -161,20 +161,14 @@ export const GROUPS: Group[] = [
       },
 
       {
-        name: "visualizations",
-        label: "Visualizations",
-        iconName: "Flashlight",
+        name: "maturity-radar",
+        label: "Maturity Radar",
+        iconName: "Target",
         description: "Insert a custom visualization block",
         shouldBeHidden: (editor) => editor.isActive("columns"),
+        aliases: ["maturity-radar"],
         action: (editor) => {
-          editor
-            .chain()
-            .focus()
-            .insertContent({
-              type: "customBlock",
-              attrs: { id: `custom-visual-${Date.now()}` },
-            })
-            .run();
+          editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: false }).run();
         },
       },
     ],
