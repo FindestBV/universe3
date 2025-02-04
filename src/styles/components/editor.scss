@@ -540,8 +540,6 @@
   min-height: 50px;
 }
 
-
-
 .editorMainContent{
   @apply z-10 mb-16 h-auto flex-col px-12 transition-all duration-300; 
 }
@@ -579,4 +577,21 @@ table {
     padding: 8px;
     text-align: left;
   }  
+}
+
+.intakeSheet{
+
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  .card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 6px #00000029;
+    overflow: hidden;
+    transition: box-shadow .2s ease;
+    padding: 2em; 
+  }
 }
