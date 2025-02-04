@@ -4,7 +4,7 @@ export const people = [
     email: "ronan.oleary@findest.eu",
     role: "Developer/Old dude",
     imageUrl: "/assets/images/ro-bw.d434f415.png",
-    lastSeen: "3h ago",
+    lastSeen: null,
     lastSeenDateTime: "2023-01-23T13:23Z",
   },
   {
@@ -12,7 +12,7 @@ export const people = [
     email: "alessandro.baccini@findest.eu",
     role: "Full Stack Developer",
     imageUrl: "/assets/images/alessandro.png",
-    lastSeen: "3h ago",
+    lastSeen: null,
     lastSeenDateTime: "2023-01-23T13:23Z",
   },
   {
