@@ -9,7 +9,7 @@ const AskIgorModal: React.FC = () => {
       {/* Trigger to Open Dialog */}
       <DialogTrigger asChild>
         <div>
-          <button className="flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-2 font-bold text-[#006A86] transition-all duration-150 ease-linear hover:bg-[#006A86] hover:text-white">
+          <button className="flex items-center gap-1 rounded-md bg-white p-2 font-bold text-[#006A86] transition-all duration-150 ease-linear hover:bg-[#006A86] hover:text-white">
             <Bot className="h-4" />
             {/* <span className="md:block hidden">Ask IGOR<sup>AI</sup></span> */}
           </button>
@@ -17,7 +17,7 @@ const AskIgorModal: React.FC = () => {
       </DialogTrigger>
 
       {/* Dialog Content */}
-      <DialogContent className="z-[999] flex h-[80vh] max-w-5xl flex-col overflow-hidden rounded-lg bg-white p-0 shadow-lg md:flex-row">
+      <DialogContent className="z-[999] flex h-[80vh] max-w-5xl flex-col overflow-hidden rounded-lg border-none bg-white p-0 shadow-lg md:flex-row">
         <Tabs defaultValue="tab1" className="flex h-full w-full flex-row">
           {/* Left Panel */}
           <div className="w-full flex-shrink-0 bg-[#006A86] p-4 text-white md:w-1/3">
