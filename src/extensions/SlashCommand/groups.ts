@@ -114,6 +114,24 @@ export const GROUPS: Group[] = [
         },
       },
 
+      // {
+      //   name: "visualization",
+      //   label: "Visualization",
+      //   iconName: "Flashlight",
+      //   description: "Insert a custom visualization block",
+      //   shouldBeHidden: (editor) => editor.isActive("columns"),
+      //   action: (editor) => {
+      //     editor
+      //       .chain()
+      //       .focus()
+      //       .insertContent({
+      //         type: "customBlock",
+      //         attrs: { id: `custom-visual-${Date.now()}` },
+      //       })
+      //       .run();
+      //   },
+      // },
+
       {
         name: "visualization",
         label: "Visualization",
@@ -126,7 +144,11 @@ export const GROUPS: Group[] = [
             .focus()
             .insertContent({
               type: "customBlock",
-              attrs: { id: `custom-visual-${Date.now()}` },
+              attrs: {
+                id: `custom-visual-${Date.now()}`,
+                dataUrl:
+                  "https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments", // Example API
+              },
             })
             .run();
         },

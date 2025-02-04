@@ -5,9 +5,7 @@ import CustomBlock from "../BlockEditor/components/CustomBlock";
 
 export default Node.create({
   name: "customBlock",
-
   group: "block",
-
   content: "inline*",
 
   addAttributes() {
@@ -25,14 +23,14 @@ export default Node.create({
         getAttrs: (dom) => ({
           id: dom.getAttribute("id"),
           theme: dom.getAttribute("data-theme"),
-          dataUrl: dom.getAttribute("data-url"),
+          dataUrl: dom.getAttribute("data-url") || "",
         }),
       },
     ];
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ["custom-block-component", mergeAttributes(HTMLAttributes), 0];
+    return ["div", mergeAttributes({ "data-type": "custom-visualization" }, HTMLAttributes)];
   },
 
   addNodeView() {

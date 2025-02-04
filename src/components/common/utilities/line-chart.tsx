@@ -15,7 +15,7 @@ interface LineChartProps {
   height?: number;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ data, width = 940, height = 500 }) => {
+const LineChart: React.FC<LineChartProps> = ({ data, width = 940, height = 500, text }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
@@ -121,7 +121,7 @@ const LineChart: React.FC<LineChartProps> = ({ data, width = 940, height = 500 }
       .attr("text-anchor", "middle")
       .attr("font-size", "18px")
       .attr("fill", "black")
-      .text("Number of Publications Per Year by Topic");
+      .text(`Number of Publications Per Year by ${text}`);
 
     // Add legend
     const legend = svg
