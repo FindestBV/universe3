@@ -28,7 +28,7 @@ import {
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
-export const Document: React.FC = () => {
+export const Source: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [isLoading, setIsLoading] = useState(true);
   const { data: fetchedDocument } = useGetDocumentByIdQuery(id!, {
@@ -129,7 +129,7 @@ export const Document: React.FC = () => {
                   </a>
                 </Button>
                 <div className="flex-2 flex flex-row items-center">
-                  <button className="w-full rounded-md bg-blue-500 px-4 py-1 text-white hover:bg-blue-600">
+                  <button className="w-full rounded-md bg-[#006A86] px-4 py-1 text-white hover:bg-blue-600">
                     Actions
                   </button>
                   <UserAvatar username={"Ro"} />
@@ -313,7 +313,7 @@ export const Document: React.FC = () => {
                         })}
                       </ul>
                     </div>
-                    <Button className="primary mt-2 bg-blue-500 p-4 text-white hover:bg-blue-300">
+                    <Button className="primary mt-2 bg-[#006A86] p-4 text-white hover:bg-blue-300">
                       PREVIEW FILE
                     </Button>
                   </>
@@ -323,7 +323,7 @@ export const Document: React.FC = () => {
                       <Upload size={14} />{" "}
                       <span>Add file (PDF, docx, pptx), maximum file size 50MB.</span>
                     </div>
-                    <Button className="primary mt-2 bg-blue-500 p-4 text-white hover:bg-slate-200">
+                    <Button className="primary mt-2 bg-[#006A86] p-4 text-white hover:bg-slate-200">
                       Add File
                     </Button>
                   </>
@@ -337,4 +337,4 @@ export const Document: React.FC = () => {
   );
 };
 
-export default Document;
+export default Source;

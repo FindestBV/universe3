@@ -67,6 +67,7 @@ interface DocumentCardProps {
   isSelected: boolean;
   onSelect: (id: string, checked: boolean) => void;
   linkedCounts: LinkedCounts;
+  images?: [];
 }
 // ConnectedObjectsDialog Component
 export const ConnectedObjectsDialog = ({
@@ -111,6 +112,7 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
   title,
   type,
   abstract,
+  images,
   createdByUsername,
   isOpenAccess,
   dateAdded,
@@ -120,6 +122,9 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
 }) => {
   // const [showDialog, setShowDialog] = useState(false);
   // const [dialogDocumentId, setDialogDocumentId] = useState<string | null>(null);
+
+  console.log("any images?", images ? images[0]?.path : null);
+
   const navigate = useNavigate();
 
   const handleCheckboxChange = (checked: boolean) => {
@@ -140,7 +145,7 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
   };
 
   const handleCardClick = () => {
-    navigate(`/library/documents/${id}`, {
+    navigate(`/sources/${id}`, {
       state: { id, url, title, type, abstract, createdByUsername, dateAdded },
     });
   };
@@ -156,7 +161,7 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
         />
 
         <Card key={id} className="flex flex-1 flex-row gap-4">
-          <div>{type || "Science"}</div>
+          <div>{type || "Webpage"}</div>
           <div className="flex flex-1 flex-col">
             <div className="w-auto cursor-pointer px-4" onClick={handleCardClick}>
               <div className="flex flex-row gap-2">
@@ -191,6 +196,12 @@ export const InboxCard: React.FC<DocumentCardProps> = ({
               />
             </div>
           </div>
+
+          {/* {images && images[0]?.path ? (
+            <div className="w-1/4">
+              <img src={images[0].path} alt={title} className="inbox-image" />
+            </div>
+          ) : null} */}
 
           <div className="flex flex-row items-start gap-2">
             <div className="flex flex-row items-center gap-4">

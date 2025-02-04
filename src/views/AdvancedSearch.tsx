@@ -1,11 +1,11 @@
 import { useAdvancedSearchQuery } from "@/api/search/searchApi";
 import GenericCard from "@/components/common/cards/generic-card";
 import CreateQueryDialog from "@/components/common/dialogs/create-query-dialog";
-import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
+// import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 import { DocumentsSkeleton } from "@/components/common/loaders/documents-skeleton";
 // import { StudyCard } from "@/components/common/study-card";
 import { CardContent } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
+// import { Checkbox } from "@/components/ui/checkbox";
 import { Search, Trash2 } from "lucide-react";
 
 import { useEffect, useState } from "react";
@@ -90,8 +90,8 @@ export const AdvancedSearch: React.FC = () => {
         </div>
       </div>
       <div className="flex h-full w-full flex-col px-12 max-sm:px-4">
-        <div className="mb-2 flex items-center justify-between gap-1 rounded-lg">
-          <div className="flex items-center gap-2">
+        {/* <div className="mb-2 flex items-center justify-between gap-1 rounded-lg"> */}
+        {/* <div className="flex items-center gap-2">
             <Checkbox
               id="select-all"
               checked={
@@ -107,9 +107,9 @@ export const AdvancedSearch: React.FC = () => {
                 </a>
               </div>
             )}
-          </div>
+          </div> */}
 
-          <div className="mr-[1.5em]">
+        {/* <div className="mr-[1.5em]">
             <select
               id="itemsPerPage"
               value={itemsPerPage}
@@ -123,14 +123,14 @@ export const AdvancedSearch: React.FC = () => {
               <option value={5}>5</option>
             </select>
           </div>
-        </div>
+        </div> */}
 
         <CardContent className="p-0">
-          {isError && (
+          {/* {isError && (
             <div className="text-red-600">Error loading items: {JSON.stringify(error)}</div>
           )}
           {isLoading && <DocumentsSkeleton />}
-          {data && (
+          {data ? (
             <div>
               {advancedSearchData &&
                 advancedSearchData.queries.map((item) => (
@@ -145,7 +145,7 @@ export const AdvancedSearch: React.FC = () => {
                   />
                 ))}
             </div>
-          )}
+          ) : null} */}
         </CardContent>
       </div>
     </>

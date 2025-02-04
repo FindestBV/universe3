@@ -2,6 +2,7 @@
 import { useGetMyRecentActivityDropdownQuery } from "@/api/activity/activityApi";
 // import { currentUser } from "@/api/auth/authSlice";
 import { useGetMyDocumentInboxQuery } from "@/api/documents/documentApi";
+import { setSidebarState } from "@/api/utilities/sidebarSlice";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import {
@@ -22,6 +23,7 @@ import {
   SquareArrowOutUpRight,
 } from "lucide-react";
 
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 // import { useTranslation } from "react-i18next";
@@ -51,10 +53,16 @@ const activityTypeMapping: { [key: number]: string } = {
 export const DashboardHeader = () => {
   // const { t } = useTranslation();
   // const user = useSelector(currentUser);
+  const { open } = useSidebar();
   const { data: activityData } = useGetMyRecentActivityDropdownQuery();
   const { data: documentInbox } = useGetMyDocumentInboxQuery();
+  const dispatch = useDispatch();
 
-  const navigate = useNavigate();
+  const toggleSideBarInState = () => {
+    dispatch(setSidebarState(!open));
+  };
+
+  // const navigate = useNavigate();
   const navigateWithTransition = useNavigateWithTransition();
 
   return (
@@ -62,7 +70,7 @@ export const DashboardHeader = () => {
       <div className="control-buttons">
         <ul className="flex gap-1">
           <li className="flex self-center">
-            <SidebarTrigger className="text-black" />
+            <SidebarTrigger className="text-black" onClick={toggleSideBarInState} />
           </li>
           <li>
             <DropdownMenu>
@@ -91,7 +99,7 @@ export const DashboardHeader = () => {
                         // THIS IS A TEMPORARY PATCH.
                         // {activity.fullType === "StudyTypeUndefined" ? "studies" : "entities"}
                         navigateWithTransition(
-                          `/library/${activity.fullType === "StudyTypeUndefined" ? "studies" : "entities"}/${activity.id}`,
+                          `/pages/${activity.fullType === "StudyTypeUndefined" ? "studies" : "entities"}/${activity.id}`,
                         )
                       }
                     >
@@ -167,9 +175,9 @@ export const DashboardHeader = () => {
               </Tooltip>
             </TooltipProvider>
           </li> */}
-          <li>
+          {/* <li>
             <ExplorerModal />
-          </li>
+          </li> */}
 
           <li>
             <TooltipProvider>

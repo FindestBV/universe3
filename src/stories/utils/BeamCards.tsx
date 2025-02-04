@@ -25,7 +25,7 @@ export const BeamCards = () => {
             key={category}
             className={`rounded-md border px-4 py-2 text-sm font-medium ${
               activeCategory === category
-                ? "bg-blue-500 text-white"
+                ? "bg-[#006A86] text-white"
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             }`}
             onClick={() => setActiveCategory(category)}

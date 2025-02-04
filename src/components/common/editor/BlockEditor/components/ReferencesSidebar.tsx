@@ -1,4 +1,6 @@
+import { toggleInnerSidebar } from "@/api/utilities/sidebarSlice";
 import { TableOfContents } from "@/components/common/editor/TableOfContents";
+import { ReferencesSearchbar } from "@/components/common/search/references-searchbar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import {
@@ -7,6 +9,7 @@ import {
   Fingerprint,
   Highlighter,
   Inbox,
+  Info,
   Link,
   List,
   Paperclip,
@@ -14,14 +17,13 @@ import {
   X,
 } from "lucide-react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 
-// import AddLinkToItem from "../dialogs/add-link-to-item";
-import { ReferencesSearchbar } from "../search/references-searchbar";
+// import { useSelector } from "react-redux";
 
 export const ReferencesSidebar: React.FC<{
-  onToggleSidebar?: () => void;
+  onToggleInnerSidebar?: () => void;
   isCollapsed?: boolean;
   connectedEntities?: string;
   connectedDocs?: string;
@@ -31,7 +33,7 @@ export const ReferencesSidebar: React.FC<{
   connectedStudies?: string;
   editor?: string;
 }> = ({
-  onToggleSidebar,
+  onToggleInnerSidebar,
   isCollapsed,
   connectedEntities,
   connectedInbox,
@@ -41,20 +43,16 @@ export const ReferencesSidebar: React.FC<{
   editor,
 }) => {
   const [activeMainTab, setActiveMainTab] = useState<string>("references"); // Main tab
-  const [activeSubTab, setActiveSubTab] = useState<string>("documents"); // Sub-tab for references
+  const [activeSubTab, setActiveSubTab] = useState<string>("inbox"); // Sub-tab for references
 
-  console.log("here is the editor object", TableOfContents);
-  console.log("connectedEntities?", connectedEntities);
-  console.log("connected Studues", connectedStudies);
-
-  const toggleActiveSubTab = (tab) => {
+  const toggleActiveSubTab = (tab: React.SetStateAction<string>) => {
     if (isCollapsed) {
-      onToggleSidebar();
+      onToggleInnerSidebar();
     }
     setActiveMainTab(tab);
   };
 
-  const scrollToSection = (sectionId) => {
+  const scrollToSection = (sectionId: string) => {
     console.log("scrollto", sectionId);
     const sectionElement = document.querySelector(sectionId); // Find the section
     if (sectionElement) {
@@ -66,10 +64,14 @@ export const ReferencesSidebar: React.FC<{
     }
   };
 
+  useEffect(() => {
+    toggleInnerSidebar();
+  }, []);
+
   return (
     <>
       {/* Persistent Panel */}
-      <div className="absolute top-0 z-10 -ml-14 mt-4 flex h-[100px] flex-col items-center gap-4 bg-white p-4 shadow-md">
+      <div className="fixed z-10 -ml-14 flex h-[100px] flex-col items-center gap-4 bg-white p-4 shadow-md">
         {/* Toggle Main Tabs */}
         <button
           onClick={() => toggleActiveSubTab("references")}
@@ -87,13 +89,13 @@ export const ReferencesSidebar: React.FC<{
 
       {/* Sidebar Content */}
       {!isCollapsed && (
-        <div className="flex flex-col p-4 transition-all duration-300">
+        <div className="fixed flex flex-col p-4 transition-all duration-300">
           <div className="flex flex-row justify-between">
             <Button
               className="fixed right-0"
               onClick={() => {
                 console.log("X button clicked, toggling sidebar");
-                onToggleSidebar();
+                onToggleInnerSidebar();
               }}
             >
               <X size={20} />
@@ -123,14 +125,14 @@ export const ReferencesSidebar: React.FC<{
                 <TabsList className="mb-4 inline-flex h-10 w-full items-center justify-start gap-4 rounded-none border-b border-[#f1f1f1] bg-transparent p-1 text-muted-foreground">
                   <TabsTrigger value="inbox">
                     <Inbox
-                      size={16}
+                      size={18}
                       className={activeSubTab === "inbox" ? "text-black" : "text-muted-foreground"}
                     />
                   </TabsTrigger>
                   {connectedHighlights && (
                     <TabsTrigger value="highlights">
                       <Highlighter
-                        size={16}
+                        size={18}
                         className={
                           activeSubTab === "highlights" ? "text-black" : "text-muted-foreground"
                         }
@@ -139,7 +141,7 @@ export const ReferencesSidebar: React.FC<{
                   )}
                   <TabsTrigger value="documents">
                     <FileText
-                      size={16}
+                      size={18}
                       className={
                         activeSubTab === "documents" ? "text-black" : "text-muted-foreground"
                       }
@@ -148,7 +150,7 @@ export const ReferencesSidebar: React.FC<{
 
                   <TabsTrigger value="attachments">
                     <Paperclip
-                      size={16}
+                      size={18}
                       className={
                         activeSubTab === "attachments" ? "text-black" : "text-muted-foreground"
                       }
@@ -156,7 +158,7 @@ export const ReferencesSidebar: React.FC<{
                   </TabsTrigger>
                   <TabsTrigger value="entities">
                     <Fingerprint
-                      size={16}
+                      size={18}
                       className={
                         activeSubTab === "entities" ? "text-black" : "text-muted-foreground"
                       }
@@ -164,7 +166,7 @@ export const ReferencesSidebar: React.FC<{
                   </TabsTrigger>
                   <TabsTrigger value="studies">
                     <BookOpenCheck
-                      size={16}
+                      size={18}
                       className={
                         activeSubTab === "studies" ? "text-black" : "text-muted-foreground"
                       }
@@ -175,9 +177,9 @@ export const ReferencesSidebar: React.FC<{
                   {connectedInbox
                     ? Object.entries(connectedInbox).map((doc, index) => (
                         <div key={index} className="mb-2 flex items-start gap-2">
-                          <Link size={24} />
+                          <Link size={18} />
                           <a href={"#"} className="text-gray-700 hover:text-black">
-                            <p>{doc[1]?.documentTitle}</p>
+                            <p className="text-sm">{doc[1]?.documentTitle}</p>
                           </a>
                         </div>
                       ))
@@ -191,45 +193,88 @@ export const ReferencesSidebar: React.FC<{
                   </>
                 )}
                 <TabsContent value="documents">
-                  {connectedObjects?.documents && connectedObjects.documents.length > 0
-                    ? connectedObjects.documents.map((doc, index) => (
+                  {connectedObjects?.documents && connectedObjects.documents.length > 0 ? (
+                    connectedObjects.documents.map(
+                      (doc: { title: any }, index: React.Key | null | undefined) => (
                         <div key={index} className="mb-2 flex items-start gap-2">
-                          <Link size={24} />
+                          <Link size={18} />
                           <a href={"#"} className="text-gray-700 hover:text-black">
-                            <p>{doc.title || "Untitled Document"}</p>
+                            <p className="text-sm">{doc.title || "Untitled Document"}</p>
                           </a>
                         </div>
-                      ))
-                    : "No connected objects."}
+                      ),
+                    )
+                  ) : (
+                    <div className="flex gap-2">
+                      <Info size={18} />
+                      <div>
+                        <p className="text-xs italic">
+                          Documents that are saved inside your Universe appear here.
+                          <br />
+                          <br />
+                          You add documents to this view by saving the using the browser extensino
+                          and adding a highlight, image or linking the document.
+                          <br />
+                          Highlights and images that you have saved from these documents can easily
+                          be injected into the current page.
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </TabsContent>
                 <TabsContent value="attachments">
                   <h1>Attachments Content</h1>
                 </TabsContent>
                 <TabsContent value="entities">
-                  {connectedEntities && connectedEntities.length > 0
-                    ? connectedEntities.map((doc, index) => (
+                  {connectedEntities && connectedEntities.length > 0 ? (
+                    connectedEntities.map(
+                      (doc: { documentTitle: string }, index: React.Key | null | undefined) => (
                         <div key={index} className="mb-2 flex items-start gap-2">
-                          <Link size={24} />
+                          <Link size={18} />
                           <a href={"#"} className="text-gray-700 hover:text-black">
                             <small>Entity</small>
-                            <p>{doc.title || "Untitled Document"}</p>
+                            <p className="text-sm">{doc.documentTitle || "Untitled Document"}</p>
                           </a>
                         </div>
-                      ))
-                    : "No connected entities."}
+                      ),
+                    )
+                  ) : (
+                    <div className="flex gap-2">
+                      <Info size={18} />
+                      <div>
+                        <p className="text-xs italic">
+                          Entities from your Universe appear here.
+                          <br />
+                          You can create entities from the Entities page in the library or using the
+                          browser extension!
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </TabsContent>
                 <TabsContent value="studies">
-                  {connectedStudies && connectedStudies.length > 0
-                    ? connectedStudies.map((doc, index) => (
+                  {connectedStudies && connectedStudies.length > 0 ? (
+                    connectedStudies.map(
+                      (doc: { name: any }, index: React.Key | null | undefined) => (
                         <div key={index} className="mb-2 flex items-start gap-2">
                           <Link size={24} />
                           <a href={"#"} className="text-gray-700 hover:text-black">
                             <small>Study/Queries</small>
-                            <p>{doc.name || "Untitled Document"}</p>
+                            <p className="text-sm">{doc.name || "Untitled Document"}</p>
                           </a>
                         </div>
-                      ))
-                    : "No connected studies."}
+                      ),
+                    )
+                  ) : (
+                    <>
+                      <p className="text-xs italic">Studies from your Universe appear here.</p>
+                      <br />
+                      <p className="text-xs italic">
+                        You can create studies from the Studies page in the library or using the
+                        browser extension!
+                      </p>
+                    </>
+                  )}
                 </TabsContent>
               </Tabs>
             </TabsContent>
@@ -264,6 +309,14 @@ export const ReferencesSidebar: React.FC<{
                         onClick={() => scrollToSection("#connectedComments")}
                       >
                         Comments
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        className="cursor-pointer"
+                        onClick={() => scrollToSection("#mainEditorStart")}
+                      >
+                        Back to Top
                       </a>
                     </li>
                   </ul>

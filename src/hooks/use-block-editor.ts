@@ -1,24 +1,41 @@
 import type { EditorUser } from "@/components/common/editor/BlockEditor/types";
-import { AiImage, AiWriter } from "@/extensions";
-import { Ai } from "@/extensions/Ai";
+import CustomBlock from "@/components/common/editor/extensions/customblock-extension";
+import CustomGraphBlock from "@/components/common/editor/extensions/customgraphblock-extension";
+import CustomImage from "@/components/common/editor/extensions/customImage";
+import Title from "@/components/common/editor/extensions/customtitle-extension";
+import IntakeSheetComponent from "@/components/common/editor/extensions/intakesheet-extension";
 import { ExtensionKit } from "@/extensions/extension-kit";
+import { initialContent } from "@/lib/data/initialContent";
 import { TiptapCollabProvider, WebSocketStatus } from "@hocuspocus/provider";
-import type { AnyExtension, Editor } from "@tiptap/core";
-import Collaboration from "@tiptap/extension-collaboration";
-import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
+import type { Editor } from "@tiptap/core";
+import { Mark } from "@tiptap/core";
+import Blockquote from "@tiptap/extension-blockquote";
 import { useEditor, useEditorState } from "@tiptap/react";
 import type { Doc as YDoc } from "yjs";
 
-import { useEffect, useState } from "react";
-
-import { userColors, userNames } from "../lib/constants";
-import { randomElement } from "../lib/utils";
+import { useEffect, useMemo, useState } from "react";
 
 declare global {
   interface Window {
     editor: Editor | null;
   }
 }
+
+export const Rating = Mark.create({
+  name: "rating",
+  addAttributes() {
+    return {
+      rating: { default: 0 },
+      sourceId: { default: null },
+      targetId: { default: null },
+      ratersCount: { default: 0 },
+      isRatingNeeded: { default: false },
+    };
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["span", { class: "rating", ...HTMLAttributes }, "⭐"];
+  },
+});
 
 export const useBlockEditor = ({
   aiToken,
@@ -34,6 +51,7 @@ export const useBlockEditor = ({
   connectedObjects,
   connectedQueries,
   connectedComments,
+  extensions,
 }: {
   aiToken?: string;
   ydoc: YDoc | null;
@@ -48,33 +66,80 @@ export const useBlockEditor = ({
   connectedObjects?: string;
   connectedQueries?: string;
   connectedComments?: string;
+  extensions?: string;
 }) => {
   const [collabState, setCollabState] = useState<WebSocketStatus>(
     provider ? WebSocketStatus.Connecting : WebSocketStatus.Disconnected,
   );
 
-  const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
-  // console.log("Parsed Content:", JSON.stringify(parsedContent, null, 2));
+  const parsedContent = useMemo(() => {
+    try {
+      const parsed = typeof content === "string" ? JSON.parse(content) : content;
+      console.log("blockeditor, title", title);
+
+      // Ensure parsed content exists and is an array
+      const parsedContentArray = Array.isArray(parsed?.content) ? parsed.content : [];
+
+      // Define the title node (only if title exists)
+      const titleNode = title
+        ? {
+            type: "heading",
+            attrs: { level: 1 },
+            content: [{ type: "text", text: title }],
+          }
+        : null;
+
+      // Check if the first node is already a heading of level 1
+      const firstNode = parsedContentArray[0];
+      if (firstNode?.type === "heading" && firstNode?.attrs?.level === 1) {
+        // If a title exists, update its text
+        if (title) {
+          firstNode.content = [{ type: "text", text: title }];
+        } else {
+          // If title is removed, remove the existing title node
+          return { ...parsed, content: parsedContentArray.slice(1) };
+        }
+        return { ...parsed, content: parsedContentArray };
+      }
+
+      // If no title exists but title is provided, prepend the title node
+      return {
+        ...parsed,
+        content: titleNode
+          ? [titleNode, ...parsedContentArray]
+          : [titleNode, ...parsedContentArray],
+      };
+    } catch (error) {
+      console.error("Error parsing content:", error);
+
+      // If content is missing or invalid, return default structure
+      return {
+        type: "doc",
+        content: [
+          ...(title
+            ? [
+                {
+                  type: "heading",
+                  attrs: { level: 1 },
+                  content: [{ type: "text", text: title }],
+                },
+              ]
+            : []),
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "Start writing here..." }],
+          },
+        ],
+      };
+    }
+  }, [content, title]);
 
   const editor = useEditor(
     {
       immediatelyRender: true,
       shouldRerenderOnTransaction: false,
       autofocus: true,
-      content: parsedContent || {
-        type: "doc",
-        content: [
-          {
-            type: "paragraph",
-            content: [
-              {
-                type: "text",
-                text: "Welcome to your page! Here, you have the freedom to craft and arrange content by formatting text addinglinks,\n images, files and tables and even utilizing IGOR<sup>AI</sup>. The right sidebar provides otions to include references, \n highlights and images from connected documents. \n Have fun creating!",
-              },
-            ],
-          },
-        ],
-      },
+      content: parsedContent,
       onCreate: (ctx) => {
         if (provider && !provider.isSynced) {
           provider.on("synced", () => {
@@ -93,34 +158,14 @@ export const useBlockEditor = ({
         ...ExtensionKit({
           provider,
         }),
-        provider && ydoc
-          ? Collaboration.configure({
-              document: ydoc,
-            })
-          : undefined,
-        provider
-          ? CollaborationCursor.configure({
-              provider,
-              user: {
-                name: randomElement(userNames),
-                color: randomElement(userColors),
-              },
-            })
-          : undefined,
-        aiToken
-          ? AiWriter.configure({
-              authorId: userId,
-              authorName: userName,
-            })
-          : undefined,
-        aiToken
-          ? AiImage.configure({
-              authorId: userId,
-              authorName: userName,
-            })
-          : undefined,
-        aiToken ? Ai.configure({ token: aiToken }) : undefined,
-      ].filter((e): e is AnyExtension => e !== undefined),
+        Title,
+        Blockquote,
+        CustomBlock,
+        CustomGraphBlock,
+        IntakeSheetComponent,
+        CustomImage,
+        Rating,
+      ],
       editorProps: {
         attributes: {
           autocomplete: "off",

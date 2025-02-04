@@ -9,18 +9,18 @@ const AskIgorModal: React.FC = () => {
       {/* Trigger to Open Dialog */}
       <DialogTrigger asChild>
         <div>
-          <button className="flex items-center gap-1 rounded-md border border-gray-300 bg-white px-2 py-1 font-bold text-[#7b35c1] hover:bg-gray-200">
+          <button className="flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-2 font-bold text-[#006A86] transition-all duration-150 ease-linear hover:bg-[#006A86] hover:text-white">
             <Bot className="h-4" />
-            Ask IGOR<sup>AI</sup>
+            {/* <span className="md:block hidden">Ask IGOR<sup>AI</sup></span> */}
           </button>
         </div>
       </DialogTrigger>
 
       {/* Dialog Content */}
-      <DialogContent className="flex h-[80vh] max-w-5xl flex-col overflow-hidden rounded-lg bg-white p-0 shadow-lg md:flex-row">
+      <DialogContent className="z-[999] flex h-[80vh] max-w-5xl flex-col overflow-hidden rounded-lg bg-white p-0 shadow-lg md:flex-row">
         <Tabs defaultValue="tab1" className="flex h-full w-full flex-row">
           {/* Left Panel */}
-          <div className="w-full flex-shrink-0 bg-[#7b35c1] p-4 text-white md:w-1/3">
+          <div className="w-full flex-shrink-0 bg-[#006A86] p-4 text-white md:w-1/3">
             <h1 className="mx-auto flex w-full justify-center gap-2 p-6 font-black">
               <Bot size={24} /> Ask IGOR
             </h1>
@@ -95,7 +95,7 @@ const AskIgorModal: React.FC = () => {
                   />
                   <Button
                     type="button"
-                    className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-[#006A86] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     disabled
                   >
                     SUBMIT
@@ -127,7 +127,7 @@ const AskIgorModal: React.FC = () => {
                   />
                   <Button
                     type="button"
-                    className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-[#006A86] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     disabled
                   >
                     SUBMIT
@@ -159,7 +159,7 @@ const AskIgorModal: React.FC = () => {
                   />
                   <Button
                     type="button"
-                    className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-[#006A86] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     disabled
                   >
                     SUBMIT
@@ -193,7 +193,7 @@ const AskIgorModal: React.FC = () => {
                   />
                   <Button
                     type="button"
-                    className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-[#006A86] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     disabled
                   >
                     SUBMIT
@@ -227,7 +227,7 @@ const AskIgorModal: React.FC = () => {
                   />
                   <Button
                     type="button"
-                    className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-[#006A86] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     disabled
                   >
                     SUBMIT
@@ -258,7 +258,7 @@ const AskIgorModal: React.FC = () => {
                 <div className="w-full">
                   <Button
                     type="button"
-                    className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-[#006A86] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     disabled
                   >
                     SUBMIT

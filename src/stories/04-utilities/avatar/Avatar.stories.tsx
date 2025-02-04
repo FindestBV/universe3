@@ -77,7 +77,7 @@ export const CustomFallback: Story = {
   render: ({ src, alt, fallback }) => (
     <Avatar>
       <AvatarImage src={src} alt={alt} />
-      <AvatarFallback className="bg-blue-500 text-white">{fallback}</AvatarFallback>
+      <AvatarFallback className="bg-[#006A86] text-white">{fallback}</AvatarFallback>
     </Avatar>
   ),
   args: {

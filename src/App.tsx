@@ -1,7 +1,7 @@
 // Imports
 import { currentUser } from "@/api/auth/authSlice";
 import { DashboardHeader } from "@/components/common/layout/dashboard-header";
-import { AppSidebar } from "@/components/common/sidebar/app-sidebar";
+import { AppSidebar } from "@/components/common/sidebar/main-sidebar/main-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { persistor, store } from "@/store";
 import Dashboard from "@/views/Dashboard";
@@ -18,15 +18,14 @@ import Admin from "./views/Admin";
 
 // Lazy-loaded views (TEMP! Will sort this out with some proper Routing )
 const AdvancedSearch = lazy(() => import("@/views/AdvancedSearch"));
-const Queries = lazy(() => import("@/views/Queries"));
-const Documents = lazy(() => import("@/views/Documents"));
-const Document = lazy(() => import("@/views/Document"));
+const Sources = lazy(() => import("@/views/Sources"));
+const Source = lazy(() => import("@/views/Source"));
 const Resources = lazy(() => import("@/views/Resources"));
+const Documents = lazy(() => import("@/views/Documents"));
 const Settings = lazy(() => import("@/views/Settings"));
 const Studies = lazy(() => import("@/views/Studies"));
-const Study = lazy(() => import("@/views/Study"));
-const Entities = lazy(() => import("@/views/Entities"));
-const Entity = lazy(() => import("@/views/Entity"));
+const Pages = lazy(() => import("@/views/Pages"));
+const Page = lazy(() => import("@/views/Page"));
 const NotFoundPage = lazy(() => import("@/views/NotFound"));
 const DataView = lazy(() => import("@/views/DataView"));
 const Inbox = lazy(() => import("@/views/Inbox"));
@@ -75,14 +74,14 @@ function AuthenticatedLayout() {
               <Routes location={location}>
                 {/* TEMP!! THIS WILL BE REFACTORED */}
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/library/queries" element={<Queries />} />
-                <Route path="/library/overview" element={<Documents />} />
-                <Route path="/library/studies" element={<Studies />} />
-                <Route path="/library/studies/:id" element={<Study />} />
-                <Route path="/library/documents" element={<Documents />} />
-                <Route path="/library/documents/:id" element={<Document />} />
-                <Route path="/library/entities" element={<Entities />} />
-                <Route path="/library/entities/:id" element={<Entity />} />
+                <Route path="/overview" element={<Documents />} />
+                <Route path="/pages" element={<Pages />} />
+                <Route path="/pages/studies" element={<Studies />} />
+                <Route path="/pages/studies/:id" element={<Page />} />
+                <Route path="/sources" element={<Sources />} />
+                <Route path="/sources/:id" element={<Source />} />
+                <Route path="/pages/entities" element={<Pages />} />
+                <Route path="/pages/entities/:id" element={<Page />} />
                 <Route path="/resources" element={<Resources />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/queries" element={<AdvancedSearch />} />

@@ -27,7 +27,7 @@ export const TableOfContents = memo(({ editor, onItemClick }: TableOfContentsPro
             <a
               key={item.id}
               href={`#${item.id}`}
-              style={{ marginLeft: `${1 * item.level - 1}rem` }}
+              // style={{ marginLeft: `${1 * item.level - 1}rem` }}
               onClick={onItemClick}
               className={cn(
                 "block w-full truncate rounded bg-opacity-10 p-1 text-sm font-medium text-neutral-500 transition-all hover:bg-black hover:bg-opacity-5 hover:text-neutral-800 dark:text-neutral-300",

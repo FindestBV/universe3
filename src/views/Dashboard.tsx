@@ -55,7 +55,7 @@ export const Dashboard = () => {
     } else {
       redirRoute = "studies";
     }
-    navigate(`/library/${redirRoute}/${id}`, { state: { id } });
+    navigate(`/pages/${redirRoute}/${id}`, { state: { id } });
   };
 
   const formatTimeHHMM = (timestamp: string): string => {
@@ -113,7 +113,11 @@ export const Dashboard = () => {
                         {activity.type}
                       </p>
                     </div>
-                    <h3 className="font-bold">{activity.name}</h3>
+                    <h3 className="font-bold">
+                      {activity.name.length > 50
+                        ? `${activity.name.slice(0, 50)}...` // Limit to 50 characters and add ellipsis
+                        : activity.name}
+                    </h3>
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

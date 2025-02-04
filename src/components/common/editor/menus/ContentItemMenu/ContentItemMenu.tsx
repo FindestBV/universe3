@@ -20,6 +20,8 @@ export const ContentItemMenu = ({ editor }: ContentItemMenuProps) => {
   const data = useData();
   const actions = useContentItemActions(editor, data.currentNode, data.currentNodePos);
 
+  console.log("inside content item", editor);
+
   useEffect(() => {
     if (menuOpen) {
       editor.commands.setMeta("lockDragHandle", true);
@@ -35,7 +37,7 @@ export const ContentItemMenu = ({ editor }: ContentItemMenuProps) => {
       onNodeChange={data.handleNodeChange}
       tippyOptions={{
         offset: [-2, 16],
-        zIndex: 99,
+        zIndex: 40,
       }}
     >
       <div className="flex items-center gap-0.5">

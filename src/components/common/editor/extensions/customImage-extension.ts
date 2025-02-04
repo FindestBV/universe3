@@ -1,17 +1,6 @@
-// https://tiptap.dev/docs/examples/experiments/figure
-// node_modules
 import { mergeAttributes, Node, nodeInputRule } from "@tiptap/core";
-import { Content, JSONContent } from "@tiptap/react";
 
-declare module "@tiptap/core" {
-  interface Commands<ReturnType> {
-    customImage: {
-      setCustomImage: (options: { src: string; id: string }, content: Content) => ReturnType;
-    };
-  }
-}
-
-export const inputRegex = /!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\)/;
+export const inputRegex = /!\[(.+?)\]\((\S+)\)/;
 
 export const CustomImage = Node.create({
   name: "customImage",
@@ -34,9 +23,12 @@ export const CustomImage = Node.create({
     return {
       src: {
         default: null,
-        parseHTML: (element) => element.querySelector("img")?.getAttribute("src"),
+        parseHTML: (element) => element.querySelector("img")?.getAttribute("src") || null,
       },
       id: {
+        default: "",
+      },
+      alt: {
         default: "",
       },
     };
@@ -50,7 +42,7 @@ export const CustomImage = Node.create({
           return commands.insertContent({
             type: this.name,
             attrs: options,
-            content: content as JSONContent[],
+            content: content || [],
           });
         },
     };
@@ -60,6 +52,10 @@ export const CustomImage = Node.create({
     return [
       {
         tag: "figure",
+        getAttrs: (element) => {
+          const img = element.querySelector("img");
+          return img ? { src: img.getAttribute("src") } : false;
+        },
         contentElement: "figcaption",
       },
     ];
@@ -79,11 +75,8 @@ export const CustomImage = Node.create({
       ],
       [
         "figcaption",
-        {
-          draggable: false,
-          class: "custom-image-caption",
-        },
-        0,
+        { class: "custom-image-caption" },
+        0, // Placeholder for inline content
       ],
     ];
   },
@@ -94,9 +87,8 @@ export const CustomImage = Node.create({
         find: inputRegex,
         type: this.type,
         getAttributes: (match) => {
-          const [src] = match;
-
-          return { src };
+          const [, alt, src] = match;
+          return { src, alt };
         },
       }),
     ];

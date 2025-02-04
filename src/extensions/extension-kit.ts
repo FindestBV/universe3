@@ -69,7 +69,7 @@ export const ExtensionKit = ({ provider }: ExtensionKitProps) => [
   }),
   HorizontalRule,
   UniqueID.configure({
-    types: ["paragraph", "heading", "blockquote", "codeBlock", "table"],
+    types: ["paragraph", "heading", "blockquote", "codeBlock", "table", "visualization"],
     filterTransaction: (transaction) => !isChangeOrigin(transaction),
   }),
   StarterKit.configure({

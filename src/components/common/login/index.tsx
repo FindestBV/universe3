@@ -42,7 +42,7 @@ const Login = () => {
 
   return (
     <div className="flex h-full items-center justify-center bg-white">
-      <div className="flex w-full max-w-[400px] flex-col justify-between rounded-md p-[30px] text-[#003171] shadow-[0_1px_4px_#b7b8d8]">
+      <div className="flex w-full max-w-[400px] flex-col justify-between rounded-md p-[30px] text-[#006A86] shadow-[0_1px_4px_#b7b8d8]">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center">
             {isLoading && (
@@ -52,8 +52,8 @@ const Login = () => {
                   visible={true}
                   height="100"
                   width="100"
-                  color="#38b2f6"
-                  secondaryColor="#395fa7"
+                  color="#006A86"
+                  secondaryColor="#84A7E2"
                   radius="12.5"
                   ariaLabel="mutating-dots-loading"
                   wrapperStyle={{}}
@@ -89,7 +89,7 @@ const Login = () => {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="mt-4 w-full rounded-md bg-[#395fa7] py-2 text-white hover:bg-[#38b2f6] focus:outline-none"
+                  className="mt-4 w-full rounded-md bg-[#006A86] py-2 text-white hover:bg-[#84A7E2] focus:outline-none"
                   disabled={isLoading} // Disable button when loading
                 >
                   LOG IN

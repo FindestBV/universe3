@@ -6,30 +6,22 @@ export const GROUPS: Group[] = [
     title: "AI",
     commands: [
       {
-        name: "aiWriter",
-        label: "AI Writer",
-        iconName: "Sparkles",
+        name: "askIgor",
+        label: "Ask Igor",
+        iconName: "Bot",
         description: "Let AI finish your thoughts",
         shouldBeHidden: (editor) => editor.isActive("columns"),
         action: (editor) => editor.chain().focus().setAiWriter().run(),
-      },
-      {
-        name: "aiImage",
-        label: "AI Image",
-        iconName: "Sparkles",
-        description: "Generate an image from text",
-        shouldBeHidden: (editor) => editor.isActive("columns"),
-        action: (editor) => editor.chain().focus().setAiImage().run(),
       },
     ],
   },
   {
     name: "format",
-    title: "Format",
+    title: "Hierarchy",
     commands: [
       {
         name: "heading1",
-        label: "Heading 1",
+        label: "Title",
         iconName: "Heading1",
         description: "High priority section title",
         aliases: ["h1"],
@@ -39,7 +31,7 @@ export const GROUPS: Group[] = [
       },
       {
         name: "heading2",
-        label: "Heading 2",
+        label: "Subtitle",
         iconName: "Heading2",
         description: "Medium priority section title",
         aliases: ["h2"],
@@ -49,7 +41,7 @@ export const GROUPS: Group[] = [
       },
       {
         name: "heading3",
-        label: "Heading 3",
+        label: "Section header",
         iconName: "Heading3",
         description: "Low priority section title",
         aliases: ["h3"],
@@ -57,6 +49,12 @@ export const GROUPS: Group[] = [
           editor.chain().focus().setHeading({ level: 3 }).run();
         },
       },
+    ],
+  },
+  {
+    name: "lists",
+    title: "Lists",
+    commands: [
       {
         name: "bulletList",
         label: "Bullet List",
@@ -77,61 +75,12 @@ export const GROUPS: Group[] = [
           editor.chain().focus().toggleOrderedList().run();
         },
       },
-      {
-        name: "taskList",
-        label: "Task List",
-        iconName: "ListTodo",
-        description: "Task list with todo items",
-        aliases: ["todo"],
-        action: (editor) => {
-          editor.chain().focus().toggleTaskList().run();
-        },
-      },
-      {
-        name: "toggleList",
-        label: "Toggle List",
-        iconName: "ListCollapse",
-        description: "Toggles can show and hide content",
-        aliases: ["toggle"],
-        action: (editor) => {
-          editor.chain().focus().setDetails().run();
-        },
-      },
-      {
-        name: "blockquote",
-        label: "Blockquote",
-        iconName: "Quote",
-        description: "Element for quoting",
-        action: (editor) => {
-          editor.chain().focus().setBlockquote().run();
-        },
-      },
-      {
-        name: "codeBlock",
-        label: "Code Block",
-        iconName: "SquareCode",
-        description: "Code block with syntax highlighting",
-        shouldBeHidden: (editor) => editor.isActive("columns"),
-        action: (editor) => {
-          editor.chain().focus().setCodeBlock().run();
-        },
-      },
     ],
   },
   {
     name: "insert",
     title: "Insert",
     commands: [
-      {
-        name: "table",
-        label: "Table",
-        iconName: "Table",
-        description: "Insert a table",
-        shouldBeHidden: (editor) => editor.isActive("columns"),
-        action: (editor) => {
-          editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: false }).run();
-        },
-      },
       {
         name: "image",
         label: "Image",
@@ -143,40 +92,123 @@ export const GROUPS: Group[] = [
         },
       },
       {
-        name: "columns",
-        label: "Columns",
-        iconName: "Columns2",
-        description: "Add two column content",
-        aliases: ["cols"],
+        name: "file",
+        label: "File",
+        iconName: "Paperclip",
+        description: "Insert a file",
         shouldBeHidden: (editor) => editor.isActive("columns"),
         action: (editor) => {
-          editor
-            .chain()
-            .focus()
-            .setColumns()
-            .focus(editor.state.selection.head - 1)
-            .run();
+          editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: false }).run();
         },
       },
+
       {
-        name: "horizontalRule",
-        label: "Horizontal Rule",
-        iconName: "Minus",
-        description: "Insert a horizontal divider",
-        aliases: ["hr"],
-        action: (editor) => {
-          editor.chain().focus().setHorizontalRule().run();
-        },
-      },
-      {
-        name: "toc",
-        label: "Table of Contents",
+        name: "table",
+        label: "Table",
         iconName: "Book",
         aliases: ["outline"],
         description: "Insert a table of contents",
         shouldBeHidden: (editor) => editor.isActive("columns"),
         action: (editor) => {
           editor.chain().focus().insertTableOfContents().run();
+        },
+      },
+
+      // {
+      //   name: "visualization",
+      //   label: "Visualization",
+      //   iconName: "Flashlight",
+      //   description: "Insert a custom visualization block",
+      //   shouldBeHidden: (editor) => editor.isActive("columns"),
+      //   action: (editor) => {
+      //     editor
+      //       .chain()
+      //       .focus()
+      //       .insertContent({
+      //         type: "customBlock",
+      //         attrs: { id: `custom-visual-${Date.now()}` },
+      //       })
+      //       .run();
+      //   },
+      // },
+
+      {
+        name: "visualization",
+        label: "Visualization",
+        iconName: "Flashlight",
+        description: "Insert a custom visualization block",
+        shouldBeHidden: (editor) => editor.isActive("columns"),
+        action: (editor) => {
+          editor
+            .chain()
+            .focus()
+            .insertContent({
+              type: "customBlock",
+              attrs: {
+                id: `custom-visual-${Date.now()}`,
+                dataUrl:
+                  "https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments", // Example API
+              },
+            })
+            .run();
+        },
+      },
+
+      {
+        name: "customGraphBlock",
+        label: "Graph Block",
+        iconName: "Flashlight",
+        description: "Insert a custom visualization block",
+        shouldBeHidden: (editor) => editor.isActive("columns"),
+        action: (editor) => {
+          editor
+            .chain()
+            .focus()
+            .insertContent({
+              type: "customGraphBlock",
+              attrs: { id: `custom-visual-${Date.now()}` },
+            })
+            .run();
+        },
+      },
+    ],
+  },
+
+  {
+    name: "advanced",
+    title: "Advanced",
+    commands: [
+      {
+        name: "table",
+        label: "Results overview table",
+        iconName: "Star",
+        description: "Insert a table",
+        aliases: ["results-overview"],
+        shouldBeHidden: (editor) => editor.isActive("columns"),
+        action: (editor) => {
+          editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: false }).run();
+        },
+      },
+      {
+        name: "table",
+        label: "Requirements overview table",
+        iconName: "ListFilter",
+        description: "Insert a table",
+        aliases: ["requirements-table"],
+        action: (editor) => {
+          editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: false }).run();
+        },
+      },
+
+      {
+        name: "maturity-radar",
+        label: "Maturity Radar",
+        iconName: "Target",
+        description: "Insert a custom visualization block",
+        shouldBeHidden: (editor) => editor.isActive("columns"),
+        aliases: ["maturity-radar"],
+        action: (editor) => {
+          editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: false }).run();
         },
       },
     ],

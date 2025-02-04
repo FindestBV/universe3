@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
+import { useTruncateText } from "@/hooks/use-truncate-text";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { ExternalLink, Plus, Trash2 } from "lucide-react";
 
@@ -122,15 +123,16 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   connectedObjects,
   searchInformation,
   linkedCounts = {},
+  images,
 }) => {
   // const navigate = useNavigate();
   const [prefetchedItems, setPrefetchedItems] = useState<Record<string, any>[]>([]);
   const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
   const navigateWithTransition = useNavigateWithTransition();
 
-  if (connectedObjects) {
-    console.log("generic card", connectedObjects);
-  }
+  // if (connectedObjects) {
+  //   console.log("generic card", connectedObjects);
+  // }
 
   const renderFirstThreeParagraphs = (descriptionString: string) => {
     if (!descriptionString) {
@@ -179,17 +181,19 @@ export const GenericCard: React.FC<GenericCardProps> = ({
 
   const location = useLocation();
   const currentPath = location.pathname;
-  const isDocument = currentPath.includes("documents");
+  const isSources = currentPath.includes("sources");
   const isEntity = currentPath.includes("entities");
   const isStudy = currentPath.includes("studies");
+  const isAdvancedSearch = currentPath.includes("queries");
 
   const handleCheckboxChange = (checked: boolean) => onSelect(id, checked);
   const handleCardClick = () => {
     const routes = {
-      study: `/library/studies/${id}`,
-      document: `/library/documents/${id}`,
-      entity: `/library/entities/${id}`,
+      study: `/pages/studies/${id}`,
+      source: `/sources/${id}`,
+      entity: `/pages/entities/${id}`,
     };
+    // likely to be removed.
     navigateWithTransition(routes[itemType], {
       state: {
         id,
@@ -202,6 +206,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
         connectedObjects,
         searchInformation,
         prefetchedItems,
+        images,
       },
     });
   };
@@ -210,9 +215,12 @@ export const GenericCard: React.FC<GenericCardProps> = ({
     console.log(`item with ${id} linked`);
   };
 
+  const truncatedText = useTruncateText(name || title, 280);
+  const itemImage = images && images[0]?.path;
+  const itemCaption = images && images[0]?.caption;
   return (
     <div className="itemCard">
-      <div className={`innerCardMain ${isDocument ? "gap-4" : ""}`}>
+      <div className={`innerCardMain ${isSources ? "gap-4" : ""}`}>
         {/* Checkbox */}
         <Checkbox
           id={`card-${id}`}
@@ -223,10 +231,10 @@ export const GenericCard: React.FC<GenericCardProps> = ({
 
         {/* Main Card */}
         <Card key={id} className="innerCardContent" onClick={handleCardClick}>
-          {isDocument && <div className="iconText">Science</div>}
+          {isSources && <div className="iconText">Science</div>}
           <div className="innerCardContent__Detail">
             <div className="w-auto cursor-pointer">
-              {!isDocument && (
+              {!isSources && (
                 <div className="iconText py-1">
                   {itemType === "advancedSearchItem"
                     ? null
@@ -236,16 +244,16 @@ export const GenericCard: React.FC<GenericCardProps> = ({
                 </div>
               )}
             </div>
-            <div className={`flex ${isDocument ? "flex-row gap-2" : "flex-col"}`}>
+            <div className={`flex ${isSources ? "flex-row gap-2" : "flex-col"}`}>
               <h3
                 className={`overflow-hidden text-ellipsis text-lg font-bold text-black ${
-                  !isDocument ? "py-2" : ""
+                  !isSources ? "py-2" : ""
                 }`}
               >
-                {name ? name : title}
+                {truncatedText}
               </h3>
 
-              {itemType == "advancedSearchItem" && (
+              {itemType === "advancedSearchItem" && (
                 <div>
                   <h5 className="iconText mb-2">Connections</h5>
                   <div className="flex flex-row flex-wrap gap-2">
@@ -258,7 +266,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
                   </div>
                 </div>
               )}
-              {isDocument && <DocumentLink url={url} />}
+              {isSources && <DocumentLink url={url} />}
               {isEntity && renderFirstThreeParagraphs(description)}
               {isStudy && renderFirstThreeParagraphs(description)}
             </div>
@@ -272,6 +280,12 @@ export const GenericCard: React.FC<GenericCardProps> = ({
               />
             </div>
           </div>
+          {isStudy && itemImage ? (
+            <div className="mt-6 w-1/4 self-start">
+              <img src={itemImage} alt={itemCaption} />
+              {/* <figcaption>{itemCaption}</figcaption> */}
+            </div>
+          ) : null}
           <div className="flex flex-row items-start gap-2">
             <div className="flex flex-row items-center gap-4">
               <div className="time">{formatDate(dateCreated ? dateCreated : dateAdded)}</div>

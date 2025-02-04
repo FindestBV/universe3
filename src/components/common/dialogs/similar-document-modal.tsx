@@ -64,7 +64,6 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
       refetchDocument();
       refetchConnectedDocuments();
     }
-    console.log("is open access", isOpenAccess);
   }, [isOpen, refetchDocument, refetchConnectedDocuments]);
 
   // If type is "linkedObjects," render as a GenericCard
@@ -127,7 +126,7 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
                 </a>
               </Button>
               <div className="flex items-center gap-2">
-                <Button className="rounded-md bg-blue-500 px-4 py-1 text-white hover:bg-blue-600">
+                <Button className="rounded-md bg-[#006A86] px-4 py-1 text-white hover:bg-blue-600">
                   Actions
                 </Button>
                 <UserAvatar username="Ro" />
@@ -155,7 +154,7 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
                 connectedDocuments.map((doc: any) => (
                   <div key={doc.id} className="connected-object Entity">
                     <a
-                      href={`/library/entities/${doc.id}`}
+                      href={`/pages/entities/${doc.id}`}
                       className="text-blue-500 hover:underline"
                     >
                       {doc.title || "Unnamed Document"}
