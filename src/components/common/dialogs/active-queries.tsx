@@ -43,11 +43,12 @@ export const ActiveQueries: React.FC = () => {
     <Sheet className="w-full">
       <SheetTrigger asChild>
         <Button variant="outline" className="relative border-none bg-[#006A86] text-white">
-          {activeQueries.length > 0 && (
-            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-yellow-500 text-xs text-white">
-              {activeQueries.length}
-            </span>
-          )}
+          <span
+            className={`absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full ${activeQueries && activeQueries.length > 0 ? "bg-yellow-500" : "bg-green-500"} text-xs text-white`}
+          >
+            2
+          </span>
+
           <Search className="h-4 w-4 text-white" />
         </Button>
       </SheetTrigger>
