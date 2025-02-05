@@ -1,26 +1,44 @@
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { useToast } from "@/hooks/use-toast";
 import { CheckCircle, Link, Loader2, Save, Search, Trash2 } from "lucide-react";
 
 import { useEffect, useState } from "react";
 
 export const ActiveQueries: React.FC = () => {
+  const { toast } = useToast();
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [activeQueries, setActiveQueries] = useState([
     { id: 1, term: "Always Pending", status: "pending" },
     { id: 2, term: "Temporary Pending", status: "pending" },
   ]);
-
   const [completedQueries, setCompletedQueries] = useState<any[]>([]);
+
+  // Function to complete a query
+  const completeQuery = (id: number, term: string, time: string) => {
+    console.log(`Completing query: ${term}`);
+
+    setActiveQueries((prev) => prev.filter((query) => query.id !== id));
+    setCompletedQueries((prev) => [...prev, { id, term, status: "complete", time }]);
+
+    console.log(`Query "${term}" moved to completed.`);
+
+    // Always show the toast when a query is completed
+    toast({
+      title: "Query Completed",
+      description: `${term} finished processing in ${time}.`,
+      variant: "destructive",
+    });
+
+    console.log("Toast triggered.");
+  };
 
   // Complete the second query after 6.5 seconds
   useEffect(() => {
+    console.log("Setting timeout for second query completion...");
     const secondQueryTimer = setTimeout(() => {
-      setActiveQueries((prev) => prev.filter((query) => query.id !== 2));
-      setCompletedQueries((prev) => [
-        ...prev,
-        { id: 2, term: "Temporary Pending", status: "complete", time: "01:33" },
-      ]);
+      completeQuery(2, "Temporary Pending", "01:33");
     }, 6500);
 
     return () => clearTimeout(secondQueryTimer);
@@ -28,25 +46,28 @@ export const ActiveQueries: React.FC = () => {
 
   // Complete the first query 8 seconds after the second query (total 14.5s)
   useEffect(() => {
+    console.log("Setting timeout for first query completion...");
     const firstQueryTimer = setTimeout(() => {
-      setActiveQueries((prev) => prev.filter((query) => query.id !== 1));
-      setCompletedQueries((prev) => [
-        ...prev,
-        { id: 1, term: "Always Pending", status: "complete", time: "02:10" },
-      ]);
-    }, 14500); // 14.5s in total
+      completeQuery(1, "Always Pending", "02:10");
+    }, 14500);
 
     return () => clearTimeout(firstQueryTimer);
   }, []);
 
   return (
-    <Sheet className="w-full">
+    <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen} className="w-full">
       <SheetTrigger asChild>
         <Button variant="outline" className="relative border-none bg-[#006A86] text-white">
           <span
-            className={`absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full ${activeQueries && activeQueries.length > 0 ? "bg-yellow-500" : "bg-green-500"} text-xs text-white`}
+            className={`absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full ${
+              activeQueries.length > 0 ? "bg-yellow-500" : "bg-green-500"
+            } text-xs text-white`}
           >
-            2
+            {activeQueries.length > 0
+              ? activeQueries.length
+              : completedQueries.length > 0
+                ? completedQueries.length
+                : 0}
           </span>
 
           <Search className="h-4 w-4 text-white" />
@@ -91,8 +112,7 @@ export const ActiveQueries: React.FC = () => {
               </div>
             ))}
 
-            <h3 className="text-md pb-2 font-bold">Complete:</h3>
-
+            {completedQueries.length > 0 && <h3 className="text-md pb-2 font-bold">Complete:</h3>}
             {completedQueries.map((query) => (
               <div key={query.id} className="flex w-full">
                 <div className="w-full rounded-lg border border-neutral-200 bg-white p-4">
