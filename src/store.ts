@@ -19,6 +19,8 @@ import storage from "redux-persist/lib/storage";
 // Type-safe hooks
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
+import { advancedSearchSlice } from "./api/search/advancedSearchSlice";
+
 // Create the history context
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
   history: createBrowserHistory(),
@@ -37,6 +39,7 @@ export const rootReducer = combineReducers({
   auth: authSlice,
   activities: activityApi,
   search: searchApi,
+  advancedSearch: advancedSearchSlice,
   document: documentSlice,
   language: languageReducer,
   sidebar: sidebarReducer,

@@ -1,28 +1,35 @@
 import { currentUser } from "@/api/auth/authSlice";
+import {
+  closeDialog,
+  fetchArticlesStart,
+  fetchArticlesSuccess,
+  minimizeDialog,
+  openDialog,
+  restoreDialog,
+} from "@/api/documents/documentSlice";
 import DocumentIcon from "@/assets/document.svg";
 import EntityIcon from "@/assets/entity.svg";
 import QueryIcon from "@/assets/query.svg";
 import StudyIcon from "@/assets/study.svg";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ArrowRightCircle, Award, Beaker, Rainbow } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { RootState } from "@/store";
+import { ArrowRightCircle, Award, Beaker, Loader2, Minus, Rainbow } from "lucide-react";
 
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import UserAvatar from "../utilities/user-avatar";
-
-// Define a type for your items
-type CreateItemType = {
-  type: string;
-  desc: string;
+type CreateQueryDialogProps = {
+  id: string;
   icon: string;
-  queryType?: string;
+  queryType: string;
 };
-
-interface CreateQueryDialogProps {
-  icon: string; // Name of the icon to render
-  queryType: string; // Type of query, e.g., "Study", "Entity", etc.
-}
 
 const iconMapping: Record<string, React.ElementType> = {
   Beaker,
@@ -34,73 +41,220 @@ const iconMapping: Record<string, React.ElementType> = {
   Study: StudyIcon,
 };
 
-const CreateQueryDialog: React.FC<CreateQueryDialogProps> = ({ icon, queryType }) => {
+const CreateQueryDialog: React.FC<CreateQueryDialogProps> = ({ id, icon, queryType }) => {
   const { t } = useTranslation();
   const user = useSelector(currentUser);
-  // Dynamically determine which icon to render
-  const IconComponent = iconMapping[icon] || Rainbow; // Fallback to Rainbow if no match
+  const dispatch = useDispatch();
+
+  const { isDialogOpen, isMinimized, articles, loading } = useSelector(
+    (state: RootState) => state.document,
+  );
+  const [queryName, setQueryName] = useState("");
+  const [queryDescription, setQueryDescription] = useState("");
+  const [queryValues, setQueryValues] = useState("");
+  const [queryCategory, setQueryCategory] = useState("General");
+  const [queryTags, setQueryTags] = useState("");
+  const [step, setStep] = useState(1);
+
+  const IconComponent = iconMapping[icon] || Rainbow;
+
+  const handleStartQuery = () => {
+    if (!queryName.trim() || !queryDescription.trim()) return;
+    setStep(2);
+  };
+
+  const handleRunQuery = async () => {
+    if (!queryValues.trim() || !queryTags.trim()) return;
+    dispatch(fetchArticlesStart());
+    setStep(3);
+
+    setTimeout(async () => {
+      try {
+        const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+        const data = await response.json();
+
+        const titles = data.slice(0, 5).map((item: any) => item.title);
+        dispatch(fetchArticlesSuccess(titles));
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    }, 10000);
+  };
+
+  useEffect(() => {
+    console.log("queryid?", id + " " + queryType);
+    if (!isDialogOpen) {
+      setQueryName("");
+      setQueryDescription("");
+      setQueryValues("");
+      setQueryCategory("General");
+      setQueryTags("");
+      setStep(1);
+    }
+  }, [isDialogOpen]);
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="flex w-full cursor-pointer items-center justify-between">
+        <div
+          onClick={() => dispatch(openDialog({ documentId: queryType }))}
+          className="flex w-full cursor-pointer items-center justify-between"
+        >
           <IconComponent size={24} />
           <div className="ml-2">Search for {queryType}</div>
           <ArrowRightCircle size={24} className="group-hover:text-blue-300" />
         </div>
       </DialogTrigger>
-      <DialogContent
-        className="h-[80vh] max-w-6xl overflow-hidden bg-white"
-        style={{ maxHeight: "70%", maxWidth: "80%" }}
-      >
-        <div className="flex h-full w-full flex-col items-center justify-center">
-          {/* <UserAvatar username={user ? user : "Ronan"} /> */}
-          <div className="flex w-full max-w-lg flex-col gap-6 p-6">
-            <div>
-              <select
-                id="searchFor"
-                name="searchFor"
-                className="mt-1 block w-full rounded-md border-gray-300 bg-blue-200 p-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              >
-                <option value="">Search for {queryType}</option>
-                <option value="Option1">Option 1</option>
-                <option value="Option2">Option 2</option>
-                <option value="Option3">Option 3</option>
-              </select>
-            </div>
 
-            <h2 className="text-lg font-bold text-gray-900">Name your query</h2>
+      {!isMinimized && (
+        <Dialog open={isDialogOpen} onOpenChange={(open) => !open && dispatch(closeDialog())}>
+          <DialogContent className="h-[75vh] max-w-4xl overflow-hidden bg-white p-4 transition-all duration-300 sm:p-6">
+            <DialogHeader>
+              <div className="flex items-center justify-between">
+                <DialogTitle className="text-lg sm:text-xl">{queryType} Query</DialogTitle>
+                <button
+                  onClick={() => dispatch(minimizeDialog())}
+                  className="rounded border px-2 py-1 text-sm text-gray-500 hover:bg-gray-200"
+                >
+                  <Minus size={16} />
+                </button>
+              </div>
+            </DialogHeader>
 
-            <p className="text-sm text-gray-600">
-              This is where you can give your query a name. The query name helps you to identify and
-              organize it later. Ensure the name is descriptive enough to quickly understand its
-              purpose.
-            </p>
+            <div className="flex h-full w-full flex-col items-center justify-start transition-all duration-300">
+              {step === 1 ? (
+                // Step 1: Query Details
+                <div className="flex w-full max-w-lg flex-col gap-4 p-4 sm:p-6">
+                  <h2 className="text-lg font-semibold text-gray-900">Step 1: Query Details</h2>
+                  <input
+                    type="text"
+                    value={queryName}
+                    onChange={(e) => setQueryName(e.target.value)}
+                    placeholder="Query Name"
+                    className="block w-full rounded-md border-gray-300 p-2"
+                  />
+                  <textarea
+                    value={queryDescription}
+                    onChange={(e) => setQueryDescription(e.target.value)}
+                    placeholder="Query Description"
+                    className="block w-full rounded-md border-gray-300 p-2"
+                  />
+                  <button
+                    onClick={handleStartQuery}
+                    className="rounded-md bg-[#006A86] px-4 py-2 text-sm text-white"
+                  >
+                    Next
+                  </button>
+                </div>
+              ) : step === 2 ? (
+                // Step 2: Query Parameters
+                <div className="flex w-full max-w-lg flex-col gap-4 p-4 sm:p-6">
+                  <h2 className="text-lg font-semibold text-gray-900">Step 2: Query Parameters</h2>
+                  <select
+                    value={queryCategory}
+                    onChange={(e) => setQueryCategory(e.target.value)}
+                    className="block w-full rounded-md border-gray-300 p-2"
+                  >
+                    <option>General</option>
+                    <option>Science</option>
+                    <option>Technology</option>
+                    <option>Health</option>
+                  </select>
+                  <input
+                    type="text"
+                    value={queryValues}
+                    onChange={(e) => setQueryValues(e.target.value)}
+                    placeholder="Enter search values"
+                    className="block w-full rounded-md border-gray-300 p-2"
+                  />
+                  <input
+                    type="text"
+                    value={queryTags}
+                    onChange={(e) => setQueryTags(e.target.value)}
+                    placeholder="Enter tags (comma-separated)"
+                    className="block w-full rounded-md border-gray-300 p-2"
+                  />
+                  <div className="flex justify-between">
+                    <button
+                      onClick={() => setStep(1)}
+                      className="rounded-md bg-gray-400 px-4 py-2 text-sm text-white"
+                    >
+                      Back
+                    </button>
+                    <button
+                      onClick={handleRunQuery}
+                      className="rounded-md bg-[#006A86] px-4 py-2 text-sm text-white"
+                    >
+                      Run Query
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                // Step 3: Loading & Results
+                <div className="flex w-full max-w-lg flex-col gap-4 p-4 sm:p-6">
+                  <h2 className="text-center text-lg font-semibold text-gray-900">
+                    Query Results for "{queryName}"
+                  </h2>
+                  {loading ? (
+                    <div className="flex flex-col items-center">
+                      <Loader2 className="animate-spin text-gray-500" size={32} />
+                      <p className="text-gray-600">Fetching results... Please wait.</p>
+                    </div>
+                  ) : (
+                    <>
+                      <ul className="list-disc pl-5">
+                        {articles.map((title, index) => (
+                          <li key={index} className="text-gray-700">
+                            {title}
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="flex w-full items-center gap-2">
+                        <button
+                          onClick={() => dispatch(closeDialog())}
+                          className="rounded-md bg-gray-400 px-4 py-2 text-sm text-white"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={() => dispatch(closeDialog())}
+                          className="rounded-md bg-green-600 px-4 py-2 text-sm text-white"
+                        >
+                          Store Query
+                        </button>
+                        <button
+                          onClick={() => dispatch(closeDialog())}
+                          className="rounded-md bg-yellow-600 px-4 py-2 text-sm text-white"
+                        >
+                          Re-Run Query
+                        </button>
+                        <button
+                          onClick={() => dispatch(closeDialog())}
+                          className="rounded-md bg-red-600 px-4 py-2 text-sm text-white"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
 
-            <div>
-              <input
-                type="text"
-                placeholder="Query name"
-                className="block w-full rounded-md border-gray-400 p-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-            <div className="flex justify-start gap-4">
-              <button
-                type="button"
-                className="inline-flex flex-1 justify-center rounded-md border border-transparent bg-[#006A86] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Create Query
-              </button>
-              <button
-                type="button"
-                className="flex-2 inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
+      {isMinimized && (
+        <div
+          className="fixed bottom-4 right-4 flex h-12 w-64 cursor-pointer items-center justify-between bg-[#006A86] px-4 text-white shadow-lg"
+          onClick={() => dispatch(restoreDialog())}
+        >
+          <p className="text-sm text-white">
+            {loading ? "Running Query..." : `${queryName} - Minimized`}
+          </p>
+          <button className="text-sm text-white">Restore</button>
         </div>
-      </DialogContent>
+      )}
     </Dialog>
   );
 };
