@@ -1,3 +1,4 @@
+import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { Editor } from "@tiptap/react";
 
@@ -35,18 +36,9 @@ export const TOCSidebar = memo(
 
     return (
       <div className={windowClassName}>
-        {/* <div className="flex items-center gap-x-1.5">
-          <Toolbar.Button
-            tooltip={isOpen ? "Close Explorer" : "Open Explorer"}
-            onClick={toggleLeftSidebar}
-            className={isSidebarOpen ? "bg-transparent" : ""}
-          >
-            <List size={24} />
-          </Toolbar.Button>
-        </div> */}
         <div className="h-full w-full overflow-hidden">
           <div className="h-full w-full overflow-auto p-6">
-            <h3 className="iconText mb-4 py-1">EXPLORER</h3>
+            <h3 className="iconText mb-4 py-1">Project structure</h3>
             <h4 className="mb-2 font-bold">{title ? title : null}</h4>
             <ul className="ml-2 flex flex-col-reverse">
               {connectedEntities && connectedEntities.length > 0

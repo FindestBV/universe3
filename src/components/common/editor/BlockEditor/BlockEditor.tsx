@@ -154,14 +154,14 @@ export const BlockEditor = ({
   return (
     <div className="flex" ref={menuContainerRef}>
       <div className="relative flex h-full max-w-full flex-1 flex-col">
-        <EditorHeader
+        {/* <EditorHeader
           editor={editor}
           collabState={collabState}
           users={users}
           isSidebarOpen={isLeftSideBarOpen}
           toggleLeftSidebar={toggleLeftSideBar}
           documentId={id}
-        />
+        /> */}
         <div className="flex flex-row overflow-hidden">
           <div className={`${isLeftSideBarOpen ? "flex" : "collapsed"}`}>
             <TOCSidebar
@@ -272,7 +272,7 @@ export const BlockEditor = ({
               <Comments connectedComments={connectedComments} />
             </div>
           </div>
-          <div className={`referenceSidebar ${isSidebarCollapsed || isLocked ? "collapsed" : ""}`}>
+          {/* <div className={`referenceSidebar ${isSidebarCollapsed || isLocked ? "collapsed" : ""}`}>
             <ReferencesSidebar
               onToggleInnerSidebar={toggleInnerSidebar}
               isCollapsed={isSidebarCollapsed || isLocked}
@@ -282,7 +282,7 @@ export const BlockEditor = ({
               connectedInbox={connectedInbox}
               editor={editor}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

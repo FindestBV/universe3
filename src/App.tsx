@@ -1,7 +1,7 @@
 // Imports
 import { currentUser } from "@/api/auth/authSlice";
-import { DashboardHeader } from "@/components/common/layout/dashboard-header";
-import { AppSidebar } from "@/components/common/sidebar/main-sidebar/main-sidebar";
+// import { DashboardHeader } from "@/components/common/layout/dashboard-header";
+import { AppSidebar } from "@/components/common/sidebar/v2/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { persistor, store } from "@/store";
@@ -59,8 +59,6 @@ function AuthenticatedLayout() {
     <SidebarProvider>
       <AppSidebar />
       <div className="app-canvas w-full">
-        <DashboardHeader />
-
         <TransitionGroup component={null}>
           <CSSTransition key={location.key} classNames="fade" timeout={1000} nodeRef={nodeRef}>
             {/* <Suspense

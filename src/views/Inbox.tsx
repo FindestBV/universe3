@@ -81,7 +81,7 @@ export const Inbox: React.FC = () => {
   const endRange = data ? Math.min(currentPage * documentsPerPage, data.totalCount) : 0;
 
   return (
-    <div className="flex h-full w-full flex-col px-12 max-sm:px-4">
+    <div className="mt-4 flex h-full w-full flex-col px-12 max-sm:px-4">
       {/* Top Row: Filter Controls and Pagination */}
       <div className="mb-4 flex items-center justify-between gap-4 rounded-lg">
         {/* Left side: Checkbox, Filters, and Studies-Per-Page select */}
