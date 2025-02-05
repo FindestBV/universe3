@@ -2,10 +2,12 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { RootState } from "@/store";
-import { CheckCircle, Search } from "lucide-react";
+import { CheckCircle, Link, Save, Search, Trash2 } from "lucide-react";
 import { Loader, Pin, SquareArrowOutUpRight, TriangleAlert } from "lucide-react";
 
 import { useSelector } from "react-redux";
+
+import { AddLinkToItem } from "./add-link-to-item";
 
 export const ActiveQueries: React.FC = () => {
   const activeQueries = useSelector((state: RootState) => state.document.activeQueries || []);
@@ -19,7 +21,7 @@ export const ActiveQueries: React.FC = () => {
               {activeQueries.length}
             </span>
           )}
-          <Search className="mr-2 h-4 w-4 text-white" />
+          <Search className="h-4 w-4 text-white" />
         </Button>
       </SheetTrigger>
 
@@ -32,63 +34,62 @@ export const ActiveQueries: React.FC = () => {
           <h3 className="text-md pb-2 font-bold">Active:</h3>
 
           <div className="space-y-4">
-            <div className="rounded-lg border border-neutral-200 bg-white p-4">
-              <div className="mb-2 flex items-center justify-between">
-                <h3 className="font-medium">Term</h3>
-                <span className="text-sm text-muted-foreground">11:17</span>
-              </div>
-              <p className="text-sm text-muted-foreground">
+            <div className="flex w-full">
+              <div className="w-full rounded-lg border border-neutral-200 bg-white p-4">
+                <div className="mb-2 flex items-center justify-between">
+                  <h3 className="font-medium">Term</h3>
+                  <span className="text-sm text-muted-foreground">11:17</span>
+                </div>
+                {/* <p className="text-sm text-muted-foreground">
                 Status: Complete <CheckCircle size={18} />
-              </p>
-              <div className="mt-2 flex items-center space-x-2">
-                <span className="text-sm">Status:</span>
-                <span className="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium">
-                  Pending...
-                </span>
+              </p> */}
+                <div className="mt-2 flex items-center space-x-2">
+                  <span className="text-sm">Status:</span>
+                  <span className="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium">
+                    Pending...
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className="rounded-lg border border-neutral-200 bg-white p-4">
-              <div className="mb-2 flex items-center justify-between">
-                <h3 className="font-medium">Term</h3>
-                <span className="text-sm text-muted-foreground">11:09</span>
-              </div>
-              <p className="text-sm text-muted-foreground">Category: Patents</p>
-              <div className="mt-2 flex items-center space-x-2">
-                <span className="text-sm">Status:</span>
-                <span className="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium">
-                  Pending...
-                </span>
-              </div>
-            </div>
-            <div className="rounded-lg border border-neutral-200 bg-white p-4">
-              <div className="mb-2 flex items-center justify-between">
-                <h3 className="font-medium">Term</h3>
-                <span className="text-sm text-muted-foreground">11:07</span>
-              </div>
-              <p className="text-sm text-muted-foreground">Category: Patents</p>
-              <div className="mt-2 flex items-center space-x-2">
-                <span className="text-sm">Status:</span>
-                <span className="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium">
-                  Pending...
-                </span>
+              <div className="links mx-2 flex w-auto flex-col gap-2">
+                <a href="#" className="linkQuery items-center rounded bg-[#006A86] p-2 text-white">
+                  <Link size={14} />
+                </a>
+                <a href="#" className="trashCan items-center rounded p-2 text-white">
+                  <Trash2 size={14} />
+                </a>
               </div>
             </div>
 
             <h3 className="text-md pb-2 font-bold">Complete:</h3>
-            <div className="rounded-lg border border-green-400 bg-white p-4">
-              <div className="mb-2 flex items-center justify-between">
-                <h3 className="font-medium">TITLE</h3>
-                <span className="text-sm text-muted-foreground">11:12</span>
+
+            <div className="flex w-full">
+              <div className="w-full rounded-lg border border-neutral-200 bg-white p-4">
+                <div className="mb-2 flex items-center justify-between">
+                  <h3 className="font-medium">Term</h3>
+                  <span className="text-sm text-muted-foreground">11:17</span>
+                </div>
+                {/* <p className="text-sm text-muted-foreground">
+                Status: Complete <CheckCircle size={18} />
+              </p> */}
+                <div className="mt-2 flex space-x-2">
+                  <div className="flex justify-between text-sm text-green-600">
+                    <CheckCircle size={18} />
+                  </div>
+                  <p className="text-sm">
+                    Query completed in <strong>01:33</strong>
+                  </p>
+                </div>
               </div>
-              <p className="flex justify-between text-sm text-muted-foreground">
-                <span>Complete</span> <CheckCircle size={18} />
-              </p>
-              <div className="mt-2 bg-white">
-                <h4 className="mb-1 text-sm font-medium">Results:</h4>
-                <p className="text-sm">
-                  Query executed in <strong>15</strong> seconds
-                </p>
-                <pre className="rounded p-2 text-xs">View Results</pre>
+              <div className="links mx-2 flex w-auto flex-col gap-1">
+                <a href="#" className="linkQuery items-center rounded bg-[#006A86] p-2 text-white">
+                  <Link size={14} />
+                </a>
+                <a href="#" className="trashCan items-center rounded p-2 text-white">
+                  <Trash2 size={14} />
+                </a>
+                <a href="#" className="items-center rounded bg-yellow-500 p-2 text-white">
+                  <Save size={14} />
+                </a>
               </div>
             </div>
           </div>

@@ -126,7 +126,7 @@ export const AdvancedSearch: React.FC = () => {
         </div> */}
 
         <CardContent className="p-0">
-          {/* {isError && (
+          {isError && (
             <div className="text-red-600">Error loading items: {JSON.stringify(error)}</div>
           )}
           {isLoading && <DocumentsSkeleton />}
@@ -145,7 +145,7 @@ export const AdvancedSearch: React.FC = () => {
                   />
                 ))}
             </div>
-          ) : null} */}
+          ) : null}
         </CardContent>
       </div>
     </>

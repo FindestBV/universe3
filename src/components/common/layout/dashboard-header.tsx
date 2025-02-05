@@ -180,7 +180,7 @@ export const DashboardHeader = () => {
           </li> */}
 
           <li>
-            <ActiveQueries activeQueries={documentInbox ?? documentInbox} />
+            <ActiveQueries />
             {/* <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
