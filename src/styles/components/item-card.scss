@@ -1,6 +1,6 @@
 
 .itemCard {
-    @apply flex flex-row my-4 cursor-pointer;
+    @apply flex flex-row mb-2 cursor-pointer;
   
     &__item {
         @apply rounded-md bg-slate-100 text-black p-1 flex gap-1 items-center text-xs h-[1.5rem];

@@ -9,7 +9,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { Circle, File, Minus, Network, Plus, Settings2, SquareTerminal } from "lucide-react";
+import { Circle, File, Link, Minus, Network, Plus, Settings2, SquareTerminal } from "lucide-react";
 
 import { createElement, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -37,7 +37,7 @@ const data = {
     {
       title: "Sources",
       url: "/sources",
-      icon: Settings2,
+      icon: Link,
       items: [{ title: "Studies", url: "/pages/studies" }],
     },
   ],

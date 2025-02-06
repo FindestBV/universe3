@@ -220,7 +220,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   const itemCaption = images && images[0]?.caption;
   return (
     <div className="itemCard">
-      <div className={`innerCardMain ${isSources ? "gap-4" : ""}`}>
+      <div className={`innerCardMain bg-white ${isSources ? "gap-4" : ""}`}>
         {/* Checkbox */}
         <Checkbox
           id={`card-${id}`}
@@ -233,7 +233,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
         <Card key={id} className="innerCardContent" onClick={handleCardClick}>
           {isSources && <div className="iconText">Science</div>}
           <div className="innerCardContent__Detail">
-            <div className="w-auto cursor-pointer">
+            {/* <div className="w-auto cursor-pointer">
               {!isSources && (
                 <div className="iconText py-1">
                   {itemType === "advancedSearchItem"
@@ -243,11 +243,11 @@ export const GenericCard: React.FC<GenericCardProps> = ({
                       : "Entity"}
                 </div>
               )}
-            </div>
+            </div> */}
             <div className={`flex ${isSources ? "flex-row gap-2" : "flex-col"}`}>
               <h3
                 className={`overflow-hidden text-ellipsis text-lg font-bold text-black ${
-                  !isSources ? "py-2" : ""
+                  !isSources ? "py-0" : ""
                 }`}
               >
                 {truncatedText}
@@ -289,7 +289,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
           <div className="flex flex-row items-start gap-2">
             <div className="flex flex-row items-center gap-4">
               <div className="time">{formatDate(dateCreated ? dateCreated : dateAdded)}</div>
-              <CreatorTooltip createdByUsername={createdByUsername} />
+              {/* <CreatorTooltip createdByUsername={createdByUsername} /> */}
             </div>
           </div>
         </Card>

@@ -21,13 +21,12 @@ import {
   Frame,
   GalleryVerticalEnd,
   Globe,
-  Map,
-  PieChart,
-  Settings2,
+  Link,
   SquareTerminal,
 } from "lucide-react";
 
 import * as React from "react";
+import { useEffect, useState } from "react";
 
 // This is sample data.
 const data = {
@@ -81,7 +80,7 @@ const data = {
     {
       title: "Sources",
       url: "#",
-      icon: Settings2,
+      icon: Link,
       items: [
         {
           title: "General",
@@ -110,7 +109,11 @@ function SidebarToggle() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <SidebarMenuButton size="lg" onClick={toggleSidebar} className="w-full justify-start gap-0">
+        <SidebarMenuButton
+          size="lg"
+          onClick={toggleSidebar}
+          className="w-full justify-start gap-2 hover:bg-none"
+        >
           <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
             <Globe className="size-6 text-slate-600" />
           </div>
@@ -124,8 +127,25 @@ function SidebarToggle() {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { open } = useSidebar(); // Get sidebar open state
+  const [sidebarOpen, setSidebarOpen] = useState(open);
+
+  // Debugging logs
+  console.log("🔍 Sidebar state from useSidebar():", open);
+  console.log("🔍 Local sidebar state:", sidebarOpen);
+
+  // Ensure state updates properly when `open` changes
+  useEffect(() => {
+    console.log("✅ useEffect triggered - Sidebar open state:", open);
+    setSidebarOpen(open);
+  }, [open]);
+
   return (
-    <Sidebar collapsible="icon" {...props} className="bg-[#ffffff]">
+    <Sidebar
+      collapsible="icon"
+      {...props}
+      className={`border-r border-gray-200 transition-all duration-300 ${sidebarOpen ? "bg-white" : "!important bg-gray-800"}`}
+    >
       <SidebarHeader>
         <SidebarToggle />
       </SidebarHeader>

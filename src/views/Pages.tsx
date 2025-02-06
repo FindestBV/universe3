@@ -141,7 +141,7 @@ export const Pages: React.FC = () => {
           )}
         </div>
 
-        <div className="flex items-center gap-4">
+        {/* <div className="flex items-center gap-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
@@ -188,7 +188,7 @@ export const Pages: React.FC = () => {
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
+        </div> */}
 
         <div className="mr-[1.5em]">
           <select

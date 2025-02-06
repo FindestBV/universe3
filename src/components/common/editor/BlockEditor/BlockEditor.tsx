@@ -176,30 +176,14 @@ export const BlockEditor = ({
             id="mainEditorStart"
           >
             <div className="mx-2 flex flex-col pl-40 pt-10">
-              <Breadcrumb className="pb-4">
-                <BreadcrumbList>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="/library">Pages</BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href={type === "study" ? "/pages/studies" : "/pages/entities"}>
-                      Type: {type === "study" ? "Studies" : "Entities"}
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-
-                  {title && (
-                    <>
-                      <BreadcrumbSeparator />
-                      <BreadcrumbItem>
-                        <BreadcrumbPage className="text-slate-500">
-                          {title ? title : type}
-                        </BreadcrumbPage>
-                      </BreadcrumbItem>
-                    </>
-                  )}
-                </BreadcrumbList>
-              </Breadcrumb>
+              <EditorHeader
+                editor={editor}
+                collabState={collabState}
+                users={users}
+                isSidebarOpen={isLeftSideBarOpen}
+                toggleLeftSidebar={toggleLeftSideBar}
+                documentId={id}
+              />
               <p className="iconText font-black uppercase">{type ?? type}</p>
             </div>
             <EditorContent
