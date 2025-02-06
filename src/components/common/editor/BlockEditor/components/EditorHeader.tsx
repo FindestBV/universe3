@@ -40,19 +40,6 @@ export const EditorHeader = ({
 
   return (
     <div className="editorHeader">
-      <div className="flex flex-row items-center gap-x-1.5">
-        <div className="flex items-center gap-x-1.5">
-          <Toolbar.Button
-            tooltip={isSidebarOpen ? "Close Explorer" : "Open Explorer"}
-            onClick={toggleLeftSidebar}
-            active={isSidebarOpen}
-            className={isSidebarOpen ? "bg-transparent" : ""}
-          >
-            <List size={24} />
-          </Toolbar.Button>
-        </div>
-      </div>
-
       <EditorInfo
         characters={characters}
         words={words}

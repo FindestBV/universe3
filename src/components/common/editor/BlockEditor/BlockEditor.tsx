@@ -154,14 +154,6 @@ export const BlockEditor = ({
   return (
     <div className="flex" ref={menuContainerRef}>
       <div className="relative flex h-full max-w-full flex-1 flex-col">
-        {/* <EditorHeader
-          editor={editor}
-          collabState={collabState}
-          users={users}
-          isSidebarOpen={isLeftSideBarOpen}
-          toggleLeftSidebar={toggleLeftSideBar}
-          documentId={id}
-        /> */}
         <div className="flex flex-row overflow-hidden">
           <div className={`${isLeftSideBarOpen ? "flex" : "collapsed"}`}>
             <TOCSidebar
@@ -175,7 +167,7 @@ export const BlockEditor = ({
             className={`mainEditor w-full bg-[#F9FAF9] ${isEditing ? "prose-editor" : ""}`}
             id="mainEditorStart"
           >
-            <div className="mx-2 flex flex-col pl-40 pt-10">
+            <div className="mx-auto max-w-[80%]">
               <EditorHeader
                 editor={editor}
                 collabState={collabState}
@@ -184,6 +176,8 @@ export const BlockEditor = ({
                 toggleLeftSidebar={toggleLeftSideBar}
                 documentId={id}
               />
+            </div>
+            <div className="mx-2 flex flex-col pl-40 pt-10">
               <p className="iconText font-black uppercase">{type ?? type}</p>
             </div>
             <EditorContent
