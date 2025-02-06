@@ -110,11 +110,11 @@ function SidebarToggle() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <SidebarMenuButton size="lg" onClick={toggleSidebar} className="w-full justify-start">
+        <SidebarMenuButton size="lg" onClick={toggleSidebar} className="w-full justify-start gap-0">
           <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
-            <Globe className="size-5 text-slate-600" />
+            <Globe className="size-6 text-slate-600" />
           </div>
-          <div className="grid flex-1 text-left text-lg leading-tight text-slate-600">
+          <div className="grid flex-1 text-left text-lg leading-tight text-slate-700">
             <span className="truncate font-semibold">Universe</span>
           </div>
         </SidebarMenuButton>
@@ -125,11 +125,11 @@ function SidebarToggle() {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props} className="bg-[#f9f9f9]">
+    <Sidebar collapsible="icon" {...props} className="bg-[#ffffff]">
       <SidebarHeader>
         <SidebarToggle />
       </SidebarHeader>
-      <SidebarContent className="mt-10">
+      <SidebarContent className="mt-6">
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter className="text-slate-500">
