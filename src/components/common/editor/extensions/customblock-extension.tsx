@@ -34,6 +34,6 @@ export default Node.create({
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(CustomBlock);
+    return ReactNodeViewRenderer((nodeProps) => <CustomBlock {...nodeProps} />);
   },
 });

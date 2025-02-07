@@ -193,7 +193,7 @@ export const BlockEditor = ({
                       <BreadcrumbSeparator />
                       <BreadcrumbItem>
                         <BreadcrumbPage className="text-slate-500">
-                          {title ? title : type}
+                          {title.length > 50 ? `${title.slice(0, 50)}...` : title || type}
                         </BreadcrumbPage>
                       </BreadcrumbItem>
                     </>
