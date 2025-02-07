@@ -164,7 +164,7 @@ export const BlockEditor = ({
             />
           </div>
           <div
-            className={`mainEditor w-full bg-[#F9FAF9] ${isEditing ? "prose-editor" : ""}`}
+            className={`mainEditor w-full bg-[#f2f4f8] ${isEditing ? "prose-editor" : ""}`}
             id="mainEditorStart"
           >
             <div className="mx-auto w-full">
