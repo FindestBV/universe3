@@ -1,5 +1,6 @@
 import LineChart from "@/components/common/utilities/line-chart";
 import { NodeViewContent, NodeViewWrapper } from "@tiptap/react";
+import { Loader, Loader2 } from "lucide-react";
 
 import { useEffect, useState } from "react";
 
@@ -787,10 +788,17 @@ const topics = [
 ];
 
 const CustomBlock = ({ node, updateAttributes }) => {
-  const { dataUrl = "" } = node.attrs;
+  const { dataUrl, id = "" } = node.attrs;
+  // const { id } = node.attrs.id;
+
+  console.log("I should be the id display", id);
   const [chartData, setChartData] = useState([]);
   const [dataOutput, setDataOutput] = useState();
   const [loading, setLoading] = useState(true); // Track loading state
+  const [loadingMessage, setLoadingMessage] = useState("Loading Visualisation Data..."); // Initial message
+
+  const pathSegments = window.location.pathname.split("/");
+  const pageId = pathSegments[pathSegments.length - 1];
 
   useEffect(() => {
     if (dataUrl) {
@@ -799,18 +807,24 @@ const CustomBlock = ({ node, updateAttributes }) => {
       fetch(dataUrl)
         .then((res) => res.json())
         .then((data) => {
-          setTimeout(() => {
-            console.log("remote data", data);
-            setDataOutput(data);
-            // Simulate transformed data (can modify as needed)
-            setChartData(topics);
+          console.log("Remote data received", data);
+          setDataOutput(data);
 
-            setLoading(false); // Stop loading after timeout
-          }, 3500); // 2.5s delay
+          // Simulate transformed data (modify as needed)
+          setChartData(topics);
+
+          // Sequentially update the loading message
+          setTimeout(
+            () =>
+              setLoadingMessage(`Generating Graph data for Page: <strong>${pageId}</strong>...`),
+            3000,
+          ); // After 3s
+          setTimeout(() => setLoading(false), 5000); // After 5s (3s + 2s) stop loading
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
-          setLoading(false); // Stop loading on error
+          setLoadingMessage("Error loading data");
+          setLoading(false);
         });
     }
   }, [dataUrl]);
@@ -823,9 +837,18 @@ const CustomBlock = ({ node, updateAttributes }) => {
       <div className="chart-container relative w-auto max-w-full overflow-y-scroll">
         {/* Show loading message for 2.5s */}
         {loading ? (
-          <p>Loading visualisation data...</p>
+          <div className="flex flex-col items-center">
+            <Loader2 className="animate-spin text-gray-500" size={32} />
+            <p className="text-gray-600">{loadingMessage}</p>
+          </div>
         ) : (
-          <>{chartData.length > 0 && <LineChart data={chartData} text={"Topic"} />}</>
+          // <div className="flex items-center gap-4">
+          //   <div className="animate-spin">
+          //     <Loader2 className="animate-spin text-gray-500" size={32} />
+          //   </div>
+          //   <p>{loadingMessage}</p>
+          // </div>
+          <>{chartData.length > 0 && <LineChart data={chartData} text={"Topic"} id={pageId} />}</>
         )}
       </div>
     </NodeViewWrapper>

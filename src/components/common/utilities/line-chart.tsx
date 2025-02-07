@@ -13,11 +13,13 @@ interface LineChartProps {
   data: DataPoint[];
   width?: number;
   height?: number;
+  text?: string;
+  id?: string;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ data, width = 940, height = 500, text }) => {
+const LineChart: React.FC<LineChartProps> = ({ data, width = 940, height = 500, text, id }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
-
+  console.log("line chart, should be item id in url", id);
   useEffect(() => {
     if (!data.length) return;
 

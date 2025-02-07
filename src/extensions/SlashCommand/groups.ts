@@ -139,6 +139,11 @@ export const GROUPS: Group[] = [
         description: "Insert a custom visualization block",
         shouldBeHidden: (editor) => editor.isActive("columns"),
         action: (editor) => {
+          // probably to be a cleaner wa
+          const pathSegments = window.location.pathname.split("/");
+          const pageId = pathSegments[pathSegments.length - 1];
+          console.log("editor", editor);
+          console.log("editor meta?", editor.state.doc.attrs);
           editor
             .chain()
             .focus()
@@ -146,8 +151,7 @@ export const GROUPS: Group[] = [
               type: "customBlock",
               attrs: {
                 id: `custom-visual-${Date.now()}`,
-                dataUrl:
-                  "https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments", // Example API
+                dataUrl: `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/${pageId}`, // Example API
               },
             })
             .run();
