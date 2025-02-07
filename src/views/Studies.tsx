@@ -82,7 +82,7 @@ export const Studies: React.FC = () => {
     <div className="flex h-full w-full flex-col px-12 max-sm:px-4">
       <div className="mb-2 flex items-center justify-between gap-1 rounded-lg">
         <div className="flex items-center gap-2">
-          <h1 className="pt-2 text-xl font-bold">Pages</h1>
+          <h1 className="pt-2 text-xl font-bold">Studies</h1>
         </div>
 
         {/* <div className="mr-4 flex flex-grow items-center gap-4">

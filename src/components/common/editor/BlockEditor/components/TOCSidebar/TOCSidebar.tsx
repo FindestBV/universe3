@@ -37,7 +37,7 @@ export const TOCSidebar = memo(
     return (
       <div className={windowClassName}>
         <div className="h-full w-full overflow-hidden">
-          <div className="h-full w-full overflow-auto p-6">
+          <div className="h-full w-full overflow-auto px-6 py-2">
             <h3 className="iconText mb-4 py-1">Project structure</h3>
             <h4 className="mb-2 font-bold">{title ? title : null}</h4>
             <ul className="ml-2 flex flex-col-reverse">

@@ -84,26 +84,7 @@ export const Pages: React.FC = () => {
     <div className="flex h-full w-full flex-col px-12 max-sm:px-4">
       <div className="mb-2 flex items-center justify-between gap-1 rounded-lg">
         <div className="flex items-center gap-2">
-          <Checkbox
-            id="select-all"
-            checked={
-              data && data.entities.length > 0
-                ? selectedEntities.size === data.entities.length
-                : false
-            }
-            onCheckedChange={(checked) => handleSelectAll(checked as boolean)}
-            className="ml-4"
-          />
-          {isChecked && (
-            <div className="ml-4 flex gap-2">
-              <a href="#" className="linkedStudy">
-                <Link size={18} />
-              </a>
-              <a href="#" className="trashCan">
-                <Trash2 size={18} />
-              </a>
-            </div>
-          )}
+          <h1 className="pt-2 text-xl font-bold">Entities</h1>
         </div>
 
         {/* <div className="flex items-center gap-2">
