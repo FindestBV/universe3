@@ -814,11 +814,7 @@ const CustomBlock = ({ node, updateAttributes }) => {
           setChartData(topics);
 
           // Sequentially update the loading message
-          setTimeout(
-            () =>
-              setLoadingMessage(`Generating Graph data for Page: <strong>${pageId}</strong>...`),
-            3000,
-          ); // After 3s
+          setTimeout(() => setLoadingMessage(`Generating Graph data for Page: ${pageId}...`), 3000); // After 3s
           setTimeout(() => setLoading(false), 5000); // After 5s (3s + 2s) stop loading
         })
         .catch((error) => {

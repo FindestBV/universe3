@@ -142,8 +142,8 @@ export const GROUPS: Group[] = [
           // probably to be a cleaner wa
           const pathSegments = window.location.pathname.split("/");
           const pageId = pathSegments[pathSegments.length - 1];
-          console.log("editor", editor);
-          console.log("editor meta?", editor.state.doc.attrs);
+          // console.log("editor", editor);
+          // console.log("editor meta?", editor.state.doc.attrs);
           editor
             .chain()
             .focus()

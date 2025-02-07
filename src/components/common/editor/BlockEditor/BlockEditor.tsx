@@ -167,7 +167,7 @@ export const BlockEditor = ({
             className={`mainEditor w-full bg-[#F9FAF9] ${isEditing ? "prose-editor" : ""}`}
             id="mainEditorStart"
           >
-            <div className="mx-auto max-w-[80%]">
+            <div className="mx-auto w-full">
               <EditorHeader
                 editor={editor}
                 collabState={collabState}

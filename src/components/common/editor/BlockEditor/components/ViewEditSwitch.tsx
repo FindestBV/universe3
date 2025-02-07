@@ -46,7 +46,7 @@ const ViewEditSwitch = ({ id }) => {
         className={`flex items-center gap-2 rounded-l-sm border px-2 py-1 transition-all duration-150 ease-linear ${
           isEditMode
             ? "border-gray-300 bg-white text-gray-700"
-            : "border-yellow-500 bg-yellow-500 text-white"
+            : "border-[#FFF000] bg-[#FFF000] text-black"
         }`}
         aria-label="Switch to View Mode"
       >
