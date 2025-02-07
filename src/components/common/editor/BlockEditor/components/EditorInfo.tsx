@@ -186,7 +186,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
   }, [isLocked]);
 
   return (
-    <div className="flex w-full items-center justify-between">
+    <div className="flex w-full items-center justify-start">
       <div className="mr-4 flex flex-row justify-center gap-2 border-r border-neutral-200 pr-4 text-right dark:border-neutral-200">
         {isEditing && !isLocked ? (
           <>

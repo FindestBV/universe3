@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { Bot } from "lucide-react";
+import { Bot, Zap } from "lucide-react";
 
 const AskIgorModal: React.FC = () => {
   return (
@@ -9,9 +9,9 @@ const AskIgorModal: React.FC = () => {
       {/* Trigger to Open Dialog */}
       <DialogTrigger asChild>
         <div>
-          <button className="flex items-center gap-1 rounded-md bg-white p-2 font-bold text-[#006A86] transition-all duration-150 ease-linear hover:bg-[#006A86] hover:text-white">
-            <Bot size={19} />
-            {/* <span className="md:block hidden">Ask IGOR<sup>AI</sup></span> */}
+          <button className="duration-50 group flex items-center gap-1 rounded-md bg-[#fff000] p-2 font-bold text-[#000000] transition-all ease-linear hover:bg-[#F9F9F9] hover:text-black">
+            <Zap size={19} className="fill-black" />
+            Ask IGOR
           </button>
         </div>
       </DialogTrigger>
