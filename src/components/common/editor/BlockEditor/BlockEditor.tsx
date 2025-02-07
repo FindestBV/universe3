@@ -177,13 +177,13 @@ export const BlockEditor = ({
                 documentId={id}
               />
             </div>
-            <div className="mx-2 flex flex-col pl-40 pt-10">
+            <div className="mx-2 flex flex-col pl-24 pt-10">
               <p className="iconText font-black uppercase">{type ?? type}</p>
             </div>
             <EditorContent
               key={editor?.view?.id || "editor"}
               editor={editor}
-              className="flex overflow-y-scroll pb-16 pt-8 md:px-16"
+              className="flex overflow-y-scroll pb-16 pt-8"
             />
             <ContentItemMenu editor={editor} />
             <LinkMenu editor={editor} appendTo={menuContainerRef} />
