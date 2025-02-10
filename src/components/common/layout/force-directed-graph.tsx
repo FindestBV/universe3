@@ -54,7 +54,7 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
 
     svg
       .attr("viewBox", [-width / 2, -height / 2, width, height].join(" "))
-      .attr("style", "width: 100%; height: 100%; background-color: white;");
+      .attr("style", "width: 100%; height: 100%;");
 
     const svgGroup = svg.append("g");
 
@@ -165,12 +165,12 @@ export const ForceDirectedGraphView: FC<TForceDirectedGraphViewProps> = ({
       const fullWidth = bounds.width;
       const fullHeight = bounds.height;
       const midX = bounds.x + fullWidth / 2;
-      const midY = bounds.y + fullHeight / 2;
+      const midY = bounds.y + fullHeight / 1.5;
 
-      // Custom scaling and translation
-      const customScale = isDashBoard ? 0.075 : 0.15; // Adjust this for your preferred scale
-      const customTranslateX = 0; // Adjust this for horizontal centering
-      const customTranslateY = 0; // Adjust this for vertical centering
+      // Increase initial zoom scale
+      const customScale = isDashBoard ? 0.1 : 0.2;
+      const customTranslateX = 0; // Adjust for horizontal centering
+      const customTranslateY = 0; // Adjust for vertical centering
 
       svg.call(
         zoomBehavior.transform,

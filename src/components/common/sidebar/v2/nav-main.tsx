@@ -9,7 +9,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { Circle, File, Link, Minus, Network, Plus, Settings2, SquareTerminal } from "lucide-react";
+import { Circle, File, Home, Link, Minus, Network, Plus, SquareTerminal } from "lucide-react";
 
 import { createElement, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -18,6 +18,7 @@ import { SearchForm } from "../main-sidebar/search-form";
 
 const data = {
   navMain: [
+    { title: "Dashboard", url: "/dashboard", icon: Home },
     { title: "Inbox", url: "/inbox", icon: SquareTerminal },
     {
       title: "Projects",
