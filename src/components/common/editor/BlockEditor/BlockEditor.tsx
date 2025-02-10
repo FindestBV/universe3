@@ -25,6 +25,7 @@ import {
   Home,
   Link,
   Network,
+  Pin,
   Plus,
   Search,
   Settings,
@@ -151,6 +152,29 @@ export const BlockEditor = ({
 
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
   const isLocked = useSelector((state: RootState) => state.document.isLocked);
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+
+  const toggleSection = (sectionTitle: string) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [sectionTitle]: !prev[sectionTitle],
+    }));
+  };
+
+  const projectStructure = [
+    {
+      title: "Description",
+      references: ["Reference 1", "Reference 2"],
+    },
+    {
+      title: "Images",
+      references: ["Image 1", "Image 2", "Image 3"],
+    },
+    {
+      title: "Suppliers",
+      references: ["Supplier A", "Supplier B"],
+    },
+  ];
 
   useEffect(() => {
     if (isEditing) {
@@ -224,15 +248,36 @@ export const BlockEditor = ({
                       </div>
                     </div>
                     <nav className="space-y-2">
-                      <a href="#" className="block text-sm text-gray-600 hover:text-gray-900">
-                        Description
-                      </a>
-                      <a href="#" className="block text-sm text-gray-600 hover:text-gray-900">
-                        Images
-                      </a>
-                      <a href="#" className="block text-sm text-gray-600 hover:text-gray-900">
-                        Suppliers
-                      </a>
+                      <ul className="refs">
+                        {projectStructure.map((section) => (
+                          <li key={section.title}>
+                            <button
+                              onClick={() => toggleSection(section.title)}
+                              className="flex w-full items-center gap-2 rounded-md py-2 text-left text-sm font-medium text-gray-700"
+                            >
+                              {openSections[section.title] ? (
+                                <ChevronDown className="bg-gray-100 p-1 text-gray-500" />
+                              ) : (
+                                <ChevronRight className="bg-gray-100 p-1 text-gray-500" />
+                              )}
+                              {section.title}
+                              <Pin className="p-1 text-gray-500" />
+                            </button>
+                            {openSections[section.title] && (
+                              <ul className="ml-4 mt-2 space-y-1 border-l-2 border-gray-300 pl-3">
+                                {section.references.map((ref, index) => (
+                                  <li
+                                    key={index}
+                                    className="text-sm text-gray-500 hover:text-gray-800"
+                                  >
+                                    {ref}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
                     </nav>
                   </div>
                 </div>
@@ -287,7 +332,7 @@ export const BlockEditor = ({
                   </div>
                   <div className="flex w-full justify-between text-sm">
                     <div>Created by sander.vanderwoude@findest.eu</div>
-                    <div className="mr-10 text-gray-500">26 June 2024</div>
+                    <div className="mr-32 text-gray-500">26 June 2024</div>
                   </div>
                 </div>
               </div>
