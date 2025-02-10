@@ -28,9 +28,9 @@ export const TOCSidebar = memo(
     }, [onClose, isOpen, editor]);
 
     const windowClassName = cn(
-      "tocSidebar transition-all duration-300 ease-in-out min-w-0 max-w-0 w-0 opacity-0  border-r border-r-neutral-200 dark:border-r-neutral-200",
+      "tocSidebar transition-all duration-300 ease-in-out w-1/4 opacity-0  border-r border-r-neutral-200 dark:border-r-neutral-200",
       isOpen
-        ? "translate-x-0 opacity-100 min-w-64 max-w-80 w-full border-r border-r-neutral-200 dark:border-r-neutral-200"
+        ? "translate-x-0 opacity-100 w-1/4 w-full border-r border-r-neutral-200 dark:border-r-neutral-200"
         : "opacity-0 translate-x-full",
     );
 

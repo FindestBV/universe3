@@ -38,7 +38,6 @@ const data = {
       title: "Sources",
       url: "/sources",
       icon: Link,
-      items: [{ title: "Studies", url: "/pages/studies" }],
     },
   ],
 };

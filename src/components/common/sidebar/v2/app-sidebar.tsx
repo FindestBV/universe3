@@ -142,7 +142,7 @@ export function AppSidebar({ isOpen, ...props }: React.ComponentProps<typeof Sid
       <SidebarHeader>
         <SidebarToggle />
       </SidebarHeader>
-      <SidebarContent className="mt-8">
+      <SidebarContent className="mt-9">
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter className="text-slate-500">

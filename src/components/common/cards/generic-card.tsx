@@ -159,7 +159,7 @@ export const GenericCard: React.FC<GenericCardProps> = ({
     return (
       <div>
         {paragraphs.map((paragraph: any, index: number) => (
-          <p key={index}>
+          <p key={index} className="!important text-xs">
             {paragraph.content
               ?.map((child: any) => child.text)
               .filter(Boolean)
