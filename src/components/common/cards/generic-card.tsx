@@ -280,12 +280,12 @@ export const GenericCard: React.FC<GenericCardProps> = ({
               />
             </div>
           </div>
-          {isStudy && itemImage ? (
+          {/* {isStudy && itemImage ? (
             <div className="mt-6 w-1/4 self-start">
               <img src={itemImage} alt={itemCaption} />
-              {/* <figcaption>{itemCaption}</figcaption> */}
+              {/* <figcaption>{itemCaption}</figcaption> 
             </div>
-          ) : null}
+          ) : null} */}
           <div className="flex flex-row items-start gap-2">
             <div className="flex flex-row items-center gap-4">
               <div className="time">{formatDate(dateCreated ? dateCreated : dateAdded)}</div>
