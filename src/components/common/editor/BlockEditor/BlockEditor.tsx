@@ -235,7 +235,7 @@ export const BlockEditor = ({
                 </div>
                 <h1 className="mb-2 text-4xl font-bold">
                   CN109368873A - 一种风电互补海水淡化系统
-                  <br /> - Google Patents
+                  <br /> - Google Patents.
                 </h1>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
                   <Eye className="h-4 w-4" />
