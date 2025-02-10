@@ -24,8 +24,10 @@ import {
   File,
   Home,
   Link,
+  Network,
   Plus,
   Search,
+  Settings,
 } from "lucide-react";
 
 import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -168,49 +170,82 @@ export const BlockEditor = ({
       <div className="flex-2 relative flex h-full max-w-full flex-col">
         <div className="flex flex-row overflow-hidden">
           <div className={`hidden md:flex ${isLeftSideBarOpen ? "flex-col" : "collapsed"}`}>
-            <div className="flex justify-between bg-gradient-to-br from-black from-[0%] via-slate-700 via-[90%] to-white to-[100%] px-4 py-2 text-white">
-              <p className="text-xs font-bold text-white">cross regeneration to maxim...</p>
-              <div className="flex items-center gap-4">
-                <Eye size={20} className="text-white" />
-                <ChevronsUpDown size={20} className="text-white" />
+            <div className="flex h-screen w-full flex-col border-r border-gray-200 md:w-64">
+              <div className="fixed top-0 flex h-screen w-64 flex-col border-r border-gray-200 bg-white">
+                {/* Gradient Header */}
+                <div className="flex justify-between bg-gradient-to-br from-black from-[0%] via-slate-700 via-[90%] to-white to-[100%] px-4 py-2">
+                  <p className="text-xs font-bold text-white">cross regeneration to maxim...</p>
+                  <div className="flex items-center gap-4">
+                    <Eye size={20} className="text-white" />
+                    <ChevronsUpDown size={20} className="text-white" />
+                  </div>
+                </div>
+
+                {/* Navigation Links */}
+                <div className="flex-1 overflow-y-auto">
+                  <ul className="border-b border-gray-200">
+                    <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
+                      <Home className="h-5 w-5" />
+                      <span className="text-sm font-medium text-gray-600">Project overview</span>
+                      <span className="ml-auto">
+                        <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                      </span>
+                    </li>
+                    <li className="p-0">
+                      <SearchForm />
+                    </li>
+                    <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
+                      <File className="h-5 w-5" />
+                      <span className="text-sm font-medium text-gray-600">Pages</span>
+                      <span className="ml-auto">
+                        <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                      </span>
+                    </li>
+                    <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
+                      <Link className="h-5 w-5" />
+                      <span className="text-sm font-medium text-gray-600">Sources</span>
+                      <span className="ml-auto">
+                        <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                      </span>
+                    </li>
+                  </ul>
+
+                  {/* Table of Contents */}
+                  <div className="p-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="mb-4 transform-none text-xs font-bold tracking-tight">
+                        Project structure
+                      </h3>
+                      <div>
+                        <span className="ml-auto flex items-center gap-2">
+                          <Network className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
+                          <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
+                        </span>
+                      </div>
+                    </div>
+                    <nav className="space-y-2">
+                      <a href="#" className="block text-sm text-gray-600 hover:text-gray-900">
+                        Description
+                      </a>
+                      <a href="#" className="block text-sm text-gray-600 hover:text-gray-900">
+                        Images
+                      </a>
+                      <a href="#" className="block text-sm text-gray-600 hover:text-gray-900">
+                        Suppliers
+                      </a>
+                    </nav>
+                  </div>
+                </div>
+
+                {/* Settings Footer */}
+                <div className="border-t border-gray-200 bg-white p-4">
+                  <div className="flex cursor-pointer items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
+                    <Settings className="h-4 w-4" />
+                    <span>Project settings</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="innerPage_sidePanel border">
-              <ul className="border-r border-gray-200 py-1">
-                <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
-                  <Home className="h-5 w-5" />
-                  <span className="text-sm font-medium text-gray-600">Project overview</span>
-                  <span className="ml-auto flex items-center gap-3">
-                    <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                  </span>
-                </li>
-                <li className="flex w-full items-center gap-2 p-1">
-                  <SearchForm className="w-full" />
-                </li>
-                <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
-                  <File className="h-5 w-5" />
-                  <span className="text-sm font-medium text-gray-600">Pages</span>
-
-                  <span className="ml-auto flex items-center gap-3">
-                    <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                  </span>
-                </li>
-                <li className="group flex w-full items-center gap-2 p-4 hover:bg-blue-100">
-                  <Link className="h-5 w-5" />
-                  <span className="text-sm font-medium text-gray-600">Sources</span>
-                  <span className="ml-auto flex items-center gap-3">
-                    <Plus className="rounded bg-gray-100 p-1 text-gray-600 group-hover:bg-blue-200" />
-                  </span>
-                </li>
-              </ul>
-            </div>
-            <hr />
-            <TOCSidebar
-              editor={editor}
-              isOpen={isLeftSideBarOpen && !isLocked}
-              connectedEntities={connectedInbox}
-              title={title}
-            />
           </div>
           <div className="rounded-md bg-[#fcfcfc] p-4">
             <div

@@ -106,7 +106,7 @@ export function NavMain() {
                     </span>
                     {open && <span className="text-sm">{item.title}</span>}
 
-                    <span className="ml-auto flex items-center gap-3">
+                    <span className="ml-auto flex items-center gap-2">
                       {item.title === "Pages" && (
                         <Network className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
                       )}

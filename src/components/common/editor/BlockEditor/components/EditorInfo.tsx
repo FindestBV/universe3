@@ -233,7 +233,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
       <div className="mr-2 flex items-center gap-2">
         {!isLocked ? (
           <>
-            <ViewEditSwitch id={id} />
+            {/* <ViewEditSwitch id={id} /> */}
 
             <span className="h-6 border-l border-gray-300"></span>
             {/* <button

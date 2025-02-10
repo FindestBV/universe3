@@ -126,30 +126,23 @@ function SidebarToggle() {
   );
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { open } = useSidebar(); // Get sidebar open state
-  const [sidebarOpen, setSidebarOpen] = useState(open);
-
-  // Debugging logs
-  console.log("🔍 Sidebar state from useSidebar():", open);
-  console.log("🔍 Local sidebar state:", sidebarOpen);
-
-  // Ensure state updates properly when `open` changes
-  useEffect(() => {
-    console.log("✅ useEffect triggered - Sidebar open state:", open);
-    setSidebarOpen(open);
-  }, [open]);
+export function AppSidebar({ isOpen, ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { open } = useSidebar(); // Directly use `open` from useSidebar()
+  const sidebarState = isOpen ?? open;
+  console.log("🔍 Sidebar state from useSidebar():", open); // Debugging logs
 
   return (
     <Sidebar
       collapsible="icon"
       {...props}
-      className={`border-r border-gray-200 transition-all duration-300 ${sidebarOpen ? "bg-white" : "!important bg-gray-800"}`}
+      className={`border-r border-gray-200 transition-all duration-150 ${
+        sidebarState ? "bg-white" : "bg-gray-800"
+      }`}
     >
       <SidebarHeader>
         <SidebarToggle />
       </SidebarHeader>
-      <SidebarContent className="mt-6">
+      <SidebarContent className="mt-8">
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter className="text-slate-500">
