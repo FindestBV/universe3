@@ -29,7 +29,7 @@ export const Dashboard = () => {
   return (
     <div className="flex h-screen w-full overflow-hidden">
       {/* 📌 LEFT COLUMN (Scrollable) */}
-      <div className="flex h-full w-full flex-1 flex-col overflow-y-auto bg-gray-100 p-5 md:w-1/2">
+      <div className="flex h-full w-full flex-1 flex-col overflow-y-auto bg-gray-100 px-16 py-5 md:w-1/2">
         <SearchForm className="border border-neutral-200" />
 
         <div className="mb-4 py-4">
@@ -60,7 +60,7 @@ export const Dashboard = () => {
               activityData?.slice(0, 3).map((activity: any) => (
                 <div
                   key={activity.id}
-                  className="flex w-full cursor-pointer flex-row items-center justify-between rounded-md bg-white px-4 py-2 hover:bg-gray-200"
+                  className="flex w-full cursor-pointer flex-row items-center justify-between rounded-md bg-white p-4 hover:bg-gray-200"
                   onClick={() => handleNavigateToEntities(activity.type, activity.id)}
                 >
                   <div className="flex flex-col">
@@ -134,7 +134,7 @@ export default Dashboard;
 
 /* 📌 Reusable Activity Item Component */
 const ActivityItem = ({ title }: { title: string }) => (
-  <div className="mb-2 flex w-full cursor-pointer flex-row items-center justify-between rounded-md bg-white px-4 py-2 hover:bg-gray-200">
+  <div className="mb-2 flex w-full cursor-pointer flex-row items-center justify-between rounded-md bg-white p-4 hover:bg-gray-200">
     <div className="flex flex-col">
       <h3 className="text-md font-semibold">{title}</h3>
     </div>
