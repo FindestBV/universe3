@@ -64,7 +64,6 @@ export const Dashboard = () => {
                   onClick={() => handleNavigateToEntities(activity.type, activity.id)}
                 >
                   <div className="flex flex-col">
-                    <p className="text-sm font-medium text-gray-700">{activity.type}</p>
                     <h3 className="text-md font-semibold">
                       {activity.name.length > 80
                         ? `${activity.name.slice(0, 80)}...`
@@ -79,9 +78,9 @@ export const Dashboard = () => {
         </div>
 
         {/* 📌 Recent Activity Tabs */}
-        <div>
+        <div className="mt-6">
           <h3 className="text-md my-2 font-semibold">Recent activity</h3>
-          <Tabs defaultValue="pages" className="py-4">
+          <Tabs defaultValue="pages" className="pb-4">
             <TabsList className="flex justify-start space-x-4 bg-transparent">
               <TabsTrigger value="pages" className="px-4 py-2">
                 Pages
