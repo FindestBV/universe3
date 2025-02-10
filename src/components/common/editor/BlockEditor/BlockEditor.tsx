@@ -168,7 +168,7 @@ export const BlockEditor = ({
       <div className="flex-2 relative flex h-full max-w-full flex-col">
         <div className="flex flex-row overflow-hidden">
           <div className={`hidden md:flex ${isLeftSideBarOpen ? "flex-col" : "collapsed"}`}>
-            <div className="flex justify-between bg-black p-4">
+            <div className="flex justify-between bg-black px-2 py-3">
               <p className="text-xs font-bold text-white">cross regeneration to maxim...</p>
               <div className="flex items-center gap-4">
                 <Eye size={20} className="text-white" />
@@ -179,7 +179,7 @@ export const BlockEditor = ({
               <ul className="border-r border-gray-200 py-1">
                 <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
                   <Home className="h-5 w-5" />
-                  <span className="font-medium text-gray-600">Project overview</span>
+                  <span className="text-sm font-medium text-gray-600">Project overview</span>
                   <span className="ml-auto flex items-center gap-3">
                     <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
                   </span>
@@ -189,7 +189,7 @@ export const BlockEditor = ({
                 </li>
                 <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
                   <File className="h-5 w-5" />
-                  <span className="font-medium text-gray-600">Pages</span>
+                  <span className="text-sm font-medium text-gray-600">Pages</span>
 
                   <span className="ml-auto flex items-center gap-3">
                     <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
@@ -197,13 +197,14 @@ export const BlockEditor = ({
                 </li>
                 <li className="group flex w-full items-center gap-2 p-4 hover:bg-blue-100">
                   <Link className="h-5 w-5" />
-                  <span className="font-medium text-gray-600">Sources</span>
+                  <span className="text-sm font-medium text-gray-600">Sources</span>
                   <span className="ml-auto flex items-center gap-3">
                     <Plus className="rounded bg-gray-100 p-1 text-gray-600 group-hover:bg-blue-200" />
                   </span>
                 </li>
               </ul>
             </div>
+            <hr />
             <TOCSidebar
               editor={editor}
               isOpen={isLeftSideBarOpen && !isLocked}
@@ -211,130 +212,136 @@ export const BlockEditor = ({
               title={title}
             />
           </div>
-          <div
-            className={`mainEditor w-full bg-[#Fcfcfc] ${isEditing ? "prose-editor" : ""}`}
-            id="mainEditorStart"
-          >
-            <div className="mx-2 flex flex-col pl-24 pt-10">
-              <EditorHeader
-                editor={editor}
-                collabState={collabState}
-                users={users}
-                isSidebarOpen={isLeftSideBarOpen}
-                toggleLeftSidebar={toggleLeftSideBar}
-                documentId={id}
-              />
-            </div>
-            <div className="mx-2 flex flex-col pl-24 pt-10">
-              <div className="mx-auto mb-6 w-full py-8">
-                <div className="mb-4 flex items-center gap-2">
-                  <div className="flex items-center gap-2 rounded-md bg-blue-100 px-3 py-1 text-sm font-medium text-slate-600">
-                    TECHNOLOGY
-                    <ChevronDown />
+          <div className="rounded-md bg-[#fcfcfc] p-4">
+            <div
+              className={`mainEditor h-full w-full rounded-md bg-white shadow-md ${isEditing ? "prose-editor" : ""}`}
+              id="mainEditorStart"
+            >
+              <div className="mx-2 flex flex-col pl-24 pt-10">
+                <EditorHeader
+                  editor={editor}
+                  collabState={collabState}
+                  users={users}
+                  isSidebarOpen={isLeftSideBarOpen}
+                  toggleLeftSidebar={toggleLeftSideBar}
+                  documentId={id}
+                />
+              </div>
+              <div className="mx-2 flex flex-col pl-24 pt-10">
+                <div className="mx-auto mb-6 w-full py-8">
+                  <div className="mb-4 flex items-center gap-2">
+                    <div className="flex items-center gap-2 rounded-md bg-blue-100 px-3 py-1 text-sm font-medium text-slate-600">
+                      TECHNOLOGY
+                      <ChevronDown />
+                    </div>
+                  </div>
+                  <h1 className="mb-2 text-4xl font-bold">
+                    CN109368873A - 一种风电互补海水淡化系统
+                    <br /> - Google Patents.
+                  </h1>
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <Eye className="h-4 w-4" />
+                    <span>2 TIMES CITED BY</span>
                   </div>
                 </div>
-                <h1 className="mb-2 text-4xl font-bold">
-                  CN109368873A - 一种风电互补海水淡化系统
-                  <br /> - Google Patents.
-                </h1>
-                <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <Eye className="h-4 w-4" />
-                  <span>2 TIMES CITED BY</span>
+
+                {/* Author Info */}
+                <div className="mb-8 flex items-center gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600 text-white">
+                    S
+                  </div>
+                  <div className="flex w-full justify-between text-sm">
+                    <div>Created by sander.vanderwoude@findest.eu</div>
+                    <div className="mr-10 text-gray-500">26 June 2024</div>
+                  </div>
                 </div>
               </div>
+              <EditorContent
+                key={editor?.view?.id || "editor"}
+                editor={editor}
+                className="flex overflow-y-scroll pb-16 pt-8"
+              />
+              <ContentItemMenu editor={editor} />
+              <LinkMenu editor={editor} appendTo={menuContainerRef} />
+              <TextMenu editor={editor} />
+              <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
+              <TableRowMenu editor={editor} appendTo={menuContainerRef} />
+              <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
+              <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
+              <div className="editorContentContainer" id="linkedDocuments">
+                <h3 className="itemTitle flex items-center gap-4">
+                  Linked documents <Download size={16} />
+                </h3>
 
-              {/* Author Info */}
-              <div className="mb-8 flex items-center gap-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600 text-white">
-                  S
-                </div>
-                <div className="flex w-full justify-between text-sm">
-                  <div>Created by sander.vanderwoude@findest.eu</div>
-                  <div className="mr-10 text-gray-500">26 June 2024</div>
-                </div>
-              </div>
-            </div>
-            <EditorContent
-              key={editor?.view?.id || "editor"}
-              editor={editor}
-              className="flex overflow-y-scroll pb-16 pt-8"
-            />
-            <ContentItemMenu editor={editor} />
-            <LinkMenu editor={editor} appendTo={menuContainerRef} />
-            <TextMenu editor={editor} />
-            <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
-            <TableRowMenu editor={editor} appendTo={menuContainerRef} />
-            <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
-            <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
-            <div className="editorContentContainer" id="linkedDocuments">
-              <h3 className="itemTitle flex items-center gap-4">
-                Linked documents <Download size={16} />
-              </h3>
-
-              {connectedObjects?.documents && connectedObjects.documents.length > 0
-                ? connectedObjects.documents.map(
-                    (doc: { title: Key | null | undefined; id: string }) => (
-                      <div key={doc.title}>
-                        <SimilarDocumentModal title={doc.title} id={doc.id} type="linkedObjects" />
-                      </div>
-                    ),
-                  )
-                : "no connected objects"}
-            </div>
-            <div className="editorContentContainer" id="connectedQueries">
-              <h3 className="itemTitle">Connected Queries</h3>
-              <p className="iconText">Connections:</p>
-              <div className="flex flex-wrap gap-2 pt-2">
-                {connectedQueries &&
-                  (connectedQueries[0]?.connectedObjects &&
-                  connectedQueries[0].connectedObjects.length > 0 ? (
-                    connectedQueries[0].connectedObjects.map(
-                      (obj: {
-                        id: Key | null | undefined;
-                        name: string;
-                        mainContents: unknown;
-                        searchInformation: unknown;
-                      }) => (
-                        <SimilarDocumentModal
-                          key={obj.id}
-                          id={obj.id}
-                          title={obj.name}
-                          mainContents={obj.mainContents}
-                          searchInformation={obj.searchInformation}
-                          type="entity"
-                        />
+                {connectedObjects?.documents && connectedObjects.documents.length > 0
+                  ? connectedObjects.documents.map(
+                      (doc: { title: Key | null | undefined; id: string }) => (
+                        <div key={doc.title}>
+                          <SimilarDocumentModal
+                            title={doc.title}
+                            id={doc.id}
+                            type="linkedObjects"
+                          />
+                        </div>
                       ),
                     )
-                  ) : (
-                    <div className="flex flex-row-reverse items-center gap-4">
-                      <Button variant="outline">ADD QUERY</Button>
-                      <ConnectQuery
-                        attachToItem={function (id: string): void {
-                          throw new Error("Function not implemented.");
-                        }}
-                        parentId={""}
-                        parentTitle={""}
-                      />
-                      <p className="text-gray-500">No connected objects</p>
-                    </div>
-                  ))}
+                  : "no connected objects"}
+              </div>
+              <div className="editorContentContainer" id="connectedQueries">
+                <h3 className="itemTitle">Connected Queries</h3>
+                <p className="iconText">Connections:</p>
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {connectedQueries &&
+                    (connectedQueries[0]?.connectedObjects &&
+                    connectedQueries[0].connectedObjects.length > 0 ? (
+                      connectedQueries[0].connectedObjects.map(
+                        (obj: {
+                          id: Key | null | undefined;
+                          name: string;
+                          mainContents: unknown;
+                          searchInformation: unknown;
+                        }) => (
+                          <SimilarDocumentModal
+                            key={obj.id}
+                            id={obj.id}
+                            title={obj.name}
+                            mainContents={obj.mainContents}
+                            searchInformation={obj.searchInformation}
+                            type="entity"
+                          />
+                        ),
+                      )
+                    ) : (
+                      <div className="flex flex-row-reverse items-center gap-4">
+                        <Button variant="outline">ADD QUERY</Button>
+                        <ConnectQuery
+                          attachToItem={function (id: string): void {
+                            throw new Error("Function not implemented.");
+                          }}
+                          parentId={""}
+                          parentTitle={""}
+                        />
+                        <p className="text-gray-500">No connected objects</p>
+                      </div>
+                    ))}
+                </div>
+              </div>
+              <div className="editorContentContainer" id="connectedComments">
+                <Comments connectedComments={connectedComments} />
               </div>
             </div>
-            <div className="editorContentContainer" id="connectedComments">
-              <Comments connectedComments={connectedComments} />
-            </div>
+            {/* <div className={`referenceSidebar ${isSidebarCollapsed || isLocked ? "collapsed" : ""}`}>
+              <ReferencesSidebar
+                onToggleInnerSidebar={toggleInnerSidebar}
+                isCollapsed={isSidebarCollapsed || isLocked}
+                connectedEntities={connectedEntities}
+                connectedDocs={connectedDocs}
+                connectedObjects={connectedObjects}
+                connectedInbox={connectedInbox}
+                editor={editor}
+              />
+            </div> */}
           </div>
-          {/* <div className={`referenceSidebar ${isSidebarCollapsed || isLocked ? "collapsed" : ""}`}>
-            <ReferencesSidebar
-              onToggleInnerSidebar={toggleInnerSidebar}
-              isCollapsed={isSidebarCollapsed || isLocked}
-              connectedEntities={connectedEntities}
-              connectedDocs={connectedDocs}
-              connectedObjects={connectedObjects}
-              connectedInbox={connectedInbox}
-              editor={editor}
-            />
-          </div> */}
         </div>
       </div>
     </div>
