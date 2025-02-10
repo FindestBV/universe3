@@ -168,7 +168,7 @@ export const BlockEditor = ({
       <div className="flex-2 relative flex h-full max-w-full flex-col">
         <div className="flex flex-row overflow-hidden">
           <div className={`hidden md:flex ${isLeftSideBarOpen ? "flex-col" : "collapsed"}`}>
-            <div className="flex justify-between bg-black px-2 py-3">
+            <div className="flex justify-between bg-gradient-to-br from-black from-[0%] via-slate-700 via-[90%] to-white to-[100%] px-4 py-2 text-white">
               <p className="text-xs font-bold text-white">cross regeneration to maxim...</p>
               <div className="flex items-center gap-4">
                 <Eye size={20} className="text-white" />
