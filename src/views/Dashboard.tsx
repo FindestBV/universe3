@@ -27,9 +27,9 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className="flex h-full w-full">
+    <div className="flex h-screen w-full overflow-hidden">
       {/* 📌 LEFT COLUMN (Scrollable) */}
-      <div className="h-full w-full flex-1 overflow-y-auto bg-gray-100 p-5 md:w-1/2">
+      <div className="flex h-full w-full flex-1 flex-col overflow-y-auto bg-gray-100 p-5 md:w-1/2">
         <SearchForm className="border border-neutral-200" />
 
         <div className="mb-4 py-4">
@@ -50,9 +50,9 @@ export const Dashboard = () => {
         {/* 📌 Recent Projects */}
         <div>
           <h3 className="text-md mb-2 mt-12 font-semibold">Recent projects</h3>
-          <div className="mt-4 flex-1 overflow-y-auto rounded-md">
+          <div className="mt-4 flex flex-col space-y-2">
             {activityDataIsLoading ? (
-              <div className="flex h-full items-center justify-center">
+              <div className="flex h-32 items-center justify-center">
                 <Loader className="animate-spin text-gray-600" />
                 <p className="ml-2 text-gray-700">Loading Activity Data...</p>
               </div>
@@ -60,7 +60,7 @@ export const Dashboard = () => {
               activityData?.slice(0, 3).map((activity: any) => (
                 <div
                   key={activity.id}
-                  className="mb-2 flex w-full cursor-pointer flex-row items-center justify-between rounded-md bg-white px-4 py-2 hover:bg-gray-200"
+                  className="flex w-full cursor-pointer flex-row items-center justify-between rounded-md bg-white px-4 py-2 hover:bg-gray-200"
                   onClick={() => handleNavigateToEntities(activity.type, activity.id)}
                 >
                   <div className="flex flex-col">
@@ -113,10 +113,10 @@ export const Dashboard = () => {
       </div>
 
       {/* 📌 RIGHT COLUMN (Fixed) */}
-      <div className="sticky top-0 h-full w-full flex-1 bg-gray-100 p-5 md:w-1/2">
+      <div className="h-screen w-full flex-1 bg-gray-100 p-5 md:w-1/2">
         <h3 className="text-lg font-semibold">Pages graph</h3>
 
-        <div className="relative mt-4 flex h-[calc(100%-50px)] items-center justify-center rounded-md">
+        <div className="relative mt-4 flex h-full items-center justify-center overflow-hidden rounded-md">
           {linkingDataIsLoading ? (
             <div className="flex h-full items-center justify-center">
               <Loader className="animate-spin text-gray-600" />
