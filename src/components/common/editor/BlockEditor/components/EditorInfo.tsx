@@ -236,7 +236,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
             <ViewEditSwitch id={id} />
 
             <span className="h-6 border-l border-gray-300"></span>
-            <button
+            {/* <button
               className={`flex items-center gap-2 rounded border border-gray-300 transition-all duration-150 ease-in-out ${isPinned ? "bg-[#4C0723] text-white" : "bg-white text-gray-700"} px-2 py-1 hover:bg-[#4C0723] hover:text-white`}
               aria-label="Pin"
               onClick={() => togglePin()}
@@ -245,11 +245,11 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
               PIN
             </button>
             <ShareObject parentId={""} parentTitle={""} />
-            <span className="h-6 border-l border-gray-300"></span>
+            <span className="h-6 border-l border-gray-300"></span> */}
           </>
         ) : null}
 
-        <DropdownMenu>
+        {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="rotated" className="h-8 w-8 bg-transparent p-0">
               <MoreHorizontal />
@@ -291,7 +291,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
               </>
             )}
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
         <LockPageConfirm isLocked={isLocked} id={id} />
 
         <UserAvatar username="Ronan" />

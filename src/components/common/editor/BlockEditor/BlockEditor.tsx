@@ -15,13 +15,25 @@ import { useBlockEditor } from "@/hooks/use-block-editor";
 import { initialContent } from "@/lib/data/initialContent";
 import { RootState } from "@/store";
 import { EditorContent } from "@tiptap/react";
-import { Download } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronRight,
+  ChevronsUpDown,
+  Download,
+  Eye,
+  File,
+  Home,
+  Link,
+  Plus,
+  Search,
+} from "lucide-react";
 
 import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 import ConnectQuery from "../../dialogs/connect-query";
 import Comments from "../../layout/comments";
+import { SearchForm } from "../../sidebar/main-sidebar/search-form";
 import ReferencesSidebar from "../BlockEditor/components/ReferencesSidebar";
 import { LinkMenu } from "../menus";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
@@ -153,9 +165,45 @@ export const BlockEditor = ({
 
   return (
     <div className="flex" ref={menuContainerRef}>
-      <div className="relative flex h-full max-w-full flex-1 flex-col">
+      <div className="flex-2 relative flex h-full max-w-full flex-col">
         <div className="flex flex-row overflow-hidden">
-          <div className={`${isLeftSideBarOpen ? "flex" : "collapsed"}`}>
+          <div className={`hidden md:flex ${isLeftSideBarOpen ? "flex-col" : "collapsed"}`}>
+            <div className="flex justify-between bg-black p-4">
+              <p className="text-xs font-bold text-white">cross regeneration to maxim...</p>
+              <div className="flex items-center gap-4">
+                <Eye size={20} className="text-white" />
+                <ChevronsUpDown size={20} className="text-white" />
+              </div>
+            </div>
+            <div className="innerPage_sidePanel border">
+              <ul className="border-r border-gray-200 py-1">
+                <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
+                  <Home className="h-5 w-5" />
+                  <span className="font-medium text-gray-600">Project overview</span>
+                  <span className="ml-auto flex items-center gap-3">
+                    <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                  </span>
+                </li>
+                <li className="flex w-full items-center gap-2 p-1">
+                  <SearchForm className="w-full" />
+                </li>
+                <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
+                  <File className="h-5 w-5" />
+                  <span className="font-medium text-gray-600">Pages</span>
+
+                  <span className="ml-auto flex items-center gap-3">
+                    <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                  </span>
+                </li>
+                <li className="group flex w-full items-center gap-2 p-4 hover:bg-blue-100">
+                  <Link className="h-5 w-5" />
+                  <span className="font-medium text-gray-600">Sources</span>
+                  <span className="ml-auto flex items-center gap-3">
+                    <Plus className="rounded bg-gray-100 p-1 text-gray-600 group-hover:bg-blue-200" />
+                  </span>
+                </li>
+              </ul>
+            </div>
             <TOCSidebar
               editor={editor}
               isOpen={isLeftSideBarOpen && !isLocked}
@@ -164,10 +212,10 @@ export const BlockEditor = ({
             />
           </div>
           <div
-            className={`mainEditor w-full bg-[#f2f4f8] ${isEditing ? "prose-editor" : ""}`}
+            className={`mainEditor w-full bg-[#Fcfcfc] ${isEditing ? "prose-editor" : ""}`}
             id="mainEditorStart"
           >
-            <div className="mx-auto w-full">
+            <div className="mx-2 flex flex-col pl-24 pt-10">
               <EditorHeader
                 editor={editor}
                 collabState={collabState}
@@ -178,7 +226,33 @@ export const BlockEditor = ({
               />
             </div>
             <div className="mx-2 flex flex-col pl-24 pt-10">
-              <p className="iconText font-black uppercase">{type ?? type}</p>
+              <div className="mx-auto mb-6 w-full py-8">
+                <div className="mb-4 flex items-center gap-2">
+                  <div className="flex items-center gap-2 rounded-md bg-blue-100 px-3 py-1 text-sm font-medium text-slate-600">
+                    TECHNOLOGY
+                    <ChevronDown />
+                  </div>
+                </div>
+                <h1 className="mb-2 text-4xl font-bold">
+                  CN109368873A - 一种风电互补海水淡化系统
+                  <br /> - Google Patents
+                </h1>
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <Eye className="h-4 w-4" />
+                  <span>2 TIMES CITED BY</span>
+                </div>
+              </div>
+
+              {/* Author Info */}
+              <div className="mb-8 flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600 text-white">
+                  S
+                </div>
+                <div className="flex w-full justify-between text-sm">
+                  <div>Created by sander.vanderwoude@findest.eu</div>
+                  <div className="mr-10 text-gray-500">26 June 2024</div>
+                </div>
+              </div>
             </div>
             <EditorContent
               key={editor?.view?.id || "editor"}

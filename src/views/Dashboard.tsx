@@ -155,33 +155,32 @@ export const Dashboard = () => {
                   <Loader className="mx-auto mb-2 animate-spin" />
                   <h3 className="font-bold text-black">Loading Relations Data</h3>
                 </div>
-              ) : (
-                <OverlayPanel>
-                  <ForceDirectedGraphView
-                    initialNodes={nodes}
-                    linkingData={linkingData}
-                    isDashBoard={true}
-                  />
-                  <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 ease-in-out hover:bg-opacity-50">
-                    <div className="hidden text-center group-hover:block">
-                      <FindestButton
-                        align="right"
-                        extraClassName={
-                          "rounded bg-[#3ce9f0] group-hover:bg-[#3ce9f0] px-8 py-2 text-black transition-all duration-300 ease-in-out"
-                        }
-                        onClick={() => navigate("/dataview", { state: { graphType: "link" } })}
-                      >
-                        SEE RELATIONS GRAPH
-                      </FindestButton>
-                      <div className="RelationsGraphMeta mx-auto mt-2 w-1/2 rounded-sm bg-[#122448] p-2 text-white">
-                        <p className="text-xs">
-                          Relations between Entities and Studies in [Tenant] Universe
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </OverlayPanel>
-              )}
+              ) : // <OverlayPanel>
+              //   <ForceDirectedGraphView
+              //     initialNodes={nodes}
+              //     linkingData={linkingData}
+              //     isDashBoard={true}
+              //   />
+              //   <div className="absolute inset-0 grid place-items-center rounded-sm bg-black bg-opacity-0 transition-all duration-300 ease-in-out hover:bg-opacity-50">
+              //     <div className="hidden text-center group-hover:block">
+              //       <FindestButton
+              //         align="right"
+              //         extraClassName={
+              //           "rounded bg-[#3ce9f0] group-hover:bg-[#3ce9f0] px-8 py-2 text-black transition-all duration-300 ease-in-out"
+              //         }
+              //         onClick={() => navigate("/dataview", { state: { graphType: "link" } })}
+              //       >
+              //         SEE RELATIONS GRAPH
+              //       </FindestButton>
+              //       <div className="RelationsGraphMeta mx-auto mt-2 w-1/2 rounded-sm bg-[#122448] p-2 text-white">
+              //         <p className="text-xs">
+              //           Relations between Entities and Studies in [Tenant] Universe
+              //         </p>
+              //       </div>
+              //     </div>
+              //   </div>
+              // </OverlayPanel>
+              null}
             </div>
           </div>
         </div>

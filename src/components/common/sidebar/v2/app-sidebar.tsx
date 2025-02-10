@@ -117,7 +117,7 @@ function SidebarToggle() {
           <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
             <Globe className="size-6 text-slate-600" />
           </div>
-          <div className="grid flex-1 text-left text-lg leading-tight text-slate-700">
+          <div className="grid flex-1 text-left text-lg text-slate-700">
             <span className="truncate font-semibold">Universe</span>
           </div>
         </SidebarMenuButton>

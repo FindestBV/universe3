@@ -99,40 +99,37 @@ export function NavMain() {
                       setAutoClosed(false);
                       toggleSection(item.title);
                     }}
-                    className={`flex w-full items-center ${!open ? "p-2" : "px-4 py-2"} gap-2 rounded-md transition hover:bg-gray-100`}
+                    className={`flex w-full items-center bg-transparent hover:bg-white ${!open ? "p-2" : "px-4 py-2"} gap-2 rounded-md transition`}
                   >
                     <span className="flex h-6 w-6 items-center justify-center">
                       {item.icon && createElement(item.icon, { size: 20 })}
                     </span>
                     {open && <span className="text-sm">{item.title}</span>}
 
-                    {/* Pages-specific UI with Network icon always visible */}
-                    {item.title === "Pages" ? (
-                      <span className="ml-auto flex items-center gap-2">
-                        <Network className="h-4 w-4 text-gray-600" />
-                        {openSections[item.title] ? (
-                          <Minus className="text-gray-600" />
-                        ) : (
-                          <Plus className="text-gray-600" />
-                        )}
-                      </span>
-                    ) : (
-                      <span className="ml-auto flex items-center">
-                        <Plus className="hidden group-data-[state=closed]/collapsible:block" />
-                        <Minus className="hidden group-data-[state=open]/collapsible:block" />
-                      </span>
-                    )}
+                    <span className="ml-auto flex items-center gap-3">
+                      {item.title === "Pages" && (
+                        <Network className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
+                      )}
+                      {openSections[item.title] ? (
+                        <Minus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
+                      ) : (
+                        <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
+                      )}
+                    </span>
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
 
                 <CollapsibleContent className="pl-0">
                   <SidebarMenuSub>
                     {item.items.map((subItem) => (
-                      <SidebarMenuSubItem key={subItem.title} className="pl-4">
+                      <SidebarMenuSubItem
+                        key={subItem.title}
+                        className="border-l border-neutral-200 pl-2 hover:bg-transparent"
+                      >
                         <SidebarMenuSubButton asChild>
                           <a
                             href={subItem.url}
-                            className={`block px-4 py-2 text-sm transition ${
+                            className={`block bg-transparent px-4 py-2 text-sm transition ${
                               currentPath === subItem.url ? "text-slate-700" : "text-slate-600"
                             }`}
                           >
@@ -149,13 +146,13 @@ export function NavMain() {
             <SidebarMenuItem key={item.title} className="text-black">
               <a
                 href={item.url}
-                className={`flex w-full items-center ${!open ? "p-2" : "px-4 py-2"} gap-2 rounded-md transition hover:bg-gray-100`}
+                className={`flex w-full items-center ${!open ? "p-2" : "px-4 py-2"} gap-2 rounded-md transition`}
                 onClick={() => {
                   setOpen(true);
                   setAutoClosed(false);
                 }}
               >
-                <span className="flex h-6 w-6 items-center justify-center">
+                <span className="flex h-6 w-6 items-center justify-center group-hover:bg-gray-100">
                   {item.icon && createElement(item.icon, { size: 20 })}
                 </span>
                 {open && <span className="text-sm">{item.title}</span>}
