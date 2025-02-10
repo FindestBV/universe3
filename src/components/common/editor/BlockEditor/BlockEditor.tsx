@@ -242,8 +242,8 @@ export const BlockEditor = ({
                       </h3>
                       <div>
                         <span className="ml-auto flex items-center gap-2">
-                          <Network className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
-                          <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
+                          <Network className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
+                          <Plus className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
                         </span>
                       </div>
                     </div>
@@ -256,9 +256,9 @@ export const BlockEditor = ({
                               className="flex w-full items-center gap-2 rounded-md py-2 text-left text-sm font-medium text-gray-700"
                             >
                               {openSections[section.title] ? (
-                                <ChevronDown className="bg-gray-100 p-1 text-gray-500" />
+                                <ChevronDown className="rounded-sm bg-gray-100 p-1 text-gray-500" />
                               ) : (
-                                <ChevronRight className="bg-gray-100 p-1 text-gray-500" />
+                                <ChevronRight className="rounded-sm bg-gray-100 p-1 text-gray-500" />
                               )}
                               {section.title}
                               <Pin className="p-1 text-gray-500" />
