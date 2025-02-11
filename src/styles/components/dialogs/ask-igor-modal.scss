@@ -7,6 +7,130 @@
     .zppr{
         fill: #000000;  
     }    
+
+        // styles.module.scss
+
+        .Wrapper {
+        display: flex;
+
+        min-height: 600px;
+        max-height: 600px;
+        }
+
+        .Tiptap {
+        width: calc(100% / 3 * 2);
+        }
+
+        .Search {
+        border-left: 1px solid #eee;
+        font-size: 0.875rem;
+        padding: 1rem 1.5rem;
+
+        overflow: scroll;
+
+        width: calc(100% / 3 * 1);
+        }
+
+        @media only screen and (max-width: 1024px) {
+        .Search {
+            width: 50%;
+        }
+        }
+
+        .SearchResultGroup {
+        margin-bottom: 1rem;
+        }
+
+        .SearchResultGroup__Title {
+        font-weight: 600;
+
+        text-overflow: ellipsis;
+
+        /* Needed to make it work */
+        overflow: hidden;
+        white-space: nowrap;
+        }
+
+        .SearchResultGroup__Header {
+        display: flex;
+        justify-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        }
+
+        .SearchResultGroup__Similarity {
+        background: #eee;
+        border: 1px solid #ddd;
+        border-radius: 1rem;
+
+        color: #555;
+
+        font-size: 0.75rem;
+        font-weight: 500;
+
+        padding: 0.15rem 0.5rem;
+        }
+
+        .SearchResultItem {
+        // display: flex;
+        padding: 0.5rem 0;
+        }
+
+        .SearchResultItem__Summary {
+        position: relative;
+        }
+        .SearchResultItem__Summary::marker {
+        color: #000;
+        float: left;
+        // margin-right: 2px;
+        }
+
+        .SearchResultItem__Header {
+        float: right;
+        width: calc(100% - 20px);
+        display: flex;
+        justify-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        }
+
+        .SearchResultItem__Title {
+        font-size: 0.75rem;
+        font-weight: 600;
+
+        text-overflow: ellipsis;
+
+        /* Needed to make it work */
+        overflow: hidden;
+        white-space: nowrap;
+        }
+
+        .SearchResultItem__Similarity {
+        color: #777;
+
+        font-size: 0.75rem;
+        font-weight: 500;
+
+        padding: 0.15rem 0.5rem;
+        }
+
+        .SearchResultItem__Content {
+        color: #555;
+        font-size: 0.75rem;
+        display: -webkit-box;
+
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+
+        width: 100%;
+        }
+
+        .divider {
+        border-bottom: 1px solid #eee;
+        margin: 1rem 0;
+        }
+
 }
 
 .askIgorDialogContent{

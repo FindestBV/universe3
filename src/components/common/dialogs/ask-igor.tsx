@@ -1,7 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { useDebounce } from "@/hooks/use-debounce";
+import { useSemanticSearch } from "@/hooks/use-semantic-search";
+import { useSemanticSearchEditor } from "@/hooks/use-semantic-search-editor";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
+import { EditorContent } from "@tiptap/react";
 import { Check, ChevronRight, File, Globe, Link, Zap } from "lucide-react";
 
 import { useState } from "react";
@@ -34,7 +38,17 @@ function PresetButton({
 
 const AskIgorModal: React.FC = () => {
   const [question, setQuestion] = useState("");
+  const [content, setContent] = useState<string | undefined>();
   const [activeTab, setActiveTab] = useState("report");
+
+  const debouncedContent = useDebounce(content, 1000);
+
+  const { editor } = useSemanticSearchEditor({
+    onCreate: ({ editor }) => setContent(editor.getText()),
+    onUpdate: ({ editor }) => setContent(editor.getText()),
+  });
+
+  const { isSearching, results, groups } = useSemanticSearch(debouncedContent);
 
   return (
     <div className="askIgorModal">
@@ -85,6 +99,7 @@ const AskIgorModal: React.FC = () => {
                 <div className="space-y-2">
                   <h5 className="text-sm font-bold">Ask me anything about the linked sources</h5>
                   <div className="relative">
+                    {/* <EditorContent editor={editor}   className="min-h-[120px] resize-none bg-white pr-12 focus:outline-none" /> */}
                     <Textarea
                       value={question}
                       onChange={(e) => setQuestion(e.target.value)}
@@ -107,7 +122,7 @@ const AskIgorModal: React.FC = () => {
                   <TabsList className="flex w-full justify-start gap-2 border-b border-slate-300">
                     <TabsTrigger
                       value="report"
-                      className={`p-2 font-bold ${
+                      className={`p-2 text-sm font-bold ${
                         activeTab === "report"
                           ? "border-b-2 border-blue-800 bg-blue-100"
                           : "text-gray-400"
@@ -117,7 +132,7 @@ const AskIgorModal: React.FC = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="extract"
-                      className={`p-2 font-bold ${
+                      className={`p-2 text-sm font-bold ${
                         activeTab === "extract"
                           ? "border-b-2 border-blue-800 bg-blue-100"
                           : "text-gray-400"
@@ -127,7 +142,7 @@ const AskIgorModal: React.FC = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="other"
-                      className={`p-2 font-bold ${
+                      className={`p-2 text-sm font-bold ${
                         activeTab === "other"
                           ? "border-b-2 border-blue-800 bg-blue-100"
                           : "text-gray-400"
@@ -194,7 +209,56 @@ const AskIgorModal: React.FC = () => {
             {/* Right Column - Output Section */}
             <div className="flex h-full flex-col">
               <div className="flex-1 overflow-y-auto bg-gray-50 p-4">
-                <p className="text-sm text-gray-500">This is some text to represent</p>
+                <div className="divider" />
+                {isSearching ? (
+                  <div className="hint purple-spinner">
+                    <p className="text-sm text-gray-500">This is some text to represent</p>
+                  </div>
+                ) : null}
+                {!isSearching && groups && groups.length
+                  ? groups.map((group, i) => {
+                      return (
+                        <div key={group.name} className={"SearchResultGroup"}>
+                          <div className={"SearchResultGroup__Header"}>
+                            <div className={"SearchResultGroup__Title"}>
+                              Matching score {i === 0 && "🔥"} {i === 1 && "🏄🏼‍♂️"} {i === 2 && "🍐"}
+                            </div>
+                            <div className={"SearchResultGroup__Similarity"}>
+                              {group.similarity.from === group.similarity.to
+                                ? `>= ${(group.similarity.from * 100).toFixed(0)}`
+                                : `${(group.similarity.from * 100).toFixed(0)} - ${(
+                                    group.similarity.to * 100
+                                  ).toFixed(0)}`}
+                              %
+                            </div>
+                          </div>
+                          {group.results && group.results.length
+                            ? group.results.map((document, i) => (
+                                <details
+                                  key={`${i}-${document.name}`}
+                                  className={"SearchResultItem"}
+                                >
+                                  <summary className={"SearchResultItem__Summary"}>
+                                    <div className={"SearchResultItem__Header"}>
+                                      <div className={"SearchResultItem__Title"}>
+                                        {document.name}
+                                      </div>
+                                      <div className={"SearchResultItem__Similarity"}>
+                                        {(document.cosine_similarity * 100).toFixed(0)}%
+                                      </div>
+                                    </div>
+                                  </summary>
+
+                                  <div className={"SearchResultItem__Content"}>
+                                    {document.content}
+                                  </div>
+                                </details>
+                              ))
+                            : null}
+                        </div>
+                      );
+                    })
+                  : null}
               </div>
             </div>
           </div>

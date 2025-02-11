@@ -1,134 +1,137 @@
-// import { SearchResult } from '@/types/types'
-// import ky from 'ky'
-// import { useCallback, useEffect, useMemo, useState } from 'react'
-// import { ZodIssue } from 'zod'
+import { SearchResult } from "@/types/types";
+import ky from "ky";
+import { kmeans } from "ml-kmeans";
+import { ZodIssue } from "zod";
 
-// function groupResults(
-//   results: SearchResult[] | undefined,
-//   numClusters: number = 3
-// ): SearchResultGroup[] | undefined {
-//   if (!results || !Array.isArray(results) || results.length === 0) {
-//     return
-//   }
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-//   if (results.length < numClusters) {
-//     numClusters = results.length
-//   }
+function groupResults(
+  results: SearchResult[] | undefined,
+  numClusters: number = 3,
+): SearchResultGroup[] | undefined {
+  if (!results || !Array.isArray(results) || results.length === 0) {
+    return;
+  }
 
-//   const data = results.map(result => [result.cosine_similarity])
-//   const kmeansResult = kmeans(data, numClusters, {})
+  if (results.length < numClusters) {
+    numClusters = results.length;
+  }
 
-//   // Map centroids directly to their sorted order using indexed objects
-//   const sortedClusterIndices = kmeansResult.centroids
-//     .map((_, index) => index)
-//     .sort((a, b) => kmeansResult.centroids[b][0] - kmeansResult.centroids[a][0])
+  const data = results.map((result) => [result.cosine_similarity]);
+  const kmeansResult = kmeans(data, numClusters, {});
 
-//   const groupedResults: SearchResultGroup[] = Array(numClusters)
-//     .fill(null)
-//     .map((_, i) => ({
-//       name: `Group ${i + 1}`,
-//       results: [],
-//       similarity: {
-//         from: -Infinity,
-//         to: Infinity,
-//       },
-//     }))
+  // Map centroids directly to their sorted order using indexed objects
+  const sortedClusterIndices = kmeansResult.centroids
+    .map((_, index) => index)
+    .sort((a, b) => kmeansResult.centroids[b][0] - kmeansResult.centroids[a][0]);
 
-//   // Map cluster indices from original to sorted order
-//   const clusterMapping = sortedClusterIndices.reduce<{ [key: number]: number }>(
-//     (acc, clusterIndex, sortedIndex) => {
-//       acc[clusterIndex] = sortedIndex
-//       return acc
-//     },
-//     {}
-//   )
+  const groupedResults: SearchResultGroup[] = Array(numClusters)
+    .fill(null)
+    .map((_, i) => ({
+      name: `Group ${i + 1}`,
+      results: [],
+      similarity: {
+        from: -Infinity,
+        to: Infinity,
+      },
+    }));
 
-//   // Assign results to sorted clusters and simultaneously compute 'from' and 'to' values
-//   kmeansResult.clusters.forEach((clusterIndex, resultIndex) => {
-//     const groupIndex = clusterMapping[clusterIndex]
-//     const group = groupedResults[groupIndex]
-//     const similarity = results[resultIndex].cosine_similarity
+  // Map cluster indices from original to sorted order
+  const clusterMapping = sortedClusterIndices.reduce<{ [key: number]: number }>(
+    (acc, clusterIndex, sortedIndex) => {
+      acc[clusterIndex] = sortedIndex;
+      return acc;
+    },
+    {},
+  );
 
-//     group.results?.push(results[resultIndex])
+  // Assign results to sorted clusters and simultaneously compute 'from' and 'to' values
+  kmeansResult.clusters.forEach((clusterIndex, resultIndex) => {
+    const groupIndex = clusterMapping[clusterIndex];
+    const group = groupedResults[groupIndex];
+    const similarity = results[resultIndex].cosine_similarity;
 
-//     if (group.similarity.from === undefined || similarity > group.similarity.from) {
-//       group.similarity.from = similarity
-//     }
+    group.results?.push(results[resultIndex]);
 
-//     if (group.similarity.to === undefined || similarity < group.similarity.to) {
-//       group.similarity.to = similarity
-//     }
-//   })
+    if (group.similarity.from === undefined || similarity > group.similarity.from) {
+      group.similarity.from = similarity;
+    }
 
-//   return groupedResults
-// }
+    if (group.similarity.to === undefined || similarity < group.similarity.to) {
+      group.similarity.to = similarity;
+    }
+  });
 
-// export const useSemanticSearch = (
-//   term: string | undefined
-// ): {
-//   error: string | undefined
-//   validationErrors: ZodIssue[] | undefined
-//   isSearching: boolean
-//   performSearch: (term: string) => Promise<void>
-//   reset: () => void
-//   results: SearchResult[] | undefined
-//   groups: SearchResultGroup[] | undefined
-// } => {
-//   const [isSearching, setIsSearching] = useState(false)
-//   const [error, setError] = useState<string | undefined>()
-//   const [validationErrors, setValidationErrors] = useState<ZodIssue[] | undefined>()
-//   const [results, setResults] = useState<SearchResult[] | undefined>()
-//   const groups = useMemo(() => groupResults(results), [results])
+  return groupedResults;
+}
 
-//   async function performSearch(term: string) {
-//     try {
-//       setIsSearching(true)
-//       setResults(undefined)
-//       setError(undefined)
-//       setValidationErrors(undefined)
+export const useSemanticSearch = (
+  term: string | undefined,
+): {
+  error: string | undefined;
+  validationErrors: ZodIssue[] | undefined;
+  isSearching: boolean;
+  performSearch: (term: string) => Promise<void>;
+  reset: () => void;
+  results: SearchResult[] | undefined;
+  groups: SearchResultGroup[] | undefined;
+} => {
+  const [isSearching, setIsSearching] = useState(false);
+  const [error, setError] = useState<string | undefined>();
+  const [validationErrors, setValidationErrors] = useState<ZodIssue[] | undefined>();
+  const [results, setResults] = useState<SearchResult[] | undefined>();
+  const groups = useMemo(() => groupResults(results), [results]);
 
-//       const response = (await ky
-//         .post('/api/search', {
-//           json: { content: term },
-//         })
-//         .json()) as SearchResult[]
+  async function performSearch(term: string) {
+    try {
+      setIsSearching(true);
+      setResults(undefined);
+      setError(undefined);
+      setValidationErrors(undefined);
 
-//       setResults(response)
-//     } catch (error: any) {
-//       console.log(error.response)
-//       if (error.name === 'HTTPError' && error.response.status === 422) {
-//         try {
-//           const errorJson = (await error.response.json()) as ZodIssue[]
+      const response = (await ky
+        .post("/api/search", {
+          json: { content: term },
+        })
+        .json()) as SearchResult[];
 
-//           setValidationErrors(errorJson)
-//         } catch (error) {
-//           console.log(error)
-//         }
-//       }
+      setResults(response);
+    } catch (error: any) {
+      console.log(error.response);
+      if (error.name === "HTTPError" && error.response.status === 422) {
+        try {
+          const errorJson = (await error.response.json()) as ZodIssue[];
 
-//       setError(error?.message)
-//     } finally {
-//       setIsSearching(false)
-//     }
-//   }
+          setValidationErrors(errorJson);
+        } catch (error) {
+          console.log(error);
+        }
+      }
 
-//   useEffect(() => {
-//     if (term) {
-//       performSearch(term)
-//     }
-//   }, [term])
+      setError(error?.message);
+    } finally {
+      setIsSearching(false);
+    }
+  }
 
-//   const handleReset = useCallback(() => {
-//     setIsSearching(false)
-//     setResults(undefined)
-//   }, [])
+  useEffect(() => {
+    if (term) {
+      performSearch(term);
+    }
+  }, [term]);
 
-//   return {
-//     results,
-//     groups,
-//     error,
-//     validationErrors,
-//     performSearch,
-//     reset: handleReset,
-//     isSearching,
-//   }
+  const handleReset = useCallback(() => {
+    setIsSearching(false);
+    setResults(undefined);
+  }, []);
+
+  return {
+    results,
+    groups,
+    error,
+    validationErrors,
+    performSearch,
+    reset: handleReset,
+    isSearching,
+  };
+};
