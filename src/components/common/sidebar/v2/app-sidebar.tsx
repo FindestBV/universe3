@@ -129,7 +129,6 @@ function SidebarToggle() {
 export function AppSidebar({ isOpen, ...props }: React.ComponentProps<typeof Sidebar>) {
   const { open } = useSidebar(); // Directly use `open` from useSidebar()
   const sidebarState = isOpen ?? open;
-  console.log("🔍 Sidebar state from useSidebar():", open); // Debugging logs
 
   return (
     <Sidebar
