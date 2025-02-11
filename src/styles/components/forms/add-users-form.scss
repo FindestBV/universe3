@@ -1,0 +1,16 @@
+.add-users-form{
+
+    .auf{
+        @apply flex gap-2; 
+
+        .__input{
+            @apply w-3/4 rounded-md border p-4
+        }
+   
+        .__submit{
+            @apply w-1/4 rounded-md bg-gray-400 p-4 text-center text-white hover:bg-blue-400; 
+        }
+    }
+
+
+}
