@@ -103,8 +103,11 @@ const AskIgorModal: React.FC = () => {
               <div className="space-y-4">
                 <h5 className="text-sm font-bold">Or pick a preset</h5>
                 <Tabs defaultValue="report" className="w-full">
-                  <TabsList className="flex w-full justify-start gap-2">
-                    <TabsTrigger value="report" className="p-2">
+                  <TabsList className="flex w-full justify-start gap-2 border-b border-slate-300">
+                    <TabsTrigger
+                      value="report"
+                      className="border-b border-blue-800 bg-blue-100 p-2 font-bold"
+                    >
                       Report
                     </TabsTrigger>
                     <TabsTrigger value="extract" className="font-regular p-2 text-sm">
