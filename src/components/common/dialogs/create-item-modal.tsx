@@ -191,7 +191,7 @@ export function CreateItemModal() {
             </DialogClose>
           </div>
 
-          <div className="pb-4">
+          <div className="createItemForm">
             {step === 1 && (
               // Type Selection Panel
               <div className="grid grid-cols-1 gap-4">

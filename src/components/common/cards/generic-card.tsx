@@ -1,12 +1,10 @@
 import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/api/documents/documentApi";
 import { AddLinkToItem } from "@/components/common/dialogs/add-link-to-item";
-import { UserAvatar } from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { useTruncateText } from "@/hooks/use-truncate-text";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { ExternalLink, Plus, Trash2 } from "lucide-react";
 
 import { useEffect, useState } from "react";
@@ -33,42 +31,16 @@ export const objectTypeMapping: { [key: string]: number } = {
 };
 
 // Utility Functions
-const formatDate = (date: any) =>
+const formatDate = (date: string) =>
   date ? new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "Dec 16";
 
 // Subcomponents
 const DocumentLink = ({ url }: { url?: string }) => (
   <div className="group">
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="opacity-25 transition-opacity group-hover:opacity-100"
-    >
+    <a href={url} target="_blank" rel="noopener noreferrer" className="">
       <ExternalLink size={20} />
     </a>
   </div>
-);
-
-const CreatorTooltip = ({ createdByUsername }: { createdByUsername?: string }) => (
-  <TooltipProvider>
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button aria-label="createdByUser" className="bg-transparent p-0">
-          <UserAvatar username={createdByUsername || "Unknown"} />
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent
-        className="-left-100 rounded-md bg-white p-2 shadow-lg"
-        side="bottom"
-        align="start"
-        sideOffset={5}
-        alignOffset={-20}
-      >
-        <p>Created by {createdByUsername}</p>
-      </TooltipContent>
-    </Tooltip>
-  </TooltipProvider>
 );
 
 export const ConnectedObjectsDialog = ({

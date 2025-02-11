@@ -1,0 +1,46 @@
+.createItemModal{
+
+    .trigger{
+        @apply cursor-pointer flex h-[200px] justify-between rounded-lg bg-gradient-to-br from-black from-[0%] via-black via-blue-300 via-slate-700 via-[70%] via-[85%] via-[95%] to-yellow-300 to-[100%] p-4; 
+    
+        
+        .title{
+            @apply font-bold text-white; 
+        }
+
+        .icon{
+            @apply font-bold text-white; 
+        }
+    
+    }
+
+  
+
+    
+    .dialogInnerContent{
+        display: flex; 
+        @apply mb-6 items-center gap-4; 
+
+        .title{
+            @apply text-2xl font-semibold leading-none tracking-tight; 
+        }
+
+        .progressIndicator {
+            @apply flex flex-1 justify-end gap-2; 
+        }
+        
+
+    }
+
+    .createItemForm{
+        @apply pb-4; 
+
+        .options_study{
+            @apply flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-6 text-left transition-all duration-300 hover:bg-[#006A86];
+        }
+    }
+
+
+
+
+}
