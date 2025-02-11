@@ -1,34 +1,16 @@
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import {
-  Check,
-  ChevronRight,
-  Copy,
-  Download,
-  File,
-  FileText,
-  Globe,
-  Link,
-  TestTubes,
-  Zap,
-} from "lucide-react";
+import { Check, ChevronRight, File, Globe, Link, Zap } from "lucide-react";
 
 import { useState } from "react";
 
-import LinkedCounts from "../cards/linked-counts";
+// import LinkedCounts from "../cards/linked-counts";
 
 function PresetButton({
   title,
   description,
-  className,
 }: {
   title: string;
   description: string;
@@ -73,9 +55,9 @@ const AskIgorModal: React.FC = () => {
             <div className="flex flex-col justify-between gap-12 p-6">
               <div>
                 <h1 className="mb-8 text-4xl font-bold">IGOR</h1>
-
                 <p className="iconText py-2 font-black">Linked sources</p>
 
+                {/* Compose from LinkedCounts ? */}
                 <ul className="flex gap-2 pb-4">
                   <li className="flex items-center gap-1 rounded-sm bg-slate-100 p-1 text-sm">
                     <File size={16} className="rounded-sm bg-blue-800 px-1 text-white" />
@@ -98,6 +80,7 @@ const AskIgorModal: React.FC = () => {
                     <Globe size={16} />
                   </li>
                 </ul>
+
                 <div className="space-y-2">
                   <h5 className="text-sm font-bold">Ask me anything about the linked sources</h5>
                   <div className="relative">
@@ -105,7 +88,7 @@ const AskIgorModal: React.FC = () => {
                       value={question}
                       onChange={(e) => setQuestion(e.target.value)}
                       placeholder="Type your question here..."
-                      className="min-h-[120px] resize-none bg-white pr-12"
+                      className="min-h-[120px] resize-none bg-white pr-12 focus:outline-none"
                     />
                     <Button
                       size="icon"
