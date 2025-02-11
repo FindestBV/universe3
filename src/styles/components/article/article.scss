@@ -1,0 +1,22 @@
+.singleArticle{
+
+    .container{
+        @apply mx-auto max-w-3xl text-base/7 text-gray-700; 
+
+        .entryType{
+            @apply text-base/7 font-semibold text-indigo-600; 
+        }
+
+        .articleTitle{
+            @apply mt-2 text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl; 
+        }
+        .articleLeading{
+            @apply mt-6 text-xl/8; 
+        }
+
+        .articleStandard{
+            @apply mt-10 max-w-2xl; 
+        }
+    }
+
+}

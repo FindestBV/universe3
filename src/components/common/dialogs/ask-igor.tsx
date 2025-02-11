@@ -5,7 +5,8 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { useSemanticSearch } from "@/hooks/use-semantic-search";
 import { useSemanticSearchEditor } from "@/hooks/use-semantic-search-editor";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { EditorContent } from "@tiptap/react";
+import { motion } from "framer-motion";
+// import { EditorContent } from "@tiptap/react";
 import { Check, ChevronRight, File, Globe, Link, Zap } from "lucide-react";
 
 import { useState } from "react";
@@ -118,7 +119,7 @@ const AskIgorModal: React.FC = () => {
 
               <div className="space-y-4">
                 <h5 className="text-sm font-bold">Or pick a preset</h5>
-                <Tabs defaultValue="report" className="w-full" onValueChange={setActiveTab}>
+                {/* <Tabs defaultValue="report" className="w-full" onValueChange={setActiveTab}>
                   <TabsList className="flex w-full justify-start gap-2 border-b border-slate-300">
                     <TabsTrigger
                       value="report"
@@ -202,6 +203,77 @@ const AskIgorModal: React.FC = () => {
                       className="bg-slate-100"
                     />
                   </TabsContent>
+                </Tabs> */}
+                <Tabs defaultValue="report" className="w-full" onValueChange={setActiveTab}>
+                  {/* Tabs List with Animated Underline */}
+                  <TabsList className="relative flex w-full justify-start gap-2 border-b border-slate-300">
+                    {["report", "extract", "other"].map((tab) => (
+                      <TabsTrigger
+                        key={tab}
+                        value={tab}
+                        className={`relative p-2 text-sm font-bold transition-all ${
+                          activeTab === tab ? "text-blue-800" : "text-gray-400 hover:text-gray-600"
+                        }`}
+                      >
+                        {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                        {activeTab === tab && (
+                          <motion.div
+                            className="absolute bottom-0 left-0 h-[2px] w-full bg-blue-800"
+                            // transition={{ type: "slide", stiffness: 300, damping: 20 }}
+                          />
+                        )}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+
+                  {/* Tabs Content with Smooth Transition */}
+                  <motion.div
+                    key={activeTab}
+                    // initial={{ opacity: 0, y: 10 }}
+                    // animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <TabsContent value="report" className="mt-2 space-y-2">
+                      <PresetButton
+                        title="General description"
+                        description="Based on general knowledge or sources linked."
+                      />
+                      <PresetButton
+                        title="Section"
+                        description="Give me a title, and I'll write the section."
+                      />
+                      <PresetButton
+                        title="Standard report"
+                        description="Introduction, Methods, Results, Conclusion."
+                      />
+                      <PresetButton
+                        title="Tailored report"
+                        description="Custom Introduction, Methods, Results, Conclusion."
+                      />
+                    </TabsContent>
+
+                    <TabsContent value="extract" className="mt-2 space-y-2">
+                      <PresetButton
+                        title="Extract key points"
+                        description="Summarize the essential information from sources."
+                      />
+                      <PresetButton
+                        title="Standard report"
+                        description="Generate a structured report from extracted data."
+                      />
+                    </TabsContent>
+
+                    <TabsContent value="other" className="mt-2 space-y-2">
+                      <PresetButton
+                        title="Custom request"
+                        description="Specify exactly what you need."
+                      />
+                      <PresetButton
+                        title="Alternative formats"
+                        description="Generate data in different formats (JSON, CSV, etc.)."
+                      />
+                    </TabsContent>
+                  </motion.div>
                 </Tabs>
               </div>
             </div>

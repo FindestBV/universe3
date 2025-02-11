@@ -2,18 +2,16 @@
 
 export const ArticleTest = () => {
   return (
-    <div className="bg-white px-6 py-32 lg:px-8">
-      <div className="mx-auto max-w-3xl text-base/7 text-gray-700">
-        <p className="text-base/7 font-semibold text-indigo-600">Entity Type</p>
-        <h1 className="mt-2 text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-          Entity/Study/Document Title
-        </h1>
-        <p className="mt-6 text-xl/8">
+    <div className="singleArticle">
+      <div className="container">
+        <p className="entryType">Entity Type</p>
+        <h1 className="articleTitle">Entity/Study/Document Title</h1>
+        <p className="articleLeading">
           Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi,
           nibh dui, diam eget aliquam. Quisque id at vitae feugiat egestas ac. Diam nulla orci at in
           viverra scelerisque eget. Eleifend egestas fringilla sapien.
         </p>
-        <div className="mt-10 max-w-2xl">
+        <div className="articleStandard">
           <p>
             Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris
             semper sed amet vitae sed turpis id. Id dolor praesent donec est. Odio penatibus risus
@@ -50,9 +48,7 @@ export const ArticleTest = () => {
             varius vulputate et ultrices hac adipiscing egestas. Iaculis convallis ac tempor et ut.
             Ac lorem vel integer orci.
           </p>
-          <h2 className="mt-16 text-pretty text-3xl font-semibold tracking-tight text-gray-900">
-            From beginner to expert in 3 hours
-          </h2>
+          <h2 className="articleStandard">From beginner to expert in 3 hours</h2>
           <p className="mt-6">
             Id orci tellus laoreet id ac. Dolor, aenean leo, ac etiam consequat in. Convallis arcu
             ipsum urna nibh. Pharetra, euismod vitae interdum mauris enim, consequat vulputate nibh.

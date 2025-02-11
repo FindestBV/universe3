@@ -1,12 +1,17 @@
 import { useAdvancedSearchQuery } from "@/api/search/searchApi";
 import GenericCard from "@/components/common/cards/generic-card";
 import CreateQueryDialog from "@/components/common/dialogs/create-query-dialog";
+import BlurText from "@/components/common/layout/blur-text";
+import RotatingText from "@/components/common/layout/rotating-text";
+import SpotlightCard from "@/components/common/layout/spotlight-card";
+import TiltedCard from "@/components/common/layout/tilted-card";
+import TrueFocus from "@/components/common/layout/true-focus";
 // import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 import { DocumentsSkeleton } from "@/components/common/loaders/documents-skeleton";
 // import { StudyCard } from "@/components/common/study-card";
 import { CardContent } from "@/components/ui/card";
 // import { Checkbox } from "@/components/ui/checkbox";
-import { Search, Trash2 } from "lucide-react";
+import { Search } from "lucide-react";
 
 import { useEffect, useState } from "react";
 
@@ -42,6 +47,10 @@ export const AdvancedSearch: React.FC = () => {
     }
   };
 
+  const handleAnimationComplete = () => {
+    console.log("Animation completed!");
+  };
+
   const handleSelectItem = (id: string, checked: boolean) => {
     const newSelected = new Set(selectedSearchItems);
     if (checked) {
@@ -74,6 +83,42 @@ export const AdvancedSearch: React.FC = () => {
             <Search size={16} className="font-black" />
             <h2 className="font-black">Start a new query</h2>
           </div>
+          {/* <TrueFocus 
+            sentence="Nyerts Mlerm"
+            manualMode={false}
+            blurAmount={5}
+            borderColor="red"
+            animationDuration={2}
+            pauseBetweenAnimations={1}
+            /> */}
+          {/* <BlurText
+            text="This is badass!!"
+            delay={150}
+            animateBy="words"
+            direction="top"
+            onAnimationComplete={handleAnimationComplete}
+            className="text-2xl mb-8"
+          /> */}
+          {/* <TiltedCard
+            imageSrc="/assets/images/ro-bw.d434f415.png"
+            altText="Danger Freakin' Ro"
+            captionText="Danger Freakin' Ro - Messin"
+            containerHeight="300px"
+            containerWidth="300px"
+            imageHeight="300px"
+            imageWidth="300px"
+            rotateAmplitude={12}
+            scaleOnHover={1.2}
+            showMobileWarning={false}
+            showTooltip={true}
+            displayOverlayContent={true}
+            overlayContent={
+              <p className="tilted-card-demo-text bg-green-600 text-white">
+                Danger Ro
+              </p>
+            }
+          /> */}
+
           <div className="queryTypeSelection">
             <ul className="mx-auto flex w-full gap-4 max-sm:flex-col">
               <li className="border-sm group flex w-1/3 justify-between rounded-md bg-white p-4 font-bold shadow-md max-sm:w-full">

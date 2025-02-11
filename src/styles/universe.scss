@@ -18,10 +18,19 @@
 // cards
 @use './components/cards/inbox-card.scss';
 @use './components/cards/item-card.scss';
+@use './components/cards/spotlight-card.scss';
 
 // dialogs
 @use './components/dialogs/ask-igor-modal.scss';
 @use './components/dialogs/create-item-modal.scss';
+
+// article
+@use './components/article/article.scss';
+
+// layout
+@use './components/layout/rotating-text.scss';
+@use './components/layout/tilted-card.scss';
+@use './components/layout/true-focus.scss';
 
 
 @tailwind base;

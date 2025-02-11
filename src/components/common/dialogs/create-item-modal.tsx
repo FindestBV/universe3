@@ -133,9 +133,7 @@ export function CreateItemModal() {
         return (
           <div className="flex items-center gap-2">
             <span className="text-lg text-gray-500">I want to create a</span>
-            <span className="text-2xl font-semibold capitalize text-[#006A86]">
-              {formData.type}
-            </span>
+            <span className="text-2xl font-semibold capitalize text-blue-300">{formData.type}</span>
           </div>
         );
       case 3:
@@ -175,9 +173,9 @@ export function CreateItemModal() {
                   className={cn(
                     "h-2 w-2 rounded-full transition-all duration-300",
                     index + 1 === step
-                      ? "w-6 bg-[#006A86]"
+                      ? "w-6 bg-blue-300"
                       : index + 1 < step
-                        ? "bg-[#006A86]"
+                        ? "bg-[#fcfafc]"
                         : "bg-gray-200",
                   )}
                 />
@@ -197,7 +195,7 @@ export function CreateItemModal() {
               <div className="grid grid-cols-1 gap-4">
                 <button
                   onClick={() => handleTypeSelect("page")}
-                  className="group flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-6 text-left transition-all duration-300 hover:bg-[#006A86]"
+                  className="group flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-6 text-left transition-all duration-300 hover:bg-slate-400"
                 >
                   <div className="rounded-full bg-blue-50 p-3 group-hover:bg-white/90">
                     <FileText className="h-6 w-6 text-blue-500" />
@@ -212,7 +210,7 @@ export function CreateItemModal() {
 
                 <button
                   onClick={() => handleTypeSelect("study")}
-                  className="group flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-6 text-left transition-all duration-300 hover:bg-[#006A86]"
+                  className="group flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-6 text-left transition-all duration-300 hover:bg-slate-400"
                 >
                   <div className="rounded-full bg-green-50 p-3 group-hover:bg-white/90">
                     <GraduationCap className="h-6 w-6 text-green-500" />
@@ -228,7 +226,7 @@ export function CreateItemModal() {
 
                 <button
                   onClick={() => handleTypeSelect("query")}
-                  className="group flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-6 text-left transition-all duration-300 hover:bg-[#006A86]"
+                  className="group flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-6 text-left transition-all duration-300 hover:bg-slate-400"
                 >
                   <div className="rounded-full bg-purple-50 p-3 group-hover:bg-white/90">
                     <Database className="h-6 w-6 text-purple-500" />
