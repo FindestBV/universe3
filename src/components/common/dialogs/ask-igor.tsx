@@ -110,7 +110,7 @@ const AskIgorModal: React.FC = () => {
                       className={`p-2 font-bold ${
                         activeTab === "report"
                           ? "border-b-2 border-blue-800 bg-blue-100"
-                          : "text-gray-500"
+                          : "text-gray-400"
                       }`}
                     >
                       Report
@@ -120,7 +120,7 @@ const AskIgorModal: React.FC = () => {
                       className={`p-2 font-bold ${
                         activeTab === "extract"
                           ? "border-b-2 border-blue-800 bg-blue-100"
-                          : "text-gray-500"
+                          : "text-gray-400"
                       }`}
                     >
                       Extract information
@@ -130,7 +130,7 @@ const AskIgorModal: React.FC = () => {
                       className={`p-2 font-bold ${
                         activeTab === "other"
                           ? "border-b-2 border-blue-800 bg-blue-100"
-                          : "text-gray-500"
+                          : "text-gray-400"
                       }`}
                     >
                       Other
