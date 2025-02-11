@@ -3,7 +3,7 @@ import { currentUser } from "@/api/auth/authSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import CreateItemModal from "@/components/common/dialogs/create-item-modal";
 import ForceDirectedGraphView from "@/components/common/layout/force-directed-graph";
-import { SearchForm } from "@/components/common/sidebar/main-sidebar/search-form";
+import { SearchForm } from "@/components/common/sidebar/v2/search-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { ChevronRight, Loader, Plus } from "lucide-react";
 

@@ -22,12 +22,12 @@ const AddUsersForm = () => {
 
   return (
     <div className="add-users-form">
-      <form className="flex gap-2" onSubmit={handleAddUser}>
+      <form className="auf" onSubmit={handleAddUser}>
         <input
           type="text"
           name="add_users"
           placeholder="Type users to add"
-          className="w-3/4 rounded-md border p-4"
+          className="__input"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />

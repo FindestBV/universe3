@@ -36,7 +36,7 @@ import { useSelector } from "react-redux";
 
 import ConnectQuery from "../../dialogs/connect-query";
 import Comments from "../../layout/comments";
-import { SearchForm } from "../../sidebar/main-sidebar/search-form";
+import { SearchForm } from "../../sidebar/v2/search-form";
 import ReferencesSidebar from "../BlockEditor/components/ReferencesSidebar";
 import { LinkMenu } from "../menus";
 import { ContentItemMenu } from "../menus/ContentItemMenu";

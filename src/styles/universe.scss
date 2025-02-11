@@ -5,19 +5,24 @@
 @use './components/active-queries.scss';
 @use './components/dashboard-header.scss';
 @use './components/data-view.scss';
-@use './components/inbox-card.scss';
-@use './components/item-card.scss';
 @use './components/user-avatar.scss';
-@use './components/create-new-button.scss';
-@use './components/login-image-slider.scss';
+@use './components/buttons/create-new-button.scss';
+
 @use './components/searchbar.scss';
 @use './components/page.scss';
 @use './components/editor.scss';
 @use './utilities/animations.scss';
 @use './utilities/findest-button.scss';
 
+
+// cards
+@use './components/cards/inbox-card.scss';
+@use './components/cards/item-card.scss';
+
 // dialogs
+@use './components/dialogs/ask-igor-modal.scss';
 @use './components/dialogs/create-item-modal.scss';
+
 
 @tailwind base;
 @tailwind components;

@@ -14,7 +14,7 @@ import { Circle, File, Home, Link, Minus, Network, Plus, SquareTerminal } from "
 import { createElement, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import { SearchForm } from "../main-sidebar/search-form";
+import { SearchForm } from "./search-form";
 
 const data = {
   navMain: [
