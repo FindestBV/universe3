@@ -1,6 +1,7 @@
 .askIgorModal{
     .summonIgorBtn{
-        @apply flex items-center gap-1 rounded-md bg-[#fff000] p-2 font-bold text-[#000000] transition-all ease-linear hover:bg-[#F9F9F9] hover:text-black;
+        @apply flex items-center gap-1 rounded-md bg-[#fff000] px-2 py-1 font-bold text-[#000000] transition-all ease-linear hover:bg-[#F9F9F9] hover:text-black;
+        font-size: 14px; 
     }
 
     .zppr{
@@ -11,15 +12,14 @@
 .askIgorDialogContent{
     @apply border-none;
     padding: 0!important;
-
+    
     .innerContent{
-        
+        @apply flex justify-between z-[10] min-w-[80%] rounded-lg border-none shadow-lg md:flex-row  bg-slate-200 p-8;  
+    
         h1{
             @apply text-black leading-snug; 
         }
 
-        @apply flex justify-between z-[10] min-w-[80%] rounded-lg border-none shadow-lg md:flex-row  bg-slate-200 p-8;  
-       
     }
 
 }

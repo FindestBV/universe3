@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 export const Dashboard = () => {
   const { t } = useTranslation();
   const [searchKeyword, setSearchKeyword] = useState<string>("");
+  const [activeTabActive, setIsActiveTabActive] = useState<string>("pages");
 
   const { data: activityData, isLoading: activityDataIsLoading } = useGetMyRecentActivityQuery();
   const { data: linkingData, isLoading: linkingDataIsLoading } = useGetLinkingQuery();
@@ -60,7 +61,7 @@ export const Dashboard = () => {
                   onClick={() => handleNavigateToEntities(activity.type, activity.id)}
                 >
                   <div className="flex flex-col">
-                    <h3 className="text-md font-semibold">
+                    <h3 className="text-sm font-semibold">
                       {activity.name.length > 80
                         ? `${activity.name.slice(0, 80)}...`
                         : activity.name}
@@ -76,15 +77,36 @@ export const Dashboard = () => {
         {/* 📌 Recent Activity Tabs */}
         <div className="mt-6">
           <h3 className="text-md my-2 font-semibold">Recent activity</h3>
-          <Tabs defaultValue="pages" className="pb-4">
-            <TabsList className="flex justify-start space-x-4 bg-transparent">
-              <TabsTrigger value="pages" className="px-4 py-2">
+          <Tabs defaultValue="pages" className="pb-4" onValueChange={setIsActiveTabActive}>
+            <TabsList className="flex justify-start space-x-4 border-b border-slate-200 bg-transparent">
+              <TabsTrigger
+                value="pages"
+                className={`p-2 font-bold ${
+                  activeTabActive === "pages"
+                    ? "border-b-2 border-blue-800 bg-blue-100"
+                    : "text-gray-500"
+                }`}
+              >
                 Pages
               </TabsTrigger>
-              <TabsTrigger value="sources" className="px-4 py-2">
+              <TabsTrigger
+                value="sources"
+                className={`p-2 font-bold ${
+                  activeTabActive === "sources"
+                    ? "border-b-2 border-blue-800 bg-blue-100"
+                    : "text-gray-500"
+                }`}
+              >
                 Sources
               </TabsTrigger>
-              <TabsTrigger value="team" className="px-4 py-2">
+              <TabsTrigger
+                value="team"
+                className={`p-2 font-bold ${
+                  activeTabActive === "team"
+                    ? "border-b-2 border-blue-800 bg-blue-100"
+                    : "text-gray-500"
+                }`}
+              >
                 Team
               </TabsTrigger>
             </TabsList>
