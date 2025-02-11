@@ -34,6 +34,7 @@ function PresetButton({
 
 const AskIgorModal: React.FC = () => {
   const [question, setQuestion] = useState("");
+  const [activeTab, setActiveTab] = useState("report");
 
   return (
     <div className="askIgorModal">
@@ -102,18 +103,36 @@ const AskIgorModal: React.FC = () => {
 
               <div className="space-y-4">
                 <h5 className="text-sm font-bold">Or pick a preset</h5>
-                <Tabs defaultValue="report" className="w-full">
+                <Tabs defaultValue="report" className="w-full" onValueChange={setActiveTab}>
                   <TabsList className="flex w-full justify-start gap-2 border-b border-slate-300">
                     <TabsTrigger
                       value="report"
-                      className="border-b border-blue-800 bg-blue-100 p-2 font-bold"
+                      className={`p-2 font-bold ${
+                        activeTab === "report"
+                          ? "border-b-2 border-blue-800 bg-blue-100"
+                          : "text-gray-500"
+                      }`}
                     >
                       Report
                     </TabsTrigger>
-                    <TabsTrigger value="extract" className="font-regular p-2 text-sm">
+                    <TabsTrigger
+                      value="extract"
+                      className={`p-2 font-bold ${
+                        activeTab === "extract"
+                          ? "border-b-2 border-blue-800 bg-blue-100"
+                          : "text-gray-500"
+                      }`}
+                    >
                       Extract information
                     </TabsTrigger>
-                    <TabsTrigger value="other" className="font-regular p-2 text-sm">
+                    <TabsTrigger
+                      value="other"
+                      className={`p-2 font-bold ${
+                        activeTab === "other"
+                          ? "border-b-2 border-blue-800 bg-blue-100"
+                          : "text-gray-500"
+                      }`}
+                    >
                       Other
                     </TabsTrigger>
                   </TabsList>
@@ -145,9 +164,28 @@ const AskIgorModal: React.FC = () => {
                       description="Introduction, Methods, Results, and Conclusion."
                       className="bg-slate-100"
                     />
+                    <PresetButton
+                      title="Standard report"
+                      description="Introduction, Methods, Results, and Conclusion."
+                      className="bg-slate-100"
+                    />
+                    <PresetButton
+                      title="Tailored report"
+                      description="Introduction, Methods, Results, and Conclusion."
+                      className="bg-slate-100"
+                    />
                   </TabsContent>
                   <TabsContent value="other" className="mt-4 space-y-2">
-                    {/* Add other presets here */}
+                    <PresetButton
+                      title="Tailored report"
+                      description="Introduction, Methods, Results, and Conclusion."
+                      className="bg-slate-100"
+                    />
+                    <PresetButton
+                      title="Standard report"
+                      description="Introduction, Methods, Results, and Conclusion."
+                      className="bg-slate-100"
+                    />
                   </TabsContent>
                 </Tabs>
               </div>
