@@ -16,6 +16,10 @@
 @use './utilities/animations.scss';
 @use './utilities/findest-button.scss';
 
+// cards
+
+@use './components/cards/create-item-modal.scss';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
