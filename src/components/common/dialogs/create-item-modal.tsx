@@ -163,8 +163,8 @@ export function CreateItemModal() {
             </div>
           </div>
         </DialogTrigger>
-        <DialogContent className="dialogContent">
-          <div className="dialogInner">
+        <DialogContent className="dialogContent bg-white sm:max-w-[750px] [&>button]:hidden">
+          <div className="mb-6 flex items-center gap-4">
             <DialogTitle className="text-lg">{getStepTitle()}</DialogTitle>
 
             {/* Progress Indicator */}

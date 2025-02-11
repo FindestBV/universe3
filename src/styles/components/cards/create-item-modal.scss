@@ -15,11 +15,11 @@
     }
 
 
-    &.dialogContent{
-        @apply bg-white sm:max-w-[750px] [&>button]:hidden; 
+    .dialogContent{
+        // @apply bg-white sm:max-w-[750px] [&>button]:hidden; 
 
-        > .dialogInner{
-            @apply mb-6 flex items-center gap-4;
+        .dialogInner{
+            @apply mb-6 flex items-center gap-4; 
         }
     }
 
