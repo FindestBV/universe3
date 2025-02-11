@@ -29,7 +29,7 @@ export const Dashboard = () => {
   return (
     <div className="flex h-screen w-full overflow-hidden">
       {/* 📌 LEFT COLUMN (Scrollable) */}
-      <div className="flex h-full w-full flex-1 flex-col overflow-y-auto bg-gray-100 px-16 py-5 md:w-1/2">
+      <div className="flex h-full w-full flex-1 flex-col overflow-y-auto bg-gray-100 py-5 pl-16 pr-8 md:max-w-[40%]">
         <SearchForm className="border border-neutral-200" />
 
         <div className="mb-4 py-4">
@@ -112,7 +112,7 @@ export const Dashboard = () => {
       </div>
 
       {/* 📌 RIGHT COLUMN (Fixed) */}
-      <div className="h-screen w-full flex-1 bg-gray-100 p-5 md:w-1/2">
+      <div className="flex-2 h-screen w-full bg-gray-100 p-5 md:max-w-[60%]">
         <h3 className="text-lg font-semibold">Pages graph</h3>
 
         <div className="relative mt-4 flex h-full items-center justify-center overflow-hidden rounded-md">
