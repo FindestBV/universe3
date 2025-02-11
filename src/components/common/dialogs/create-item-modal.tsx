@@ -17,7 +17,15 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { ChevronLeft, Database, FileText, GraduationCap, Link as LinkIcon, X } from "lucide-react";
+import {
+  ChevronLeft,
+  Database,
+  FileText,
+  GraduationCap,
+  Link as LinkIcon,
+  Plus,
+  X,
+} from "lucide-react";
 
 import { useState } from "react";
 
@@ -147,12 +155,12 @@ export function CreateItemModal() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="border-transparent bg-[#006A86] text-white transition-colors hover:border-transparent hover:bg-[#84A7E2]"
-        >
-          CREATE NEW
-        </Button>
+        <div className="pointer flex h-[200px] justify-between rounded-lg bg-gradient-to-br from-black from-[0%] via-black via-blue-300 via-slate-700 via-[70%] via-[85%] via-[95%] to-yellow-300 to-[100%] p-4">
+          <p className="text-normal font-bold text-white">Create a new project</p>
+          <div className="flex items-start gap-4">
+            <Plus size={20} className="text-white" />
+          </div>
+        </div>
       </DialogTrigger>
       <DialogContent className="bg-white sm:max-w-[750px] [&>button]:hidden">
         <div className="mb-6 flex items-center gap-4">

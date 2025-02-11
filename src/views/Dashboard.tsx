@@ -1,6 +1,7 @@
 import { useGetLinkingQuery, useGetMyRecentActivityQuery } from "@/api/activity/activityApi";
 import { currentUser } from "@/api/auth/authSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
+import CreateItemModal from "@/components/common/dialogs/create-item-modal";
 import ForceDirectedGraphView from "@/components/common/layout/force-directed-graph";
 import { SearchForm } from "@/components/common/sidebar/main-sidebar/search-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
@@ -39,12 +40,7 @@ export const Dashboard = () => {
         {/* 📌 Create Project Section */}
         <div>
           <h3 className="text-md mb-2 font-semibold">Get started</h3>
-          <div className="flex h-[200px] justify-between rounded-lg bg-gradient-to-br from-black from-[0%] via-black via-blue-300 via-slate-700 via-[70%] via-[85%] via-[95%] to-yellow-300 to-[100%] p-4">
-            <p className="text-normal font-bold text-white">Create a new project</p>
-            <div className="flex items-start gap-4">
-              <Plus size={20} className="text-white" />
-            </div>
-          </div>
+          <CreateItemModal />
         </div>
 
         {/* 📌 Recent Projects */}
