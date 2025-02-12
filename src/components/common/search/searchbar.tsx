@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useSearchItemsMutation } from "@/api/search/searchApi";
 import { useDebounce } from "@/hooks/use-debounce";
+import { useTruncateText } from "@/hooks/use-truncate-text";
 import { Loader, Search, X } from "lucide-react";
 
 import { useCallback, useState } from "react";
@@ -138,7 +139,6 @@ export const SearchBar = () => {
   };
 
   const filteredResults = filterResults(data);
-
   return (
     <div className="">
       {/* Search Input */}
@@ -210,7 +210,7 @@ export const SearchBar = () => {
                         rel={entity.url.startsWith("http") ? "noopener noreferrer" : undefined}
                         className="font-semibold text-black hover:text-gray-500 hover:underline"
                       >
-                        {entity.name}
+                        {entity.name.length > 140 ? entity.name.slice(0, 137) + "..." : entity.name}
                       </a>
                     </div>
                   </li>

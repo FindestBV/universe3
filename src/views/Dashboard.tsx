@@ -30,7 +30,7 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className="flex h-screen w-full overflow-hidden">
+    <div className="scrollbar-hidden flex h-screen w-full overflow-hidden">
       {/* 📌 LEFT COLUMN (Scrollable) */}
       <div className="flex h-full w-full flex-1 flex-col overflow-y-auto bg-gray-100 py-5 pl-16 pr-8 md:max-w-[40%]">
         <SearchBar />
