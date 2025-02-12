@@ -63,6 +63,10 @@
   * {
     @apply border-border;
   }
+  *:focus-visible {
+    @apply ring-[var(--ring)] ring-0 outline-none;
+    ring-offset: 0px !important;
+  }
   :root {
     --background: 0, 106, 134%;
     --foreground: 240 10% 3.9%;
@@ -91,7 +95,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --ring: 240 10% 3.9%;
+    --ring: 211, 100%, 66%;
 
     --radius: 0.5rem;
 
@@ -142,7 +146,7 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --ring: 193, 100%, 2%;
+    --ring: 211, 100%, 66%;
 
     --chart-1: 220 70% 50%;
 

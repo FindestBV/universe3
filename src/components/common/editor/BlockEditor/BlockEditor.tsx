@@ -16,6 +16,7 @@ import { initialContent } from "@/lib/data/initialContent";
 import { RootState } from "@/store";
 import { EditorContent } from "@tiptap/react";
 import {
+  ArrowLeft,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -200,7 +201,7 @@ export const BlockEditor = ({
     <div className="flex" ref={menuContainerRef}>
       <div className="flex-2 relative flex h-full max-w-full flex-col">
         <div className="flex flex-row overflow-hidden">
-          <div className={`hidden md:flex ${isLeftSideBarOpen ? "flex-col" : "collapsed"}`}>
+          <div className={`z-[10] hidden md:flex ${isLeftSideBarOpen ? "flex-col" : "collapsed"}`}>
             <div className="flex h-screen w-full flex-col border-r border-gray-200 md:w-80">
               <div className="fixed top-0 flex h-screen w-80 flex-col border-r border-gray-200 bg-white">
                 <div className="flex flex-col">
@@ -211,7 +212,11 @@ export const BlockEditor = ({
                     <>
                       <p className="text-xs font-bold text-white">cross regeneration to maxim...</p>
                       <div className="flex items-center gap-4">
-                        <Eye size={20} className="text-white" onClick={triggerExpand} />
+                        <Eye
+                          size={20}
+                          className={`cursor-pointer ${isTitleExpanded ? "text-[#FFFF00]" : "text-white"}`}
+                          onClick={triggerExpand}
+                        />
                         <ChevronsUpDown size={20} className="text-white" />
                       </div>
                     </>
@@ -249,7 +254,7 @@ export const BlockEditor = ({
                     </ul>
                     <div className="flex w-full gap-1 border p-2">
                       <Button variant="secondary" className="border border-slate-300 bg-slate-100">
-                        <ChevronLeft /> Back to the Universe
+                        <ArrowLeft /> Back to the Universe
                       </Button>
                       <Button variant="secondary" className="border border-slate-300 bg-slate-100">
                         <Plus /> Create New project

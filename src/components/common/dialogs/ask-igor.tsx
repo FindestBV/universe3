@@ -3,10 +3,12 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import {
+  Award,
   Bot,
   Check,
   ChevronRight,
   File,
+  FlaskConical,
   Globe,
   Link,
   Loader2,
@@ -77,7 +79,7 @@ function PresetButton({
     >
       <div className="flex items-start gap-4">
         <div className="text-left">
-          <h3 className="font-medium">{title}</h3>
+          <h3 className="font-medium group-hover:text-white">{title}</h3>
           <p className="text-sm text-gray-600 group-hover:text-white">{description}</p>
         </div>
       </div>
@@ -145,6 +147,14 @@ const AskIgorModal: React.FC = () => {
                       <Check size={14} className="bg-blue-500 text-white" />
                       <Globe size={16} />
                     </li>
+                    <li className="flex items-center gap-1 rounded-sm bg-slate-100 p-1 text-sm">
+                      <Check size={14} className="bg-blue-500 text-white" />
+                      <FlaskConical size={16} />
+                    </li>
+                    <li className="flex items-center gap-1 rounded-sm bg-slate-100 p-1 text-sm">
+                      <Check size={14} className="bg-blue-500 text-white" />
+                      <Award size={16} />
+                    </li>
                   </ul>
 
                   <div className="space-y-2">
@@ -154,11 +164,11 @@ const AskIgorModal: React.FC = () => {
                         value={question}
                         onChange={(e) => setQuestion(e.target.value)}
                         placeholder="Type your question here..."
-                        className="min-h-[120px] resize-none bg-white pr-12 focus:outline-none"
+                        className="min-h-[120px] resize-none bg-white pr-12 focus:outline-none focus-visible:ring-offset-0"
                       />
                       <Button
                         size="icon"
-                        className="absolute bottom-3 right-3 bg-blue-500 text-white"
+                        className="absolute bottom-3 right-3 bg-blue-500 text-white hover:bg-slate-300"
                         onClick={handleSearch}
                       >
                         <ChevronRight className="h-4 w-4" />
@@ -173,7 +183,7 @@ const AskIgorModal: React.FC = () => {
                     <TabsList className="flex w-full justify-start gap-2 border-b border-slate-300">
                       <TabsTrigger
                         value="report"
-                        className={`p-2 text-sm ${
+                        className={`linear p-2 text-sm transition-all duration-150 ${
                           activeTab === "report"
                             ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                             : "text-gray-500"
@@ -183,7 +193,7 @@ const AskIgorModal: React.FC = () => {
                       </TabsTrigger>
                       <TabsTrigger
                         value="extract"
-                        className={`p-2 text-sm ${
+                        className={`linear p-2 text-sm transition-all duration-150 ${
                           activeTab === "extract"
                             ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                             : "text-gray-500"
@@ -193,7 +203,7 @@ const AskIgorModal: React.FC = () => {
                       </TabsTrigger>
                       <TabsTrigger
                         value="other"
-                        className={`p-2 text-sm ${
+                        className={`linear p-2 text-sm transition-all duration-150 ${
                           activeTab === "other"
                             ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                             : "text-gray-500"
@@ -209,36 +219,46 @@ const AskIgorModal: React.FC = () => {
                         className="bg-slate-100"
                       />
                       <PresetButton
-                        title="General description"
-                        description="Either based on general knowledge or the sources linked."
+                        title="Section"
+                        description="Give me a title and I will write the section."
                         className="bg-slate-100"
                       />
                       <PresetButton
-                        title="General description"
-                        description="Either based on general knowledge or the sources linked."
+                        title="Standard Report"
+                        description="Introduction, methods, results and conclusion."
+                        className="bg-slate-100"
+                      />
+                      <PresetButton
+                        title="Tailored Report"
+                        description="Introduction, methods, results and conclusion."
                         className="bg-slate-100"
                       />
                     </TabsContent>
                     <TabsContent value="extract" className="mt-2 space-y-2">
                       <PresetButton
-                        title="General description"
-                        description="Either based on general knowledge or the sources linked."
+                        title="Extract Information"
+                        description="Search through specific documents."
                         className="bg-slate-100"
                       />
                       <PresetButton
-                        title="General description"
-                        description="Either based on general knowledge or the sources linked."
+                        title="Extract Patents"
+                        description="Search through specific documents."
                         className="bg-slate-100"
                       />
                       <PresetButton
-                        title="General description"
-                        description="Either based on general knowledge or the sources linked."
+                        title="Extract Scientific Publications"
+                        description="Search through specific documents."
+                        className="bg-slate-100"
+                      />
+                      <PresetButton
+                        title="Extract from Scientific Topics"
+                        description="Search through specific documents."
                         className="bg-slate-100"
                       />
                     </TabsContent>
                     <TabsContent value="other" className="mt-2 space-y-2">
                       <PresetButton
-                        title="General description"
+                        title="Other general keyword"
                         description="Either based on general knowledge or the sources linked."
                         className="bg-slate-100"
                       />
@@ -248,7 +268,12 @@ const AskIgorModal: React.FC = () => {
                         className="bg-slate-100"
                       />
                       <PresetButton
-                        title="General description"
+                        title="Waterboarding"
+                        description="Either based on general knowledge or the sources linked."
+                        className="bg-slate-100"
+                      />
+                      <PresetButton
+                        title="Sleep deprevation"
                         description="Either based on general knowledge or the sources linked."
                         className="bg-slate-100"
                       />
@@ -263,13 +288,13 @@ const AskIgorModal: React.FC = () => {
                 <div className="absolute right-0 flex justify-end gap-0 p-4">
                   <button
                     onClick={() => setIsMinimized(true)}
-                    className="rounded border px-2 py-1 text-sm text-gray-500 hover:bg-gray-200"
+                    className="rounded border p-2 text-sm text-gray-500 hover:bg-gray-200"
                   >
                     <Minimize2 size={16} />
                   </button>
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="rounded border px-2 py-1 text-sm text-gray-500 hover:bg-gray-200"
+                    className="rounded border p-2 text-sm text-gray-500 hover:bg-gray-200"
                   >
                     <X size={16} />
                   </button>
