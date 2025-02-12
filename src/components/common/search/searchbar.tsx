@@ -152,7 +152,7 @@ export const SearchBar = () => {
               onChange={handleInputChange}
               onPaste={handleInputPaste}
               onBlur={handleInputBlur}
-              className="flex w-full rounded-full border-none bg-white py-3 pl-10 text-black"
+              className="flex w-full rounded-full border-none bg-white py-2 pl-10 text-black"
               placeholder={t("searchPlaceholder")}
               aria-label="Search input"
             />
@@ -176,14 +176,14 @@ export const SearchBar = () => {
 
       {/* Filter Tabs and Results */}
       {(filteredResults.length > 0 || hasSearched) && (
-        <div className="left-0 z-40 mt-2 w-full rounded-md border border-gray-300 bg-white px-2 py-4 shadow-lg">
+        <div className="left-0 z-50 mt-2 w-full rounded-md border border-gray-300 bg-white px-2 py-4 shadow-lg">
           {/* Filter Tabs */}
-          <div className="flex flex-wrap justify-center gap-4 border-b border-gray-300 bg-white pb-4 max-sm:w-full max-sm:flex-col">
+          <div className="flex flex-wrap justify-center gap-2 border-b border-gray-300 bg-white pb-4 max-sm:w-full max-sm:flex-col">
             {TABS.map((tab) => (
               <button
                 key={tab}
                 onClick={() => handleTabChange(tab)}
-                className={`max-w-full flex-1 rounded-lg px-4 py-2 text-center ${
+                className={`max-w-full flex-1 rounded-lg px-4 py-2 text-center text-sm ${
                   selectedTab === tab ? "bg-blue-300 text-white" : "bg-gray-200"
                 } duration-200 hover:bg-gray-400 hover:text-gray-50`}
                 aria-pressed={selectedTab === tab}
@@ -203,12 +203,12 @@ export const SearchBar = () => {
                     className="flex items-center justify-between gap-2 border-b p-2 last:border-b-0 hover:bg-gray-100"
                   >
                     <div>
-                      <span className="block text-sm font-bold text-gray-600">{entity.type}</span>
+                      <span className="block text-sm text-gray-400">{entity.type}</span>
                       <a
                         href={entity.url}
                         target={entity.url.startsWith("http") ? "_blank" : "_self"}
                         rel={entity.url.startsWith("http") ? "noopener noreferrer" : undefined}
-                        className="text-blue-500 hover:underline"
+                        className="font-semibold text-black hover:text-gray-500 hover:underline"
                       >
                         {entity.name}
                       </a>

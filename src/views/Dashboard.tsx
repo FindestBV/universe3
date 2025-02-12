@@ -102,7 +102,7 @@ export const Dashboard = () => {
               </TabsTrigger>
               <TabsTrigger
                 value="team"
-                className={`p-2 font-bold ${
+                className={`p-2 text-sm ${
                   activeTabActive === "team"
                     ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                     : "text-gray-500"
