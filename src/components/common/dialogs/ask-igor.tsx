@@ -3,10 +3,12 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import {
+  Award,
   Bot,
   Check,
   ChevronRight,
   File,
+  FlaskConical,
   Globe,
   Link,
   Maximize2,
@@ -144,6 +146,14 @@ const AskIgorModal: React.FC = () => {
                       <Check size={14} className="bg-blue-500 text-white" />
                       <Globe size={16} />
                     </li>
+                    <li className="flex items-center gap-1 rounded-sm bg-slate-100 p-1 text-sm">
+                      <Check size={14} className="bg-blue-500 text-white" />
+                      <FlaskConical size={16} />
+                    </li>
+                    <li className="flex items-center gap-1 rounded-sm bg-slate-100 p-1 text-sm">
+                      <Check size={14} className="bg-blue-500 text-white" />
+                      <Award size={16} />
+                    </li>
                   </ul>
 
                   <div className="space-y-2">
@@ -157,7 +167,7 @@ const AskIgorModal: React.FC = () => {
                       />
                       <Button
                         size="icon"
-                        className="absolute bottom-3 right-3 bg-blue-500 text-white"
+                        className="absolute bottom-3 right-3 bg-blue-500 text-white hover:bg-slate-300"
                         onClick={handleSearch}
                       >
                         <ChevronRight className="h-4 w-4" />
@@ -172,7 +182,7 @@ const AskIgorModal: React.FC = () => {
                     <TabsList className="flex w-full justify-start gap-2 border-b border-slate-300">
                       <TabsTrigger
                         value="report"
-                        className={`p-2 text-sm ${
+                        className={`p-2 text-sm transition-all duration-150 ease-in-out ${
                           activeTab === "report"
                             ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                             : "text-gray-500"
@@ -182,7 +192,7 @@ const AskIgorModal: React.FC = () => {
                       </TabsTrigger>
                       <TabsTrigger
                         value="extract"
-                        className={`p-2 text-sm ${
+                        className={`p-2 text-sm transition-all duration-150 ease-in-out ${
                           activeTab === "extract"
                             ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                             : "text-gray-500"
@@ -192,7 +202,7 @@ const AskIgorModal: React.FC = () => {
                       </TabsTrigger>
                       <TabsTrigger
                         value="other"
-                        className={`p-2 text-sm ${
+                        className={`p-2 text-sm transition-all duration-150 ease-in-out ${
                           activeTab === "other"
                             ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                             : "text-gray-500"
@@ -208,13 +218,18 @@ const AskIgorModal: React.FC = () => {
                         className="bg-slate-100"
                       />
                       <PresetButton
-                        title="General description"
-                        description="Either based on general knowledge or the sources linked."
+                        title="Section"
+                        description="Give me a title and I will write the section."
                         className="bg-slate-100"
                       />
                       <PresetButton
-                        title="General description"
-                        description="Either based on general knowledge or the sources linked."
+                        title="Standard Report"
+                        description="Introduction, methods, results and conclusion."
+                        className="bg-slate-100"
+                      />
+                      <PresetButton
+                        title="Tailored Report"
+                        description="Introduction, methods, results and conclusion."
                         className="bg-slate-100"
                       />
                     </TabsContent>

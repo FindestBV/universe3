@@ -31,7 +31,7 @@ export const Dashboard = () => {
 
   return (
     <div className="scrollbar-hidden flex h-screen w-full overflow-hidden">
-      {/* 📌 LEFT COLUMN (Scrollable) */}
+      {/* LEFT COLUMN (Scrollable) */}
       <div className="flex h-full w-full flex-1 flex-col overflow-y-auto bg-gray-100 py-5 pl-16 pr-8 md:max-w-[40%]">
         <SearchBar />
 
@@ -39,13 +39,13 @@ export const Dashboard = () => {
           <AskIgorModal />
         </div>
 
-        {/* 📌 Create Project Section */}
+        {/* Create Project Section */}
         <div>
           <h3 className="text-md mb-2 font-semibold">Get started</h3>
           <CreateItemModal />
         </div>
 
-        {/* 📌 Recent Projects */}
+        {/* Recent Projects */}
         <div>
           <h3 className="text-md mb-2 mt-12 font-semibold">Recent projects</h3>
           <div className="mt-4 flex flex-col space-y-2">
@@ -75,14 +75,14 @@ export const Dashboard = () => {
           </div>
         </div>
 
-        {/* 📌 Recent Activity Tabs */}
+        {/* Recent Activity Tabs */}
         <div className="mt-6">
           <h3 className="text-md my-2 font-semibold">Recent activity</h3>
           <Tabs defaultValue="pages" className="pb-4" onValueChange={setIsActiveTabActive}>
             <TabsList className="flex justify-start space-x-4 border-b border-slate-200 bg-transparent">
               <TabsTrigger
                 value="pages"
-                className={`p-2 text-sm ${
+                className={`p-2 text-sm transition-all duration-150 ease-in-out ${
                   activeTabActive === "pages"
                     ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                     : "text-gray-500"
@@ -92,7 +92,7 @@ export const Dashboard = () => {
               </TabsTrigger>
               <TabsTrigger
                 value="sources"
-                className={`p-2 text-sm ${
+                className={`p-2 text-sm transition-all duration-150 ease-in-out ${
                   activeTabActive === "sources"
                     ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                     : "text-gray-500"
@@ -102,7 +102,7 @@ export const Dashboard = () => {
               </TabsTrigger>
               <TabsTrigger
                 value="team"
-                className={`p-2 text-sm ${
+                className={`p-2 text-sm transition-all duration-150 ease-in-out ${
                   activeTabActive === "team"
                     ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                     : "text-gray-500"
@@ -112,7 +112,7 @@ export const Dashboard = () => {
               </TabsTrigger>
             </TabsList>
 
-            {/* 📌 Activity Content */}
+            {/* Activity Content */}
             <TabsContent value="pages" className="py-4">
               <ActivityItem title="Activity 1" />
               <ActivityItem title="Activity 2" />
@@ -130,7 +130,7 @@ export const Dashboard = () => {
         </div>
       </div>
 
-      {/* 📌 RIGHT COLUMN (Fixed) */}
+      {/* RIGHT COLUMN (Fixed) */}
       <div className="flex-2 h-screen w-full bg-gray-100 p-5 md:max-w-[60%]">
         <h3 className="text-lg font-semibold">Pages graph</h3>
 
@@ -151,7 +151,7 @@ export const Dashboard = () => {
 
 export default Dashboard;
 
-/* 📌 Reusable Activity Item Component */
+/* Reusable Activity Item Component */
 const ActivityItem = ({ title }: { title: string }) => (
   <div className="mb-2 flex w-full cursor-pointer flex-row items-center justify-between rounded-md bg-white p-4 hover:bg-gray-200">
     <div className="flex flex-col">
