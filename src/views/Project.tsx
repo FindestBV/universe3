@@ -17,9 +17,9 @@ export const Project: React.FC = () => {
   let parsedDescription: any = null;
 
   // ✅ Determine whether to fetch "studies" or "entities" based on the URL
-  const isStudiesPage = location.pathname.includes("studies");
+  const isProjectsPage = location.pathname.includes("projects");
 
-  const { data: fetchedEntity, isLoading: fetchedEntityIsLoading } = isStudiesPage
+  const { data: fetchedEntity, isLoading: fetchedEntityIsLoading } = isProjectsPage
     ? useGetStudyByIdQuery(id, { refetchOnMountOrArgChange: false })
     : useGetEntityByIdQuery(id, { refetchOnMountOrArgChange: false });
 
@@ -65,7 +65,7 @@ export const Project: React.FC = () => {
           <div className="flex w-auto">
             <div className="w-full flex-col">
               <BlockEditor
-                type={isStudiesPage ? "study" : "entity"}
+                type={"study"}
                 id={fetchedEntity?.id}
                 title={fetchedEntity?.title}
                 content={parsedDescription}
