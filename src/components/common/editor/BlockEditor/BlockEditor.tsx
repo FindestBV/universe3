@@ -16,6 +16,7 @@ import { initialContent } from "@/lib/data/initialContent";
 import { RootState } from "@/store";
 import { EditorContent } from "@tiptap/react";
 import {
+  ArrowLeft,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -253,7 +254,7 @@ export const BlockEditor = ({
                     </ul>
                     <div className="flex w-full gap-1 border p-2">
                       <Button variant="secondary" className="border border-slate-300 bg-slate-100">
-                        <ChevronLeft /> Back to the Universe
+                        <ArrowLeft /> Back to the Universe
                       </Button>
                       <Button variant="secondary" className="border border-slate-300 bg-slate-100">
                         <Plus /> Create New project
