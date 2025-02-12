@@ -9,6 +9,7 @@ import {
   File,
   Globe,
   Link,
+  Loader2,
   Maximize2,
   Minimize2,
   Minus,
@@ -276,7 +277,12 @@ const AskIgorModal: React.FC = () => {
 
                 <div className="flex-1 overflow-y-auto bg-gray-50 p-4">
                   {loading ? (
-                    <p className="text-sm text-gray-500">Searching...</p>
+                    <p className="flex items-center gap-2 text-sm text-gray-500">
+                      Searching...
+                      <span className="animate-spin">
+                        <Loader2 />
+                      </span>
+                    </p>
                   ) : (
                     <div className="mt-8">
                       <ul className="list-disc pl-5">

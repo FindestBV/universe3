@@ -91,7 +91,7 @@ const CreateQueryDialog: React.FC<CreateQueryDialogProps> = ({ id, icon, queryTy
       setQueryTags("");
       setStep(1);
     }
-  }, [isDialogOpen]);
+  }, [id, isDialogOpen, queryType]);
 
   return (
     <Dialog>
