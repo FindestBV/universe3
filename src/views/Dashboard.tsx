@@ -24,8 +24,8 @@ export const Dashboard = () => {
   const user = useSelector(currentUser);
 
   const handleNavigateToEntities = (type: string, id: string) => {
-    const redirRoute = type === "Entity" ? "entities" : "studies";
-    navigate(`/pages/${redirRoute}/${id}`, { state: { id } });
+    // const redirRoute = type === "Entity" ? "entities" : "studies";
+    navigate(`/projects/${id}`, { state: { id } });
   };
 
   return (
@@ -78,10 +78,10 @@ export const Dashboard = () => {
         <div className="mt-6">
           <h3 className="text-md my-2 font-semibold">Recent activity</h3>
           <Tabs defaultValue="pages" className="pb-4" onValueChange={setIsActiveTabActive}>
-            <TabsList className="flex justify-start space-x-3 border-b border-slate-200 bg-transparent">
+            <TabsList className="flex justify-start space-x-4 border-b border-slate-200 bg-transparent">
               <TabsTrigger
                 value="pages"
-                className={`p-2 text-sm font-bold ${
+                className={`p-2 font-bold ${
                   activeTabActive === "pages"
                     ? "border-b-2 border-blue-800 bg-blue-100"
                     : "text-gray-500"
@@ -91,7 +91,7 @@ export const Dashboard = () => {
               </TabsTrigger>
               <TabsTrigger
                 value="sources"
-                className={`p-2 text-sm font-bold ${
+                className={`p-2 font-bold ${
                   activeTabActive === "sources"
                     ? "border-b-2 border-blue-800 bg-blue-100"
                     : "text-gray-500"
@@ -101,7 +101,7 @@ export const Dashboard = () => {
               </TabsTrigger>
               <TabsTrigger
                 value="team"
-                className={`p-2 text-sm font-bold ${
+                className={`p-2 font-bold ${
                   activeTabActive === "team"
                     ? "border-b-2 border-blue-800 bg-blue-100"
                     : "text-gray-500"
@@ -154,7 +154,7 @@ export default Dashboard;
 const ActivityItem = ({ title }: { title: string }) => (
   <div className="mb-2 flex w-full cursor-pointer flex-row items-center justify-between rounded-md bg-white p-4 hover:bg-gray-200">
     <div className="flex flex-col">
-      <h3 className="text-sm font-semibold">{title}</h3>
+      <h3 className="text-md font-semibold">{title}</h3>
     </div>
     <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
   </div>

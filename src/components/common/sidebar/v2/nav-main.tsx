@@ -9,7 +9,17 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { Circle, File, Home, Inbox, Link, Minus, Network, Plus } from "lucide-react";
+import {
+  Circle,
+  File,
+  Home,
+  Inbox,
+  Link,
+  Minus,
+  Network,
+  Plus,
+  SquareTerminal,
+} from "lucide-react";
 
 import { createElement, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -22,7 +32,7 @@ const data = {
     { title: "Inbox", url: "/inbox", icon: Inbox },
     {
       title: "Projects",
-      url: "/queries",
+      url: "/projects",
       icon: Circle,
       items: [{ title: "Entities", url: "/pages/entities" }],
     },
@@ -50,7 +60,10 @@ export function NavMain() {
   const [autoClosed, setAutoClosed] = useState(false);
 
   useEffect(() => {
-    if (!autoClosed && location.pathname.match(/^\/pages\/(entities|studies)\/[^/]+$/)) {
+    if (
+      !autoClosed &&
+      location.pathname.match(/^\/(pages|projects)(\/(entities|studies))?\/[^/]+$/)
+    ) {
       setOpen(false);
       setAutoClosed(true);
     }
@@ -152,7 +165,7 @@ export function NavMain() {
                   setAutoClosed(false);
                 }}
               >
-                <span className="flex h-6 w-6 items-center justify-center">
+                <span className="flex h-6 w-6 items-center justify-center group-hover:bg-gray-100">
                   {item.icon && createElement(item.icon, { size: 20 })}
                 </span>
                 {open && <span className="text-sm">{item.title}</span>}
