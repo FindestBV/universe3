@@ -1,17 +1,10 @@
 import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
 import { useBlockEditor } from "@/hooks/use-block-editor";
+import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { initialContent } from "@/lib/data/initialContent";
 import { RootState } from "@/store";
 import { EditorContent } from "@tiptap/react";
@@ -80,6 +73,7 @@ export const BlockEditor = ({
   const [currentId, setCurrentId] = useState<string | null>(null);
   const [lastSavedContent, setLastSavedContent] = useState<string | null>(null); // To track changes
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
+  const navigateWithTransition = useNavigateWithTransition();
 
   console.log("block editor type", type);
 
@@ -253,10 +247,15 @@ export const BlockEditor = ({
                       </li>
                     </ul>
                     <div className="flex w-full gap-1 border p-2">
-                      <Button variant="secondary" className="border border-slate-300 bg-slate-100">
+                      <Button
+                        className="border border-slate-300 bg-slate-100"
+                        onClick={() => {
+                          navigateWithTransition(`/dashboard`);
+                        }}
+                      >
                         <ArrowLeft /> Back to the Universe
                       </Button>
-                      <Button variant="secondary" className="border border-slate-300 bg-slate-100">
+                      <Button className="border border-slate-300 bg-slate-100">
                         <Plus /> Create New project
                       </Button>
                     </div>
