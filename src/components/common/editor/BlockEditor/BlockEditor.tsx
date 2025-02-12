@@ -17,6 +17,7 @@ import { RootState } from "@/store";
 import { EditorContent } from "@tiptap/react";
 import {
   ChevronDown,
+  ChevronLeft,
   ChevronRight,
   ChevronsUpDown,
   Download,
@@ -72,6 +73,7 @@ export const BlockEditor = ({
   const menuContainerRef = useRef(null);
   const [isLeftSideBarOpen, setIsLeftSidebarOpen] = useState<boolean>(true);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  const [isTitleExpanded, setIsTitleExpanded] = useState<boolean>(false);
   const [createDraft] = useCreateDraftMutation();
   const [updateDraft] = useUpdateDraftMutation();
   const [currentId, setCurrentId] = useState<string | null>(null);
@@ -161,6 +163,11 @@ export const BlockEditor = ({
     }));
   };
 
+  const triggerExpand = () => {
+    setIsTitleExpanded(!isTitleExpanded);
+    console.log(isTitleExpanded ? "expanded" : "normal");
+  };
+
   const projectStructure = [
     {
       title: "Description",
@@ -196,15 +203,60 @@ export const BlockEditor = ({
           <div className={`hidden md:flex ${isLeftSideBarOpen ? "flex-col" : "collapsed"}`}>
             <div className="flex h-screen w-full flex-col border-r border-gray-200 md:w-80">
               <div className="fixed top-0 flex h-screen w-80 flex-col border-r border-gray-200 bg-white">
-                {/* Gradient Header */}
-                <div className="flex w-full justify-between bg-[linear-gradient(to_bottom_right,black_0%,black_70%,#60a5fa_80%,white_90%,#facc15_100%)] p-4">
-                  <p className="text-xs font-bold text-white">cross regeneration to maxim...</p>
-                  <div className="flex items-center gap-4">
-                    <Eye size={20} className="text-white" />
-                    <ChevronsUpDown size={20} className="text-white" />
+                <div className="flex flex-col">
+                  {/* Gradient Header */}
+                  <div
+                    className={`flex transition-all duration-150 ease-linear ${isTitleExpanded ? "w-[200%]" : "w-full"} justify-between bg-[linear-gradient(to_bottom_right,black_0%,black_70%,#60a5fa_80%,white_90%,#facc15_100%)] p-4`}
+                  >
+                    <>
+                      <p className="text-xs font-bold text-white">cross regeneration to maxim...</p>
+                      <div className="flex items-center gap-4">
+                        <Eye size={20} className="text-white" onClick={triggerExpand} />
+                        <ChevronsUpDown size={20} className="text-white" />
+                      </div>
+                    </>
+                  </div>
+                  <div
+                    className={`bg-white transition-all duration-150 ease-linear ${isTitleExpanded ? "sticky h-auto w-[200%] rounded-br-lg border shadow-md" : "hidden h-0 w-full"}`}
+                  >
+                    <ul className="border-b border-gray-200">
+                      <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
+                        <span className="text-sm font-semibold text-gray-600">
+                          Alternative to PFTE
+                        </span>
+                        <span className="ml-auto flex gap-2">
+                          <Eye className="rounded p-1 text-gray-600 hover:bg-blue-200" />
+                          <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                        </span>
+                      </li>
+                      <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
+                        <span className="text-sm font-semibold text-gray-600">
+                          Cross regeneration to maximise macromolecules elution for 'Gent
+                          production' ion gas resins
+                        </span>
+                        <span className="ml-auto flex gap-2">
+                          <Eye className="rounded p-1 text-gray-600 hover:bg-blue-200" />
+                          <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                        </span>
+                      </li>
+                      <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
+                        <span className="text-sm font-semibold text-gray-600">Get Weld Soon</span>
+                        <span className="ml-auto flex gap-2">
+                          <Eye className="rounded p-1 text-gray-600 hover:bg-blue-200" />
+                          <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                        </span>
+                      </li>
+                    </ul>
+                    <div className="flex w-full gap-1 border p-2">
+                      <Button variant="secondary" className="border bg-slate-100">
+                        <ChevronLeft /> Back to the Universe
+                      </Button>
+                      <Button variant="secondary" className="border bg-slate-100">
+                        <Plus /> Create New project
+                      </Button>
+                    </div>
                   </div>
                 </div>
-
                 {/* Navigation Links */}
                 <div className="flex-1 overflow-y-auto">
                   <ul className="border-b border-gray-200">
