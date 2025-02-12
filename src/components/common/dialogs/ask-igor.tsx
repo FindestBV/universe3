@@ -5,8 +5,48 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { Bot, Check, ChevronRight, File, Globe, Link, Minus, X, Zap } from "lucide-react";
 
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 // import LinkedCounts from "../cards/linked-counts";
+
+// Simulated article fetching function
+const simulateFetchArticles = (setArticles: any, setLoading: any, setIsFetching: any) => {
+  setLoading(true);
+  setIsFetching(true);
+
+  const articles = [
+    "How AI is Changing the World",
+    "The Future of React",
+    "Why TypeScript is Taking Over",
+    "State Management in 2024",
+    "Best Practices for UI/UX",
+    "Exploring Edge Computing",
+    "A Guide to Serverless Architecture",
+    "Understanding GraphQL",
+    "Introduction to Web3",
+    "Optimizing Performance in React",
+  ];
+
+  let counter = 0;
+  const interval = setInterval(() => {
+    if (counter < articles.length) {
+      setArticles((prev: string[]) => [...prev, articles[counter]]);
+      counter++;
+    } else {
+      clearInterval(interval);
+      setLoading(false);
+      setIsFetching(false);
+      toast.success("Search completed successfully!");
+    }
+  }, 2000);
+
+  setTimeout(() => {
+    clearInterval(interval);
+    setLoading(false);
+    setIsFetching(false);
+    toast.success("Search completed successfully!");
+  }, 15000);
+};
 
 function PresetButton({
   title,
@@ -37,6 +77,16 @@ const AskIgorModal: React.FC = () => {
   const [activeTab, setActiveTab] = useState("report");
   const [isMinimized, setIsMinimized] = useState(false); // Track minimization state
   const [isOpen, setIsOpen] = useState(false); // Track if modal is open
+  const [articles, setArticles] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+
+  const handleSearch = () => {
+    if (!isFetching && question.trim() !== "") {
+      setArticles([]);
+      simulateFetchArticles(setArticles, setLoading, setIsFetching);
+    }
+  };
 
   return (
     <div className="askIgorModal">
@@ -95,6 +145,7 @@ const AskIgorModal: React.FC = () => {
                       <Button
                         size="icon"
                         className="absolute bottom-3 right-3 bg-blue-500 text-white"
+                        onClick={handleSearch}
                       >
                         <ChevronRight className="h-4 w-4" />
                       </Button>
@@ -211,7 +262,19 @@ const AskIgorModal: React.FC = () => {
                 </div>
 
                 <div className="flex-1 overflow-y-auto bg-gray-50 p-4">
-                  <p className="text-sm text-gray-500">This is some text to represent</p>
+                  {loading ? (
+                    <p className="text-sm text-gray-500">Searching...</p>
+                  ) : (
+                    <div className="mt-8">
+                      <ul className="list-disc pl-5">
+                        {articles.map((article, index) => (
+                          <li key={index} className="text-sm text-gray-700">
+                            {article}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -222,16 +285,17 @@ const AskIgorModal: React.FC = () => {
       {/* Minimized View */}
       {isMinimized && (
         <div
-          className="fixed bottom-4 right-4 z-[90] flex h-12 w-1/4 cursor-pointer items-center justify-between bg-[#84A7E2] px-4 text-white shadow-lg"
+          className={`fixed bottom-4 right-4 z-[90] flex h-12 w-1/4 cursor-pointer items-center justify-between px-4 ${loading ? "bg-[#84A7E2]" : "bg-yellow-400"} shadow-lg`}
           onClick={() => {
             setIsMinimized(false);
             setIsOpen(true);
           }}
         >
-          <p className="flex gap-4 text-sm text-white">
-            <Zap /> Asking IGOR...
+          <p className={`flex gap-2 text-sm ${loading ? "text-white" : "text-black"}`}>
+            <Zap className={`${loading ? "" : "zppr"}`} />{" "}
+            {loading ? "Asking IGOR..." : "Search complete!"}
           </p>
-          <button className="text-sm text-white">Restore</button>
+          <button className={`text-sm ${loading ? "text-white" : "text-black"}`}>Restore</button>
         </div>
       )}
     </div>
