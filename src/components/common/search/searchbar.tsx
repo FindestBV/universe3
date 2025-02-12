@@ -117,7 +117,7 @@ export const SearchBar = () => {
           ].includes(item?.type)
             ? "Document"
             : item?.type || "Unknown",
-          url: item?.url || `/pages/${key}/${item?.id}`,
+          url: item?.url || `/projects/${key}/${item?.id}`,
         })),
       )
       .filter((item) => item.id && item.name);
@@ -140,9 +140,9 @@ export const SearchBar = () => {
   const filteredResults = filterResults(data);
 
   return (
-    <div className="mainSearchBar">
+    <div className="">
       {/* Search Input */}
-      <form className="space-y-4">
+      <form className="w-full">
         <div>
           <div className="relative">
             <input
@@ -152,7 +152,7 @@ export const SearchBar = () => {
               onChange={handleInputChange}
               onPaste={handleInputPaste}
               onBlur={handleInputBlur}
-              className="w-full rounded-sm border border-gray-300 py-2 pl-10 pr-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex w-full rounded-full border-none bg-white py-3 pl-10 text-black"
               placeholder={t("searchPlaceholder")}
               aria-label="Search input"
             />
@@ -176,7 +176,7 @@ export const SearchBar = () => {
 
       {/* Filter Tabs and Results */}
       {(filteredResults.length > 0 || hasSearched) && (
-        <div className="absolute left-0 top-full z-40 mt-2 w-full rounded-md border border-gray-300 bg-white px-2 py-4 shadow-lg">
+        <div className="left-0 z-40 mt-2 w-full rounded-md border border-gray-300 bg-white px-2 py-4 shadow-lg">
           {/* Filter Tabs */}
           <div className="flex flex-wrap justify-center gap-4 border-b border-gray-300 bg-white pb-4 max-sm:w-full max-sm:flex-col">
             {TABS.map((tab) => (
@@ -184,7 +184,7 @@ export const SearchBar = () => {
                 key={tab}
                 onClick={() => handleTabChange(tab)}
                 className={`max-w-full flex-1 rounded-lg px-4 py-2 text-center ${
-                  selectedTab === tab ? "bg-[#006A86] text-white" : "bg-gray-200"
+                  selectedTab === tab ? "bg-blue-300 text-white" : "bg-gray-200"
                 } duration-200 hover:bg-gray-400 hover:text-gray-50`}
                 aria-pressed={selectedTab === tab}
               >

@@ -3,6 +3,7 @@ import { currentUser } from "@/api/auth/authSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import CreateItemModal from "@/components/common/dialogs/create-item-modal";
 import ForceDirectedGraphView from "@/components/common/layout/force-directed-graph";
+import SearchBar from "@/components/common/search/searchbar";
 import { SearchForm } from "@/components/common/sidebar/v2/search-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { ChevronRight, Loader, Plus } from "lucide-react";
@@ -32,7 +33,7 @@ export const Dashboard = () => {
     <div className="flex h-screen w-full overflow-hidden">
       {/* 📌 LEFT COLUMN (Scrollable) */}
       <div className="flex h-full w-full flex-1 flex-col overflow-y-auto bg-gray-100 py-5 pl-16 pr-8 md:max-w-[40%]">
-        <SearchForm className="rounded-lg" isDashboard={true} />
+        <SearchBar />
 
         <div className="mb-4 py-4">
           <AskIgorModal />
@@ -81,9 +82,9 @@ export const Dashboard = () => {
             <TabsList className="flex justify-start space-x-4 border-b border-slate-200 bg-transparent">
               <TabsTrigger
                 value="pages"
-                className={`p-2 font-bold ${
+                className={`p-2 text-sm ${
                   activeTabActive === "pages"
-                    ? "border-b-2 border-blue-800 bg-blue-100"
+                    ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                     : "text-gray-500"
                 }`}
               >
@@ -91,9 +92,9 @@ export const Dashboard = () => {
               </TabsTrigger>
               <TabsTrigger
                 value="sources"
-                className={`p-2 font-bold ${
+                className={`p-2 text-sm ${
                   activeTabActive === "sources"
-                    ? "border-b-2 border-blue-800 bg-blue-100"
+                    ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                     : "text-gray-500"
                 }`}
               >
@@ -103,7 +104,7 @@ export const Dashboard = () => {
                 value="team"
                 className={`p-2 font-bold ${
                   activeTabActive === "team"
-                    ? "border-b-2 border-blue-800 bg-blue-100"
+                    ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                     : "text-gray-500"
                 }`}
               >
