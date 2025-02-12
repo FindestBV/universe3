@@ -248,10 +248,10 @@ export const BlockEditor = ({
                       </li>
                     </ul>
                     <div className="flex w-full gap-1 border p-2">
-                      <Button variant="secondary" className="border bg-slate-100">
+                      <Button variant="secondary" className="border border-slate-300 bg-slate-100">
                         <ChevronLeft /> Back to the Universe
                       </Button>
-                      <Button variant="secondary" className="border bg-slate-100">
+                      <Button variant="secondary" className="border border-slate-300 bg-slate-100">
                         <Plus /> Create New project
                       </Button>
                     </div>
