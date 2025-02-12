@@ -78,7 +78,7 @@ function PresetButton({
     >
       <div className="flex items-start gap-4">
         <div className="text-left">
-          <h3 className="font-medium">{title}</h3>
+          <h3 className="font-medium group-hover:text-white">{title}</h3>
           <p className="text-sm text-gray-600 group-hover:text-white">{description}</p>
         </div>
       </div>
