@@ -163,7 +163,7 @@ const AskIgorModal: React.FC = () => {
                         value={question}
                         onChange={(e) => setQuestion(e.target.value)}
                         placeholder="Type your question here..."
-                        className="min-h-[120px] resize-none bg-white pr-12 focus:outline-none"
+                        className="min-h-[120px] resize-none bg-white pr-12 focus:outline-none focus-visible:ring-offset-0"
                       />
                       <Button
                         size="icon"
