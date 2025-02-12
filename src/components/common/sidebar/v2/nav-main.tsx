@@ -9,7 +9,6 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { Circle, File, Home, Inbox, Link, Minus, Network, Plus } from "lucide-react";
 
 import { createElement, useEffect, useState } from "react";
@@ -49,7 +48,6 @@ export function NavMain() {
   const { open, setOpen } = useSidebar();
   const location = useLocation();
   const [autoClosed, setAutoClosed] = useState(false);
-  const navigateWithTransition = useNavigateWithTransition();
 
   useEffect(() => {
     if (
@@ -76,12 +74,6 @@ export function NavMain() {
 
   const toggleSection = (title: string) => {
     setOpenSections((prev) => ({ ...prev, [title]: !prev[title] }));
-  };
-
-  const linkAction = (path: string) => {
-    setOpen(true);
-    setAutoClosed(false);
-    navigateWithTransition(`${path}`);
   };
 
   return (
@@ -156,9 +148,12 @@ export function NavMain() {
           ) : (
             <SidebarMenuItem key={item.title} className="text-black">
               <a
-                // href={item.url}
-                className={`flex w-full items-center ${!open ? "p-2" : "px-4 py-2"} cursor-pointer gap-2 rounded-md transition`}
-                onClick={() => linkAction(item.url)}
+                href={item.url}
+                className={`flex w-full items-center ${!open ? "p-2" : "px-4 py-2"} gap-2 rounded-md transition`}
+                onClick={() => {
+                  setOpen(true);
+                  setAutoClosed(false);
+                }}
               >
                 <span className="flex h-6 w-6 items-center justify-center">
                   {item.icon && createElement(item.icon, { size: 20 })}

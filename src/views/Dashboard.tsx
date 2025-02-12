@@ -22,7 +22,7 @@ export const Dashboard = () => {
   const { data: activityData, isLoading: activityDataIsLoading } = useGetMyRecentActivityQuery();
   const { data: linkingData, isLoading: linkingDataIsLoading } = useGetLinkingQuery();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const navigateWithTransition = useNavigateWithTransition();
   const user = useSelector(currentUser);
 

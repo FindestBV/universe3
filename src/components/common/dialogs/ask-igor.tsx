@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import {
@@ -125,6 +125,7 @@ const AskIgorModal: React.FC = () => {
         {/* Dialog Content */}
         {!isMinimized && (
           <DialogContent className="flex h-auto flex-col bg-white p-0 sm:max-w-[1000px] [&>button]:hidden">
+            <DialogTitle className="hidden text-lg sm:text-xl">Ask Igor</DialogTitle>
             <div className="grid flex-grow grid-cols-1 gap-2 md:grid-cols-2">
               {/* Left Column - Input Section */}
               <div className="flex flex-col justify-between gap-12 p-6">
