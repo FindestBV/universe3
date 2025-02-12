@@ -211,7 +211,11 @@ export const BlockEditor = ({
                     <>
                       <p className="text-xs font-bold text-white">cross regeneration to maxim...</p>
                       <div className="flex items-center gap-4">
-                        <Eye size={20} className="text-white" onClick={triggerExpand} />
+                        <Eye
+                          size={20}
+                          className={`cursor-pointer ${isTitleExpanded ? "text-[#FFFF00]" : "text-white"}`}
+                          onClick={triggerExpand}
+                        />
                         <ChevronsUpDown size={20} className="text-white" />
                       </div>
                     </>

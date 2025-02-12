@@ -82,7 +82,7 @@ export const Dashboard = () => {
             <TabsList className="flex justify-start space-x-4 border-b border-slate-200 bg-transparent">
               <TabsTrigger
                 value="pages"
-                className={`p-2 text-sm transition-all duration-150 ease-in-out ${
+                className={`linear p-2 text-sm transition-all duration-150 ${
                   activeTabActive === "pages"
                     ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                     : "text-gray-500"
@@ -92,7 +92,7 @@ export const Dashboard = () => {
               </TabsTrigger>
               <TabsTrigger
                 value="sources"
-                className={`p-2 text-sm transition-all duration-150 ease-in-out ${
+                className={`linear p-2 text-sm transition-all duration-150 ${
                   activeTabActive === "sources"
                     ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                     : "text-gray-500"
@@ -102,7 +102,7 @@ export const Dashboard = () => {
               </TabsTrigger>
               <TabsTrigger
                 value="team"
-                className={`p-2 text-sm transition-all duration-150 ease-in-out ${
+                className={`linear p-2 text-sm transition-all duration-150 ${
                   activeTabActive === "team"
                     ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                     : "text-gray-500"
@@ -113,17 +113,17 @@ export const Dashboard = () => {
             </TabsList>
 
             {/* Activity Content */}
-            <TabsContent value="pages" className="py-4">
+            <TabsContent value="pages" className="py-4 text-sm">
               <ActivityItem title="Activity 1" />
               <ActivityItem title="Activity 2" />
             </TabsContent>
 
-            <TabsContent value="sources" className="py-4">
+            <TabsContent value="sources" className="py-4 text-sm">
               <ActivityItem title="Activity 3" />
               <ActivityItem title="Activity 4" />
             </TabsContent>
 
-            <TabsContent value="team" className="py-4">
+            <TabsContent value="team" className="py-4 text-sm">
               <ActivityItem title="Team 1" />
             </TabsContent>
           </Tabs>

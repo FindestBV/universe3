@@ -182,7 +182,7 @@ const AskIgorModal: React.FC = () => {
                     <TabsList className="flex w-full justify-start gap-2 border-b border-slate-300">
                       <TabsTrigger
                         value="report"
-                        className={`p-2 text-sm transition-all duration-150 ease-in-out ${
+                        className={`linear p-2 text-sm transition-all duration-150 ${
                           activeTab === "report"
                             ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                             : "text-gray-500"
@@ -192,7 +192,7 @@ const AskIgorModal: React.FC = () => {
                       </TabsTrigger>
                       <TabsTrigger
                         value="extract"
-                        className={`p-2 text-sm transition-all duration-150 ease-in-out ${
+                        className={`linear p-2 text-sm transition-all duration-150 ${
                           activeTab === "extract"
                             ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                             : "text-gray-500"
@@ -202,7 +202,7 @@ const AskIgorModal: React.FC = () => {
                       </TabsTrigger>
                       <TabsTrigger
                         value="other"
-                        className={`p-2 text-sm transition-all duration-150 ease-in-out ${
+                        className={`linear p-2 text-sm transition-all duration-150 ${
                           activeTab === "other"
                             ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                             : "text-gray-500"
@@ -235,24 +235,29 @@ const AskIgorModal: React.FC = () => {
                     </TabsContent>
                     <TabsContent value="extract" className="mt-2 space-y-2">
                       <PresetButton
-                        title="General description"
-                        description="Either based on general knowledge or the sources linked."
+                        title="Extract Information"
+                        description="Search through specific documents."
                         className="bg-slate-100"
                       />
                       <PresetButton
-                        title="General description"
-                        description="Either based on general knowledge or the sources linked."
+                        title="Extract Patents"
+                        description="Search through specific documents."
                         className="bg-slate-100"
                       />
                       <PresetButton
-                        title="General description"
-                        description="Either based on general knowledge or the sources linked."
+                        title="Extract Scientific Publications"
+                        description="Search through specific documents."
+                        className="bg-slate-100"
+                      />
+                      <PresetButton
+                        title="Extract from Scientific Topics"
+                        description="Search through specific documents."
                         className="bg-slate-100"
                       />
                     </TabsContent>
                     <TabsContent value="other" className="mt-2 space-y-2">
                       <PresetButton
-                        title="General description"
+                        title="Other general keyword"
                         description="Either based on general knowledge or the sources linked."
                         className="bg-slate-100"
                       />
@@ -262,7 +267,12 @@ const AskIgorModal: React.FC = () => {
                         className="bg-slate-100"
                       />
                       <PresetButton
-                        title="General description"
+                        title="Waterboarding"
+                        description="Either based on general knowledge or the sources linked."
+                        className="bg-slate-100"
+                      />
+                      <PresetButton
+                        title="Sleep deprevation"
                         description="Either based on general knowledge or the sources linked."
                         className="bg-slate-100"
                       />
@@ -277,13 +287,13 @@ const AskIgorModal: React.FC = () => {
                 <div className="absolute right-0 flex justify-end gap-0 p-4">
                   <button
                     onClick={() => setIsMinimized(true)}
-                    className="rounded border px-2 py-1 text-sm text-gray-500 hover:bg-gray-200"
+                    className="rounded border p-2 text-sm text-gray-500 hover:bg-gray-200"
                   >
                     <Minimize2 size={16} />
                   </button>
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="rounded border px-2 py-1 text-sm text-gray-500 hover:bg-gray-200"
+                    className="rounded border p-2 text-sm text-gray-500 hover:bg-gray-200"
                   >
                     <X size={16} />
                   </button>
