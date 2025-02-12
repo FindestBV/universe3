@@ -155,7 +155,7 @@ export default Dashboard;
 const ActivityItem = ({ title }: { title: string }) => (
   <div className="mb-2 flex w-full cursor-pointer flex-row items-center justify-between rounded-md bg-white p-4 hover:bg-gray-200">
     <div className="flex flex-col">
-      <h3 className="text-md font-semibold">{title}</h3>
+      <h3 className="text-sm font-semibold">{title}</h3>
     </div>
     <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
   </div>
