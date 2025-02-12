@@ -169,7 +169,7 @@ const AskIgorModal: React.FC = () => {
                       <Button
                         size="icon"
                         className="absolute bottom-3 right-3 bg-blue-500 text-white hover:bg-slate-300"
-                        onClick={handleSearch}
+                        onClick={() => console.log("search")}
                       >
                         <ChevronRight className="h-4 w-4" />
                       </Button>
