@@ -2,7 +2,20 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { Bot, Check, ChevronRight, File, Globe, Link, Minus, X, Zap } from "lucide-react";
+import {
+  Bot,
+  Check,
+  ChevronRight,
+  File,
+  Globe,
+  Link,
+  Maximize2,
+  Minimize2,
+  Minus,
+  Plus,
+  X,
+  Zap,
+} from "lucide-react";
 
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -246,12 +259,12 @@ const AskIgorModal: React.FC = () => {
               {/* Right Column - Output Section */}
               <div className="flex h-full flex-col">
                 {/* Minimize & Close Buttons (Top Right) */}
-                <div className="absolute right-0 flex justify-end gap-2 p-4">
+                <div className="absolute right-0 flex justify-end gap-0 p-4">
                   <button
                     onClick={() => setIsMinimized(true)}
                     className="rounded border px-2 py-1 text-sm text-gray-500 hover:bg-gray-200"
                   >
-                    <Minus size={16} />
+                    <Minimize2 size={16} />
                   </button>
                   <button
                     onClick={() => setIsOpen(false)}
@@ -295,7 +308,9 @@ const AskIgorModal: React.FC = () => {
             <Zap className={`${loading ? "" : "zppr"}`} />{" "}
             {loading ? "Asking IGOR..." : "Search complete!"}
           </p>
-          <button className={`text-sm ${loading ? "text-white" : "text-black"}`}>Restore</button>
+          <button className={`text-sm ${loading ? "text-white" : "text-black"}`}>
+            <Maximize2 size={16} />
+          </button>
         </div>
       )}
     </div>
