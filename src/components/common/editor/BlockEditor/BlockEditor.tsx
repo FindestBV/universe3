@@ -217,7 +217,7 @@ export const BlockEditor = ({
                     </>
                   </div>
                   <div
-                    className={`bg-white transition-all duration-150 ease-linear ${isTitleExpanded ? "sticky h-auto w-[200%] rounded-br-lg border shadow-md" : "hidden h-0 w-full"}`}
+                    className={`bg-white transition-all duration-150 ease-linear ${isTitleExpanded ? "h-auto w-[200%] rounded-br-lg border shadow-md" : "hidden h-0 w-full"}`}
                   >
                     <ul className="border-b border-gray-200">
                       <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
