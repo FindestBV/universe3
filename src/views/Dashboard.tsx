@@ -5,6 +5,7 @@ import CreateItemModal from "@/components/common/dialogs/create-item-modal";
 import ForceDirectedGraphView from "@/components/common/layout/force-directed-graph";
 import SearchBar from "@/components/common/search/searchbar";
 import { SearchForm } from "@/components/common/sidebar/v2/search-form";
+import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { ChevronRight, Loader, Plus } from "lucide-react";
 
@@ -21,12 +22,13 @@ export const Dashboard = () => {
   const { data: activityData, isLoading: activityDataIsLoading } = useGetMyRecentActivityQuery();
   const { data: linkingData, isLoading: linkingDataIsLoading } = useGetLinkingQuery();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const navigateWithTransition = useNavigateWithTransition();
   const user = useSelector(currentUser);
 
   const handleNavigateToEntities = (type: string, id: string) => {
     // const redirRoute = type === "Entity" ? "entities" : "studies";
-    navigate(`/projects/${id}`, { state: { id } });
+    navigateWithTransition(`/projects/${id}`, { state: { id } });
   };
 
   return (
