@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { AskIgor } from "@/stories/04-utilities/dialog/Dialog.stories";
+// import { AskIgor } from "@/stories/04-utilities/dialog/Dialog.stories";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, File, Network, Plus, Search } from "lucide-react";
 
 import { useState } from "react";
 
@@ -35,7 +35,7 @@ function PresetButton({
 }
 
 export const ProjectOverView = () => {
-  const [activeTabActive, setIsActiveTabActive] = useState<string>("pages");
+  const [activeTabActive, setIsActiveTabActive] = useState<string>("overview");
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -58,7 +58,21 @@ export const ProjectOverView = () => {
               magni quidem similique suscipit ad animi consequatur ipsa nobis numquam qui sed ullam
               nulla, voluptatibus iusto eaque accusantium sapiente.
             </p>
-            <div className="flex gap-2">
+            <div className="item-start flex gap-4">
+              <span className="flex items-center gap-2">
+                <File
+                  size={24}
+                  className="h-50 rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
+                />
+                <Search
+                  size={24}
+                  className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
+                />
+                <Plus
+                  size={24}
+                  className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
+                />
+              </span>
               <AskIgorModal />
             </div>
           </div>
@@ -67,7 +81,7 @@ export const ProjectOverView = () => {
               <TabsList className="flex w-full justify-start gap-2 rounded-none border-b border-slate-300 bg-transparent">
                 <TabsTrigger
                   value="overview"
-                  className={`linear bg-blue-200 p-2 text-sm transition-all duration-150 ${
+                  className={`linear p-2 text-sm transition-all duration-150 ${
                     activeTabActive === "overview"
                       ? "border-b-2 border-blue-800 bg-blue-200 font-bold"
                       : "text-black"
@@ -80,7 +94,7 @@ export const ProjectOverView = () => {
                   className={`linear p-2 text-sm transition-all duration-150 ${
                     activeTabActive === "technology"
                       ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
-                      : "text-gray-500"
+                      : "text-black"
                   }`}
                 >
                   Technology
@@ -90,7 +104,7 @@ export const ProjectOverView = () => {
                   className={`linear p-2 text-sm transition-all duration-150 ${
                     activeTabActive === "queries"
                       ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
-                      : "text-gray-500"
+                      : "text-black"
                   }`}
                 >
                   Queries
@@ -116,22 +130,13 @@ export const ProjectOverView = () => {
                 </div>
               </TabsContent>
               <TabsContent value="technology" className="mt-2 space-y-2">
-                <VotingCard />
-                <PresetButton
-                  title="Extract Patents"
-                  description="Search through specific documents."
-                  className="bg-slate-100"
-                />
-                <PresetButton
-                  title="Extract Scientific Publications"
-                  description="Search through specific documents."
-                  className="bg-slate-100"
-                />
-                <PresetButton
-                  title="Extract from Scientific Topics"
-                  description="Search through specific documents."
-                  className="bg-slate-100"
-                />
+                <VotingCard star={4} />
+                <VotingCard star={4} />
+                <VotingCard star={3} />
+                <VotingCard star={3} />
+                <VotingCard star={2} />
+                <VotingCard star={1} />
+                <VotingCard star={1} />
               </TabsContent>
               <TabsContent value="queries" className="mt-2 space-y-2">
                 <PresetButton

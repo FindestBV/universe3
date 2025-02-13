@@ -1,49 +1,37 @@
-"use client";
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Star } from "lucide-react";
 
 import { useState } from "react";
 
-export default function VotingCard() {
-  const [rating, setRating] = useState(0);
+interface VotingCardProps {
+  star: number;
+}
+
+export default function VotingCard({ star }: VotingCardProps) {
+  const [rating, setRating] = useState(star);
+
   return (
-    <Card className="w-full">
-      <CardContent className="flex items-center justify-between gap-4">
+    <div className="w-full rounded-lg border bg-white p-6 shadow-sm">
+      <div className="flex items-center justify-between gap-4">
         <div className="flex gap-8">
           <div className="flex items-start gap-1">
-            {[1, 2, 3, 4, 5].map((star) => (
+            {[1, 2, 3, 4, 5].map((starValue) => (
               <button
-                key={star}
-                onClick={() => setRating(star)}
-                className={`text-black transition-colors hover:text-primary-foreground ${rating >= star ? "fill-primary" : "stroke-muted-foreground"} `}
+                key={starValue}
+                onClick={() => setRating(starValue)}
+                className="text-black transition-colors hover:text-yellow-500"
               >
-                <StarIcon className="h-6 w-6" />
+                <Star
+                  className="h-6 w-6"
+                  fill={rating >= starValue ? "black" : "none"}
+                  stroke={rating >= starValue ? "black" : "currentColor"}
+                />
               </button>
             ))}
           </div>
-          <h2 className="font-semibold">Title</h2>
+          <h2 className="text-sm font-semibold">Tyvek paper (polyethelene based)</h2>
         </div>
-        <p className="iconText">Show</p>
-      </CardContent>
-    </Card>
-  );
-}
-
-function StarIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-    </svg>
+        <p className="text-sm text-gray-500">Show</p>
+      </div>
+    </div>
   );
 }
