@@ -1,8 +1,13 @@
 import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
+import ConnectQuery from "@/components/common/dialogs/connect-query";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
+import Comments from "@/components/common/layout/comments";
 // import { TOCSidebar } from "./components/TOCSidebar";
 
-import ProjectOverView from "@/components/common/layout/projects/overview";
+import ProjectOverView from "@/components/common/projects/overview";
+import ProjectPages from "@/components/common/projects/pages";
+import ProjectSources from "@/components/common/projects/sources";
+import { SearchForm } from "@/components/common/sidebar/v2/search-form";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
@@ -33,11 +38,6 @@ import {
 import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
-import ConnectQuery from "../../dialogs/connect-query";
-import Comments from "../../layout/comments";
-import ProjectPages from "../../layout/projects/pages";
-import ProjectSources from "../../layout/projects/sources";
-import { SearchForm } from "../../sidebar/v2/search-form";
 // import ReferencesSidebar from "../BlockEditor/components/ReferencesSidebar";
 import { LinkMenu } from "../menus";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
@@ -156,6 +156,7 @@ export const BlockEditor = ({
   const isLocked = useSelector((state: RootState) => state.document.isLocked);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
   const [currentView, setCurrentView] = useState<View>("overview");
+  const [isInnerNavActive, setIsInnerNavActive] = useState<boolean>();
 
   const toggleSection = (sectionTitle: string) => {
     setOpenSections((prev) => ({
@@ -275,8 +276,10 @@ export const BlockEditor = ({
                 <div className="flex-1 overflow-y-auto">
                   <ul className="border-b border-gray-200">
                     <li
-                      className="flex w-full items-center gap-2 p-4 hover:bg-blue-100"
-                      onClick={() => setCurrentView("overview")}
+                      className={`${currentView === "overview" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
+                      onClick={() => {
+                        setCurrentView("overview");
+                      }}
                     >
                       <Home className="h-5 w-5" />
                       <span className="text-sm font-medium text-gray-600">Project overview</span>
@@ -288,7 +291,7 @@ export const BlockEditor = ({
                       <SearchForm />
                     </li>
                     <li
-                      className="flex w-full items-center gap-2 p-4 hover:bg-blue-100"
+                      className={`${currentView === "pages" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
                       onClick={() => setCurrentView("pages")}
                     >
                       <File className="h-5 w-5" />
@@ -298,7 +301,7 @@ export const BlockEditor = ({
                       </span>
                     </li>
                     <li
-                      className="flex w-full items-center gap-2 p-4 hover:bg-blue-100"
+                      className={`${currentView === "sources" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
                       onClick={() => setCurrentView("sources")}
                     >
                       <Link className="h-5 w-5" />

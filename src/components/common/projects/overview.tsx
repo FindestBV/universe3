@@ -36,7 +36,6 @@ export const ProjectOverView = () => {
           <h1 className="text-2xl font-semibold text-gray-800">Project Overview</h1>
 
           <div className="mt-6">
-            <h3 className="text-md my-2 font-semibold">Recent activity</h3>
             <Tabs defaultValue="pages" className="pb-4" onValueChange={setIsActiveTabActive}>
               <TabsList className="flex justify-start space-x-4 border-b border-slate-200 bg-transparent">
                 <TabsTrigger
