@@ -44,7 +44,7 @@ export const ProjectPages = () => {
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
       <div className="min-h-full">
-        <div className="mx-auto max-w-full p-8">
+        <div className="mx-auto w-full p-8">
           <div className="overviewHeader">
             <h1 className="mb-2 text-4xl font-bold">Pages</h1>
             <div className="item-start flex gap-4">
@@ -100,7 +100,7 @@ export const ProjectPages = () => {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="all" className="mt-2 space-y-2">
-                <div className="w-1/2">
+                <div className="w-full">
                   <h3 className="text-md mb-2 font-semibold">Get started</h3>
                   <div className="flex flex-col gap-2">
                     <CreateItemModal title={"Create a scientific landscape"} />

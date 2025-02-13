@@ -10,6 +10,7 @@ import VotingCard from "../cards/voting-card";
 import AskIgorModal from "../dialogs/ask-igor";
 import CreateItemModal from "../dialogs/create-item-modal";
 import ProjectSearchDialog from "../dialogs/project-search-dialog";
+import SearchBar from "../search/searchbar";
 
 function PresetButton({
   title,
@@ -35,7 +36,7 @@ function PresetButton({
   );
 }
 
-export const ProjectOverView = () => {
+export const ProjectSearch = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("overview");
   return (
     <motion.div
@@ -47,19 +48,10 @@ export const ProjectOverView = () => {
       <div className="min-h-full">
         <div className="mx-auto max-w-full p-8">
           <div className="overviewHeader">
-            <h1 className="mb-2 text-4xl font-bold">
-              Cross regeneration to maximimise macromolecule effusion.
-            </h1>
-            <p className="mb-4 text-sm">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam autem, deleniti
-              ratione fuga consectetur sint unde nostrum, numquam corrupti esse, porro ullam
-              dolorum. Repudiandae laborum sit fugit. Ipsum odit mollitia molestiae nobis asperiores
-              laborum, modi quos quisquam quibusdam, consectetur nostrum officiis veritatis iure ab
-              distinctio, veniam nesciunt voluptas sed! Magnam praesentium id tenetur ducimus error
-              magni quidem similique suscipit ad animi consequatur ipsa nobis numquam qui sed ullam
-              nulla, voluptatibus iusto eaque accusantium sapiente.
-            </p>
-            <div className="item-start flex gap-4">
+            <h1 className="mb-2 text-4xl font-bold">Project search</h1>
+
+            <SearchBar />
+            {/* <div className="item-start flex gap-4">
               <span className="flex items-center gap-2">
                 <File
                   size={24}
@@ -75,7 +67,7 @@ export const ProjectOverView = () => {
                 />
               </span>
               <AskIgorModal />
-            </div>
+            </div> */}
           </div>
           <div className="mt-16">
             <Tabs defaultValue="overview" className="pb-4" onValueChange={setIsActiveTabActive}>
@@ -203,4 +195,4 @@ export const ProjectOverView = () => {
   );
 };
 
-export default ProjectOverView;
+export default ProjectSearch;

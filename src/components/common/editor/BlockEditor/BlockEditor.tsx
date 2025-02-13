@@ -6,6 +6,7 @@ import Comments from "@/components/common/layout/comments";
 
 import ProjectOverView from "@/components/common/projects/overview";
 import ProjectPages from "@/components/common/projects/pages";
+import ProjectSearch from "@/components/common/projects/search";
 import ProjectSources from "@/components/common/projects/sources";
 import { SearchForm } from "@/components/common/sidebar/v2/search-form";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
@@ -287,8 +288,15 @@ export const BlockEditor = ({
                         <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
                       </span>
                     </li>
-                    <li className="p-0">
-                      <SearchForm />
+                    <li
+                      className={`${currentView === "search" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
+                      onClick={() => setCurrentView("search")}
+                    >
+                      <Search className="h-5 w-5" />
+                      <span className="text-sm font-medium text-gray-600">Search</span>
+                      <span className="ml-auto">
+                        <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                      </span>
                     </li>
                     <li
                       className={`${currentView === "pages" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
@@ -378,6 +386,10 @@ export const BlockEditor = ({
               {currentView === "overview" ? (
                 <div>
                   <ProjectOverView />
+                </div>
+              ) : currentView === "search" ? (
+                <div>
+                  <ProjectSearch />
                 </div>
               ) : currentView === "pages" ? (
                 <div>
