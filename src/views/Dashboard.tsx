@@ -75,6 +75,14 @@ export const Dashboard = () => {
               ))
             )}
           </div>
+          <div className="h-50 group mt-2 flex items-center justify-center bg-gray-100">
+            <div className="mx-auto flex w-full items-center justify-center rounded-sm bg-slate-200 p-2 group-hover:bg-slate-300">
+              <Plus
+                size={24}
+                className="cursor-pointer text-slate-300 group-hover:text-slate-400"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Recent Activity Tabs */}
