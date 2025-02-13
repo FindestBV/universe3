@@ -150,6 +150,7 @@ export const BlockEditor = ({
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
   const isLocked = useSelector((state: RootState) => state.document.isLocked);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+  const [currentView, setCurrentView] = useState<View>("overview");
 
   const toggleSection = (sectionTitle: string) => {
     setOpenSections((prev) => ({
@@ -186,6 +187,10 @@ export const BlockEditor = ({
       if (autoSaveInterval.current) clearInterval(autoSaveInterval.current);
     };
   }, [isEditing, saveContent]);
+
+  useEffect(() => {
+    console.log("currentView", currentView);
+  }, [currentView]);
 
   if (!editor) {
     return <p>Loading editor...</p>;
@@ -264,7 +269,10 @@ export const BlockEditor = ({
                 {/* Navigation Links */}
                 <div className="flex-1 overflow-y-auto">
                   <ul className="border-b border-gray-200">
-                    <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
+                    <li
+                      className="flex w-full items-center gap-2 p-4 hover:bg-blue-100"
+                      onClick={() => setCurrentView("overview")}
+                    >
                       <Home className="h-5 w-5" />
                       <span className="text-sm font-medium text-gray-600">Project overview</span>
                       <span className="ml-auto">
@@ -274,14 +282,20 @@ export const BlockEditor = ({
                     <li className="p-0">
                       <SearchForm />
                     </li>
-                    <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
+                    <li
+                      className="flex w-full items-center gap-2 p-4 hover:bg-blue-100"
+                      onClick={() => setCurrentView("pages")}
+                    >
                       <File className="h-5 w-5" />
                       <span className="text-sm font-medium text-gray-600">Pages</span>
                       <span className="ml-auto">
                         <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
                       </span>
                     </li>
-                    <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
+                    <li
+                      className="flex w-full items-center gap-2 p-4 hover:bg-blue-100"
+                      onClick={() => setCurrentView("sources")}
+                    >
                       <Link className="h-5 w-5" />
                       <span className="text-sm font-medium text-gray-600">Sources</span>
                       <span className="ml-auto">
@@ -353,6 +367,7 @@ export const BlockEditor = ({
               className={`mainEditor h-full w-full rounded-md bg-white shadow-md ${isEditing ? "prose-editor" : ""}`}
               id="mainEditorStart"
             >
+              <p>Current nested view: {currentView}</p>
               <div className="mx-2 flex flex-col pl-24 pt-10">
                 <EditorHeader
                   editor={editor}
