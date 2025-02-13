@@ -10,7 +10,7 @@ export default function VotingCard({ star }: VotingCardProps) {
   const [rating, setRating] = useState(star);
 
   return (
-    <div className="w-full rounded-lg border bg-white p-6 shadow-sm">
+    <div className="w-full rounded-lg border bg-white px-4 py-2 shadow-sm">
       <div className="flex items-center justify-between gap-4">
         <div className="flex gap-8">
           <div className="flex items-start gap-1">
