@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/button";
+import { AskIgor } from "@/stories/04-utilities/dialog/Dialog.stories";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 
 import { useState } from "react";
 
+import VotingCard from "../cards/voting-card";
+import AskIgorModal from "../dialogs/ask-igor";
 import CreateItemModal from "../dialogs/create-item-modal";
 
 function PresetButton({
@@ -46,17 +49,18 @@ export const ProjectOverView = () => {
             <h1 className="mb-2 text-4xl font-bold">
               Cross regeneration to maximimise macromolecule effusion.
             </h1>
-            <p className="text-sm">
+            <p className="mb-4 text-sm">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam autem, deleniti
               ratione fuga consectetur sint unde nostrum, numquam corrupti esse, porro ullam
               dolorum. Repudiandae laborum sit fugit. Ipsum odit mollitia molestiae nobis asperiores
               laborum, modi quos quisquam quibusdam, consectetur nostrum officiis veritatis iure ab
               distinctio, veniam nesciunt voluptas sed! Magnam praesentium id tenetur ducimus error
               magni quidem similique suscipit ad animi consequatur ipsa nobis numquam qui sed ullam
-              nulla, voluptatibus iusto eaque accusantium sapiente. Pariatur suscipit quidem
-              repellendus maxime modi a quod ipsum quam similique ut nostrum animi odit quibusdam,
-              nulla ducimus sapiente quae itaque rerum rem. Doloremque, laborum esse.
+              nulla, voluptatibus iusto eaque accusantium sapiente.
             </p>
+            <div className="flex gap-2">
+              <AskIgorModal />
+            </div>
           </div>
           <div className="mt-6">
             <Tabs defaultValue="overview" className="pb-4" onValueChange={setIsActiveTabActive}>
@@ -66,7 +70,7 @@ export const ProjectOverView = () => {
                   className={`linear bg-blue-200 p-2 text-sm transition-all duration-150 ${
                     activeTabActive === "overview"
                       ? "border-b-2 border-blue-800 bg-blue-200 font-bold"
-                      : "text-gray-500"
+                      : "text-black"
                   }`}
                 >
                   Overview
@@ -112,11 +116,7 @@ export const ProjectOverView = () => {
                 </div>
               </TabsContent>
               <TabsContent value="technology" className="mt-2 space-y-2">
-                <PresetButton
-                  title="Extract Information"
-                  description="Search through specific documents."
-                  className="bg-slate-100"
-                />
+                <VotingCard />
                 <PresetButton
                   title="Extract Patents"
                   description="Search through specific documents."
