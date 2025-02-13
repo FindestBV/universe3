@@ -113,7 +113,7 @@ export const ProjectOverView = () => {
               </TabsList>
               <TabsContent value="overview" className="mt-2 space-y-2">
                 <div className="w-1/2">
-                  <h3 className="text-md mb-2 font-semibold">Get started</h3>
+                  <h3 className="text-md mb-2 pt-3 font-semibold">Get started</h3>
                   <div className="flex flex-col gap-2">
                     <CreateItemModal title={"Create a scientific landscape"} />
                     <CreateItemModal title={"Create a technology overview"} />
@@ -137,6 +137,8 @@ export const ProjectOverView = () => {
                 <VotingCard star={3} />
                 <VotingCard star={2} />
                 <VotingCard star={1} />
+                <VotingCard star={3} />
+                <VotingCard star={2} />
                 <VotingCard star={1} />
 
                 <div className="h-50 group flex items-center justify-center bg-gray-100">
