@@ -139,6 +139,17 @@ export const ProjectOverView = () => {
                 <VotingCard star={1} />
               </TabsContent>
               <TabsContent value="queries" className="mt-2 space-y-2">
+                <h3>Active Queries</h3>
+                <PresetButton
+                  title="Other general keyword"
+                  description="Either based on general knowledge or the sources linked."
+                  className="bg-slate-100"
+                />
+                <PresetButton
+                  title="General description"
+                  description="Either based on general knowledge or the sources linked."
+                  className="bg-slate-100"
+                />
                 <PresetButton
                   title="Other general keyword"
                   description="Either based on general knowledge or the sources linked."
@@ -154,11 +165,25 @@ export const ProjectOverView = () => {
                   description="Either based on general knowledge or the sources linked."
                   className="bg-slate-100"
                 />
+                <h3>Other Queries</h3>
                 <PresetButton
                   title="Sleep deprevation"
                   description="Either based on general knowledge or the sources linked."
                   className="bg-slate-100"
                 />
+                <PresetButton
+                  title="Constant Annoyance"
+                  description="Either based on general knowledge or the sources linked."
+                  className="bg-slate-100"
+                />
+                <PresetButton
+                  title="Drilling noises"
+                  description="Either based on general knowledge or the sources linked."
+                  className="bg-slate-100"
+                />
+                <Button className="border border-slate-300 bg-slate-100 text-black hover:bg-slate-200">
+                  <Plus /> Create new query
+                </Button>
               </TabsContent>
             </Tabs>
           </div>

@@ -259,14 +259,14 @@ export const BlockEditor = ({
                     </ul>
                     <div className="flex w-full gap-1 border p-2">
                       <Button
-                        className="border border-slate-300 bg-slate-100"
+                        className="border border-slate-300 bg-slate-100 text-black hover:bg-slate-200"
                         onClick={() => {
                           navigateWithTransition(`/dashboard`);
                         }}
                       >
                         <ArrowLeft /> Back to the Universe
                       </Button>
-                      <Button className="border border-slate-300 bg-slate-100">
+                      <Button className="border border-slate-300 bg-slate-100 text-black hover:bg-slate-200">
                         <Plus /> Create New project
                       </Button>
                     </div>

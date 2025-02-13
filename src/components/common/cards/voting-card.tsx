@@ -30,7 +30,7 @@ export default function VotingCard({ star }: VotingCardProps) {
           </div>
           <h2 className="text-sm font-semibold">Tyvek paper (polyethelene based)</h2>
         </div>
-        <p className="text-sm text-gray-500">Show</p>
+        <p className="text-sm font-semibold text-gray-500">Show</p>
       </div>
     </div>
   );
