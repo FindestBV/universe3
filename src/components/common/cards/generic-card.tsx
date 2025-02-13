@@ -205,17 +205,6 @@ export const GenericCard: React.FC<GenericCardProps> = ({
         <Card key={id} className="innerCardContent" onClick={handleCardClick}>
           {isSources && <div className="iconText">Science</div>}
           <div className="innerCardContent__Detail">
-            {/* <div className="w-auto cursor-pointer">
-              {!isSources && (
-                <div className="iconText py-1">
-                  {itemType === "advancedSearchItem"
-                    ? null
-                    : type === "StudyTypeUndefined"
-                      ? "Study"
-                      : "Entity"}
-                </div>
-              )}
-            </div> */}
             <div className={`flex ${isSources ? "flex-row gap-2" : "flex-col"}`}>
               <h3
                 className={`overflow-hidden text-ellipsis text-lg font-bold text-black ${
