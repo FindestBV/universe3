@@ -1,5 +1,8 @@
 import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
+// import { TOCSidebar } from "./components/TOCSidebar";
+
+import ProjectOverView from "@/components/common/layout/projects/overview";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
@@ -7,6 +10,7 @@ import { useBlockEditor } from "@/hooks/use-block-editor";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { initialContent } from "@/lib/data/initialContent";
 import { RootState } from "@/store";
+import Admin from "@/views/Admin";
 import { EditorContent } from "@tiptap/react";
 import {
   ArrowLeft,
@@ -31,14 +35,15 @@ import { useSelector } from "react-redux";
 
 import ConnectQuery from "../../dialogs/connect-query";
 import Comments from "../../layout/comments";
+import ProjectPages from "../../layout/projects/pages";
+import ProjectSources from "../../layout/projects/sources";
 import { SearchForm } from "../../sidebar/v2/search-form";
-import ReferencesSidebar from "../BlockEditor/components/ReferencesSidebar";
+// import ReferencesSidebar from "../BlockEditor/components/ReferencesSidebar";
 import { LinkMenu } from "../menus";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
 import { TextMenu } from "../menus/TextMenu";
 import { Button } from "../ui/Button";
 import { EditorHeader } from "./components/EditorHeader";
-import { TOCSidebar } from "./components/TOCSidebar";
 
 export const BlockEditor = ({
   type,
@@ -367,7 +372,20 @@ export const BlockEditor = ({
               className={`mainEditor h-full w-full rounded-md bg-white shadow-md ${isEditing ? "prose-editor" : ""}`}
               id="mainEditorStart"
             >
-              <p>Current nested view: {currentView}</p>
+              {currentView === "overview" ? (
+                <div>
+                  <ProjectOverView />
+                </div>
+              ) : currentView === "pages" ? (
+                <div>
+                  <ProjectPages />
+                </div>
+              ) : (
+                <div>
+                  <ProjectSources />
+                </div>
+              )}
+
               <div className="mx-2 flex flex-col pl-24 pt-10">
                 <EditorHeader
                   editor={editor}
