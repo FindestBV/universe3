@@ -44,7 +44,7 @@ export const Dashboard = () => {
         {/* Create Project Section */}
         <div>
           <h3 className="text-md mb-2 font-semibold">Get started</h3>
-          <CreateItemModal />
+          <CreateItemModal title={"Create a new project"} />
         </div>
 
         {/* Recent Projects */}

@@ -56,7 +56,7 @@ const queryTemplates = [
   },
 ];
 
-export function CreateItemModal() {
+export function CreateItemModal({ ...props }: any) {
   const [formData, setFormData] = useState<FormData>({
     type: null,
     title: "",
@@ -67,6 +67,7 @@ export function CreateItemModal() {
   });
   const [step, setStep] = useState(1);
   const [open, setOpen] = useState(false);
+  const modalTitle = props?.title;
 
   const totalSteps = 3;
 
@@ -155,7 +156,7 @@ export function CreateItemModal() {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <div className="trigger">
-            <p className="title">Create a new project</p>
+            <p className="title">{modalTitle ? modalTitle : "Create new project"}</p>
             <div className="icon">
               <Plus size={20} className="text-white" />
             </div>

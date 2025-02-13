@@ -1,16 +1,18 @@
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 
 import { useState } from "react";
 
+import CreateItemModal from "../dialogs/create-item-modal";
+
 function PresetButton({
   title,
   description,
 }: {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   className: string;
 }) {
   return (
@@ -33,7 +35,6 @@ export const ProjectOverView = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("pages");
   return (
     <motion.div
-      className="px-8"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -42,7 +43,20 @@ export const ProjectOverView = () => {
       <div className="min-h-full">
         <div className="mx-auto max-w-full p-8">
           <div className="overviewHeader">
-            <h1 className="mb-2 text-4xl font-bold">CN109368873A - 一种风电互补海水淡化系统</h1>
+            <h1 className="mb-2 text-4xl font-bold">
+              Cross regeneration to maximimise macromolecule effusion.
+            </h1>
+            <p className="text-sm">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam autem, deleniti
+              ratione fuga consectetur sint unde nostrum, numquam corrupti esse, porro ullam
+              dolorum. Repudiandae laborum sit fugit. Ipsum odit mollitia molestiae nobis asperiores
+              laborum, modi quos quisquam quibusdam, consectetur nostrum officiis veritatis iure ab
+              distinctio, veniam nesciunt voluptas sed! Magnam praesentium id tenetur ducimus error
+              magni quidem similique suscipit ad animi consequatur ipsa nobis numquam qui sed ullam
+              nulla, voluptatibus iusto eaque accusantium sapiente. Pariatur suscipit quidem
+              repellendus maxime modi a quod ipsum quam similique ut nostrum animi odit quibusdam,
+              nulla ducimus sapiente quae itaque rerum rem. Doloremque, laborum esse.
+            </p>
           </div>
           <div className="mt-6">
             <Tabs defaultValue="overview" className="pb-4" onValueChange={setIsActiveTabActive}>
@@ -79,26 +93,23 @@ export const ProjectOverView = () => {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="overview" className="mt-2 space-y-2">
-                <PresetButton
-                  title="General description"
-                  description="Either based on general knowledge or the sources linked."
-                  className="bg-slate-100"
-                />
-                <PresetButton
-                  title="Section"
-                  description="Give me a title and I will write the section."
-                  className="bg-slate-100"
-                />
-                <PresetButton
-                  title="Standard Report"
-                  description="Introduction, methods, results and conclusion."
-                  className="bg-slate-100"
-                />
-                <PresetButton
-                  title="Tailored Report"
-                  description="Introduction, methods, results and conclusion."
-                  className="bg-slate-100"
-                />
+                <div className="w-1/2">
+                  <h3 className="text-md mb-2 font-semibold">Get started</h3>
+                  <div className="flex flex-col gap-2">
+                    <CreateItemModal title={"Create a scientific landscape"} />
+                    <CreateItemModal title={"Create a technology overview"} />
+                  </div>
+                  <br />
+                  <div className="flex flex-col gap-2">
+                    <PresetButton title="Extract Information" className="bg-slate-100" />
+                    <PresetButton title="Extract Patents" className="bg-slate-100" />
+                    <PresetButton
+                      title="Extract Scientific Publications"
+                      className="bg-slate-100"
+                    />
+                    <PresetButton title="Extract from Scientific Topics" className="bg-slate-100" />
+                  </div>
+                </div>
               </TabsContent>
               <TabsContent value="technology" className="mt-2 space-y-2">
                 <PresetButton
@@ -148,53 +159,6 @@ export const ProjectOverView = () => {
           </div>
         </div>
       </div>
-      <Tabs defaultValue="pages" className="pb-4" onValueChange={setIsActiveTabActive}>
-        <TabsList className="flex justify-start space-x-4 border-b border-slate-200 bg-transparent">
-          <TabsTrigger
-            value="pages"
-            className={`linear p-2 text-sm transition-all duration-150 ${
-              activeTabActive === "pages"
-                ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
-                : "text-gray-500"
-            }`}
-          >
-            Pages
-          </TabsTrigger>
-          <TabsTrigger
-            value="sources"
-            className={`linear p-2 text-sm transition-all duration-150 ${
-              activeTabActive === "sources"
-                ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
-                : "text-gray-500"
-            }`}
-          >
-            Sources
-          </TabsTrigger>
-          <TabsTrigger
-            value="team"
-            className={`linear p-2 text-sm transition-all duration-150 ${
-              activeTabActive === "team"
-                ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
-                : "text-gray-500"
-            }`}
-          >
-            Team
-          </TabsTrigger>
-        </TabsList>
-
-        {/* Activity Content */}
-        <TabsContent value="pages" className="py-4 text-sm">
-          asdc
-        </TabsContent>
-
-        <TabsContent value="sources" className="py-4 text-sm">
-          ssadcasd
-        </TabsContent>
-
-        <TabsContent value="team" className="py-4 text-sm">
-          asdcasdc
-        </TabsContent>
-      </Tabs>
     </motion.div>
   );
 };
