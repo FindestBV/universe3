@@ -30,7 +30,7 @@ export const ProjectOverView = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
-      <div className="min-h-screen">
+      <div className="min-h-full">
         <div className="mx-auto max-w-full p-8">
           {/* Header */}
           <h1 className="text-2xl font-semibold text-gray-800">Project Overview</h1>
@@ -86,8 +86,6 @@ export const ProjectOverView = () => {
           </div>
         </div>
       </div>
-
-      <ArticleTest />
     </motion.div>
   );
 };
