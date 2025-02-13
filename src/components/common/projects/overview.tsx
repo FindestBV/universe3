@@ -41,6 +41,9 @@ export const ProjectOverView = () => {
     >
       <div className="min-h-full">
         <div className="mx-auto max-w-full p-8">
+          <div className="overviewHeader">
+            <h1 className="mb-2 text-4xl font-bold">CN109368873A - 一种风电互补海水淡化系统</h1>
+          </div>
           <div className="mt-6">
             <Tabs defaultValue="overview" className="pb-4" onValueChange={setIsActiveTabActive}>
               <TabsList className="flex w-full justify-start gap-2 rounded-none border-b border-slate-300 bg-transparent">
