@@ -33,7 +33,7 @@ export const ProjectOverView = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("pages");
   return (
     <motion.div
-      className="settings px-8"
+      className="px-8"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -46,9 +46,9 @@ export const ProjectOverView = () => {
               <TabsList className="flex w-full justify-start gap-2 rounded-none border-b border-slate-300 bg-transparent">
                 <TabsTrigger
                   value="overview"
-                  className={`linear p-2 text-sm transition-all duration-150 ${
-                    activeTabActive === "oveview"
-                      ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
+                  className={`linear bg-blue-200 p-2 text-sm transition-all duration-150 ${
+                    activeTabActive === "overview"
+                      ? "border-b-2 border-blue-800 bg-blue-200 font-bold"
                       : "text-gray-500"
                   }`}
                 >
@@ -145,6 +145,53 @@ export const ProjectOverView = () => {
           </div>
         </div>
       </div>
+      <Tabs defaultValue="pages" className="pb-4" onValueChange={setIsActiveTabActive}>
+        <TabsList className="flex justify-start space-x-4 border-b border-slate-200 bg-transparent">
+          <TabsTrigger
+            value="pages"
+            className={`linear p-2 text-sm transition-all duration-150 ${
+              activeTabActive === "pages"
+                ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
+                : "text-gray-500"
+            }`}
+          >
+            Pages
+          </TabsTrigger>
+          <TabsTrigger
+            value="sources"
+            className={`linear p-2 text-sm transition-all duration-150 ${
+              activeTabActive === "sources"
+                ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
+                : "text-gray-500"
+            }`}
+          >
+            Sources
+          </TabsTrigger>
+          <TabsTrigger
+            value="team"
+            className={`linear p-2 text-sm transition-all duration-150 ${
+              activeTabActive === "team"
+                ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
+                : "text-gray-500"
+            }`}
+          >
+            Team
+          </TabsTrigger>
+        </TabsList>
+
+        {/* Activity Content */}
+        <TabsContent value="pages" className="py-4 text-sm">
+          asdc
+        </TabsContent>
+
+        <TabsContent value="sources" className="py-4 text-sm">
+          ssadcasd
+        </TabsContent>
+
+        <TabsContent value="team" className="py-4 text-sm">
+          asdcasdc
+        </TabsContent>
+      </Tabs>
     </motion.div>
   );
 };
