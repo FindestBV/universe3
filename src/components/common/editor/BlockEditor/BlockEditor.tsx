@@ -39,7 +39,6 @@ import {
 import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
-// import ReferencesSidebar from "../BlockEditor/components/ReferencesSidebar";
 import { LinkMenu } from "../menus";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
 import { TextMenu } from "../menus/TextMenu";
