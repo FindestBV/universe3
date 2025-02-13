@@ -127,7 +127,7 @@ export const ProjectPages = () => {
                           <div className="innerCardContent">
                             <div className="innerCardContent__Detail">
                               <div className="flex flex-col">
-                                <h3 className="overflow-hidden text-ellipsis py-0 text-lg font-bold text-black">
+                                <h3 className="text-md overflow-hidden text-ellipsis py-0 font-bold text-black">
                                   Radiomics and Machine Learning in Medical Imaging
                                 </h3>
                                 <div>
@@ -261,7 +261,7 @@ export const ProjectPages = () => {
                           <div className="innerCardContent">
                             <div className="innerCardContent__Detail">
                               <div className="flex flex-col">
-                                <h3 className="overflow-hidden text-ellipsis py-0 text-lg font-bold text-black">
+                                <h3 className="text-md overflow-hidden text-ellipsis py-0 font-bold text-black">
                                   Radiomics and Machine Learning in Medical Imaging
                                 </h3>
                                 <div>
@@ -395,7 +395,7 @@ export const ProjectPages = () => {
                           <div className="innerCardContent">
                             <div className="innerCardContent__Detail">
                               <div className="flex flex-col">
-                                <h3 className="overflow-hidden text-ellipsis py-0 text-lg font-bold text-black">
+                                <h3 className="text-md overflow-hidden text-ellipsis py-0 font-bold text-black">
                                   Radiomics and Machine Learning in Medical Imaging
                                 </h3>
                                 <div>
