@@ -1,26 +1,35 @@
-import ArticleTest from "@/components/common/layout/article-test";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import people from "@/lib/data/people";
 import { motion } from "framer-motion";
+import { ChevronRight } from "lucide-react";
 
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+
+function PresetButton({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+  className: string;
+}) {
+  return (
+    <Button
+      variant="ghost"
+      className="group h-auto w-full justify-between bg-slate-100 p-2 hover:bg-slate-400"
+    >
+      <div className="flex items-start gap-4">
+        <div className="text-left">
+          <h3 className="font-medium group-hover:text-white">{title}</h3>
+          <p className="text-sm text-gray-600 group-hover:text-white">{description}</p>
+        </div>
+      </div>
+      <ChevronRight className="h-4 w-4" />
+    </Button>
+  );
+}
 
 export const ProjectOverView = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
   const [activeTabActive, setIsActiveTabActive] = useState<string>("pages");
   return (
     <motion.div
@@ -32,55 +41,105 @@ export const ProjectOverView = () => {
     >
       <div className="min-h-full">
         <div className="mx-auto max-w-full p-8">
-          {/* Header */}
-          <h1 className="text-2xl font-semibold text-gray-800">Project Overview</h1>
-
           <div className="mt-6">
-            <Tabs defaultValue="pages" className="pb-4" onValueChange={setIsActiveTabActive}>
-              <TabsList className="flex justify-start space-x-4 border-b border-slate-200 bg-transparent">
+            <Tabs defaultValue="overview" className="pb-4" onValueChange={setIsActiveTabActive}>
+              <TabsList className="flex w-full justify-start gap-2 rounded-none border-b border-slate-300 bg-transparent">
                 <TabsTrigger
-                  value="pages"
+                  value="overview"
                   className={`linear p-2 text-sm transition-all duration-150 ${
-                    activeTabActive === "pages"
+                    activeTabActive === "oveview"
                       ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                       : "text-gray-500"
                   }`}
                 >
-                  Pages
+                  Overview
                 </TabsTrigger>
                 <TabsTrigger
-                  value="sources"
+                  value="technology"
                   className={`linear p-2 text-sm transition-all duration-150 ${
-                    activeTabActive === "sources"
+                    activeTabActive === "technology"
                       ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                       : "text-gray-500"
                   }`}
                 >
-                  Sources
+                  Technology
                 </TabsTrigger>
                 <TabsTrigger
-                  value="team"
+                  value="queries"
                   className={`linear p-2 text-sm transition-all duration-150 ${
-                    activeTabActive === "team"
+                    activeTabActive === "queries"
                       ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                       : "text-gray-500"
                   }`}
                 >
-                  Team
+                  Queries
                 </TabsTrigger>
               </TabsList>
-
-              {/* Activity Content */}
-              <TabsContent value="pages" className="py-4 text-sm">
-                Content 1
+              <TabsContent value="overview" className="mt-2 space-y-2">
+                <PresetButton
+                  title="General description"
+                  description="Either based on general knowledge or the sources linked."
+                  className="bg-slate-100"
+                />
+                <PresetButton
+                  title="Section"
+                  description="Give me a title and I will write the section."
+                  className="bg-slate-100"
+                />
+                <PresetButton
+                  title="Standard Report"
+                  description="Introduction, methods, results and conclusion."
+                  className="bg-slate-100"
+                />
+                <PresetButton
+                  title="Tailored Report"
+                  description="Introduction, methods, results and conclusion."
+                  className="bg-slate-100"
+                />
               </TabsContent>
-
-              <TabsContent value="sources" className="py-4 text-sm">
-                Content 2
+              <TabsContent value="technology" className="mt-2 space-y-2">
+                <PresetButton
+                  title="Extract Information"
+                  description="Search through specific documents."
+                  className="bg-slate-100"
+                />
+                <PresetButton
+                  title="Extract Patents"
+                  description="Search through specific documents."
+                  className="bg-slate-100"
+                />
+                <PresetButton
+                  title="Extract Scientific Publications"
+                  description="Search through specific documents."
+                  className="bg-slate-100"
+                />
+                <PresetButton
+                  title="Extract from Scientific Topics"
+                  description="Search through specific documents."
+                  className="bg-slate-100"
+                />
               </TabsContent>
-
-              <TabsContent value="team" className="py-4 text-sm">
-                Content 3
+              <TabsContent value="queries" className="mt-2 space-y-2">
+                <PresetButton
+                  title="Other general keyword"
+                  description="Either based on general knowledge or the sources linked."
+                  className="bg-slate-100"
+                />
+                <PresetButton
+                  title="General description"
+                  description="Either based on general knowledge or the sources linked."
+                  className="bg-slate-100"
+                />
+                <PresetButton
+                  title="Waterboarding"
+                  description="Either based on general knowledge or the sources linked."
+                  className="bg-slate-100"
+                />
+                <PresetButton
+                  title="Sleep deprevation"
+                  description="Either based on general knowledge or the sources linked."
+                  className="bg-slate-100"
+                />
               </TabsContent>
             </Tabs>
           </div>
