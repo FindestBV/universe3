@@ -104,23 +104,21 @@ export const ProjectSearch = () => {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="overview" className="mt-2 space-y-2">
-                <div className="w-1/2">
-                  <h3 className="text-md mb-2 font-semibold">Get started</h3>
-                  <div className="flex flex-col gap-2">
-                    <CreateItemModal title={"Create a scientific landscape"} />
-                    <CreateItemModal title={"Create a technology overview"} />
-                  </div>
-                  <br />
-                  <div className="flex flex-col gap-2">
-                    <ProjectSearchDialog />
-                    <PresetButton title="Extract Patents" className="bg-slate-100" />
-                    <PresetButton
-                      title="Extract Scientific Publications"
-                      className="bg-slate-100"
-                    />
-                    <PresetButton title="Extract from Scientific Topics" className="bg-slate-100" />
-                  </div>
-                </div>
+                <PresetButton
+                  title="Other general keyword"
+                  description="Either based on general knowledge or the sources linked."
+                  className="bg-slate-100"
+                />
+                <PresetButton
+                  title="General description"
+                  description="Either based on general knowledge or the sources linked."
+                  className="bg-slate-100"
+                />
+                <PresetButton
+                  title="Other general keyword"
+                  description="Either based on general knowledge or the sources linked."
+                  className="bg-slate-100"
+                />
               </TabsContent>
               <TabsContent value="technologies" className="mt-2 space-y-2">
                 <VotingCard star={4} />
