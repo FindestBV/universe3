@@ -76,7 +76,7 @@ export const ProjectOverView = () => {
               <AskIgorModal />
             </div>
           </div>
-          <div className="mt-6">
+          <div className="mt-16">
             <Tabs defaultValue="overview" className="pb-4" onValueChange={setIsActiveTabActive}>
               <TabsList className="flex w-full justify-start gap-2 rounded-none border-b border-slate-300 bg-transparent">
                 <TabsTrigger
@@ -90,14 +90,14 @@ export const ProjectOverView = () => {
                   Overview
                 </TabsTrigger>
                 <TabsTrigger
-                  value="technology"
+                  value="technologies"
                   className={`linear p-2 text-sm transition-all duration-150 ${
-                    activeTabActive === "technology"
+                    activeTabActive === "technologies"
                       ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                       : "text-black"
                   }`}
                 >
-                  Technology
+                  Technologies
                 </TabsTrigger>
                 <TabsTrigger
                   value="queries"
@@ -129,7 +129,7 @@ export const ProjectOverView = () => {
                   </div>
                 </div>
               </TabsContent>
-              <TabsContent value="technology" className="mt-2 space-y-2">
+              <TabsContent value="technologies" className="mt-2 space-y-2">
                 <VotingCard star={4} />
                 <VotingCard star={4} />
                 <VotingCard star={3} />
