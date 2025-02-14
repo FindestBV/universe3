@@ -22,15 +22,15 @@ export const ReferencesSidebar: React.FC<{
 
       {/* Sticky TOC with scrolling */}
 
-      <div className="max-h-[75vh] max-w-[350px] flex-grow overflow-y-auto">
+      <div className="max-h-[75vh] max-w-[330px] flex-grow overflow-y-auto">
         <TableOfContents editor={editor} />
       </div>
 
-      <div className="mt-auto border-t">
-        <ul className="space-y-2 py-4">
+      <div className="mt-auto border-t border-neutral-200">
+        <ul className="py-4">
           <li className="text-sm">
             <a
-              className="cursor-pointer hover:text-primary"
+              className="cursor-pointer hover:text-slate-400"
               onClick={() => scrollToSection("#linkedDocuments")}
             >
               Linked documents
@@ -38,7 +38,7 @@ export const ReferencesSidebar: React.FC<{
           </li>
           <li className="text-sm">
             <a
-              className="cursor-pointer hover:text-primary"
+              className="cursor-pointer hover:text-slate-400"
               onClick={() => scrollToSection("#connectedQueries")}
             >
               Connected queries
@@ -46,7 +46,7 @@ export const ReferencesSidebar: React.FC<{
           </li>
           <li className="text-sm">
             <a
-              className="cursor-pointer hover:text-primary"
+              className="cursor-pointer hover:text-slate-400"
               onClick={() => scrollToSection("#connectedComments")}
             >
               Page comments
@@ -54,7 +54,7 @@ export const ReferencesSidebar: React.FC<{
           </li>
           <li className="text-sm">
             <a
-              className="cursor-pointer hover:text-primary"
+              className="cursor-pointer hover:text-slate-400"
               onClick={() => scrollToSection("#mainEditorStart")}
             >
               Back to Top
