@@ -16,7 +16,7 @@ export const Page: React.FC = () => {
 
   let parsedDescription: any = null;
 
-  // ✅ Determine whether to fetch "studies" or "entities" based on the URL
+  // Determine whether to fetch "studies" or "entities" based on the URL
   const isStudiesPage = location.pathname.includes("studies");
 
   const { data: fetchedEntity, isLoading: fetchedEntityIsLoading } = isStudiesPage
@@ -35,10 +35,10 @@ export const Page: React.FC = () => {
   const connectedEntities = fetchedEntity?.entities;
 
   if (fetchedEntity) {
-    console.log("fetched entity full obj", fetchedEntity);
+    // console.log("fetched entity full obj", fetchedEntity);
     try {
-      parsedDescription = JSON.parse(fetchedEntity.description);
-      console.log("Parsed description:", parsedDescription.content);
+      parsedDescription = JSON.parse(fetchedEntity?.description);
+      // console.log("Parsed description:", parsedDescription.content);
     } catch (error) {
       console.error("Failed to parse description:", error);
     }
@@ -46,11 +46,11 @@ export const Page: React.FC = () => {
 
   useEffect(() => {
     if (parsedDescription) {
-      console.log("blooper", typeof parsedDescription);
-      console.log("connectedObjects", connectedObjects);
-      console.log("connectedQueries", connectedQueries);
-      console.log("connectedComments", connectedComments);
-      console.log("connectedEntities", connectedEntities);
+      // console.log("blooper", typeof parsedDescription);
+      // console.log("connectedObjects", connectedObjects);
+      // console.log("connectedQueries", connectedQueries);
+      // console.log("connectedComments", connectedComments);
+      // console.log("connectedEntities", connectedEntities);
       console.log("blooper", parsedDescription);
     }
     window.scroll(0, 0);

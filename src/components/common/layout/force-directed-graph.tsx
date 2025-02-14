@@ -116,11 +116,11 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
         (node) => Math.hypot(node.x - mouseX, node.y - mouseY) < NODE_RADIUS,
       );
 
-      setHoveredNode(hovered); // ✅ Store hovered node to show tooltip
+      setHoveredNode(hovered); // Store hovered node to show tooltip
     });
 
     canvas.addEventListener("mouseleave", () => {
-      setHoveredNode(null); // ✅ Hide tooltip when leaving canvas
+      setHoveredNode(null); // Hide tooltip when leaving canvas
     });
   };
 
@@ -172,7 +172,7 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
 
     select(canvas).call(zoomBehavior);
 
-    // ✅ Set Initial Zoom & Centering (Scale 0.11)
+    // Set Initial Zoom & Centering (Scale 0.11)
     const initialScale = 0.1;
     const initialX = canvas.width / 2;
     const initialY = canvas.height / 2;
@@ -199,7 +199,7 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
             boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.3)",
           }}
         >
-          {hoveredNode.name || hoveredNode.id}
+          {hoveredNode.name} {hoveredNode.id}
         </div>
       )}
       <canvas ref={canvasRef} width={800} height={800} />
