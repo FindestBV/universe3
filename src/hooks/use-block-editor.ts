@@ -38,20 +38,19 @@ export const Rating = Mark.create({
 });
 
 export const useBlockEditor = ({
-  aiToken,
+  // aiToken,
   ydoc,
   provider,
-  userId,
-  userName = "Maxi",
-  type,
+  // userId,
+  // type,
   content,
   title,
-  connectedDocs,
-  connectedInbox,
-  connectedObjects,
-  connectedQueries,
-  connectedComments,
-  extensions,
+  // connectedDocs,
+  // connectedInbox,
+  // connectedObjects,
+  // connectedQueries,
+  // connectedComments,
+  // extensions,
 }: {
   aiToken?: string;
   ydoc: YDoc | null;

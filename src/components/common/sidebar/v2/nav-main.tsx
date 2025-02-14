@@ -52,7 +52,7 @@ export function NavMain() {
   useEffect(() => {
     if (
       !autoClosed &&
-      location.pathname.match(/^\/(pages|projects)(\/(entities|studies))?\/[^/]+$/)
+      location.pathname.match(/^\/(pages|projects)(\/(projects|entities|studies))?\/[^/]+$/)
     ) {
       setOpen(false);
       setAutoClosed(true);

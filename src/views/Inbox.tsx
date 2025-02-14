@@ -81,7 +81,12 @@ export const Inbox: React.FC = () => {
   const endRange = data ? Math.min(currentPage * documentsPerPage, data.totalCount) : 0;
 
   return (
-    <div className="mt-4 flex h-full w-full flex-col px-12 max-sm:px-4">
+    <div className="flex h-full w-full flex-col px-12 max-sm:px-4">
+      <div className="mb-2 flex items-center justify-between gap-1 rounded-lg">
+        <div className="flex items-center gap-2">
+          <h1 className="pt-2 text-xl font-bold">Inbox</h1>
+        </div>
+      </div>
       {/* Document List */}
       <CardContent className="p-0">
         {isError && (

@@ -77,8 +77,6 @@ export const BlockEditor = ({
   connectedEntities?: string;
 }) => {
   const menuContainerRef = useRef(null);
-  const [isLeftSideBarOpen, setIsLeftSidebarOpen] = useState<boolean>(true);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [isTitleExpanded, setIsTitleExpanded] = useState<boolean>(false);
   const [createDraft] = useCreateDraftMutation();
   const [updateDraft] = useUpdateDraftMutation();
@@ -88,15 +86,6 @@ export const BlockEditor = ({
   const navigateWithTransition = useNavigateWithTransition();
 
   console.log("block editor type", type);
-
-  const toggleLeftSideBar = () => {
-    setIsLeftSidebarOpen(!isLeftSideBarOpen);
-  };
-
-  const toggleInnerSidebar = () => {
-    console.log(isSidebarCollapsed);
-    setIsSidebarCollapsed(!isSidebarCollapsed);
-  };
 
   const parsedContent = useMemo(() => {
     try {
@@ -213,6 +202,8 @@ export const BlockEditor = ({
     <div className="flex" ref={menuContainerRef}>
       <div className="flex-2 relative flex h-full max-w-full flex-col">
         <div className="flex flex-row overflow-hidden">
+          {/* Begin Aside */}
+
           <div className={`blockEditor_aside z-[10] hidden md:flex`}>
             <div className="flex h-screen w-full flex-col border-r border-gray-200 md:w-80">
               <div className="fixed top-0 flex h-screen w-80 flex-col border-r border-gray-200 bg-white">
@@ -298,11 +289,11 @@ export const BlockEditor = ({
                   editor={editor}
                   collabState={collabState}
                   users={users}
-                  isSidebarOpen={isLeftSideBarOpen}
-                  toggleLeftSidebar={toggleLeftSideBar}
                   documentId={id}
                 />
               </div>
+
+              {/* Begin Main */}
               <div className="mx-2 flex flex-col pl-24 pt-10">
                 <div className="mx-auto mb-6 w-full py-8">
                   <div className="mb-4 flex items-center gap-2">
@@ -312,8 +303,9 @@ export const BlockEditor = ({
                     </div>
                   </div>
                   <h1 className="mb-2 text-4xl font-bold">
-                    CN109368873A - 一种风电互补海水淡化系统
-                    <br /> - Google Patents.
+                    {title
+                      ? title
+                      : "CN109368873A - 一种风电互补海水淡化系统 <br /> - Google Patents."}
                   </h1>
                   <div className="flex items-center gap-2 text-sm text-gray-500">
                     <Eye className="h-4 w-4" />

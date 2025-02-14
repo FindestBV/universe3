@@ -53,9 +53,8 @@ export const TableOfContents = memo(({ editor, onItemClick }: TableOfContentsPro
               href={`#${item.id}`}
               onClick={onItemClick}
               className={cn(
-                "block w-full truncate rounded bg-opacity-10 p-1 text-sm font-medium text-neutral-500 transition-all hover:bg-black hover:bg-opacity-5 hover:text-neutral-800 dark:text-neutral-300",
-                item.isActive &&
-                  "bg-neutral-100 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-100",
+                "block w-full truncate rounded bg-opacity-10 p-1 text-sm font-medium text-neutral-500 transition-all hover:bg-black hover:bg-opacity-5 hover:text-neutral-800",
+                item.isActive && "bg-neutral-100 text-neutral-800",
               )}
             >
               {item.itemIndex}. {item.textContent}

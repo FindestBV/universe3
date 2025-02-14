@@ -4,7 +4,7 @@ import {
   useGetStudyByIdQuery,
 } from "@/api/documents/documentApi";
 // Import TipTap Editor
-import BlockEditor from "@/components/common/editor/ProjectBlockEditor/BlockEditor";
+import BlockEditor from "@/components/common/editor/Projects/BlockEditor";
 import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 
 import { useEffect } from "react";

@@ -41,8 +41,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex h-full items-center justify-center bg-white">
-      <div className="flex w-full max-w-[400px] flex-col justify-between rounded-md p-[30px] text-[#006A86] shadow-[0_1px_4px_#b7b8d8]">
+    <div className="flex h-full items-center justify-center rounded-md bg-white">
+      <div className="flex w-full max-w-[400px] flex-col justify-between p-[30px] text-[#006A86] shadow-[0_1px_4px_#b7b8d8]">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center">
             {isLoading && (
@@ -64,7 +64,6 @@ const Login = () => {
           </div>
         ) : (
           <div className="mb-0 flex w-full max-w-[500px] flex-col justify-between text-gray-700">
-            <h2 className="mb-6 text-center text-2xl font-bold">Sign into your Universe</h2>
             <form onSubmit={handleLogin} className="space-y-4">
               <input
                 type="email"
@@ -80,19 +79,33 @@ const Login = () => {
                 <p className="-mt-8 text-red-500">* Please enter a valid email address.</p>
               )}
 
+              <input
+                type="password"
+                id="password"
+                name="password"
+                className="loginInput py-2"
+                placeholder="********"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              {isError && (
+                <p className="-mt-8 text-red-500">* Please enter a valid email address.</p>
+              )}
+
               <div>
                 <input type="checkbox" name="rememberMe" />
                 <label htmlFor="rememberMe" className="pl-2 text-gray-400">
                   Remember Me
                 </label>
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-start">
                 <button
                   type="submit"
-                  className="mt-4 w-full rounded-md bg-[#006A86] py-2 text-white hover:bg-[#84A7E2] focus:outline-none"
+                  className="mt-4 rounded-md bg-black p-2 text-sm text-white hover:bg-slate-500 focus:outline-none"
                   disabled={isLoading} // Disable button when loading
                 >
-                  LOG IN
+                  Login
                 </button>
               </div>
             </form>

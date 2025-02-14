@@ -8,7 +8,7 @@ import { useState } from "react";
 
 import VotingCard from "../cards/voting-card";
 import AskIgorModal from "../dialogs/ask-igor";
-import CreateItemModal from "../dialogs/create-item-modal";
+import CreateItemModal from "../dialogs/create-item-dialog";
 import ProjectSearchDialog from "../dialogs/project-search-dialog";
 
 function PresetButton({

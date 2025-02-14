@@ -87,25 +87,6 @@ export const Pages: React.FC = () => {
           <h1 className="pt-2 text-xl font-bold">Entities</h1>
         </div>
 
-        {/* <div className="flex items-center gap-2">
-          <Checkbox
-            id="select-all"
-            checked={data ? selectedDocs.size === data.documents.length : false}
-            onCheckedChange={(checked) => handleSelectAll(checked as boolean)}
-            className="ml-4"
-          />
-          {isChecked && (
-            <div className="ml-4 flex gap-2">
-              <a href="#" className="linkedStudy">
-                <Link size={18} />
-              </a>
-              <a href="#" className="trashCan">
-                <Trash2 size={18} />
-              </a>
-            </div>
-          )}
-        </div> */}
-
         <div className="mr-4 flex flex-grow items-center gap-4">
           {filters.length > 0 && (
             <div className="ml-auto flex flex-wrap gap-2">
@@ -120,70 +101,6 @@ export const Pages: React.FC = () => {
               ))}
             </div>
           )}
-        </div>
-
-        {/* <div className="flex items-center gap-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                type="button"
-                id="add-filter"
-                className={`group mb-2 mt-2 flex items-center justify-center gap-2 rounded-md border px-4 py-2 text-gray-800 shadow-sm transition-all duration-150 ${
-                  filters.length > 0
-                    ? "bg-blue-50 font-black"
-                    : "bg-gray hover:bg-blue-50 hover:font-black"
-                }`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className={`lucide lucide-filter ${filters.length > 0 ? "fill-black" : "group-hover:fill-black"}`}
-                >
-                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-                </svg>
-                Add Filters
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="relative z-50 w-full bg-white shadow-lg">
-              <DropdownMenuGroup>
-                {filterOptions.map((option) => (
-                  <DropdownMenuItem
-                    key={option}
-                    onClick={() => !filters.includes(option) && handleAddFilter(option)} // Prevent onClick if already selected
-                    className={`w-full px-8 py-2 ${
-                      filters.includes(option)
-                        ? "cursor-not-allowed bg-gray-200 text-gray-400" // Greyed out style for selected items
-                        : "cursor-pointer hover:bg-gray-100" // Default style for unselected items
-                    }`}
-                  >
-                    {option}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div> */}
-
-        <div className="mr-[1.5em]">
-          <select
-            id="studiesPerPage"
-            value={entitiesPerPage}
-            onChange={handleEntitiesPerPageChange}
-            className="rounded-md border p-2 focus:border-blue-500 focus:ring-blue-500"
-          >
-            <option value={25}>25</option>
-            <option value={20}>20</option>
-            <option value={15}>15</option>
-            <option value={10}>10</option>
-            <option value={5}>5</option>
-          </select>
         </div>
       </div>
 

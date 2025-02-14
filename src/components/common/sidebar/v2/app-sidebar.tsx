@@ -1,5 +1,7 @@
+import { currentUser } from "@/api/auth/authSlice";
 import { NavMain } from "@/components/common/sidebar/v2/nav-main";
-import { NavUser } from "@/components/common/sidebar/v2/nav-user";
+import UserAvatar from "@/components/common/utilities/user-avatar";
+// import { NavUser } from "@/components/common/sidebar/v2/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -11,22 +13,10 @@ import {
   SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar";
-import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Circle,
-  Command,
-  File,
-  Frame,
-  GalleryVerticalEnd,
-  Globe,
-  Link,
-  SquareTerminal,
-} from "lucide-react";
+import { Circle, File, Globe, Link, SquareTerminal } from "lucide-react";
 
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 // This is sample data.
 const data = {
@@ -127,9 +117,9 @@ function SidebarToggle() {
 }
 
 export function AppSidebar({ isOpen, ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { open } = useSidebar(); // Directly use `open` from useSidebar()
+  const { open } = useSidebar();
   const sidebarState = isOpen ?? open;
-  console.log("🔍 Sidebar state from useSidebar():", open); // Debugging logs
+  const user = useSelector(currentUser); // Get user from Redux
 
   return (
     <Sidebar
@@ -146,7 +136,8 @@ export function AppSidebar({ isOpen, ...props }: React.ComponentProps<typeof Sid
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter className="text-slate-500">
-        <NavUser user={data.user} />
+        {/* <NavUser user={data.user} /> */}
+        <UserAvatar username={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

@@ -10,22 +10,13 @@ import { EditorUser } from "../types";
 import { EditorInfo } from "./EditorInfo";
 
 export type EditorHeaderProps = {
-  isSidebarOpen?: boolean;
-  toggleLeftSidebar?: () => void;
   editor: Editor;
   collabState: WebSocketStatus;
   users: EditorUser[];
   documentId?: string;
 };
 
-export const EditorHeader = ({
-  editor,
-  collabState,
-  users,
-  isSidebarOpen,
-  toggleLeftSidebar,
-  documentId,
-}: EditorHeaderProps) => {
+export const EditorHeader = ({ editor, collabState, users, documentId }: EditorHeaderProps) => {
   const { characters, words } = useEditorState({
     editor,
     selector: (ctx): { characters: number; words: number } => {

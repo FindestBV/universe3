@@ -1,7 +1,7 @@
 import { useGetLinkingQuery, useGetMyRecentActivityQuery } from "@/api/activity/activityApi";
 import { currentUser } from "@/api/auth/authSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
-import CreateItemModal from "@/components/common/dialogs/create-item-modal";
+import CreateItemModal from "@/components/common/dialogs/create-item-dialog";
 import ForceDirectedGraphView from "@/components/common/layout/force-directed-graph";
 import SearchBar from "@/components/common/search/searchbar";
 import { SearchForm } from "@/components/common/sidebar/v2/search-form";
