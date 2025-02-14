@@ -29,7 +29,7 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
           link.target = nodes.find(n => n.id === link.target);
         });
 
-        let tickCount = 0, MAX_TICKS = 175;
+        let tickCount = 0, MAX_TICKS = 100;
 
         const simulation = d3.forceSimulation(nodes)
           .force("link", d3.forceLink(links).id(d => d.id).distance(160))
