@@ -70,28 +70,11 @@ export const ReferencesSidebar: React.FC<{
 
   return (
     <>
-      {/* Persistent Panel */}
-      <div className="fixed z-10 -ml-14 flex h-[100px] flex-col items-center gap-4 bg-white p-4 shadow-md">
-        {/* Toggle Main Tabs */}
-        <button
-          onClick={() => toggleActiveSubTab("references")}
-          className={`${activeMainTab === "references" ? "text-blue-500" : "text-gray-400"}`}
-        >
-          <List size={24} />
-        </button>
-        <button
-          onClick={() => toggleActiveSubTab("onThisPage")}
-          className={`${activeMainTab === "onThisPage" ? "text-blue-500" : "text-gray-400"}`}
-        >
-          <Quote size={24} />
-        </button>
-      </div>
-
       {/* Sidebar Content */}
       {!isCollapsed && (
         <div className="fixed flex flex-col p-4 transition-all duration-300">
           <div className="flex flex-row justify-between">
-            <Button
+            {/* <Button
               className="fixed right-0"
               onClick={() => {
                 console.log("X button clicked, toggling sidebar");
@@ -99,8 +82,8 @@ export const ReferencesSidebar: React.FC<{
               }}
             >
               <X size={20} />
-            </Button>
-            <h3 className="mb-4 text-xl font-bold">
+            </Button> */}
+            <h3 className="mb-4 text-sm font-bold">
               {activeMainTab === "references" ? "References" : "On This Page"}
             </h3>
           </div>

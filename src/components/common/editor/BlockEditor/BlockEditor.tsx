@@ -17,6 +17,7 @@ import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition"
 import { initialContent } from "@/lib/data/initialContent";
 import { RootState } from "@/store";
 import Admin from "@/views/Admin";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { EditorContent } from "@tiptap/react";
 import {
   ArrowLeft,
@@ -212,159 +213,18 @@ export const BlockEditor = ({
               <div className="fixed top-0 flex h-screen w-80 flex-col border-r border-gray-200 bg-white">
                 <div className="flex flex-col">
                   {/* Gradient Header */}
-                  <div
-                    className={`flex transition-all duration-150 ease-linear ${isTitleExpanded ? "w-[200%]" : "w-full"} justify-between bg-[linear-gradient(to_bottom_right,black_0%,black_70%,#60a5fa_80%,white_90%,#facc15_100%)] p-4`}
-                  >
-                    <>
-                      <p className="text-xs font-bold text-white">cross regeneration to maxim...</p>
-                      <div className="flex items-center gap-4">
-                        <Eye
-                          size={20}
-                          className={`cursor-pointer ${isTitleExpanded ? "text-[#FFFF00]" : "text-white"}`}
-                          onClick={triggerExpand}
-                        />
-                        <ChevronsUpDown size={20} className="text-white" />
-                      </div>
-                    </>
-                  </div>
-                  <div
-                    className={`bg-white transition-all duration-150 ease-linear ${isTitleExpanded ? "h-auto w-[200%] rounded-br-lg border shadow-md" : "hidden h-0 w-full"}`}
-                  >
-                    <ul className="border-b border-gray-200">
-                      <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
-                        <span className="text-sm font-semibold text-gray-600">
-                          Alternative to PFTE
-                        </span>
-                        <span className="ml-auto flex gap-2">
-                          <Eye className="rounded p-1 text-gray-600 hover:bg-blue-200" />
-                          <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                        </span>
-                      </li>
-                      <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
-                        <span className="text-sm font-semibold text-gray-600">
-                          Cross regeneration to maximise macromolecules elution for 'Gent
-                          production' ion gas resins
-                        </span>
-                        <span className="ml-auto flex gap-2">
-                          <Eye className="rounded p-1 text-gray-600 hover:bg-blue-200" />
-                          <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                        </span>
-                      </li>
-                      <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
-                        <span className="text-sm font-semibold text-gray-600">Get Weld Soon</span>
-                        <span className="ml-auto flex gap-2">
-                          <Eye className="rounded p-1 text-gray-600 hover:bg-blue-200" />
-                          <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                        </span>
-                      </li>
-                    </ul>
-                    <div className="flex w-full gap-1 border p-2">
-                      <Button
-                        className="border border-slate-300 bg-slate-100 text-black hover:bg-slate-200"
-                        onClick={() => {
-                          navigateWithTransition(`/dashboard`);
-                        }}
-                      >
-                        <ArrowLeft /> Back to the Universe
-                      </Button>
-                      <Button className="border border-slate-300 bg-slate-100 text-black hover:bg-slate-200">
-                        <Plus /> Create New project
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-                {/* Navigation Links */}
-                <div className="flex-1 overflow-y-auto">
-                  <ul className="border-b border-gray-200">
-                    <li
-                      className={`${currentView === "overview" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
-                      onClick={() => {
-                        setCurrentView("overview");
-                      }}
-                    >
-                      <Home className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Project overview</span>
-                      <span className="ml-auto">
-                        <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                      </span>
-                    </li>
-                    <li
-                      className={`${currentView === "search" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
-                      onClick={() => setCurrentView("search")}
-                    >
-                      <Search className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Search</span>
-                      <span className="ml-auto">
-                        <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                      </span>
-                    </li>
-                    <li
-                      className={`${currentView === "pages" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
-                      onClick={() => setCurrentView("pages")}
-                    >
-                      <File className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Pages</span>
-                      <span className="ml-auto">
-                        <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                      </span>
-                    </li>
-                    <li
-                      className={`${currentView === "sources" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
-                      onClick={() => setCurrentView("sources")}
-                    >
-                      <Link className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Sources</span>
-                      <span className="ml-auto">
-                        <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                      </span>
-                    </li>
-                  </ul>
-
-                  {/* Table of Contents */}
-                  <div className="p-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="mb-4 transform-none text-xs font-bold tracking-tight">
-                        Project structure
-                      </h3>
-                      <div>
-                        <span className="ml-auto flex items-center gap-2">
-                          <Network className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
-                          <Plus className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
-                        </span>
-                      </div>
-                    </div>
-                    <nav className="space-y-2">
-                      <ul className="refs">
-                        {projectStructure.map((section) => (
-                          <li key={section.title}>
-                            <button
-                              onClick={() => toggleSection(section.title)}
-                              className="flex w-full items-center gap-2 rounded-md py-2 text-left text-sm font-medium text-gray-700"
-                            >
-                              {openSections[section.title] ? (
-                                <ChevronDown className="rounded-sm bg-gray-100 p-1 text-gray-500" />
-                              ) : (
-                                <ChevronRight className="rounded-sm bg-gray-100 p-1 text-gray-500" />
-                              )}
-                              {section.title}
-                              <Pin className="p-1 text-gray-500" />
-                            </button>
-                            {openSections[section.title] && (
-                              <ul className="ml-4 mt-2 space-y-1 border-l-2 border-gray-300 pl-3">
-                                {section.references.map((ref, index) => (
-                                  <li
-                                    key={index}
-                                    className="text-sm text-gray-500 hover:text-gray-800"
-                                  >
-                                    {ref}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </nav>
+                  <div className="flex flex-col">
+                    {/* Gradient Header */}
+                    <Tabs defaultValue="account" className="flex w-auto gap-2 p-4">
+                      <TabsList>
+                        <TabsTrigger value="account">
+                          <Home size={24} className="mr-2" />
+                        </TabsTrigger>
+                        <TabsTrigger value="password">
+                          <File size={24} className="mr-2" />
+                        </TabsTrigger>
+                      </TabsList>
+                    </Tabs>
                   </div>
                 </div>
 
