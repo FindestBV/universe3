@@ -42,7 +42,7 @@ export const ReferencesSidebar: React.FC<{
   connectedStudies,
   editor,
 }) => {
-  const [activeMainTab, setActiveMainTab] = useState<string>("references"); // Main tab
+  const [activeMainTab, setActiveMainTab] = useState<string>("onThisPage"); // Main tab
   const [activeSubTab, setActiveSubTab] = useState<string>("inbox"); // Sub-tab for references
 
   const toggleActiveSubTab = (tab: React.SetStateAction<string>) => {

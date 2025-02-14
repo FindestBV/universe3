@@ -44,6 +44,7 @@ import { ContentItemMenu } from "../menus/ContentItemMenu";
 import { TextMenu } from "../menus/TextMenu";
 import { Button } from "../ui/Button";
 import { EditorHeader } from "./components/EditorHeader";
+import ReferencesSidebar from "./components/ReferencesSidebar";
 
 export const BlockEditor = ({
   type,
@@ -377,29 +378,11 @@ export const BlockEditor = ({
               </div>
             </div>
           </div>
-          <div className="rounded-md bg-[#fcfcfc] p-4">
+          <div className="flex rounded-md bg-[#fcfcfc] p-4">
             <div
               className={`mainEditor h-full w-full rounded-md bg-white shadow-md ${isEditing ? "prose-editor" : ""}`}
               id="mainEditorStart"
             >
-              {currentView === "overview" ? (
-                <div>
-                  <ProjectOverView />
-                </div>
-              ) : currentView === "search" ? (
-                <div>
-                  <ProjectSearch />
-                </div>
-              ) : currentView === "pages" ? (
-                <div>
-                  <ProjectPages />
-                </div>
-              ) : (
-                <div>
-                  <ProjectSources />
-                </div>
-              )}
-
               <div className="mx-2 flex flex-col pl-24 pt-10">
                 <EditorHeader
                   editor={editor}
@@ -513,7 +496,7 @@ export const BlockEditor = ({
                 <Comments connectedComments={connectedComments} />
               </div>
             </div>
-            {/* <div className={`referenceSidebar ${isSidebarCollapsed || isLocked ? "collapsed" : ""}`}>
+            <div className={`referenceSidebar`}>
               <ReferencesSidebar
                 onToggleInnerSidebar={toggleInnerSidebar}
                 isCollapsed={isSidebarCollapsed || isLocked}
@@ -523,7 +506,7 @@ export const BlockEditor = ({
                 connectedInbox={connectedInbox}
                 editor={editor}
               />
-            </div> */}
+            </div>
           </div>
         </div>
       </div>
