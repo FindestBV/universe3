@@ -32,10 +32,10 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
         let tickCount = 0, MAX_TICKS = 175;
 
         const simulation = d3.forceSimulation(nodes)
-          .force("link", d3.forceLink(links).id(d => d.id).distance(150))
+          .force("link", d3.forceLink(links).id(d => d.id).distance(160))
           .force("charge", d3.forceManyBody().strength(-40)) 
           .force("center", d3.forceCenter(0, 0))
-          .force("collision", d3.forceCollide(40))
+          .force("collision", d3.forceCollide(45))
           .on("tick", () => {
             if (tickCount++ >= MAX_TICKS) simulation.stop();
             self.postMessage({ nodes, links });
