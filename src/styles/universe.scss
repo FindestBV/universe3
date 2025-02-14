@@ -3,8 +3,6 @@
 
 @use './colors/colors.scss';
 @use './components/active-queries.scss';
-@use './components/dashboard-header.scss';
-@use './components/data-view.scss';
 @use './components/user-avatar.scss';
 @use './components/buttons/create-new-button.scss';
 
@@ -23,14 +21,6 @@
 // dialogs
 @use './components/dialogs/ask-igor-modal.scss';
 @use './components/dialogs/create-item-modal.scss';
-
-// article
-@use './components/article/article.scss';
-
-// layout
-@use './components/layout/rotating-text.scss';
-@use './components/layout/tilted-card.scss';
-@use './components/layout/true-focus.scss';
 
 
 @tailwind base;
