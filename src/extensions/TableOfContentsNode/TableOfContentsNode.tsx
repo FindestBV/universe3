@@ -1,4 +1,4 @@
-import { TableOfContents } from "@/components/common/editor/TableOfContents";
+import { TableOfContents } from "@/components/common/editor/BlockEditor/components/TableOfContents";
 import { Node, NodeViewRendererProps } from "@tiptap/core";
 import { NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react";
 

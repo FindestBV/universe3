@@ -1,11 +1,6 @@
-import { toggleInnerSidebar } from "@/api/utilities/sidebarSlice";
-
-import { useEffect } from "react";
 import React from "react";
 
-import { TableOfContents } from "../../TableOfContents";
-
-// import { useSelector } from "react-redux";
+import { TableOfContents } from "./TableOfContents";
 
 export const ReferencesSidebar: React.FC<{
   editor?: string;
@@ -22,33 +17,46 @@ export const ReferencesSidebar: React.FC<{
     }
   };
   return (
-    <div className="flex h-[calc(100vh-4rem)] flex-col p-4 transition-all duration-300">
+    <div className="fixed top-4 flex h-full flex-col p-4">
       <h3 className="mb-4 text-sm font-bold">On this page</h3>
 
-      <div className="flex flex-grow flex-col overflow-y-auto">
+      {/* Sticky TOC with scrolling */}
+
+      <div className="max-h-[75vh] max-w-[350px] flex-grow overflow-y-auto">
         <TableOfContents editor={editor} />
       </div>
 
-      {/* Sticky navigation links */}
-      <div className="tocNavlinks fixed bottom-0 bg-white py-2 dark:bg-black">
-        <ul>
+      <div className="mt-auto border-t">
+        <ul className="space-y-2 py-4">
           <li className="text-sm">
-            <a className="cursor-pointer" onClick={() => scrollToSection("#linkedDocuments")}>
+            <a
+              className="cursor-pointer hover:text-primary"
+              onClick={() => scrollToSection("#linkedDocuments")}
+            >
               Linked documents
             </a>
           </li>
           <li className="text-sm">
-            <a className="cursor-pointer" onClick={() => scrollToSection("#connectedQueries")}>
+            <a
+              className="cursor-pointer hover:text-primary"
+              onClick={() => scrollToSection("#connectedQueries")}
+            >
               Connected queries
             </a>
           </li>
           <li className="text-sm">
-            <a className="cursor-pointer" onClick={() => scrollToSection("#connectedComments")}>
+            <a
+              className="cursor-pointer hover:text-primary"
+              onClick={() => scrollToSection("#connectedComments")}
+            >
               Page comments
             </a>
           </li>
           <li className="text-sm">
-            <a className="cursor-pointer" onClick={() => scrollToSection("#mainEditorStart")}>
+            <a
+              className="cursor-pointer hover:text-primary"
+              onClick={() => scrollToSection("#mainEditorStart")}
+            >
               Back to Top
             </a>
           </li>

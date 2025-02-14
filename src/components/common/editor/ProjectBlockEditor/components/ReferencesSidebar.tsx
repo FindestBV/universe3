@@ -1,5 +1,5 @@
 import { toggleInnerSidebar } from "@/api/utilities/sidebarSlice";
-import { TableOfContents } from "@/components/common/editor/TableOfContents";
+import { TableOfContents } from "@/components/common/editor/BlockEditor/components/TableOfContents";
 import { ReferencesSearchbar } from "@/components/common/search/references-searchbar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";

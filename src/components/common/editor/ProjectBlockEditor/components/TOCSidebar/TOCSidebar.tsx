@@ -1,4 +1,3 @@
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { Editor } from "@tiptap/react";
 
@@ -21,12 +20,6 @@ export const TOCSidebar = memo(
     connectedEntities?: string;
     title?: string;
   }) => {
-    const handlePotentialClose = useCallback(() => {
-      if (window.innerWidth < 1024) {
-        onClose();
-      }
-    }, [onClose, isOpen, editor]);
-
     const windowClassName = cn(
       "tocSidebar transition-all duration-300 ease-in-out w-1/4 opacity-0  border-r border-r-neutral-200 dark:border-r-neutral-200",
       isOpen
