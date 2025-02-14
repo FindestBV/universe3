@@ -1,31 +1,13 @@
 import { toggleInnerSidebar } from "@/api/utilities/sidebarSlice";
-import { TableOfContents } from "@/components/common/editor/TableOfContents";
-import { ReferencesSearchbar } from "@/components/common/search/references-searchbar";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import {
-  BookOpenCheck,
-  FileText,
-  Fingerprint,
-  Highlighter,
-  Inbox,
-  Info,
-  Link,
-  List,
-  Paperclip,
-  Quote,
-  X,
-} from "lucide-react";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import React from "react";
 
 // import { useSelector } from "react-redux";
 
 export const ReferencesSidebar: React.FC<{
-  isCollapsed?: boolean;
   editor?: string;
-}> = ({ isCollapsed, editor }) => {
+}> = ({ editor }) => {
   const scrollToSection = (sectionId: string) => {
     console.log("scrollto", sectionId);
     const sectionElement = document.querySelector(sectionId); // Find the section

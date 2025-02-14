@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
 type CreateQueryDialogProps = {
-  id: string;
+  id?: string;
   icon: string;
   queryType: string;
 };

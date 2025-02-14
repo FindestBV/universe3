@@ -1,4 +1,3 @@
-import ArticleTest from "@/components/common/layout/article-test";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -173,8 +172,6 @@ export const Admin = () => {
           </Tabs>
         </div>
       </div>
-
-      <ArticleTest />
     </motion.div>
   );
 };

@@ -49,6 +49,7 @@ import { ContentItemMenu } from "../menus/ContentItemMenu";
 import { TextMenu } from "../menus/TextMenu";
 import { Button } from "../ui/Button";
 import { EditorHeader } from "./components/EditorHeader";
+import NestedMenu from "./components/NestedMenu";
 import ReferencesSidebar from "./components/ReferencesSidebar";
 
 export const BlockEditor = ({
@@ -162,7 +163,7 @@ export const BlockEditor = ({
   const isLocked = useSelector((state: RootState) => state.document.isLocked);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
   const [currentView, setCurrentView] = useState<View>("overview");
-  const [isInnerNavActive, setIsInnerNavActive] = useState<boolean>();
+  const [activeTab, setActiveTab] = useState("inbox");
 
   const toggleSection = (sectionTitle: string) => {
     setOpenSections((prev) => ({
@@ -219,24 +220,60 @@ export const BlockEditor = ({
                   {/* Gradient Header */}
                   <div className="flex flex-col">
                     {/* Gradient Header */}
-                    <Tabs defaultValue="account" className="flex w-auto gap-2 p-4">
-                      <TabsList className="mx-auto flex w-full justify-between gap-4 px-4">
-                        <TabsTrigger value="account">
-                          <Home size={22} className="fill-black" />
+                    <Tabs
+                      defaultValue="home"
+                      className="mt-4 space-y-1"
+                      onValueChange={setActiveTab}
+                    >
+                      <TabsList className="mx-auto flex w-full justify-between gap-2 px-4">
+                        <TabsTrigger
+                          value="home"
+                          className={activeTab === "home" ? "fill-black" : "text-gray-500"}
+                        >
+                          <Home size={20} />
                         </TabsTrigger>
-                        <TabsTrigger value="password">
-                          <Search size={22} />
+                        <TabsTrigger
+                          value="search"
+                          className={activeTab === "search" ? "fill-black" : "text-gray-500"}
+                        >
+                          <Search size={20} />
                         </TabsTrigger>
-                        <TabsTrigger value="password">
-                          <Inbox size={22} />
+                        <TabsTrigger
+                          value="inbox"
+                          className={activeTab === "inbox" ? "fill-black" : "text-gray-500"}
+                        >
+                          <Inbox size={20} />
                         </TabsTrigger>
-                        <TabsTrigger value="password">
-                          <File size={22} />
+                        <TabsTrigger
+                          value="documents"
+                          className={activeTab === "documents" ? "fill-black" : "text-gray-500"}
+                        >
+                          <File size={20} />
                         </TabsTrigger>
-                        <TabsTrigger value="password">
-                          <Paperclip size={22} />
+                        <TabsTrigger
+                          value="links"
+                          className={activeTab === "links" ? "fill-black" : "text-gray-500"}
+                        >
+                          <Paperclip size={20} />
                         </TabsTrigger>
                       </TabsList>
+                      <div className="tabContent h-[90vh] p-2">
+                        <TabsContent value="home">
+                          <NestedMenu />
+                        </TabsContent>
+                        <TabsContent value="search" className="mt-2 space-y-2">
+                          Search
+                        </TabsContent>
+                        <TabsContent value="documents" className="mt-2 space-y-2">
+                          Documents
+                        </TabsContent>
+                        <TabsContent value="pages" className="mt-2 space-y-2">
+                          Pages
+                        </TabsContent>
+                        <TabsContent value="links" className="mt-2 space-y-2">
+                          Links
+                        </TabsContent>
+                      </div>
                     </Tabs>
                   </div>
                 </div>
