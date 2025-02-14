@@ -28,26 +28,25 @@ export const ReferencesSidebar: React.FC<{
       </div>
 
       <div className="flex h-[100vh] flex-col gap-4 overflow-y-scroll">
-        [placeholder for TOC / OTP]
-        {/* <TableOfContents editor={editor} /> */}
+        <TableOfContents editor={editor} />
         <div>
           <ul>
-            <li>
+            <li className="tsxt-sm">
               <a className="cursor-pointer" onClick={() => scrollToSection("#linkedDocuments")}>
-                Linked
+                Linked documents
               </a>
             </li>
-            <li>
+            <li className="tsxt-sm">
               <a className="cursor-pointer" onClick={() => scrollToSection("#connectedQueries")}>
-                Queries
+                Conneceted queries
               </a>
             </li>
-            <li>
+            <li className="tsxt-sm">
               <a className="cursor-pointer" onClick={() => scrollToSection("#connectedComments")}>
-                Comments
+                Page comments
               </a>
             </li>
-            <li>
+            <li className="tsxt-sm">
               <a className="cursor-pointer" onClick={() => scrollToSection("#mainEditorStart")}>
                 Back to Top
               </a>
