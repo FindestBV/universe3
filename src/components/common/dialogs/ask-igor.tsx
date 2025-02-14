@@ -4,7 +4,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import {
   Award,
-  Bot,
   Check,
   ChevronRight,
   File,
@@ -14,8 +13,6 @@ import {
   Loader2,
   Maximize2,
   Minimize2,
-  Minus,
-  Plus,
   X,
   Zap,
 } from "lucide-react";
@@ -330,7 +327,7 @@ const AskIgorModal: React.FC = () => {
       {/* Minimized View */}
       {isMinimized && (
         <div
-          className={`fixed bottom-4 right-4 z-[90] flex h-12 w-1/4 cursor-pointer items-center justify-between px-4 ${loading ? "bg-[#84A7E2]" : "bg-yellow-400"} shadow-lg`}
+          className={`minimizedDialog ${loading ? "bg-[#84A7E2]" : "bg-yellow-400"}`}
           onClick={() => {
             setIsMinimized(false);
             setIsOpen(true);

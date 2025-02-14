@@ -147,3 +147,8 @@
     }
 
 }
+
+
+.minimizedDialog{
+    @apply fixed bottom-4 right-4 z-[90] flex h-12 w-1/4 cursor-pointer items-center justify-between px-4 shadow-lg; 
+}
