@@ -357,15 +357,7 @@ export const BlockEditor = ({
               </div>
             </div>
             <div className={`referenceSidebar`}>
-              <ReferencesSidebar
-                onToggleInnerSidebar={toggleInnerSidebar}
-                isCollapsed={isSidebarCollapsed || isLocked}
-                connectedEntities={connectedEntities}
-                connectedDocs={connectedDocs}
-                connectedObjects={connectedObjects}
-                connectedInbox={connectedInbox}
-                editor={editor}
-              />
+              <ReferencesSidebar editor={editor} />
             </div>
           </div>
         </div>
