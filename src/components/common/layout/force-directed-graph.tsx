@@ -128,7 +128,7 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
     select(canvas).call(zoomBehavior);
 
     // Set initial zoom scale and center
-    const initialScale = 0.6;
+    const initialScale = 0.1;
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     transform = zoomIdentity.translate(centerX, centerY).scale(initialScale);
