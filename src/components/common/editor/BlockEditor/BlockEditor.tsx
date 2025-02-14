@@ -28,9 +28,13 @@ import {
   Download,
   Eye,
   File,
+  Fingerprint,
+  Highlighter,
   Home,
+  Inbox,
   Link,
   Network,
+  Paperclip,
   Pin,
   Plus,
   Search,
@@ -216,12 +220,21 @@ export const BlockEditor = ({
                   <div className="flex flex-col">
                     {/* Gradient Header */}
                     <Tabs defaultValue="account" className="flex w-auto gap-2 p-4">
-                      <TabsList>
+                      <TabsList className="mx-auto flex w-full justify-between gap-4 px-4">
                         <TabsTrigger value="account">
-                          <Home size={24} className="mr-2" />
+                          <Home size={22} className="fill-black" />
                         </TabsTrigger>
                         <TabsTrigger value="password">
-                          <File size={24} className="mr-2" />
+                          <Search size={22} />
+                        </TabsTrigger>
+                        <TabsTrigger value="password">
+                          <Inbox size={22} />
+                        </TabsTrigger>
+                        <TabsTrigger value="password">
+                          <File size={22} />
+                        </TabsTrigger>
+                        <TabsTrigger value="password">
+                          <Paperclip size={22} />
                         </TabsTrigger>
                       </TabsList>
                     </Tabs>
