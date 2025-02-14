@@ -3,6 +3,8 @@ import { toggleInnerSidebar } from "@/api/utilities/sidebarSlice";
 import { useEffect } from "react";
 import React from "react";
 
+import { TableOfContents } from "../../TableOfContents";
+
 // import { useSelector } from "react-redux";
 
 export const ReferencesSidebar: React.FC<{
@@ -30,8 +32,9 @@ export const ReferencesSidebar: React.FC<{
         <h3 className="mb-4 text-sm font-bold">On this page</h3>
       </div>
 
-      <div className="flex h-[100vh] flex-col gap-20">
-        <div>{/* <TableOfContents editor={editor} /> */}</div>
+      <div className="flex h-[100vh] flex-col gap-4 overflow-y-scroll">
+        <TableOfContents editor={editor} />
+
         <div>
           <ul>
             <li>

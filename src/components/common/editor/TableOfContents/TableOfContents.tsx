@@ -18,10 +18,7 @@ export const TableOfContents = memo(({ editor, onItemClick }: TableOfContentsPro
 
   return (
     <>
-      <div className="mb-2 text-xs font-semibold uppercase text-neutral-500 dark:text-neutral-400">
-        Table of contents
-      </div>
-      {content.length > 0 ? (
+      {content && content?.length > 0 ? (
         <div className="flex flex-col gap-1">
           {content.map((item) => (
             <a

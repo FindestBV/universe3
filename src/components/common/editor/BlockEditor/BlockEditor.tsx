@@ -163,7 +163,7 @@ export const BlockEditor = ({
   const isLocked = useSelector((state: RootState) => state.document.isLocked);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
   const [currentView, setCurrentView] = useState<View>("overview");
-  const [activeTab, setActiveTab] = useState("inbox");
+  const [activeTab, setActiveTab] = useState("home");
 
   const toggleSection = (sectionTitle: string) => {
     setOpenSections((prev) => ({
@@ -257,7 +257,7 @@ export const BlockEditor = ({
                           <Paperclip size={20} />
                         </TabsTrigger>
                       </TabsList>
-                      <div className="tabContent h-[90vh] p-2">
+                      <div className="tabContent h-[90vh] overflow-y-scroll p-2">
                         <TabsContent value="home">
                           <NestedMenu />
                         </TabsContent>
