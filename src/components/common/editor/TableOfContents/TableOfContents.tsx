@@ -1,8 +1,7 @@
 import { cn } from "@/lib/utils";
 import { TableOfContentsStorage } from "@tiptap-pro/extension-table-of-contents";
 import { Editor as CoreEditor } from "@tiptap/core";
-
-// import { useEditorState } from "@tiptap/react";
+import { useEditorState } from "@tiptap/react";
 
 import { memo, useEffect, useState } from "react";
 
@@ -13,19 +12,36 @@ export type TableOfContentsProps = {
 
 export const TableOfContents = memo(({ editor, onItemClick }: TableOfContentsProps) => {
   const [tocItems, setTocItems] = useState<TableOfContentsStorage["content"]>([]);
+  const [isEditorReady, setIsEditorReady] = useState(false);
 
+  // Wait until the editor is fully ready before accessing storage
   useEffect(() => {
     if (!editor) return;
 
-    try {
-      const newContent = (editor.storage.tableOfContents as TableOfContentsStorage)?.content ?? [];
+    const checkEditorReady = setInterval(() => {
+      if (editor.isDestroyed) {
+        clearInterval(checkEditorReady);
+        return;
+      }
 
-      setTocItems(newContent);
-    } catch (error) {
-      console.error("Error fetching Table of Contents:", error);
-      setTocItems([]); // Prevent undefined state
-    }
-  }, [editor]); // Only update when the editor instance changes
+      try {
+        const newContent =
+          (editor.storage.tableOfContents as TableOfContentsStorage)?.content ?? [];
+
+        setTocItems(newContent);
+        setIsEditorReady(true);
+        clearInterval(checkEditorReady); // Stop checking once content is ready
+      } catch {
+        // Storage might not be ready yet, keep retrying
+      }
+    }, 100); // Poll every 100ms
+
+    return () => clearInterval(checkEditorReady);
+  }, [editor]);
+
+  if (!editor || !isEditorReady) {
+    return <div className="text-sm text-neutral-500">Loading TOC…</div>;
+  }
 
   return (
     <>

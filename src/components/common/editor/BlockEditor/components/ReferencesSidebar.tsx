@@ -38,7 +38,7 @@ export const ReferencesSidebar: React.FC<{
             </li>
             <li className="tsxt-sm">
               <a className="cursor-pointer" onClick={() => scrollToSection("#connectedQueries")}>
-                Conneceted queries
+                Connected queries
               </a>
             </li>
             <li className="tsxt-sm">
