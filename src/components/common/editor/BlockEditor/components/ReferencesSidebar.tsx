@@ -21,11 +21,6 @@ export const ReferencesSidebar: React.FC<{
       console.error("Section not found:", sectionId);
     }
   };
-
-  useEffect(() => {
-    toggleInnerSidebar();
-  }, []);
-
   return (
     <div className="fixed flex flex-col p-4 transition-all duration-300">
       <div className="flex flex-row justify-between">
@@ -33,8 +28,8 @@ export const ReferencesSidebar: React.FC<{
       </div>
 
       <div className="flex h-[100vh] flex-col gap-4 overflow-y-scroll">
-        <TableOfContents editor={editor} />
-
+        [placeholder for TOC / OTP]
+        {/* <TableOfContents editor={editor} /> */}
         <div>
           <ul>
             <li>
