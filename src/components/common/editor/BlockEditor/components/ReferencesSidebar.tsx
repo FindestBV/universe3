@@ -22,37 +22,37 @@ export const ReferencesSidebar: React.FC<{
     }
   };
   return (
-    <div className="fixed flex flex-col p-4 transition-all duration-300">
-      <div className="flex flex-row justify-between">
-        <h3 className="mb-4 text-sm font-bold">On this page</h3>
+    <div className="flex h-[calc(100vh-4rem)] flex-col p-4 transition-all duration-300">
+      <h3 className="mb-4 text-sm font-bold">On this page</h3>
+
+      <div className="flex flex-grow flex-col overflow-y-auto">
+        <TableOfContents editor={editor} />
       </div>
 
-      <div className="flex h-[100vh] flex-col gap-4 overflow-y-scroll">
-        <TableOfContents editor={editor} />
-        <div>
-          <ul>
-            <li className="tsxt-sm">
-              <a className="cursor-pointer" onClick={() => scrollToSection("#linkedDocuments")}>
-                Linked documents
-              </a>
-            </li>
-            <li className="tsxt-sm">
-              <a className="cursor-pointer" onClick={() => scrollToSection("#connectedQueries")}>
-                Connected queries
-              </a>
-            </li>
-            <li className="tsxt-sm">
-              <a className="cursor-pointer" onClick={() => scrollToSection("#connectedComments")}>
-                Page comments
-              </a>
-            </li>
-            <li className="tsxt-sm">
-              <a className="cursor-pointer" onClick={() => scrollToSection("#mainEditorStart")}>
-                Back to Top
-              </a>
-            </li>
-          </ul>
-        </div>
+      {/* Sticky navigation links */}
+      <div className="tocNavlinks fixed bottom-0 bg-white py-2 dark:bg-black">
+        <ul>
+          <li className="text-sm">
+            <a className="cursor-pointer" onClick={() => scrollToSection("#linkedDocuments")}>
+              Linked documents
+            </a>
+          </li>
+          <li className="text-sm">
+            <a className="cursor-pointer" onClick={() => scrollToSection("#connectedQueries")}>
+              Connected queries
+            </a>
+          </li>
+          <li className="text-sm">
+            <a className="cursor-pointer" onClick={() => scrollToSection("#connectedComments")}>
+              Page comments
+            </a>
+          </li>
+          <li className="text-sm">
+            <a className="cursor-pointer" onClick={() => scrollToSection("#mainEditorStart")}>
+              Back to Top
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   );
