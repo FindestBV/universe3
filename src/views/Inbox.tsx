@@ -75,11 +75,6 @@ export const Inbox: React.FC = () => {
   const handleRemoveFilter = (filter: string) => {
     setFilters(filters.filter((f) => f !== filter));
   };
-
-  // Calculate the range of documents being shown.
-  const startRange = data ? (currentPage - 1) * documentsPerPage + 1 : 0;
-  const endRange = data ? Math.min(currentPage * documentsPerPage, data.totalCount) : 0;
-
   return (
     <div className="flex h-full w-full flex-col px-12 max-sm:px-4">
       <div className="mb-2 flex items-center justify-between gap-1 rounded-lg">

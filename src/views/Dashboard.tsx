@@ -4,7 +4,6 @@ import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import CreateItemModal from "@/components/common/dialogs/create-item-dialog";
 import ForceDirectedGraphView from "@/components/common/layout/force-directed-graph";
 import SearchBar from "@/components/common/search/searchbar";
-import { SearchForm } from "@/components/common/sidebar/v2/search-form";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { ChevronRight, Loader, Plus } from "lucide-react";
@@ -12,7 +11,6 @@ import { ChevronRight, Loader, Plus } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 export const Dashboard = () => {
   const { t } = useTranslation();
