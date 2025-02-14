@@ -43,61 +43,39 @@ export const ReferencesSidebar: React.FC<{
   }, []);
 
   return (
-    <>
-      {/* Sidebar Content */}
-      {!isCollapsed && (
-        <div className="fixed flex flex-col p-4 transition-all duration-300">
-          <div className="flex flex-row justify-between">
-            {/* <Button
-              className="fixed right-0"
-              onClick={() => {
-                console.log("X button clicked, toggling sidebar");
-                onToggleInnerSidebar();
-              }}
-            >
-              <X size={20} />
-            </Button> */}
-            <h3 className="mb-4 text-sm font-bold">On this page</h3>
-          </div>
+    <div className="fixed flex flex-col p-4 transition-all duration-300">
+      <div className="flex flex-row justify-between">
+        <h3 className="mb-4 text-sm font-bold">On this page</h3>
+      </div>
 
-          <div className="flex h-[100vh] flex-col gap-20">
-            <div>
-              <TableOfContents editor={editor} />
-            </div>
-            <div>
-              <ul>
-                <li>
-                  <a className="cursor-pointer" onClick={() => scrollToSection("#linkedDocuments")}>
-                    Linked
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="cursor-pointer"
-                    onClick={() => scrollToSection("#connectedQueries")}
-                  >
-                    Queries
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="cursor-pointer"
-                    onClick={() => scrollToSection("#connectedComments")}
-                  >
-                    Comments
-                  </a>
-                </li>
-                <li>
-                  <a className="cursor-pointer" onClick={() => scrollToSection("#mainEditorStart")}>
-                    Back to Top
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
+      <div className="flex h-[100vh] flex-col gap-20">
+        <div>{/* <TableOfContents editor={editor} /> */}</div>
+        <div>
+          <ul>
+            <li>
+              <a className="cursor-pointer" onClick={() => scrollToSection("#linkedDocuments")}>
+                Linked
+              </a>
+            </li>
+            <li>
+              <a className="cursor-pointer" onClick={() => scrollToSection("#connectedQueries")}>
+                Queries
+              </a>
+            </li>
+            <li>
+              <a className="cursor-pointer" onClick={() => scrollToSection("#connectedComments")}>
+                Comments
+              </a>
+            </li>
+            <li>
+              <a className="cursor-pointer" onClick={() => scrollToSection("#mainEditorStart")}>
+                Back to Top
+              </a>
+            </li>
+          </ul>
         </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 };
 

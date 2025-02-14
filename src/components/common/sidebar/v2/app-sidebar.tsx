@@ -114,7 +114,7 @@ function SidebarToggle() {
           onClick={toggleSidebar}
           className="w-full justify-start gap-2 hover:bg-none"
         >
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
+          <div className="mt-1 flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
             <Globe className="size-6 text-slate-600" />
           </div>
           <div className="grid flex-1 text-left text-lg text-slate-700">
@@ -129,6 +129,7 @@ function SidebarToggle() {
 export function AppSidebar({ isOpen, ...props }: React.ComponentProps<typeof Sidebar>) {
   const { open } = useSidebar(); // Directly use `open` from useSidebar()
   const sidebarState = isOpen ?? open;
+  console.log("🔍 Sidebar state from useSidebar():", open); // Debugging logs
 
   return (
     <Sidebar
