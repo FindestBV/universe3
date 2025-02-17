@@ -340,6 +340,7 @@ export const documentApi = api.injectEndpoints({
     getStudyMaturityRadar: builder.query<SavedDocumentResponse, string>({
       query: (id) => `/maturity-radar/4/${id}`,
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+      overrideExisting: true,
     }),
 
     createMaturityRadar: builder.mutation({

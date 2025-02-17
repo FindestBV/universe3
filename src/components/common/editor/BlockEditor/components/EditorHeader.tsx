@@ -1,11 +1,12 @@
 import { WebSocketStatus } from "@hocuspocus/provider";
 import { Editor } from "@tiptap/core";
 import { useEditorState } from "@tiptap/react";
-import { List } from "lucide-react";
+
+// import { List } from "lucide-react";
 
 import { useSelector } from "react-redux";
 
-import { Toolbar } from "../../ui/Toolbar";
+// import { Toolbar } from "../../ui/Toolbar";
 import { EditorUser } from "../types";
 import { EditorInfo } from "./EditorInfo";
 
