@@ -118,12 +118,15 @@ export const ProjectOverView = () => {
                     </TabsTrigger>
                   ))}
                 </div>
-                <button
-                  onClick={addNewTab}
-                  className="flex items-center rounded-md p-2 text-gray-600 hover:bg-gray-200"
-                >
-                  <Plus className="h-5 w-8" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={addNewTab}
+                    className="flex items-center rounded-md p-2 text-gray-600 hover:bg-gray-200"
+                  >
+                    <Plus className="h-5 w-8" />
+                  </button>
+                  <AskIgorModal iconOnly />
+                </div>
               </TabsList>
               {/* {tabs.map((tab) => (
                 <TabsContent key={tab.id} value={tab.id} className="mt-2 space-y-2">

@@ -85,7 +85,7 @@ function PresetButton({
   );
 }
 
-const AskIgorModal: React.FC = () => {
+const AskIgorModal: React.FC = ({ ...props }: any) => {
   const [question, setQuestion] = useState("");
   const [activeTab, setActiveTab] = useState("report");
   const [isMinimized, setIsMinimized] = useState(false); // Track minimization state
@@ -101,6 +101,8 @@ const AskIgorModal: React.FC = () => {
     }
   };
 
+  console.log("in ask igor modal", props?.iconOnly);
+
   return (
     <div className="askIgorModal">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -115,7 +117,7 @@ const AskIgorModal: React.FC = () => {
               }}
             >
               <Zap size={20} className="zppr" />
-              Ask IGOR
+              {props?.iconOnly ? null : "Ask IGOR"}
             </button>
           </div>
         </DialogTrigger>
