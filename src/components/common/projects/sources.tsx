@@ -44,10 +44,24 @@ export const ProjectSources = () => {
     { id: "websites", label: "Websites" },
   ]);
 
+  // Function to add a new tab with a user-defined label
   const addNewTab = () => {
+    const newLabel = window.prompt("Enter a name for the new tab:", `New Tab ${tabs.length + 1}`);
+    if (!newLabel) return; // Prevent adding empty tabs
+
     const newId = `tab-${tabs.length + 1}`;
-    setTabs([...tabs, { id: newId, label: `New Tab ${tabs.length + 1}` }]);
+    setTabs([...tabs, { id: newId, label: newLabel }]);
     setIsActiveTabActive(newId);
+  };
+
+  // Function to rename an existing tab
+  const renameTab = (id: string) => {
+    const newLabel = window.prompt("Rename this tab:");
+    if (!newLabel) return;
+
+    setTabs((prevTabs) =>
+      prevTabs.map((tab) => (tab.id === id ? { ...tab, label: newLabel } : tab)),
+    );
   };
 
   return (
@@ -59,36 +73,7 @@ export const ProjectSources = () => {
     >
       <div className="min-h-full" id="project-sources">
         <div className="mx-auto max-w-full p-8">
-          <div className="overviewHeader">
-            <h1 className="mb-2 text-4xl font-bold">Sources</h1>
-            <p className="mb-4 text-sm">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam autem, deleniti
-              ratione fuga consectetur sint unde nostrum, numquam corrupti esse, porro ullam
-              dolorum. Repudiandae laborum sit fugit. Ipsum odit mollitia molestiae nobis asperiores
-              laborum, modi quos quisquam quibusdam, consectetur nostrum officiis veritatis iure ab
-              distinctio, veniam nesciunt voluptas sed! Magnam praesentium id tenetur ducimus error
-              magni quidem similique suscipit ad animi consequatur ipsa nobis numquam qui sed ullam
-              nulla, voluptatibus iusto eaque accusantium sapiente.
-            </p>
-            <div className="item-start flex gap-4">
-              <span className="flex items-center gap-2">
-                <File
-                  size={24}
-                  className="h-50 rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
-                />
-                <Search
-                  size={24}
-                  className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
-                />
-                <Plus
-                  size={24}
-                  className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
-                />
-              </span>
-              <AskIgorModal />
-            </div>
-          </div>
-          <div className="mt-4">
+          <div className="mt-0">
             <Tabs defaultValue="all" className="pb-4" onValueChange={setIsActiveTabActive}>
               <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
                 <div className="flex gap-2">
@@ -96,25 +81,38 @@ export const ProjectSources = () => {
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className={`p-2 text-sm transition-all duration-150 ${
-                        activeTabActive === tab.id
-                          ? "border-b-2 border-blue-800 bg-blue-200 font-bold"
-                          : "text-black"
-                      }`}
+                      className={`p-2 text-sm ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-200 font-bold" : "text-black"}`}
+                      onDoubleClick={() => renameTab(tab.id)} // Double-click to rename
                     >
                       {tab.label}
                     </TabsTrigger>
                   ))}
                 </div>
-                <button
-                  onClick={addNewTab}
-                  className="flex items-center rounded-md p-2 text-gray-600 hover:bg-gray-200"
-                >
-                  <Plus className="h-5 w-8" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={addNewTab}
+                    className="flex items-center rounded-md p-2 text-gray-600 hover:bg-gray-200"
+                  >
+                    <Plus className="h-5 w-8" />
+                  </button>
+                  <AskIgorModal iconOnly={true} />
+                </div>
               </TabsList>
 
               <TabsContent value="all" className="mt-2 space-y-2">
+                <div className="overviewHeader py-4">
+                  <h1 className="mb-2 text-4xl font-bold">Sources</h1>
+                  <p className="mb-4 text-sm">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam autem, deleniti
+                    ratione fuga consectetur sint unde nostrum, numquam corrupti esse, porro ullam
+                    dolorum. Repudiandae laborum sit fugit. Ipsum odit mollitia molestiae nobis
+                    asperiores laborum, modi quos quisquam quibusdam, consectetur nostrum officiis
+                    veritatis iure ab distinctio, veniam nesciunt voluptas sed! Magnam praesentium
+                    id tenetur ducimus error magni quidem similique suscipit ad animi consequatur
+                    ipsa nobis numquam qui sed ullam nulla, voluptatibus iusto eaque accusantium
+                    sapiente.
+                  </p>
+                </div>
                 <div className="w-full">
                   <div className="flex flex-col">
                     {[1, 2, 3, 4, 5, 6].map((item) => (

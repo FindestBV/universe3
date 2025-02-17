@@ -150,38 +150,16 @@ export const ProjectOverView = () => {
                 </div>
               </>
             </TabsContent>
-            <TabsContent value="technologies" className="mt-2 w-full space-y-2">
-              <VotingCard star={4} className="w-full" />
-              <VotingCard star={4} className="w-full" />
-              <VotingCard star={3} className="w-full" />
-              <VotingCard star={3} className="w-full" />
-              <VotingCard star={2} className="w-full" />
-              <VotingCard star={1} className="w-full" />
-              <VotingCard star={3} className="w-full" />
-              <VotingCard star={2} className="w-full" />
-              <VotingCard star={1} className="w-full" />
-
-              <PresetButton
-                title="Other general keyword"
-                description="Either based on general knowledge or the sources linked."
-                className="bg-slate-100"
-              />
-
-              <PresetButton
-                title="Other general keyword"
-                description="Either based on general knowledge or the sources linked."
-                className="bg-slate-100"
-              />
-              <PresetButton
-                title="General description"
-                description="Either based on general knowledge or the sources linked."
-                className="bg-slate-100"
-              />
-              <PresetButton
-                title="Waterboarding"
-                description="Either based on general knowledge or the sources linked."
-                className="bg-slate-100"
-              />
+            <TabsContent value="technologies" className="mt-2 w-full flex-grow space-y-2">
+              <div className="flex w-full flex-col gap-4">
+                <VotingCard star={4} />
+                <VotingCard star={4} />
+                <VotingCard star={3} />
+                <VotingCard star={3} />
+                <VotingCard star={2} />
+                <VotingCard star={1} />
+              </div>
+              {/* <PresetButton title="Other general keyword" description="Either based on general knowledge or the sources linked." className="bg-slate-100" /> */}
             </TabsContent>
             <TabsContent value="queries" className="mt-2 space-y-2">
               <h3>Active Queries</h3>

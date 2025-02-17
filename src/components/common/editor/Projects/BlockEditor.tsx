@@ -197,7 +197,7 @@ export const BlockEditor = ({
 
   return (
     <div className="flex" ref={menuContainerRef}>
-      <div className="flex-2 relative flex h-full max-w-full flex-col">
+      <div className="relative flex h-full max-w-full flex-1 flex-col">
         <div className="flex flex-row overflow-hidden">
           <div className={`z-[10] hidden md:flex ${isLeftSideBarOpen ? "flex-col" : "collapsed"}`}>
             <div className="flex h-screen w-full flex-col border-r border-gray-200 md:w-80">
@@ -372,7 +372,7 @@ export const BlockEditor = ({
               </div>
             </div>
           </div>
-          <div className="rounded-md bg-[#fcfcfc] p-4">
+          <div className="w-full rounded-md bg-[#fcfcfc] p-4">
             <div
               className={`mainEditor h-full w-full rounded-md bg-white shadow-md ${isEditing ? "prose-editor" : ""}`}
               id="mainEditorStart"

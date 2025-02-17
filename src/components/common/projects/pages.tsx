@@ -44,10 +44,24 @@ export const ProjectPages = () => {
     { id: "entities", label: "Entities" },
   ]);
 
+  // Function to add a new tab with a user-defined label
   const addNewTab = () => {
+    const newLabel = window.prompt("Enter a name for the new tab:", `New Tab ${tabs.length + 1}`);
+    if (!newLabel) return; // Prevent adding empty tabs
+
     const newId = `tab-${tabs.length + 1}`;
-    setTabs([...tabs, { id: newId, label: `New Tab ${tabs.length + 1}` }]);
+    setTabs([...tabs, { id: newId, label: newLabel }]);
     setIsActiveTabActive(newId);
+  };
+
+  // Function to rename an existing tab
+  const renameTab = (id: string) => {
+    const newLabel = window.prompt("Rename this tab:");
+    if (!newLabel) return;
+
+    setTabs((prevTabs) =>
+      prevTabs.map((tab) => (tab.id === id ? { ...tab, label: newLabel } : tab)),
+    );
   };
 
   return (
@@ -96,22 +110,22 @@ export const ProjectPages = () => {
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className={`p-2 text-sm transition-all duration-150 ${
-                        activeTabActive === tab.id
-                          ? "border-b-2 border-blue-800 bg-blue-200 font-bold"
-                          : "text-black"
-                      }`}
+                      className={`p-2 text-sm ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-200 font-bold" : "text-black"}`}
+                      onDoubleClick={() => renameTab(tab.id)} // Double-click to rename
                     >
                       {tab.label}
                     </TabsTrigger>
                   ))}
                 </div>
-                <button
-                  onClick={addNewTab}
-                  className="flex items-center rounded-md p-2 text-gray-600 hover:bg-gray-200"
-                >
-                  <Plus className="h-5 w-8" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={addNewTab}
+                    className="flex items-center rounded-md p-2 text-gray-600 hover:bg-gray-200"
+                  >
+                    <Plus className="h-5 w-8" />
+                  </button>
+                  <AskIgorModal iconOnly={true} />
+                </div>
               </TabsList>
               <TabsContent value="all" className="mt-2 space-y-2">
                 <div className="w-full">

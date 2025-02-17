@@ -6,6 +6,7 @@ import { ChevronRight } from "lucide-react";
 
 import { useState } from "react";
 
+import AskIgorModal from "../dialogs/ask-igor";
 import SearchBar from "../search/searchbar";
 
 function PresetButton({
@@ -48,6 +49,15 @@ export const ProjectSearch = () => {
             <br />
             <div className="mx-auto max-w-[1024px]">
               <SearchBar />
+              <div className="flex gap-2 py-2">
+                <button
+                  type="submit"
+                  className="rounded-md bg-black p-2 px-4 text-sm text-white hover:bg-slate-500 focus:outline-none"
+                >
+                  Search this project
+                </button>
+                <AskIgorModal />
+              </div>
             </div>
           </div>
           <div className="mt-16">
