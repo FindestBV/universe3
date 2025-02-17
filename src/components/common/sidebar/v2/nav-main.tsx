@@ -1,3 +1,4 @@
+import { currentUser } from "@/api/auth/authSlice";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useSidebar } from "@/components/ui/sidebar";
 import {
@@ -12,6 +13,7 @@ import {
 import { Circle, File, Home, Inbox, Link, Minus, Network, Plus } from "lucide-react";
 
 import { createElement, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
 import { SearchForm } from "./search-form";
@@ -48,6 +50,7 @@ export function NavMain() {
   const { open, setOpen } = useSidebar();
   const location = useLocation();
   const [autoClosed, setAutoClosed] = useState(false);
+  const user = useSelector(currentUser); // Get user from Redux
 
   useEffect(() => {
     if (
@@ -77,7 +80,7 @@ export function NavMain() {
   };
 
   return (
-    <SidebarGroup className="w-full">
+    <SidebarGroup className="mainSidebar">
       {open && (
         <div>
           <SearchForm />

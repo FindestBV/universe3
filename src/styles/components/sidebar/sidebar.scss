@@ -1,0 +1,11 @@
+.mainSidebar{
+
+    @apply border-r border-gray-200 transition-all duration-100; 
+
+
+    .sidebar_mainContent{
+
+        @apply w-full; 
+
+    }
+}

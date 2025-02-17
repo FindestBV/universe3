@@ -125,9 +125,7 @@ export function AppSidebar({ isOpen, ...props }: React.ComponentProps<typeof Sid
     <Sidebar
       collapsible="icon"
       {...props}
-      className={`border-r border-gray-200 transition-all duration-100 ${
-        sidebarState ? "bg-white" : "bg-gray-800"
-      }`}
+      className={`mainSidebar ${sidebarState ? "bg-white" : "bg-gray-800"}`}
     >
       <SidebarHeader>
         <SidebarToggle />
