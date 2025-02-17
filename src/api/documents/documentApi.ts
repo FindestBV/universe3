@@ -306,38 +306,55 @@ export const documentApi = api.injectEndpoints({
         providesTags: (result, error, id) => [{ type: "Study", id }],
       }),
 
-      async onQueryStarted(id, { dispatch }) {
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
         try {
-          // get connected inbox items associated with this item Id
+          // Get the main document
+          const { data: study } = await queryFulfilled;
 
-          const inboxItems = await dispatch(
-            api.endpoints.getConnectedInboxItems.initiate(id),
-          ).unwrap();
+          // Fetch additional related data
+          const [inboxItems, connectedStudies, connectedDocs, connectedComments, maturityRadar] =
+            await Promise.all([
+              dispatch(api.endpoints.getConnectedInboxItems.initiate(id)).unwrap(),
+              dispatch(api.endpoints.getStudyConnectedQueries.initiate(id)).unwrap(),
+              dispatch(api.endpoints.getStudyConnectedDocs.initiate(id)).unwrap(),
+              dispatch(api.endpoints.getStudyConnectedComments.initiate(id)).unwrap(),
+              dispatch(api.endpoints.getStudyMaturityRadar.initiate(id)).unwrap(),
+            ]);
 
-          const connectedStudies = await dispatch(
-            api.endpoints.getStudyConnectedQueries.initiate(id),
-          ).unwrap();
-
-          const connectedDocs = await dispatch(
-            api.endpoints.getStudyConnectedDocs.initiate(id),
-          ).unwrap();
-
-          const connectedComments = await dispatch(
-            api.endpoints.getStudyConnectedComments.initiate(id),
-          ).unwrap();
-
+          // Merge all the data into the study object
           dispatch(
             api.util.updateQueryData("getStudyById", id, (draft) => {
               draft.connectedInboxItems = inboxItems;
               draft.connectedStudies = connectedStudies;
               draft.connectedDocs = connectedDocs;
               draft.connectedComments = connectedComments;
+              draft.maturityRadar = maturityRadar; // Merging Maturity Radar here
             }),
           );
         } catch (error) {
           console.error("Error in onQueryStarted for getStudyById:", error);
         }
       },
+    }),
+
+    getStudyMaturityRadar: builder.query<SavedDocumentResponse, string>({
+      query: (id) => `/maturity-radar/4/${id}`,
+      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+    }),
+
+    createMaturityRadar: builder.mutation({
+      queryFn: (id) => {
+        return {
+          data: {
+            id,
+            status: "success",
+            message: "Dummy response for createMaturityRadar",
+            createdAt: new Date().toISOString(),
+          },
+        };
+      },
+      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+      overrideExisting: true,
     }),
 
     // Connected Study Queries (linked to id)
@@ -383,5 +400,6 @@ export const {
   useGetStudyConnectedQueriesQuery,
   useGetStudyConnectedDocsQuery,
   useGetStudyConnectedCommentsQuery,
+  useGetStudyMaturityRadarQuery,
   usePrefetch,
 } = documentApi;
