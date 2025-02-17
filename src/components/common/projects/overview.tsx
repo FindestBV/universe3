@@ -125,7 +125,7 @@ export const ProjectOverView = () => {
                   >
                     <Plus className="h-5 w-8" />
                   </button>
-                  <AskIgorModal iconOnly />
+                  <AskIgorModal iconOnly={true} />
                 </div>
               </TabsList>
               {/* {tabs.map((tab) => (

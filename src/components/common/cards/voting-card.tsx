@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 
 import { useState } from "react";
@@ -8,6 +9,7 @@ interface VotingCardProps {
 
 export default function VotingCard({ star }: VotingCardProps) {
   const [rating, setRating] = useState(star);
+  const [showDetails, setShowDetails] = useState(false);
 
   return (
     <div className="w-full rounded-lg border bg-white px-4 py-2 shadow-sm">
@@ -30,8 +32,26 @@ export default function VotingCard({ star }: VotingCardProps) {
           </div>
           <h2 className="text-sm font-semibold">Tyvek paper (polyethelene based)</h2>
         </div>
-        <p className="text-sm font-semibold text-gray-500">Show</p>
+        <button
+          onClick={() => setShowDetails((prev) => !prev)}
+          className="text-sm font-semibold text-gray-500 transition-colors hover:text-black"
+        >
+          {showDetails ? "Hide" : "Show"}
+        </button>
       </div>
+
+      {/* Slide-down panel */}
+      {showDetails && (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.1 }}
+          className="mt-2 overflow-hidden rounded-lg bg-gray-100 p-4 text-sm text-gray-700"
+        >
+          <p>This is some additional detail text. It provides more information about the item.</p>
+        </motion.div>
+      )}
     </div>
   );
 }
