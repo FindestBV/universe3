@@ -133,7 +133,7 @@ export function AppSidebar({ isOpen, ...props }: React.ComponentProps<typeof Sid
       <SidebarContent className="mt-9">
         <NavMain items={data.navMain} />
       </SidebarContent>
-      <SidebarFooter className="text-slate-500">
+      <SidebarFooter className="sidebarFooter">
         {/* <NavUser user={data.user} /> */}
         <UserAvatar username={user} />
       </SidebarFooter>

@@ -1,11 +1,58 @@
-.mainSidebar{
+.mainSidebar {
+// Sidebar Styles
+.sidebar_mainContent {
+  @apply flex flex-col w-64 bg-white shadow-lg transition-all;
+}
 
-    @apply border-r border-gray-200 transition-all duration-100; 
+// Collapsible Group
+.group {
+  &\/collapsible {
+    @apply w-full;
+  }
+}
 
+// Sidebar Menu Buttons
+.sidebar_button {
+  @apply flex items-center bg-transparent hover:bg-gray-100 rounded-md transition p-2 gap-2;
 
-    .sidebar_mainContent{
+  &-icon {
+    @apply flex h-6 w-6 items-center justify-center;
+  }
 
-        @apply w-full; 
+  &-text {
+    @apply text-sm;
+  }
 
+  &-indicator {
+    @apply ml-auto flex items-center gap-2;
+
+    .sidebar_indicator-icon {
+      @apply rounded bg-gray-100 p-1 text-gray-600 hover:bg-gray-200;
     }
+  }
+}
+
+// Sidebar Menu & Submenu
+.sidebar_submenu {
+  @apply pl-0 border-l border-gray-200;
+
+  .sidebar_subitem {
+    @apply block bg-transparent px-4 py-2 text-sm transition text-gray-600 hover:text-gray-700;
+  }
+}
+
+// Active Link
+.sidebar_active {
+  @apply text-slate-700;
+}
+
+// Transitions
+.transition-sidebar {
+  @apply transition-all duration-200 ease-in-out;
+}
+
+.sidebarFooter{
+    @apply text-slate-500; 
+}
+
 }

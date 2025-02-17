@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 
 export const Dashboard = () => {
   const { t } = useTranslation();
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
+  // const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [activeTabActive, setIsActiveTabActive] = useState<string>("pages");
 
   const { data: activityData, isLoading: activityDataIsLoading } = useGetMyRecentActivityQuery();
@@ -30,9 +30,9 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className="scrollbar-hidden flex h-screen w-full overflow-hidden">
+    <div className="mainDashboard">
       {/* LEFT COLUMN (Scrollable) */}
-      <div className="flex h-full w-full flex-1 flex-col overflow-y-auto bg-gray-100 py-5 pl-16 pr-8 md:max-w-[40%]">
+      <div className="leftColumn">
         <SearchBar />
 
         <div className="mb-4 py-4">
@@ -40,41 +40,41 @@ export const Dashboard = () => {
         </div>
 
         {/* Create Project Section */}
-        <div>
-          <h3 className="text-md mb-2 font-semibold">Get started</h3>
+        <div className="create_project">
+          <h3 className="title">Get started</h3>
           <CreateItemModal title={"Create a new project"} />
         </div>
 
         {/* Recent Projects */}
-        <div>
-          <h3 className="text-md mb-2 mt-12 font-semibold">Recent projects</h3>
-          <div className="mt-4 flex flex-col space-y-2">
+        <div className="recent_projects">
+          <h3 className="title">Recent projects</h3>
+          <div className="projects_container">
             {activityDataIsLoading ? (
-              <div className="flex h-32 items-center justify-center">
+              <div className="activity_loader">
                 <Loader className="animate-spin text-gray-600" />
-                <p className="ml-2 text-gray-700">Loading Activity Data...</p>
+                <p className="loadingText">Loading Activity Data...</p>
               </div>
             ) : (
               activityData?.slice(0, 3).map((activity: any) => (
                 <div
                   key={activity.id}
-                  className="flex w-full cursor-pointer flex-row items-center justify-between rounded-md bg-white p-4 hover:bg-gray-200"
+                  className="activity_list"
                   onClick={() => handleNavigateToEntities(activity.type, activity.id)}
                 >
-                  <div className="flex flex-col">
+                  <div className="item">
                     <h3 className="text-sm font-semibold">
                       {activity.name.length > 80
                         ? `${activity.name.slice(0, 80)}...`
                         : activity.name}
                     </h3>
                   </div>
-                  <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                  <ChevronRight className="icon" />
                 </div>
               ))
             )}
           </div>
-          <div className="h-50 group mt-2 flex items-center justify-center bg-gray-100">
-            <div className="mx-auto flex w-full items-center justify-center rounded-sm bg-slate-200 p-2 group-hover:bg-slate-300">
+          <div className="loadMore">
+            <div className="toggleWrapper">
               <Plus
                 size={24}
                 className="cursor-pointer text-slate-300 group-hover:text-slate-400"
@@ -139,7 +139,7 @@ export const Dashboard = () => {
       </div>
 
       {/* RIGHT COLUMN (Fixed) */}
-      <div className="flex-2 h-screen w-full bg-gray-100 p-5 md:max-w-[60%]">
+      <div className="rightColumn">
         <h3 className="text-lg font-semibold">Pages graph</h3>
 
         <div className="relative mt-4 flex h-full items-center justify-center overflow-hidden rounded-md">

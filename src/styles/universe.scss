@@ -20,6 +20,13 @@
 @use './components/dialogs/ask-igor-modal.scss';
 @use './components/dialogs/create-item-modal.scss';
 
+// layout
+@use './components/sidebar/sidebar.scss';
+@use './components/dashboard.scss';
+
+// views
+@use './views/advanced-search.scss';
+@use './views/login.scss';
 
 @tailwind base;
 @tailwind components;
