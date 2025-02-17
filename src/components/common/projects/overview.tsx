@@ -151,16 +151,15 @@ export const ProjectOverView = () => {
               </>
             </TabsContent>
             <TabsContent value="technologies" className="mt-2 w-full space-y-2">
-              {/* <VotingCard star={4} />
-                <VotingCard star={4} />
-                <VotingCard star={3} />
-                <VotingCard star={3} />
-                <VotingCard star={2} />
-                <VotingCard star={1} />
-                <VotingCard star={3} />
-                <VotingCard star={2} />
-                <VotingCard star={1} />
-                 */}
+              <VotingCard star={4} className="w-full" />
+              <VotingCard star={4} className="w-full" />
+              <VotingCard star={3} className="w-full" />
+              <VotingCard star={3} className="w-full" />
+              <VotingCard star={2} className="w-full" />
+              <VotingCard star={1} className="w-full" />
+              <VotingCard star={3} className="w-full" />
+              <VotingCard star={2} className="w-full" />
+              <VotingCard star={1} className="w-full" />
 
               <PresetButton
                 title="Other general keyword"
@@ -183,26 +182,6 @@ export const ProjectOverView = () => {
                 description="Either based on general knowledge or the sources linked."
                 className="bg-slate-100"
               />
-              <br />
-              <h3>Other Queries</h3>
-              <PresetButton
-                title="Sleep deprevation"
-                description="Either based on general knowledge or the sources linked."
-                className="bg-slate-100"
-              />
-              <PresetButton
-                title="Constant Annoyance"
-                description="Either based on general knowledge or the sources linked."
-                className="bg-slate-100"
-              />
-              <PresetButton
-                title="Drilling noises"
-                description="Either based on general knowledge or the sources linked."
-                className="bg-slate-100"
-              />
-              <Button className="border border-slate-300 bg-slate-100 text-black hover:bg-slate-200">
-                <Plus /> Create new query
-              </Button>
             </TabsContent>
             <TabsContent value="queries" className="mt-2 space-y-2">
               <h3>Active Queries</h3>
