@@ -2,11 +2,10 @@ import { Button } from "@/components/ui/button";
 // import { AskIgor } from "@/stories/04-utilities/dialog/Dialog.stories";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { ChevronRight, Plus } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 import { useState } from "react";
 
-import VotingCard from "../cards/voting-card";
 import SearchBar from "../search/searchbar";
 
 function PresetButton({
