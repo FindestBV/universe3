@@ -25,7 +25,21 @@ export const projectApi = api.injectEndpoints({
       query: (id) => `/maturity-radar/4/${id}`,
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
     }),
+
+    createMaturityRadar: builder.mutation({
+      queryFn: (id) => {
+        return {
+          data: {
+            id,
+            status: "success",
+            message: "Dummy response for createMaturityRadar",
+            createdAt: new Date().toISOString(),
+          },
+        };
+      },
+      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+    }),
   }),
 });
 
-export const { useGetMaturityRadarQuery } = projectApi;
+export const { useGetMaturityRadarQuery, useCreateMaturityRadarMutation } = projectApi;

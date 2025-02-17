@@ -1,4 +1,7 @@
-import { useGetMaturityRadarQuery } from "@/api/projects/projectsApi";
+import {
+  useCreateMaturityRadarMutation,
+  useGetMaturityRadarQuery,
+} from "@/api/projects/projectsApi";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,7 +11,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Node } from "@tiptap/core";
 import { NodeViewContent, NodeViewWrapper } from "@tiptap/react";
 
 import { useEffect, useState } from "react";
@@ -22,14 +24,22 @@ export const MaturityRadarComponent = ({ node, updateAttributes }) => {
   const pageId = pathSegments[pathSegments.length - 1];
 
   console.log("pageId for maturity query", pageId);
-  const radarData = useGetMaturityRadarQuery(pageId);
+
+  const { data: radarData, isLoading, isError } = useGetMaturityRadarQuery(pageId);
+  const [createMaturityRadar, { isLoading: isCreating }] = useCreateMaturityRadarMutation();
 
   console.log("id should be the same as in URL", id);
   console.log("maturity radar data", radarData);
 
   useEffect(() => {
     console.log("block mounted");
-  }, []);
+
+    // If there is no existing radarData and it's not loading, create one
+    if (!radarData && !isLoading && !isError) {
+      console.log("No maturity radar found, creating one...");
+      createMaturityRadar(pageId);
+    }
+  }, [radarData, isLoading, isError, createMaturityRadar, pageId]);
 
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
@@ -50,8 +60,11 @@ export const MaturityRadarComponent = ({ node, updateAttributes }) => {
 
       <div className="martity-radar-container relative w-auto max-w-full overflow-y-scroll">
         <h3>Maturity Radar v2 initial</h3>
-        {radarData ? (
-          radarData?.data?.sourceTitle
+
+        {isLoading || isCreating ? (
+          <p>Loading...</p>
+        ) : radarData ? (
+          radarData?.sourceTitle
         ) : (
           <pre>
             {node.attrs.settings.customText
