@@ -4,6 +4,7 @@ import CustomGraphBlock from "@/components/common/editor/extensions/customgraphb
 import CustomImage from "@/components/common/editor/extensions/customImage";
 import Title from "@/components/common/editor/extensions/customtitle-extension";
 import IntakeSheetComponent from "@/components/common/editor/extensions/intakesheet-extension";
+import { MaturityRadar } from "@/components/common/editor/extensions/maturity-radar";
 import { ExtensionKit } from "@/extensions/extension-kit";
 import { initialContent } from "@/lib/data/initialContent";
 import { TiptapCollabProvider, WebSocketStatus } from "@hocuspocus/provider";
@@ -164,6 +165,7 @@ export const useBlockEditor = ({
         IntakeSheetComponent,
         CustomImage,
         Rating,
+        MaturityRadar,
       ],
       editorProps: {
         attributes: {

@@ -208,11 +208,18 @@ export const GROUPS: Group[] = [
         name: "maturity-radar",
         label: "Maturity Radar",
         iconName: "Target",
-        description: "Insert a custom visualization block",
+        description: "Insert a maturity radar block",
         shouldBeHidden: (editor) => editor.isActive("columns"),
         aliases: ["maturity-radar"],
         action: (editor) => {
-          editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: false }).run();
+          editor
+            .chain()
+            .focus()
+            .insertContent({
+              type: "maturityRadar",
+              attrs: { id: `maturity-radar-${Date.now()}` },
+            })
+            .run();
         },
       },
     ],

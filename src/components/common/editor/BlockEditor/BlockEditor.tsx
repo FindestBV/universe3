@@ -398,7 +398,7 @@ export const BlockEditor = ({
                 <Comments connectedComments={connectedComments} />
               </div>
             </div>
-            <div className={`referenceSidebar h-full`}>
+            <div className={`referenceSidebar h-full px-4`}>
               <ReferencesSidebar editor={editor} />
             </div>
           </div>
