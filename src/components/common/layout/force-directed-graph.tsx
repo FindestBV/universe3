@@ -76,23 +76,23 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
     ctx.translate(transform.x, transform.y);
     ctx.scale(transform.k, transform.k);
 
-    // ✅ Ensure Link Lines Are Visible (BLACK)
+    // Ensure Link Lines Are Visible (BLACK)
     ctx.strokeStyle = "#000"; // Ensure black links
     ctx.lineWidth = 4;
     ctx.globalAlpha = 1;
     ctx.beginPath();
 
     graphData.links.forEach((link) => {
-      const { source, target } = link; // ✅ Now source & target are objects
+      const { source, target } = link; // Now source & target are objects
       if (!source || !target) return;
 
       ctx.moveTo(source.x, source.y);
       ctx.lineTo(target.x, target.y);
     });
 
-    ctx.stroke(); // ✅ Ensures links are drawn
+    ctx.stroke(); // Ensures links are drawn
 
-    // ✅ Draw Nodes
+    // Draw Nodes
     graphData.nodes.forEach((node) => {
       ctx.beginPath();
       ctx.arc(node.x, node.y, NODE_RADIUS, 0, 2 * Math.PI);
@@ -106,7 +106,7 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
     ctx.restore();
   };
 
-  // 🖱️ Hover to Show Tooltips
+  // Hover to Show Tooltips (temp - this will likley need significant update )
   const setupHoverEvents = (canvas, transform, graphData) => {
     canvas.addEventListener("mousemove", (event) => {
       const mouseX = (event.offsetX - transform.x) / transform.k;
@@ -124,7 +124,7 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
     });
   };
 
-  // 🏗️ Enable Dragging of Nodes with Smooth Animation
+  // Enable Dragging of Nodes with Smooth Animation
   const setupDrag = (canvas, ctx, transform, graphData) => {
     let draggingNode = null;
 
@@ -153,7 +153,7 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
     });
   };
 
-  // 🏗️ Initialize Graph Rendering & Events
+  // Initialize Graph Rendering & Events
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -162,7 +162,7 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
 
     let transform = { k: 1, x: 0, y: 0 };
 
-    // 🔍 Zoom and Pan Behavior
+    // Zoom and Pan Behavior
     const zoomBehavior = zoom()
       .scaleExtent([0.1, 2])
       .on("zoom", (event) => {
@@ -172,8 +172,8 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
 
     select(canvas).call(zoomBehavior);
 
-    // Set Initial Zoom & Centering (Scale 0.11)
-    const initialScale = 0.1;
+    // Set Initial Zoom & Centering (Scale 0.1)
+    const initialScale = 0.1; // force it to be zoomed out
     const initialX = canvas.width / 2;
     const initialY = canvas.height / 2;
     transform = zoomIdentity.translate(initialX, initialY).scale(initialScale);

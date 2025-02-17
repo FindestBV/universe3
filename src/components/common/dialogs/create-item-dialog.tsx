@@ -67,7 +67,8 @@ export function CreateItemModal({ ...props }: any) {
   });
   const [step, setStep] = useState(1);
   const [open, setOpen] = useState(false);
-  const modalTitle = props?.title;
+  const dialogTitle = props?.title;
+  const dialogType = props?.type;
 
   const totalSteps = 3;
 
@@ -156,7 +157,7 @@ export function CreateItemModal({ ...props }: any) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <div className="trigger">
-            <p className="title">{modalTitle ? modalTitle : "Create new project"}</p>
+            <p className="title">{dialogTitle ? dialogTitle : "Create new project"}</p>
             <div className="icon">
               <Plus size={20} className="text-white" />
             </div>
@@ -164,25 +165,29 @@ export function CreateItemModal({ ...props }: any) {
         </DialogTrigger>
         <DialogContent className="dialogContent bg-white sm:max-w-[750px] [&>button]:hidden">
           <div className="mb-6 flex items-center gap-4">
-            <DialogTitle className="text-lg">{getStepTitle()}</DialogTitle>
-
-            {/* Progress Indicator */}
-            <div className="flex flex-1 justify-end gap-2">
-              {[...Array(totalSteps)].map((_, index) => (
-                <div
-                  key={index}
-                  className={cn(
-                    "h-2 w-2 rounded-full transition-all duration-300",
-                    index + 1 === step
-                      ? "w-6 bg-blue-300"
-                      : index + 1 < step
-                        ? "bg-[#fcfafc]"
-                        : "bg-gray-200",
-                  )}
-                />
-              ))}
-            </div>
-
+            {/* set condition if is tech/scientific landscape */}
+            {dialogType == "techoverview" ? (
+              <DialogTitle className="text-lg">Create Landscape</DialogTitle>
+            ) : (
+              <>
+                <DialogTitle className="text-lg">{getStepTitle()}</DialogTitle>
+                <div className="flex flex-1 justify-end gap-2">
+                  {[...Array(totalSteps)].map((_, index) => (
+                    <div
+                      key={index}
+                      className={cn(
+                        "h-2 w-2 rounded-full transition-all duration-300",
+                        index + 1 === step
+                          ? "w-6 bg-blue-300"
+                          : index + 1 < step
+                            ? "bg-[#fcfafc]"
+                            : "bg-gray-200",
+                      )}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
             {/* Close button */}
             <DialogClose className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
               <X className="h-4 w-4" />
