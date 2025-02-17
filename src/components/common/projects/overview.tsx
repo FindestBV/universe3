@@ -107,6 +107,13 @@ export const ProjectOverView = () => {
             <Tabs defaultValue="overview" className="pb-4" onValueChange={setIsActiveTabActive}>
               <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
                 <div className="flex gap-2">
+                  <TabsTrigger
+                    key={"search"}
+                    value={"search"}
+                    className={`p-2 text-sm ${activeTabActive === "search" ? "border-b-2 border-blue-800 bg-blue-200 font-bold" : "text-black"}`}
+                  >
+                    <Search size={18} />
+                  </TabsTrigger>
                   {tabs.map((tab) => (
                     <TabsTrigger
                       key={tab.id}
