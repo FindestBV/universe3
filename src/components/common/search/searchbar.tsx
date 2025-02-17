@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useSearchItemsMutation } from "@/api/search/searchApi";
 import { useDebounce } from "@/hooks/use-debounce";
-import { useTruncateText } from "@/hooks/use-truncate-text";
 import { Loader, Search, X } from "lucide-react";
 
 import { useCallback, useState } from "react";
@@ -140,7 +139,7 @@ export const SearchBar = () => {
 
   const filteredResults = filterResults(data);
   return (
-    <div className="">
+    <div className="search">
       {/* Search Input */}
       <form className="w-full">
         <div>

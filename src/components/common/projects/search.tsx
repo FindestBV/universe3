@@ -2,14 +2,11 @@ import { Button } from "@/components/ui/button";
 // import { AskIgor } from "@/stories/04-utilities/dialog/Dialog.stories";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { ChevronRight, File, Network, Plus, Search } from "lucide-react";
+import { ChevronRight, Plus } from "lucide-react";
 
 import { useState } from "react";
 
 import VotingCard from "../cards/voting-card";
-import AskIgorModal from "../dialogs/ask-igor";
-import CreateItemModal from "../dialogs/create-item-dialog";
-import ProjectSearchDialog from "../dialogs/project-search-dialog";
 import SearchBar from "../search/searchbar";
 
 function PresetButton({
@@ -51,23 +48,6 @@ export const ProjectSearch = () => {
             <h1 className="mb-2 text-4xl font-bold">Project search</h1>
 
             <SearchBar />
-            {/* <div className="item-start flex gap-4">
-              <span className="flex items-center gap-2">
-                <File
-                  size={24}
-                  className="h-50 rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
-                />
-                <Search
-                  size={24}
-                  className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
-                />
-                <Plus
-                  size={24}
-                  className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
-                />
-              </span>
-              <AskIgorModal />
-            </div> */}
           </div>
           <div className="mt-16">
             <Tabs defaultValue="overview" className="pb-4" onValueChange={setIsActiveTabActive}>
@@ -121,14 +101,17 @@ export const ProjectSearch = () => {
                 />
               </TabsContent>
               <TabsContent value="technologies" className="mt-2 space-y-2">
-                <VotingCard star={4} />
-                <VotingCard star={4} />
-                <VotingCard star={3} />
-                <VotingCard star={3} />
-                <VotingCard star={2} />
-                <VotingCard star={1} />
-                <VotingCard star={1} />
-
+                <div className="w-full">
+                  <VotingCard star={4} />
+                  <VotingCard star={4} />
+                  <VotingCard star={3} />
+                  <VotingCard star={3} />
+                  <VotingCard star={2} />
+                  <VotingCard star={1} />
+                  <VotingCard star={3} />
+                  <VotingCard star={2} />
+                  <VotingCard star={1} />
+                </div>
                 <div className="h-50 group flex items-center justify-center bg-gray-100">
                   <div className="mx-auto flex w-full items-center justify-center rounded-sm bg-slate-100 p-2 group-hover:bg-slate-200">
                     <Plus

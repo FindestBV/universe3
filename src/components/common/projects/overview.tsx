@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 // import { AskIgor } from "@/stories/04-utilities/dialog/Dialog.stories";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { ChevronRight, File, Network, Plus, Search } from "lucide-react";
+import { ChevronRight, File, Plus, Search } from "lucide-react";
 
 import { useState } from "react";
 
@@ -36,7 +36,19 @@ function PresetButton({
 }
 
 export const ProjectOverView = () => {
+  const [tabs, setTabs] = useState([
+    { id: "overview", label: "Overview" },
+    { id: "technologies", label: "Technologies" },
+    { id: "queries", label: "Queries" },
+  ]);
   const [activeTabActive, setIsActiveTabActive] = useState<string>("overview");
+
+  const addNewTab = () => {
+    const newId = `tab-${tabs.length + 1}`;
+    setTabs([...tabs, { id: newId, label: `New Tab ${tabs.length + 1}` }]);
+    setIsActiveTabActive(newId);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -79,44 +91,40 @@ export const ProjectOverView = () => {
           </div>
           <div className="mt-16">
             <Tabs defaultValue="overview" className="pb-4" onValueChange={setIsActiveTabActive}>
-              <TabsList className="flex w-full justify-start gap-2 rounded-none border-b border-slate-300 bg-transparent">
-                <TabsTrigger
-                  value="overview"
-                  className={`linear p-2 text-sm transition-all duration-150 ${
-                    activeTabActive === "overview"
-                      ? "border-b-2 border-blue-800 bg-blue-200 font-bold"
-                      : "text-black"
-                  }`}
+              <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
+                <div className="flex gap-2">
+                  {tabs.map((tab) => (
+                    <TabsTrigger
+                      key={tab.id}
+                      value={tab.id}
+                      className={`p-2 text-sm transition-all duration-150 ${
+                        activeTabActive === tab.id
+                          ? "border-b-2 border-blue-800 bg-blue-200 font-bold"
+                          : "text-black"
+                      }`}
+                    >
+                      {tab.label}
+                    </TabsTrigger>
+                  ))}
+                </div>
+                <button
+                  onClick={addNewTab}
+                  className="flex items-center rounded-md p-2 text-gray-600 hover:bg-gray-200"
                 >
-                  Overview
-                </TabsTrigger>
-                <TabsTrigger
-                  value="technologies"
-                  className={`linear p-2 text-sm transition-all duration-150 ${
-                    activeTabActive === "technologies"
-                      ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
-                      : "text-black"
-                  }`}
-                >
-                  Technologies
-                </TabsTrigger>
-                <TabsTrigger
-                  value="queries"
-                  className={`linear p-2 text-sm transition-all duration-150 ${
-                    activeTabActive === "queries"
-                      ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
-                      : "text-black"
-                  }`}
-                >
-                  Queries
-                </TabsTrigger>
+                  <Plus className="h-5 w-8" />
+                </button>
               </TabsList>
+              {/* {tabs.map((tab) => (
+                <TabsContent key={tab.id} value={tab.id} className="mt-2 space-y-2">
+                  <p className="p-4 text-sm">Content for {tab.label}</p>
+                </TabsContent>
+              ))} */}
               <TabsContent value="overview" className="mt-2 space-y-2">
                 <div className="w-1/2">
                   <h3 className="text-md mb-2 pt-3 font-semibold">Get started</h3>
                   <div className="flex flex-col gap-2">
                     <CreateItemModal title={"Create a scientific landscape"} />
-                    <CreateItemModal title={"Create a technology overview"} type="techoverview" />
+                    <CreateItemModal title={"Create a technology overview"} />
                   </div>
                   <br />
                   <div className="flex flex-col gap-2">
