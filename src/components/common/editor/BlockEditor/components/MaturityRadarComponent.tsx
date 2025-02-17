@@ -1,3 +1,4 @@
+import { useGetMaturityRadarQuery } from "@/api/projects/projectsApi";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,8 +14,18 @@ import { NodeViewContent, NodeViewWrapper } from "@tiptap/react";
 import { useEffect, useState } from "react";
 
 export const MaturityRadarComponent = ({ node, updateAttributes }) => {
+  const { id = "" } = node.attrs;
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const [inputValue, setInputValue] = useState(node.attrs.settings.customText || "");
+
+  const pathSegments = window.location.pathname.split("/");
+  const pageId = pathSegments[pathSegments.length - 1];
+
+  console.log("pageId for maturity query", pageId);
+  const radarData = useGetMaturityRadarQuery(pageId);
+
+  console.log("id should be the same as in URL", id);
+  console.log("maturity radar data", radarData);
 
   useEffect(() => {
     console.log("block mounted");
@@ -39,12 +50,16 @@ export const MaturityRadarComponent = ({ node, updateAttributes }) => {
 
       <div className="martity-radar-container relative w-auto max-w-full overflow-y-scroll">
         <h3>Maturity Radar v2 initial</h3>
-        <pre>
-          {node.attrs.settings.customText
-            ? node.attrs.settings.customText
-            : JSON.stringify(node.attrs.settings, null, 2)}
-        </pre>
-        {/* <p>{node.attrs.settings.customText}</p> */}
+        {radarData ? (
+          radarData?.data?.sourceTitle
+        ) : (
+          <pre>
+            {node.attrs.settings.customText
+              ? node.attrs.settings.customText
+              : JSON.stringify(node.attrs.settings, null, 2)}
+          </pre>
+        )}
+        <pre>{node.attrs.settings.customText ? node.attrs.settings.customText : null}</pre>
         <Button onClick={handleOpenDialog}>Edit Settings</Button>
       </div>
 

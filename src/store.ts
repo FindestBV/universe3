@@ -4,6 +4,7 @@ import { authApi } from "@/api/auth/authApi";
 import authSlice from "@/api/auth/authSlice";
 import { documentApi } from "@/api/documents/documentApi";
 import documentSlice from "@/api/documents/documentSlice";
+import { projectApi } from "@/api/projects/projectsApi";
 import { searchApi } from "@/api/search/searchApi";
 import languageReducer from "@/api/utilities/languageSlice";
 import sidebarReducer from "@/api/utilities/sidebarSlice";
@@ -38,6 +39,7 @@ export const rootReducer = combineReducers({
   router: routerReducer,
   auth: authSlice,
   activities: activityApi,
+  projects: projectApi,
   search: searchApi,
   advancedSearch: advancedSearchSlice,
   document: documentSlice,
@@ -64,6 +66,7 @@ export const store = configureStore({
       documentApi.middleware,
       activityApi.middleware,
       searchApi.middleware,
+      projectApi.middleware,
       routerMiddleware,
     ),
 });

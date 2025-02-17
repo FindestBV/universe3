@@ -42,12 +42,14 @@ export const ProjectSearch = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
-      <div className="min-h-full">
+      <div className="min-h-full" id="projects-search">
         <div className="mx-auto max-w-full p-8">
           <div className="overviewHeader">
             <h1 className="mb-2 text-4xl font-bold">Project search</h1>
-
-            <SearchBar />
+            <br />
+            <div className="mx-auto max-w-[1024px]">
+              <SearchBar />
+            </div>
           </div>
           <div className="mt-16">
             <Tabs defaultValue="overview" className="pb-4" onValueChange={setIsActiveTabActive}>
@@ -61,26 +63,6 @@ export const ProjectSearch = () => {
                   }`}
                 >
                   Overview
-                </TabsTrigger>
-                <TabsTrigger
-                  value="technologies"
-                  className={`linear p-2 text-sm transition-all duration-150 ${
-                    activeTabActive === "technologies"
-                      ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
-                      : "text-black"
-                  }`}
-                >
-                  Technologies
-                </TabsTrigger>
-                <TabsTrigger
-                  value="queries"
-                  className={`linear p-2 text-sm transition-all duration-150 ${
-                    activeTabActive === "queries"
-                      ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
-                      : "text-black"
-                  }`}
-                >
-                  Queries
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="overview" className="mt-2 space-y-2">
@@ -99,74 +81,6 @@ export const ProjectSearch = () => {
                   description="Either based on general knowledge or the sources linked."
                   className="bg-slate-100"
                 />
-              </TabsContent>
-              <TabsContent value="technologies" className="mt-2 space-y-2">
-                <div className="w-full">
-                  <VotingCard star={4} />
-                  <VotingCard star={4} />
-                  <VotingCard star={3} />
-                  <VotingCard star={3} />
-                  <VotingCard star={2} />
-                  <VotingCard star={1} />
-                  <VotingCard star={3} />
-                  <VotingCard star={2} />
-                  <VotingCard star={1} />
-                </div>
-                <div className="h-50 group flex items-center justify-center bg-gray-100">
-                  <div className="mx-auto flex w-full items-center justify-center rounded-sm bg-slate-100 p-2 group-hover:bg-slate-200">
-                    <Plus
-                      size={24}
-                      className="cursor-pointer text-slate-300 group-hover:text-slate-400"
-                    />
-                  </div>
-                </div>
-              </TabsContent>
-              <TabsContent value="queries" className="mt-2 space-y-2">
-                <h3>Active Queries</h3>
-                <PresetButton
-                  title="Other general keyword"
-                  description="Either based on general knowledge or the sources linked."
-                  className="bg-slate-100"
-                />
-                <PresetButton
-                  title="General description"
-                  description="Either based on general knowledge or the sources linked."
-                  className="bg-slate-100"
-                />
-                <PresetButton
-                  title="Other general keyword"
-                  description="Either based on general knowledge or the sources linked."
-                  className="bg-slate-100"
-                />
-                <PresetButton
-                  title="General description"
-                  description="Either based on general knowledge or the sources linked."
-                  className="bg-slate-100"
-                />
-                <PresetButton
-                  title="Waterboarding"
-                  description="Either based on general knowledge or the sources linked."
-                  className="bg-slate-100"
-                />
-                <h3>Other Queries</h3>
-                <PresetButton
-                  title="Sleep deprevation"
-                  description="Either based on general knowledge or the sources linked."
-                  className="bg-slate-100"
-                />
-                <PresetButton
-                  title="Constant Annoyance"
-                  description="Either based on general knowledge or the sources linked."
-                  className="bg-slate-100"
-                />
-                <PresetButton
-                  title="Drilling noises"
-                  description="Either based on general knowledge or the sources linked."
-                  className="bg-slate-100"
-                />
-                <Button className="border border-slate-300 bg-slate-100 text-black hover:bg-slate-200">
-                  <Plus /> Create new query
-                </Button>
               </TabsContent>
             </Tabs>
           </div>
