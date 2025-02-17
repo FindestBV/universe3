@@ -56,7 +56,7 @@ export const ProjectOverView = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
-      <div className="min-h-full">
+      <div className="min-h-full" id="projects-overview">
         <div className="mx-auto max-w-full p-8">
           <div className="overviewHeader">
             <h1 className="mb-2 text-4xl font-bold">

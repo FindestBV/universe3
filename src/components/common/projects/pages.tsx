@@ -37,6 +37,19 @@ function PresetButton({
 
 export const ProjectPages = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
+
+  const [tabs, setTabs] = useState([
+    { id: "all", label: "All Page Types" },
+    { id: "studies", label: "Studies" },
+    { id: "entities", label: "Entities" },
+  ]);
+
+  const addNewTab = () => {
+    const newId = `tab-${tabs.length + 1}`;
+    setTabs([...tabs, { id: newId, label: `New Tab ${tabs.length + 1}` }]);
+    setIsActiveTabActive(newId);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -44,7 +57,7 @@ export const ProjectPages = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
-      <div className="min-h-full">
+      <div className="min-h-full" id="projects-pages">
         <div className="mx-auto w-full p-8">
           <div className="overviewHeader">
             <h1 className="mb-2 text-4xl font-bold">Pages</h1>
@@ -77,37 +90,28 @@ export const ProjectPages = () => {
           </div>
           <div className="mt-4">
             <Tabs defaultValue="all" className="pb-4" onValueChange={setIsActiveTabActive}>
-              <TabsList className="flex w-full justify-start gap-2 rounded-none border-b border-slate-300 bg-transparent">
-                <TabsTrigger
-                  value="all"
-                  className={`linear p-2 text-sm transition-all duration-150 ${
-                    activeTabActive === "all"
-                      ? "border-b-2 border-blue-800 bg-blue-200 font-bold"
-                      : "text-black"
-                  }`}
+              <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
+                <div className="flex gap-2">
+                  {tabs.map((tab) => (
+                    <TabsTrigger
+                      key={tab.id}
+                      value={tab.id}
+                      className={`p-2 text-sm transition-all duration-150 ${
+                        activeTabActive === tab.id
+                          ? "border-b-2 border-blue-800 bg-blue-200 font-bold"
+                          : "text-black"
+                      }`}
+                    >
+                      {tab.label}
+                    </TabsTrigger>
+                  ))}
+                </div>
+                <button
+                  onClick={addNewTab}
+                  className="flex items-center rounded-md p-2 text-gray-600 hover:bg-gray-200"
                 >
-                  All Page Types
-                </TabsTrigger>
-                <TabsTrigger
-                  value="studies"
-                  className={`linear p-2 text-sm transition-all duration-150 ${
-                    activeTabActive === "studies"
-                      ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
-                      : "text-black"
-                  }`}
-                >
-                  Studies
-                </TabsTrigger>
-                <TabsTrigger
-                  value="entities"
-                  className={`linear p-2 text-sm transition-all duration-150 ${
-                    activeTabActive === "entities"
-                      ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
-                      : "text-black"
-                  }`}
-                >
-                  Entities
-                </TabsTrigger>
+                  <Plus className="h-5 w-8" />
+                </button>
               </TabsList>
               <TabsContent value="all" className="mt-2 space-y-2">
                 <div className="w-full">
