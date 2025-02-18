@@ -1,6 +1,18 @@
+import {
+  useCreateMaturityRadarMutation,
+  useGetMaturityRadarQuery,
+} from "@/api/projects/projectsApi";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { NodeViewContent, NodeViewWrapper } from "@tiptap/react";
 
-import React from "react";
 import { useEffect, useRef, useState } from "react";
 
 // Types
@@ -31,48 +43,20 @@ const MATURITY_LEVELS: MaturityLevel[] = [
   { radius: 320, color: "#BEE3F8", label: "Discover" },
 ];
 
-// Mock data for development
-const mockRadarData = {
-  id: "08dd1efd-7516-4b5e-812d-9349ee185593",
-  title: "Maturity radar",
-  description: "Test references 2 to verify output\n",
-  sourceTitle: "Event Storming Study",
-  sourceType: 4,
-  sourceId: "08dd1e7c-8f94-478d-89ea-7d6cfae32a8e",
-  assessments: [
-    {
-      id: "08dd4ff2-ceed-4052-8a09-39cdb2a9993c",
-      targetTitle: "New entity test A",
-      targetType: 1,
-      targetId: "08dd1d35-e941-473f-84ce-28bf3e1c0170",
-      lowScore: 1,
-      highScore: 2,
-    },
-    {
-      id: "08dd4ff2-ceed-4068-88b0-ebcc5aa3bc87",
-      targetTitle: "New entity",
-      targetType: 1,
-      targetId: "08dd1d35-b23f-40be-8a74-d759702e98c9",
-      lowScore: 1,
-      highScore: 2,
-    },
-    {
-      id: "08dd4ff2-ceed-406f-8fff-425a50f359a6",
-      targetTitle: "We believe that trustworthy health information...",
-      targetType: 1,
-      targetId: "08dd1d48-0d17-46cc-81b7-e6775bb2f670",
-      lowScore: 14,
-      highScore: 16,
-    },
-  ],
-};
-
 export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
   node,
   updateAttributes,
 }) => {
-  const [inputValue, setInputValue] = useState("");
+  const { id = "" } = node.attrs;
+  const [isDialogOpen, setIsDialogOpen] = useState(true);
+  const [inputValue, setInputValue] = useState(node.attrs.settings.customText || "");
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const pathSegments = window.location.pathname.split("/");
+  const pageId = pathSegments[pathSegments.length - 1];
+
+  const { data: radarData, isLoading, isError } = useGetMaturityRadarQuery(pageId);
+  const [createMaturityRadar, { isLoading: isCreating }] = useCreateMaturityRadarMutation();
 
   useEffect(() => {
     setTimeout(() => {
@@ -101,8 +85,8 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
         drawLabels(ctx);
 
         // Draw assessments if we have data
-        if (mockRadarData.assessments) {
-          drawAssessments(ctx, mockRadarData.assessments);
+        if (radarData?.data.assessments) {
+          drawAssessments(ctx, radarData?.data.assessments);
         }
 
         ctx.restore();
@@ -252,8 +236,29 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
           className="mt-4 rounded border border-gray-200"
           style={{ width: "800px", height: "800px" }}
         />
-        {mockRadarData && <div className="mt-4 text-gray-600">{mockRadarData.sourceTitle}</div>}
+        {radarData?.data && <div className="mt-4 text-gray-600">{radarData?.data.sourceTitle}</div>}
       </div>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="bg-white">
+          <DialogHeader>
+            <DialogTitle>Edit Maturity Radar Settings</DialogTitle>
+          </DialogHeader>
+          <div>
+            <Input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Enter custom text"
+              className="bg-[#fcfafc]"
+            />
+          </div>
+          <DialogFooter>
+            <Button onClick={handleCloseDialog}>Close</Button>
+            <Button onClick={handleContinue}>Continue</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 
@@ -266,6 +271,9 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
       </NodeViewWrapper>
     );
   }
+
+  // If used as a standalone component
+  return <Content />;
 };
 
 export default MaturityRadarComponent;
