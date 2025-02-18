@@ -8,39 +8,12 @@ import { useEffect, useState } from "react";
 
 import { CreateItemModal } from "./create-item-dialog";
 
-// function PresetButton({
-//   title,
-//   description,
-// }: {
-//   title?: string;
-//   description?: string;
-//   className: string;
-// }) {
-//   return (
-//     <Button
-//       variant="ghost"
-//       className="group h-auto w-full justify-between bg-slate-100 py-2 hover:bg-slate-400"
-//     >
-//       <div className="flex items-start gap-4">
-//         <div className="text-left">
-//           <h3 className="font-medium group-hover:text-white">{title}</h3>
-//           <p className="text-sm text-gray-600 group-hover:text-white">{description}</p>
-//         </div>
-//       </div>
-//       <ChevronRight className="h-4 w-4" />
-//     </Button>
-//   );
-// }
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const SessionDialog = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { data: activityData, isLoading: activityDataIsLoading } = useGetMyRecentActivityQuery();
   const navigateWithTransition = useNavigateWithTransition();
 
   const handleNavigateToEntities = (type: string, id: string) => {
-    console.log("something when clicked. ");
-    // const redirRoute = type === "Entity" ? "entities" : "studies";
     navigateWithTransition(`/projects/${id}`, { state: { id } });
   };
 
@@ -95,7 +68,7 @@ export const SessionDialog = () => {
           <CreateItemModal title={"Create a new project"} />
           <button
             type="submit"
-            className="mt-2 max-w-[200px] rounded-md bg-black p-2 text-sm text-white hover:bg-slate-500 focus:outline-none"
+            className="max-w-[200px] rounded-md bg-black p-2 text-sm text-white hover:bg-slate-500 focus:outline-none"
             onClick={() => setIsDialogOpen(false)}
           >
             No projects today

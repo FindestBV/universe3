@@ -162,7 +162,7 @@ export const ProjectOverView = () => {
               {/* <PresetButton title="Other general keyword" description="Either based on general knowledge or the sources linked." className="bg-slate-100" /> */}
             </TabsContent>
             <TabsContent value="queries" className="mt-2 space-y-2 py-4">
-              <h3>Active Queries</h3>
+              <h3 className="py-4 font-bold">Active Queries</h3>
               <PresetButton
                 title="Other general keyword"
                 description="Either based on general knowledge or the sources linked."
@@ -188,7 +188,7 @@ export const ProjectOverView = () => {
                 description="Either based on general knowledge or the sources linked."
                 className="bg-slate-100"
               />
-              <h3>Other Queries</h3>
+              <h3 className="py-4 font-bold">Other Queries</h3>
               <PresetButton
                 title="Sleep deprevation"
                 description="Either based on general knowledge or the sources linked."
