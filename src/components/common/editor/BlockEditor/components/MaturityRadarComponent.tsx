@@ -38,14 +38,11 @@ export const MaturityRadarComponent = ({ node, updateAttributes }) => {
   const pathSegments = window.location.pathname.split("/");
   const pageId = pathSegments[pathSegments.length - 1];
 
-  console.log("pageId for maturity query", pageId);
-
   const { data: radarData, isLoading, isError } = useGetMaturityRadarQuery(pageId);
   const [createMaturityRadar, { isLoading: isCreating }] = useCreateMaturityRadarMutation();
 
   useEffect(() => {
     if (!radarData && !isLoading && !isError) {
-      console.log("No maturity radar found, creating one...");
       createMaturityRadar(pageId);
     }
   }, [radarData, isLoading, isError, createMaturityRadar, pageId]);
@@ -53,55 +50,54 @@ export const MaturityRadarComponent = ({ node, updateAttributes }) => {
   useEffect(() => {
     setTimeout(() => {
       const canvas = canvasRef.current;
-      if (!canvas) {
-        console.error("❌ No canvas element found");
-        return;
-      }
+      if (!canvas) return;
 
       const ctx = canvas.getContext("2d");
-      if (!ctx) {
-        console.error("❌ No canvas context found");
-        return;
-      }
-
-      console.log("✅ Canvas found, starting render");
+      if (!ctx) return;
 
       requestAnimationFrame(() => {
         canvas.width = 800;
         canvas.height = 800;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.save(); // Save state before translation
+        ctx.save();
         ctx.translate(canvas.width / 2, canvas.height / 2);
 
+        // Draw background
+        ctx.fillStyle = "#F7FAFC";
+        ctx.beginPath();
+        ctx.arc(0, 0, 320, 0, Math.PI * 2);
+        ctx.fill();
+
         drawMaturityLevels(ctx);
+        drawGridLines(ctx);
         drawLabels(ctx);
 
-        ctx.restore(); // Restore to prevent cumulative translation
-        console.log("✅ Canvas render complete");
+        ctx.restore();
       });
-    }, 100); // Delay to ensure canvas exists
+    }, 100);
   }, [node.attrs.settings]);
 
-  const handleOpenDialog = () => setIsDialogOpen(true);
-  const handleCloseDialog = () => setIsDialogOpen(false);
-  const handleContinue = () => {
-    updateAttributes({ settings: { ...node.attrs.settings, customText: inputValue } });
-    setIsDialogOpen(false);
-  };
-
   function drawMaturityLevels(ctx) {
-    console.log("🎯 Drawing maturity levels...");
-    MATURITY_LEVELS.forEach((level) => {
+    // Draw from outside in to layer properly
+    [...MATURITY_LEVELS].reverse().forEach((level, index) => {
+      // Fill circle
       ctx.beginPath();
       ctx.arc(0, 0, level.radius, 0, Math.PI * 2);
       ctx.fillStyle = level.color;
       ctx.fill();
-      console.log(`✅ Drew circle: ${level.label}, Radius: ${level.radius}, Color: ${level.color}`);
 
+      // Draw white border
       ctx.beginPath();
       ctx.arc(0, 0, level.radius, 0, Math.PI * 2);
-      ctx.strokeStyle = "#FFFFFF";
+      ctx.strokeStyle = "white";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Draw subtle inner shadow
+      ctx.beginPath();
+      ctx.arc(0, 0, level.radius - 1, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(0,0,0,0.1)";
       ctx.lineWidth = 2;
       ctx.stroke();
     });
@@ -111,21 +107,50 @@ export const MaturityRadarComponent = ({ node, updateAttributes }) => {
     ctx.arc(0, 0, 40, 0, Math.PI * 2);
     ctx.fillStyle = "#FFFFFF";
     ctx.fill();
+    ctx.strokeStyle = "rgba(0,0,0,0.1)";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  function drawGridLines(ctx) {
+    // Draw quadrant lines
+    ctx.beginPath();
+    ctx.moveTo(-320, 0);
+    ctx.lineTo(320, 0);
+    ctx.moveTo(0, -320);
+    ctx.lineTo(0, 320);
+    ctx.strokeStyle = "rgba(255,255,255,0.8)";
+    ctx.lineWidth = 2;
+    ctx.stroke();
   }
 
   function drawLabels(ctx) {
-    console.log("🔠 Drawing labels...");
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.font = "16px Arial";
+    ctx.font = "bold 16px Arial";
     ctx.fillStyle = "#2D3748";
 
     MATURITY_LEVELS.forEach((level) => {
       const y = -level.radius + 20;
+
+      // Draw label background
+      const textMetrics = ctx.measureText(level.label);
+      const padding = 8;
+      ctx.fillStyle = "rgba(255,255,255,0.9)";
+      ctx.fillRect(-textMetrics.width / 2 - padding, y - 10, textMetrics.width + padding * 2, 20);
+
+      // Draw text
+      ctx.fillStyle = "#2D3748";
       ctx.fillText(level.label, 0, y);
-      console.log(`✅ Drew label: ${level.label}, Position: (0, ${y})`);
     });
   }
+
+  const handleOpenDialog = () => setIsDialogOpen(true);
+  const handleCloseDialog = () => setIsDialogOpen(false);
+  const handleContinue = () => {
+    updateAttributes({ settings: { ...node.attrs.settings, customText: inputValue } });
+    setIsDialogOpen(false);
+  };
 
   return (
     <NodeViewWrapper className="maturity-radar-component max-width-full">

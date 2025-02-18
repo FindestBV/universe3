@@ -73,35 +73,6 @@ export const ProjectPages = () => {
     >
       <div className="min-h-full" id="projects-pages">
         <div className="mx-auto w-full p-8">
-          <div className="overviewHeader">
-            <h1 className="mb-2 text-4xl font-bold">Pages</h1>
-            <p className="mb-4 text-sm">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam autem, deleniti
-              ratione fuga consectetur sint unde nostrum, numquam corrupti esse, porro ullam
-              dolorum. Repudiandae laborum sit fugit. Ipsum odit mollitia molestiae nobis asperiores
-              laborum, modi quos quisquam quibusdam, consectetur nostrum officiis veritatis iure ab
-              distinctio, veniam nesciunt voluptas sed! Magnam praesentium id tenetur ducimus error
-              magni quidem similique suscipit ad animi consequatur ipsa nobis numquam qui sed ullam
-              nulla, voluptatibus iusto eaque accusantium sapiente.
-            </p>
-            <div className="item-start flex gap-4">
-              <span className="flex items-center gap-2">
-                <File
-                  size={24}
-                  className="h-50 rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
-                />
-                <Search
-                  size={24}
-                  className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
-                />
-                <Plus
-                  size={24}
-                  className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
-                />
-              </span>
-              <AskIgorModal />
-            </div>
-          </div>
           <div className="mt-4">
             <Tabs defaultValue="all" className="pb-4" onValueChange={setIsActiveTabActive}>
               <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
@@ -129,6 +100,36 @@ export const ProjectPages = () => {
               </TabsList>
               <TabsContent value="all" className="mt-2 space-y-2">
                 <div className="w-full">
+                  <div className="overviewHeader py-4">
+                    <h1 className="mb-2 text-4xl font-bold">Pages</h1>
+                    <p className="mb-4 text-sm">
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam autem,
+                      deleniti ratione fuga consectetur sint unde nostrum, numquam corrupti esse,
+                      porro ullam dolorum. Repudiandae laborum sit fugit. Ipsum odit mollitia
+                      molestiae nobis asperiores laborum, modi quos quisquam quibusdam, consectetur
+                      nostrum officiis veritatis iure ab distinctio, veniam nesciunt voluptas sed!
+                      Magnam praesentium id tenetur ducimus error magni quidem similique suscipit ad
+                      animi consequatur ipsa nobis numquam qui sed ullam nulla, voluptatibus iusto
+                      eaque accusantium sapiente.
+                    </p>
+                    {/* <div className="item-start flex gap-4">
+                    <span className="flex items-center gap-2">
+                      <File
+                        size={24}
+                        className="h-50 rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
+                      />
+                      <Search
+                        size={24}
+                        className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
+                      />
+                      <Plus
+                        size={24}
+                        className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
+                      />
+                    </span>
+                    <AskIgorModal />
+                  </div> */}
+                  </div>
                   <div className="flex flex-col">
                     {[1, 2, 3, 4, 5].map((item) => (
                       <div className="itemCard">

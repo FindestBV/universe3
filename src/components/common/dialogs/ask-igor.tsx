@@ -102,6 +102,7 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
   };
 
   console.log("in ask igor modal", props?.iconOnly);
+  console.log("label in ask igor dialog", props?.label);
 
   return (
     <div className="askIgorModal">
@@ -117,7 +118,7 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
               }}
             >
               <Zap size={20} className="zppr" />
-              {props?.iconOnly ? null : "Ask IGOR"}
+              {props?.iconOnly ? null : props?.label ? props.label : "Ask Igor"}
             </button>
           </div>
         </DialogTrigger>

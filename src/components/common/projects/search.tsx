@@ -56,7 +56,7 @@ export const ProjectSearch = () => {
                 >
                   Search this project
                 </button>
-                <AskIgorModal />
+                <AskIgorModal label="Search for external papers" />
               </div>
             </div>
           </div>
