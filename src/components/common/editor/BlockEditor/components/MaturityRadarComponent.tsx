@@ -152,6 +152,10 @@ export const MaturityRadarComponent = ({ node, updateAttributes }) => {
     setIsDialogOpen(false);
   };
 
+  useEffect(() => {
+    console.log("radar data", radarData);
+  }, []);
+
   return (
     <NodeViewWrapper className="maturity-radar-component max-width-full">
       <NodeViewContent className="content is-editable" />
