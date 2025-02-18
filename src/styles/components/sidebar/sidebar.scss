@@ -36,23 +36,22 @@
 .sidebar_submenu {
   @apply pl-0 border-l border-gray-200;
 
-  .sidebar_subitem {
-    @apply block bg-transparent px-4 py-2 text-sm transition text-gray-600 hover:text-gray-700;
+    .sidebar_subitem {
+      @apply block bg-transparent px-4 py-2 text-sm transition text-gray-600 hover:text-gray-700;
+    }
   }
-}
 
-// Active Link
-.sidebar_active {
-  @apply text-slate-700;
-}
+  // Active Link
+  .sidebar_active {
+    @apply text-slate-700;
+  }
 
-// Transitions
-.transition-sidebar {
-  @apply transition-all duration-200 ease-in-out;
-}
+  // Transitions
+  .transition-sidebar {
+    @apply transition-all duration-200 ease-in-out;
+  }
 
-.sidebarFooter{
-    @apply text-slate-500; 
-}
-
+  .sidebarFooter{
+      @apply text-slate-500; 
+  }
 }
