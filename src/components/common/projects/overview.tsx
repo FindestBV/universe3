@@ -71,7 +71,7 @@ export const ProjectOverView = () => {
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
       <div className="min-h-full w-full" id="projects-overview">
-        <div className="mx-auto w-full max-w-screen-xl p-8">
+        <div className="mx-auto w-full p-8">
           <Tabs
             defaultValue="overview"
             className="w-full pb-4"
