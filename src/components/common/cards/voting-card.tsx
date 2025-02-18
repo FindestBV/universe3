@@ -49,7 +49,9 @@ export default function VotingCard({ star }: VotingCardProps) {
           transition={{ duration: 0.1 }}
           className="mt-2 overflow-hidden rounded-lg bg-gray-100 p-4 text-sm text-gray-700"
         >
-          <p>This is some additional detail text. It provides more information about the item.</p>
+          <p className="text-sm">
+            This is some additional detail text. It provides more information about the item.
+          </p>
         </motion.div>
       )}
     </div>
