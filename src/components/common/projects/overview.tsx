@@ -10,6 +10,15 @@ import VotingCard from "../cards/voting-card";
 import AskIgorModal from "../dialogs/ask-igor";
 import CreateItemModal from "../dialogs/create-item-dialog";
 import ProjectSearchDialog from "../dialogs/project-search-dialog";
+import OverviewForceDirected from "./OverviewForceDirected";
+
+const dummyData = [
+  { id: "1", name: "Root", lowerLevelNodes: ["2", "3"] },
+  { id: "2", name: "Child A", lowerLevelNodes: ["4", "5"] },
+  { id: "3", name: "Child B", lowerLevelNodes: [] },
+  { id: "4", name: "Leaf A1", lowerLevelNodes: [] },
+  { id: "5", name: "Leaf A2", lowerLevelNodes: [] },
+];
 
 function PresetButton({
   title,
@@ -131,21 +140,32 @@ export const ProjectOverView = () => {
                   </p>
                 </div>
 
-                <div className="w-1/2">
-                  <h3 className="text-md mb-2 pt-3 font-semibold">Get started</h3>
-                  <div className="flex flex-col gap-2">
-                    <CreateItemModal title={"Create a scientific landscape"} />
-                    <CreateItemModal title={"Create a technology overview"} />
+                <div className="flex items-start gap-2">
+                  <div className="w-1/2">
+                    <h3 className="text-md mb-2 pt-3 font-semibold">Get started</h3>
+                    <div className="flex flex-col gap-2">
+                      <CreateItemModal title={"Create a scientific landscape"} />
+                      <CreateItemModal title={"Create a technology overview"} />
+                    </div>
+                    <br />
+                    <div className="flex flex-col gap-2">
+                      <ProjectSearchDialog />
+                      <PresetButton title="Extract Patents" className="bg-slate-100" />
+                      <PresetButton
+                        title="Extract Scientific Publications"
+                        className="bg-slate-100"
+                      />
+                      <PresetButton
+                        title="Extract from Scientific Topics"
+                        className="bg-slate-100"
+                      />
+                    </div>
                   </div>
-                  <br />
-                  <div className="flex flex-col gap-2">
-                    <ProjectSearchDialog />
-                    <PresetButton title="Extract Patents" className="bg-slate-100" />
-                    <PresetButton
-                      title="Extract Scientific Publications"
-                      className="bg-slate-100"
-                    />
-                    <PresetButton title="Extract from Scientific Topics" className="bg-slate-100" />
+
+                  <div className="w-1/2">
+                    <h3 className="text-md mb-2 pt-3 font-semibold">Pages graph</h3>
+
+                    <OverviewForceDirected linkingData={dummyData} />
                   </div>
                 </div>
               </>
