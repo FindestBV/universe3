@@ -1,0 +1,46 @@
+.sessionDialog{
+    @apply h-auto max-w-2xl overflow-auto rounded-lg p-6 shadow-lg; 
+
+    .recent_projects{
+        .title{
+            @apply mb-2 font-semibold; 
+        }
+
+        .projects_container{
+
+            @apply mt-4 flex flex-col space-y-2;
+            
+            .activity_loader{
+                @apply flex h-32 items-center justify-center; 
+                .loadingText{
+                    @apply ml-2 text-gray-700; 
+                }
+            }
+
+            .activity_list{
+                @apply flex w-full cursor-pointer flex-row items-center justify-between rounded-md bg-slate-200 p-4 hover:bg-gray-200; 
+
+                .item{
+                    @apply flex flex-col; 
+
+                    .title{
+                        @apply text-sm font-semibold; 
+                    }
+
+                    .icon{
+                        @apply rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200; 
+                    }
+                }
+            }
+        }
+
+        .loadMore{
+            @apply h-[50px] mt-2 flex items-center justify-center bg-gray-100; 
+
+            .toggleWrapper{
+                @apply mx-auto flex w-full items-center justify-center rounded-sm bg-slate-200 p-2 group-hover:bg-slate-300; 
+            }
+        }
+    }
+
+}

@@ -151,7 +151,7 @@ export const ProjectOverView = () => {
               </>
             </TabsContent>
             <TabsContent value="technologies" className="mt-2 w-full flex-grow space-y-2">
-              <div className="flex w-full flex-col gap-4">
+              <div className="flex w-full flex-col gap-4 py-4">
                 <VotingCard star={4} />
                 <VotingCard star={4} />
                 <VotingCard star={3} />
@@ -161,7 +161,7 @@ export const ProjectOverView = () => {
               </div>
               {/* <PresetButton title="Other general keyword" description="Either based on general knowledge or the sources linked." className="bg-slate-100" /> */}
             </TabsContent>
-            <TabsContent value="queries" className="mt-2 space-y-2">
+            <TabsContent value="queries" className="mt-2 space-y-2 py-4">
               <h3>Active Queries</h3>
               <PresetButton
                 title="Other general keyword"

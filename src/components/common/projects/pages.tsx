@@ -73,7 +73,7 @@ export const ProjectPages = () => {
     >
       <div className="min-h-full" id="projects-pages">
         <div className="mx-auto w-full p-8">
-          <div className="mt-4">
+          <div className="mt-0">
             <Tabs defaultValue="all" className="pb-4" onValueChange={setIsActiveTabActive}>
               <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
                 <div className="flex gap-2">

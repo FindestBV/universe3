@@ -2,6 +2,7 @@ import { useGetLinkingQuery, useGetMyRecentActivityQuery } from "@/api/activity/
 import { currentUser } from "@/api/auth/authSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import CreateItemModal from "@/components/common/dialogs/create-item-dialog";
+import SessionDialog from "@/components/common/dialogs/session-dialog";
 import ForceDirectedGraphView from "@/components/common/layout/force-directed-graph";
 import SearchBar from "@/components/common/search/searchbar";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
@@ -34,7 +35,7 @@ export const Dashboard = () => {
       {/* LEFT COLUMN (Scrollable) */}
       <div className="leftColumn">
         <SearchBar />
-
+        <SessionDialog />
         <div className="mb-4 py-4">
           <AskIgorModal />
         </div>
