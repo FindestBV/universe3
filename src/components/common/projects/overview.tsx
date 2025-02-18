@@ -8,6 +8,7 @@ import { useState } from "react";
 
 import VotingCard from "../cards/voting-card";
 import AskIgorModal from "../dialogs/ask-igor";
+import ConnectQuery from "../dialogs/connect-query";
 import CreateItemModal from "../dialogs/create-item-dialog";
 import ProjectSearchDialog from "../dialogs/project-search-dialog";
 import OverviewForceDirected from "./OverviewForceDirected";
@@ -224,9 +225,7 @@ export const ProjectOverView = () => {
                 description="Either based on general knowledge or the sources linked."
                 className="bg-slate-100"
               />
-              <Button className="border border-slate-300 bg-slate-100 text-black hover:bg-slate-200">
-                <Plus /> Create new query
-              </Button>
+              <ConnectQuery className="mt-2" />
             </TabsContent>
           </Tabs>
         </div>

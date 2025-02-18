@@ -41,7 +41,7 @@ const iconMapping: Record<string, React.ElementType> = {
   Study: StudyIcon,
 };
 
-const CreateQueryDialog: React.FC<CreateQueryDialogProps> = ({ id, icon, queryType }) => {
+export const CreateQueryDialog: React.FC<CreateQueryDialogProps> = ({ id, icon, queryType }) => {
   const { t } = useTranslation();
   const user = useSelector(currentUser);
   const dispatch = useDispatch();
