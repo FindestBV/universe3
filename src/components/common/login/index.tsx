@@ -1,4 +1,5 @@
 import { setCredentials } from "@/api/auth/authSlice";
+import { Globe } from "lucide-react";
 
 // Adjust the import path for your store
 import { useState } from "react";
@@ -63,53 +64,63 @@ const Login = () => {
             )}
           </div>
         ) : (
-          <div className="mb-0 flex w-full max-w-[500px] flex-col justify-between text-gray-700">
-            <form onSubmit={handleLogin} className="space-y-4">
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="loginInput py-2"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              {isError && (
-                <p className="-mt-8 text-red-500">* Please enter a valid email address.</p>
-              )}
-
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="loginInput py-2"
-                placeholder="********"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              {isError && (
-                <p className="-mt-8 text-red-500">* Please enter a valid email address.</p>
-              )}
-
-              <div>
-                <input type="checkbox" name="rememberMe" />
-                <label htmlFor="rememberMe" className="pl-2 text-gray-400">
-                  Remember Me
-                </label>
+          <>
+            <div className="flex items-center gap-2">
+              <div className="mt-1 flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
+                <Globe className="size-6 text-slate-600" />
               </div>
-              <div className="flex justify-start">
-                <button
-                  type="submit"
-                  className="mt-4 rounded-md bg-black p-2 text-sm text-white hover:bg-slate-500 focus:outline-none"
-                  disabled={isLoading} // Disable button when loading
-                >
-                  Login
-                </button>
+              <div className="mt-1 grid flex-1 text-left text-lg text-slate-700">
+                <span className="truncate font-semibold">Universe</span>
               </div>
-            </form>
-          </div>
+            </div>
+            <div className="mb-0 flex w-full max-w-[500px] flex-col justify-between text-gray-700">
+              <form onSubmit={handleLogin} className="space-y-4">
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  className="loginInput py-2"
+                  placeholder="Email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                {isError && (
+                  <p className="-mt-8 text-red-500">* Please enter a valid email address.</p>
+                )}
+
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  className="loginInput py-2"
+                  placeholder="********"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                {isError && (
+                  <p className="-mt-8 text-red-500">* Please enter a valid email address.</p>
+                )}
+
+                <div>
+                  <input type="checkbox" name="rememberMe" />
+                  <label htmlFor="rememberMe" className="pl-2 text-gray-400">
+                    Remember Me
+                  </label>
+                </div>
+                <div className="flex justify-start">
+                  <button
+                    type="submit"
+                    className="mt-4 rounded-md bg-black p-2 text-sm text-white hover:bg-slate-500 focus:outline-none"
+                    disabled={isLoading} // Disable button when loading
+                  >
+                    Login
+                  </button>
+                </div>
+              </form>
+            </div>
+          </>
         )}
       </div>
     </div>

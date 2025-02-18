@@ -361,11 +361,10 @@ export function CreateItemModal({ ...props }: any) {
 
                 <div className="flex justify-between pt-4">
                   <Button
-                    variant="outline"
                     onClick={handleBack}
-                    className="flex w-[100px] justify-start gap-2 bg-[#006A86] text-white"
+                    className="flex w-[100px] justify-start gap-2 bg-slate-100 text-gray-400"
                   >
-                    <ChevronLeft className="h-4 w-4 text-white" />
+                    <ChevronLeft className="h-4 w-4 text-gray-400" />
                     BACK
                   </Button>
                   <Button
@@ -373,9 +372,7 @@ export function CreateItemModal({ ...props }: any) {
                     disabled={!isValid()}
                     className={cn(
                       "w-[100px]",
-                      isValid()
-                        ? "bg-[#006A86] text-white hover:bg-[#84A7E2]"
-                        : "bg-gray-100 text-gray-400",
+                      isValid() ? "bg-slate-100 text-gray-400" : "bg-gray-100 text-gray-400",
                     )}
                   >
                     CONTINUE
