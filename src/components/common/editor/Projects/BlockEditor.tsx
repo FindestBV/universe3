@@ -35,6 +35,7 @@ import {
 
 import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router";
 
 import { Button } from "../ui/Button";
 
@@ -151,6 +152,11 @@ export const BlockEditor = ({
   const [currentView, setCurrentView] = useState<View>("overview");
   const [isInnerNavActive, setIsInnerNavActive] = useState<boolean>();
 
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  const isProjectDashboard = currentPath.includes("dashboard");
+
   const toggleSection = (sectionTitle: string) => {
     setOpenSections((prev) => ({
       ...prev,
@@ -209,7 +215,9 @@ export const BlockEditor = ({
                   >
                     <>
                       <p className="text-xs font-bold text-white">
-                        PCT EDITOR cross regeneration to maxim...
+                        {isProjectDashboard
+                          ? "Your Universe Projects"
+                          : "Cross regeneration to maxim..."}
                       </p>
                       <div className="flex items-center gap-4">
                         <Eye

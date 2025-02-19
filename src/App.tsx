@@ -21,6 +21,7 @@ const Source = lazy(() => import("@/views/Source"));
 const Studies = lazy(() => import("@/views/Studies"));
 const Pages = lazy(() => import("@/views/Pages"));
 const Page = lazy(() => import("@/views/Page"));
+const Projects = lazy(() => import("@/views/Projects"));
 const Project = lazy(() => import("@/views/Project"));
 const NotFoundPage = lazy(() => import("@/views/NotFound"));
 const Inbox = lazy(() => import("@/views/Inbox"));
@@ -58,7 +59,7 @@ function AuthenticatedLayout() {
             <main className="pageContent">
               <Routes location={location}>
                 {/* TEMP!! THIS WILL BE REFACTORED */}
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/projects/dashboard" element={<Projects />} />
                 <Route path="/projects/:id" element={<Project />} />
                 <Route path="/pages" element={<Pages />} />
                 <Route path="/pages/studies" element={<Studies />} />

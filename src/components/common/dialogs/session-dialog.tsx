@@ -6,7 +6,7 @@ import { ChevronRight, Loader } from "lucide-react";
 
 import { useEffect, useState } from "react";
 
-import { CreateItemModal } from "./create-item-dialog";
+import { CreateProjectDialog } from "./create-project-dialog";
 
 export const SessionDialog = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -20,7 +20,7 @@ export const SessionDialog = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsDialogOpen(true);
-    }, 3000);
+    }, 2000);
 
     return () => clearTimeout(timer); // Cleanup timeout on unmount
   }, []);
@@ -65,7 +65,7 @@ export const SessionDialog = () => {
               )}
             </div>
           </div>
-          <CreateItemModal title={"Create a new project"} />
+          <CreateProjectDialog title={"Create a new project"} />
           <button
             type="submit"
             className="max-w-[200px] rounded-md bg-black p-2 text-sm text-white hover:bg-slate-500 focus:outline-none"

@@ -2,16 +2,19 @@ import { Button } from "@/components/ui/button";
 // import { AskIgor } from "@/stories/04-utilities/dialog/Dialog.stories";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { ChevronRight, File, Plus, Search } from "lucide-react";
+import { ChevronRight, Plus, Search } from "lucide-react";
 
 import { useState } from "react";
+import { useLocation } from "react-router";
 
 import VotingCard from "../cards/voting-card";
 import AskIgorModal from "../dialogs/ask-igor";
 import ConnectQuery from "../dialogs/connect-query";
 import CreateItemModal from "../dialogs/create-item-dialog";
+import CreateProjectDialog from "../dialogs/create-project-dialog";
 import ProjectSearchDialog from "../dialogs/project-search-dialog";
-import OverviewForceDirected from "./OverviewForceDirected";
+import { DevBanner } from "../layout/dev-banner";
+import OverviewForceDirected from "../layout/overview-force-directed";
 
 const dummyData = [
   { id: "1", name: "Root", lowerLevelNodes: ["2", "3"] },
@@ -52,7 +55,10 @@ export const ProjectOverView = () => {
     { id: "queries", label: "Queries" },
   ]);
   const [activeTabActive, setIsActiveTabActive] = useState<string>("overview");
+  const location = useLocation();
+  const currentPath = location.pathname;
 
+  const isProjectsDashboard = currentPath.includes("/projects/dashboard");
   // Function to add a new tab with a user-defined label
   const addNewTab = () => {
     const newLabel = window.prompt("Enter a name for the new tab:", `New Tab ${tabs.length + 1}`);
@@ -81,6 +87,7 @@ export const ProjectOverView = () => {
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
       <div className="min-h-full w-full" id="projects-overview">
+        {isProjectsDashboard && <DevBanner />}
         <div className="mx-auto w-full p-8">
           <Tabs
             defaultValue="overview"
@@ -127,7 +134,9 @@ export const ProjectOverView = () => {
               <>
                 <div className="overviewHeader py-4">
                   <h1 className="mb-4 text-4xl font-bold">
-                    Cross regeneration to maximimise macromolecule effusion.
+                    {isProjectsDashboard
+                      ? "Your Universe Projects"
+                      : "Cross regeneration to maximimise macromolecule effusion."}
                   </h1>
                   <p className="mb-4 text-sm">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam autem, deleniti
@@ -145,7 +154,7 @@ export const ProjectOverView = () => {
                   <div className="w-1/2">
                     <h3 className="text-md mb-2 pt-3 font-semibold">Get started</h3>
                     <div className="flex flex-col gap-2">
-                      <CreateItemModal title={"Create a scientific landscape"} />
+                      <CreateProjectDialog title={"Create a scientific landscape"} />
                       <CreateItemModal title={"Create a technology overview"} />
                     </div>
                     <br />

@@ -20,11 +20,11 @@ import { SearchForm } from "./search-form";
 
 const data = {
   navMain: [
-    { title: "Dashboard", url: "/dashboard", icon: Home },
+    { title: "Dashboard", url: "/projects/dashboard", icon: Home },
     { title: "Inbox", url: "/inbox", icon: Inbox },
     {
       title: "Projects",
-      url: "/projects",
+      url: "/projects/dashboard",
       icon: Circle,
       items: [{ title: "Entities", url: "/pages/entities" }],
     },
@@ -80,7 +80,7 @@ export function NavMain() {
   };
 
   return (
-    <SidebarGroup className="mainSidebar">
+    <SidebarGroup className="sidebar_mainContent">
       {open && (
         <div>
           <SearchForm />
