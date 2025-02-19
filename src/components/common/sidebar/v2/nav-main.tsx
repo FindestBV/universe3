@@ -24,7 +24,7 @@ const data = {
     { title: "Inbox", url: "/inbox", icon: Inbox },
     {
       title: "Projects",
-      url: "/projects/dashboard",
+      url: "/projects",
       icon: Circle,
       items: [{ title: "Entities", url: "/pages/entities" }],
     },
@@ -80,7 +80,7 @@ export function NavMain() {
   };
 
   return (
-    <SidebarGroup className="sidebar_mainContent">
+    <SidebarGroup className="mainSidebar">
       {open && (
         <div>
           <SearchForm />

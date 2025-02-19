@@ -156,12 +156,18 @@ export function CreateProjectDialog({ ...props }: any) {
     <div className="createProjectDialog">
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <div className="trigger">
-            <p className="title">{dialogTitle ? dialogTitle : "Create new project"}</p>
-            <div className="icon">
-              <Plus size={20} className="text-white" />
+          {dialogType && dialogType == "findest-button" ? (
+            <Button className="border border-slate-300 bg-slate-100 text-black hover:bg-slate-200">
+              <Plus /> Create New project
+            </Button>
+          ) : (
+            <div className="trigger">
+              <p className="title">{dialogTitle ? dialogTitle : "Create new project"}</p>
+              <div className="icon">
+                <Plus size={20} className="text-white" />
+              </div>
             </div>
-          </div>
+          )}
         </DialogTrigger>
         <DialogContent className="dialogContent bg-white sm:max-w-[750px] [&>button]:hidden">
           <div className="mb-6 flex items-center gap-4">

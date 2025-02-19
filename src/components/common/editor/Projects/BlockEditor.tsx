@@ -37,6 +37,7 @@ import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 
+import { CreateProjectDialog } from "../../dialogs/create-project-dialog";
 import { Button } from "../ui/Button";
 
 export const BlockEditor = ({
@@ -269,9 +270,7 @@ export const BlockEditor = ({
                       >
                         <ArrowLeft /> Back to the Universe
                       </Button>
-                      <Button className="border border-slate-300 bg-slate-100 text-black hover:bg-slate-200">
-                        <Plus /> Create New project
-                      </Button>
+                      <CreateProjectDialog type="findest-button" />
                     </div>
                   </div>
                 </div>
