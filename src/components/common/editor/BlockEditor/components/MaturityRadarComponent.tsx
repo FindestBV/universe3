@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { NodeViewContent, NodeViewWrapper } from "@tiptap/react";
+import { NodeViewWrapper } from "@tiptap/react";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -20,6 +20,14 @@ type MaturityLevel = {
   radius: number;
   color: string;
   label: string;
+};
+
+type Assessment = {
+  id: string;
+  targetTitle: string;
+  lowScore: number;
+  highScore: number;
+  index: number;
 };
 
 const MATURITY_LEVELS: MaturityLevel[] = [
@@ -41,74 +49,92 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const [inputValue, setInputValue] = useState("");
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const hasDrawnRef = useRef(false); // Prevent unnecessary re-draws
+  const [showNumbers, setShowNumbers] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const pathSegments = window.location.pathname.split("/");
   const pageId = pathSegments[pathSegments.length - 1];
 
-  const { data: radarData, isLoading, isError } = useGetMaturityRadarQuery(pageId);
-  const [createMaturityRadar, { isLoading: isCreating }] = useCreateMaturityRadarMutation();
+  const {
+    data: radarData,
+    isLoading,
+    isError,
+  } = useGetMaturityRadarQuery(pageId, {
+    refetchOnMountOrArgChange: true,
+  });
+  const [createMaturityRadar] = useCreateMaturityRadarMutation();
 
-  // Ensure the radar data is created if missing
+  // Initialize radar data if missing
   useEffect(() => {
-    if (!radarData && !isLoading && !isError) {
-      createMaturityRadar(pageId);
-    }
-  }, [radarData, isLoading, isError, createMaturityRadar, pageId]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-
-      requestAnimationFrame(() => {
-        canvas.width = 800;
-        canvas.height = 800;
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-
-        // Draw background
-        ctx.fillStyle = "#F7FAFC";
-        ctx.beginPath();
-        ctx.arc(0, 0, 320, 0, Math.PI * 2);
-        ctx.fill();
-
-        drawMaturityLevels(ctx);
-        drawGridLines(ctx);
-        drawLabels(ctx);
-
-        // Draw assessments if we have data
-        if (radarData?.data.assessments) {
-          drawAssessments(ctx, radarData?.data.assessments);
+    const initializeRadar = async () => {
+      if (!isLoading && !isError && (!radarData || !radarData.data) && !isInitialized) {
+        try {
+          await createMaturityRadar(pageId).unwrap();
+          setIsInitialized(true);
+        } catch (error) {
+          console.error("Failed to initialize radar:", error);
         }
+      }
+    };
 
-        ctx.restore();
-      });
-    }, 100);
-  }, [node]);
+    initializeRadar();
+  }, [radarData, isLoading, isError, createMaturityRadar, pageId, isInitialized]);
 
-  function drawMaturityLevels(ctx) {
-    // Draw from outside in to layer properly
+  const drawRadar = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Reset canvas dimensions
+    canvas.width = 800;
+    canvas.height = 800;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+
+    // Draw maturity levels bar at the top
+    const barWidth = 400;
+    const barHeight = 40;
+    const barX = canvas.width - barWidth - 20;
+    const barY = 20;
+    const levelWidth = barWidth / 4;
+
+    // Draw the levels
+    MATURITY_LEVELS.forEach((level, index) => {
+      ctx.fillStyle = level.color;
+      ctx.fillRect(barX + index * levelWidth, barY, levelWidth, barHeight);
+
+      ctx.fillStyle = "#2D3748";
+      ctx.font = "14px Inter, system-ui, -apple-system, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(level.label, barX + index * levelWidth + levelWidth / 2, barY + barHeight / 2);
+    });
+
+    // Translate to center for radar
+    ctx.translate(canvas.width / 2, canvas.height / 2 + 30);
+
+    // Draw background
+    ctx.fillStyle = "#F7FAFC";
+    ctx.beginPath();
+    ctx.arc(0, 0, 320, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Draw maturity levels
     [...MATURITY_LEVELS].reverse().forEach((level) => {
-      // Fill circle
       ctx.beginPath();
       ctx.arc(0, 0, level.radius, 0, Math.PI * 2);
       ctx.fillStyle = level.color;
       ctx.fill();
 
-      // Draw white border
       ctx.beginPath();
       ctx.arc(0, 0, level.radius, 0, Math.PI * 2);
       ctx.strokeStyle = "white";
       ctx.lineWidth = 3;
       ctx.stroke();
 
-      // Draw subtle inner shadow
       ctx.beginPath();
       ctx.arc(0, 0, level.radius - 1, 0, Math.PI * 2);
       ctx.strokeStyle = "rgba(0,0,0,0.1)";
@@ -116,7 +142,7 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
       ctx.stroke();
     });
 
-    // Draw center white circle
+    // Draw center circle
     ctx.beginPath();
     ctx.arc(0, 0, 40, 0, Math.PI * 2);
     ctx.fillStyle = "#FFFFFF";
@@ -124,10 +150,8 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
     ctx.strokeStyle = "rgba(0,0,0,0.1)";
     ctx.lineWidth = 2;
     ctx.stroke();
-  }
 
-  function drawGridLines(ctx) {
-    // Draw quadrant lines
+    // Draw grid lines
     ctx.beginPath();
     ctx.moveTo(-320, 0);
     ctx.lineTo(320, 0);
@@ -136,101 +160,90 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
     ctx.strokeStyle = "rgba(255,255,255,0.8)";
     ctx.lineWidth = 2;
     ctx.stroke();
-  }
 
-  function drawLabels(ctx) {
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.font = "bold 16px Arial";
-    ctx.fillStyle = "#2D3748";
+    // Draw assessments
+    const assessments = radarData?.assessments;
+    if (assessments && Array.isArray(assessments) && assessments.length > 0) {
+      assessments.forEach((assessment: Assessment, index: number) => {
+        const angle = (index / assessments.length) * Math.PI * 2 - Math.PI / 2;
+        const avgScore = (assessment.lowScore + assessment.highScore) / 2;
+        const radius = (avgScore / 20) * 320;
 
-    MATURITY_LEVELS.forEach((level) => {
-      const y = -level.radius + 20;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
 
-      // Draw label background
-      const textMetrics = ctx.measureText(level.label);
-      const padding = 8;
-      ctx.fillStyle = "rgba(255,255,255,0.9)";
-      ctx.fillRect(-textMetrics.width / 2 - padding, y - 10, textMetrics.width + padding * 2, 20);
+        // Draw connecting line from center
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(x, y);
+        ctx.strokeStyle = "rgba(74, 85, 104, 0.6)";
+        ctx.lineWidth = 2;
+        ctx.stroke();
 
-      // Draw text
-      ctx.fillStyle = "#2D3748";
-      ctx.fillText(level.label, 0, y);
-    });
-  }
+        // Draw assessment dot
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = "#4A5568";
+        ctx.fill();
+        ctx.strokeStyle = "#FFFFFF";
+        ctx.lineWidth = 2;
+        ctx.stroke();
 
-  function calculateAssessmentPosition(assessment: Assessment) {
-    // Calculate average score for positioning
-    const avgScore = (assessment.lowScore + assessment.highScore) / 2;
+        // Draw label with line
+        const labelRadius = radius + 60;
+        const labelX = Math.cos(angle) * labelRadius;
+        const labelY = Math.sin(angle) * labelRadius;
 
-    // Calculate angle based on the assessment index
-    const angle = Math.PI * 2 * Math.random(); // Random angle for now
+        // Draw line to label
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(labelX, labelY);
+        ctx.strokeStyle = "rgba(74, 85, 104, 0.6)";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
 
-    // Calculate radius based on score (assuming max score is 20)
-    const maxScore = 20;
-    const radius = (avgScore / maxScore) * 320;
+        // Draw label
+        ctx.font = "14px Inter, system-ui, -apple-system, sans-serif";
+        ctx.fillStyle = "#2D3748";
 
-    return {
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius,
-      radius: 6, // Size of the assessment dot
-    };
-  }
+        const isRightSide = Math.cos(angle) > 0;
+        ctx.textAlign = isRightSide ? "left" : "right";
 
-  function drawAssessments(ctx: CanvasRenderingContext2D, assessments: Assessment[]) {
-    assessments.forEach((assessment) => {
-      const position = calculateAssessmentPosition(assessment);
+        // Draw index number if enabled
+        if (showNumbers) {
+          const indexText = `${index + 1}.`;
+          const indexWidth = ctx.measureText(indexText).width;
+          const indexX = isRightSide ? labelX - indexWidth - 8 : labelX + 8;
+          ctx.fillText(indexText, indexX, labelY);
+        }
 
-      // Draw connecting line
-      ctx.beginPath();
-      ctx.moveTo(0, -320); // Start from top
-      ctx.lineTo(position.x, position.y);
-      ctx.strokeStyle = "#4A5568";
-      ctx.lineWidth = 2;
-      ctx.stroke();
+        // Draw title
+        const titleX = isRightSide ? labelX + 8 : labelX - 8;
+        ctx.fillText(assessment.targetTitle, titleX, labelY);
+      });
+    }
 
-      // Draw assessment dot
-      ctx.beginPath();
-      ctx.arc(position.x, position.y, position.radius, 0, Math.PI * 2);
-      ctx.fillStyle = "#4A5568";
-      ctx.fill();
-      ctx.strokeStyle = "white";
-      ctx.lineWidth = 2;
-      ctx.stroke();
+    ctx.restore();
+  }, [radarData, showNumbers]);
 
-      // Draw label
-      ctx.font = "12px Arial";
-      ctx.fillStyle = "#2D3748";
-      ctx.textAlign = "left";
-      ctx.textBaseline = "middle";
-
-      // Truncate long titles
-      const maxLength = 20;
-      const displayTitle =
-        assessment.targetTitle.length > maxLength
-          ? assessment.targetTitle.substring(0, maxLength) + "..."
-          : assessment.targetTitle;
-
-      // Add background to text for better readability
-      const textMetrics = ctx.measureText(displayTitle);
-      const padding = 4;
-      ctx.fillStyle = "rgba(255,255,255,0.9)";
-      ctx.fillRect(position.x + 10, position.y - 8, textMetrics.width + padding * 2, 16);
-
-      ctx.fillStyle = "#2D3748";
-      ctx.fillText(displayTitle, position.x + 12, position.y);
-    });
-  }
+  // Redraw whenever data changes
+  useEffect(() => {
+    if (radarData) {
+      requestAnimationFrame(() => {
+        drawRadar();
+      });
+    }
+  }, [radarData, drawRadar]);
 
   const handleOpenDialog = useCallback(() => setIsDialogOpen(true), []);
   const handleCloseDialog = useCallback(() => setIsDialogOpen(false), []);
 
   const handleContinue = useCallback(() => {
-    updateAttributes?.({ settings: { ...node.attrs.settings, customText: inputValue } });
+    updateAttributes?.({ settings: { ...node?.attrs?.settings, customText: inputValue } });
     setIsDialogOpen(false);
-  }, [inputValue, node.attrs.settings, updateAttributes]);
+  }, [inputValue, node?.attrs?.settings, updateAttributes]);
 
-  const handleInputChange = useCallback((e) => {
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }, []);
 
@@ -246,14 +259,20 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
             className="mt-4 rounded border border-gray-200"
             style={{ width: "800px", height: "800px" }}
           />
-          {isLoading || isCreating ? (
+          {isLoading ? (
             <p>Loading...</p>
+          ) : isError ? (
+            <p>Error loading radar data</p>
+          ) : !radarData?.data ? (
+            <p>{radarData?.sourceTitle}</p>
           ) : (
-            radarData && <div>{radarData.sourceTitle}</div>
+            <div>{radarData.sourceTitle}</div>
           )}
         </div>
 
-        <pre>{node.attrs.settings.customText || JSON.stringify(node.attrs.settings, null, 2)}</pre>
+        <pre>
+          {node?.attrs?.settings?.customText || JSON.stringify(node?.attrs?.settings, null, 2)}
+        </pre>
         <Button onClick={handleOpenDialog}>Edit Settings</Button>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -276,16 +295,25 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
         </Dialog>
       </div>
     ),
-    [isDialogOpen, inputValue, radarData, isLoading, isCreating],
+    [
+      isDialogOpen,
+      inputValue,
+      radarData,
+      isLoading,
+      isError,
+      node,
+      handleOpenDialog,
+      handleCloseDialog,
+      handleContinue,
+      handleInputChange,
+    ],
   );
 
-  if (node) {
-    return (
-      <NodeViewWrapper className="maturity-radar-component max-width-full">
-        {MemoizedContent}
-      </NodeViewWrapper>
-    );
-  }
+  return node ? (
+    <NodeViewWrapper className="maturity-radar-component max-width-full">
+      {MemoizedContent}
+    </NodeViewWrapper>
+  ) : null;
 };
 
 export default MaturityRadarComponent;
