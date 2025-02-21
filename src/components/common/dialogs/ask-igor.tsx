@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useSemanticSearch } from "@/hooks/use-semantic-search";
 import { useSemanticSearchEditor } from "@/hooks/use-semantic-search-editor";
@@ -91,6 +92,7 @@ function PresetButton({
 }
 
 const AskIgorModal: React.FC = ({ ...props }: any) => {
+  const [question, setQuestion] = useState("What do you want to ask about?");
   const [activeTab, setActiveTab] = useState("report");
   const [isMinimized, setIsMinimized] = useState(false); // Track minimization state
   const [isOpen, setIsOpen] = useState(false); // Track if modal is open
@@ -99,11 +101,11 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
   const debouncedContent = useDebounce(content, 1000);
 
   const { editor } = useSemanticSearchEditor({
-    editorProps: {
-      attributes: {
-        class: "askIgorModal",
-      },
-    },
+    // editorProps: {
+    //   attributes: {
+    //     class: "askIgorModal",
+    //   },
+    // },
     onCreate: ({ editor }) => {
       console.log("Editor Created:", editor);
       setContent(editor.getText());
@@ -178,7 +180,18 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
                   <div className="space-y-2">
                     <h5 className="text-sm font-bold">Ask me anything about the linked sources</h5>
                     <div className="relative">
-                      {editor ? (
+                      <Textarea
+                        value={question}
+                        onChange={(e) => setQuestion(e.target.value)}
+                        placeholder="Type your question here..."
+                        className="min-h-[120px] resize-none bg-white pr-12 focus:outline-none focus-visible:ring-offset-0"
+                      />
+                      <Button
+                        size="icon"
+                        className="absolute bottom-3 right-3 bg-blue-500 text-white hover:bg-slate-300"
+                        onClick={() => console.log("search")}
+                      />
+                      {/* {editor ? (
                         <>
                           <EditorContent
                             editor={editor}
@@ -187,7 +200,7 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
                         </>
                       ) : (
                         <p>Loading editor...</p>
-                      )}
+                      )} */}
 
                       <Button
                         size="icon"
