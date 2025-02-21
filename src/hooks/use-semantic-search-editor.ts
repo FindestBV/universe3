@@ -14,9 +14,9 @@ export const useSemanticSearchEditor = ({
     immediatelyRender: false,
     extensions: [StarterKit],
     content: `
-      <div class="raggyEditor">
+      <div class="RAG_editor">
         <h3>
-          Y'all mind if I do some Lollygaggin'?
+          Write your question on the linked sources (e.g. What are the main technologies mentioned?)
         </h3>
       </div>
 
