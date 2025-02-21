@@ -1,39 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-// import { AskIgor } from "@/stories/04-utilities/dialog/Dialog.stories";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { ChevronRight, File, Network, Plus, Search } from "lucide-react";
 
 import { useState } from "react";
 
-import VotingCard from "../cards/voting-card";
 import AskIgorModal from "../dialogs/ask-igor";
-import CreateItemModal from "../dialogs/create-item-dialog";
-
-function PresetButton({
-  title,
-  description,
-}: {
-  title?: string;
-  description?: string;
-  className: string;
-}) {
-  return (
-    <Button
-      variant="ghost"
-      className="group h-auto w-full justify-between bg-slate-100 p-2 hover:bg-slate-400"
-    >
-      <div className="flex items-start gap-4">
-        <div className="text-left">
-          <h3 className="font-medium group-hover:text-white">{title}</h3>
-          <p className="text-sm text-gray-600 group-hover:text-white">{description}</p>
-        </div>
-      </div>
-      <ChevronRight className="h-4 w-4" />
-    </Button>
-  );
-}
 
 export const ProjectPages = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
@@ -112,23 +82,6 @@ export const ProjectPages = () => {
                       animi consequatur ipsa nobis numquam qui sed ullam nulla, voluptatibus iusto
                       eaque accusantium sapiente.
                     </p>
-                    {/* <div className="item-start flex gap-4">
-                    <span className="flex items-center gap-2">
-                      <File
-                        size={24}
-                        className="h-50 rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
-                      />
-                      <Search
-                        size={24}
-                        className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
-                      />
-                      <Plus
-                        size={24}
-                        className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200"
-                      />
-                    </span>
-                    <AskIgorModal />
-                  </div> */}
                   </div>
                   <div className="flex flex-col">
                     {[1, 2, 3, 4, 5].map((item) => (

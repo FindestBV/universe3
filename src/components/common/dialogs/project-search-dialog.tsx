@@ -10,30 +10,6 @@ import { ChevronRight } from "lucide-react";
 
 import { useState } from "react";
 
-function PresetButton({
-  title,
-  description,
-}: {
-  title?: string;
-  description?: string;
-  className: string;
-}) {
-  return (
-    <Button
-      variant="ghost"
-      className="group h-auto w-full justify-between bg-slate-100 py-2 hover:bg-slate-400"
-    >
-      <div className="flex items-start gap-4">
-        <div className="text-left">
-          <h3 className="font-medium group-hover:text-white">{title}</h3>
-          <p className="text-sm text-gray-600 group-hover:text-white">{description}</p>
-        </div>
-      </div>
-      <ChevronRight className="h-4 w-4" />
-    </Button>
-  );
-}
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ProjectSearchDialog = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);

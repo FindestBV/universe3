@@ -1,7 +1,8 @@
 import { cn } from "@/lib/utils";
 import { TableOfContentsStorage } from "@tiptap-pro/extension-table-of-contents";
 import { Editor as CoreEditor } from "@tiptap/core";
-import { useEditorState } from "@tiptap/react";
+
+// import { useEditorState } from "@tiptap/react";
 
 import { memo, useEffect, useState } from "react";
 

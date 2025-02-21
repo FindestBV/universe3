@@ -1,5 +1,4 @@
 import { useGetMyRecentActivityQuery } from "@/api/activity/activityApi";
-import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { ChevronRight, Loader } from "lucide-react";

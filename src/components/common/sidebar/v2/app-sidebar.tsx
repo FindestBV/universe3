@@ -1,7 +1,6 @@
 import { currentUser } from "@/api/auth/authSlice";
 import { NavMain } from "@/components/common/sidebar/v2/nav-main";
 import UserAvatar from "@/components/common/utilities/user-avatar";
-// import { NavUser } from "@/components/common/sidebar/v2/nav-user";
 import {
   Sidebar,
   SidebarContent,

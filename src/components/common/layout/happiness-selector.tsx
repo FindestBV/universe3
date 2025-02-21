@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,11 +5,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SmilePlus } from "lucide-react";
 
 const HappinessSelector = () => {
-  // const [selectedHappiness, setSelectedHappiness] = useState(null);
-
   // Happiness levels with corresponding emojis
   const happinessLevels = [
     { level: 5, emoji: "😄", label: "Very Happy" },

@@ -23,7 +23,6 @@ export const ActiveQueries: React.FC = () => {
     setCompletedQueries((prev) => [...prev, { id, term, status: "complete", time }]);
 
     console.log(`Query "${term}" moved to completed.`);
-
     // Always show the toast when a query is completed
     toast({
       title: "Query Completed",

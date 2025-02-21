@@ -1,38 +1,10 @@
-import { Button } from "@/components/ui/button";
-// import { AskIgor } from "@/stories/04-utilities/dialog/Dialog.stories";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { ChevronRight, File, Network, Plus, Search } from "lucide-react";
+import { Plus } from "lucide-react";
 
 import { useState } from "react";
 
-import VotingCard from "../cards/voting-card";
 import AskIgorModal from "../dialogs/ask-igor";
-import CreateItemModal from "../dialogs/create-item-dialog";
-
-function PresetButton({
-  title,
-  description,
-}: {
-  title?: string;
-  description?: string;
-  className: string;
-}) {
-  return (
-    <Button
-      variant="ghost"
-      className="group h-auto w-full justify-between bg-slate-100 p-2 hover:bg-slate-400"
-    >
-      <div className="flex items-start gap-4">
-        <div className="text-left">
-          <h3 className="font-medium group-hover:text-white">{title}</h3>
-          <p className="text-sm text-gray-600 group-hover:text-white">{description}</p>
-        </div>
-      </div>
-      <ChevronRight className="h-4 w-4" />
-    </Button>
-  );
-}
 
 export const ProjectSources = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");

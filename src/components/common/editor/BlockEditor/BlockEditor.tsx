@@ -2,13 +2,6 @@ import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/
 import ConnectQuery from "@/components/common/dialogs/connect-query";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
 import Comments from "@/components/common/layout/comments";
-// import { TOCSidebar } from "./components/TOCSidebar";
-
-import ProjectOverView from "@/components/common/projects/overview";
-import ProjectPages from "@/components/common/projects/pages";
-import ProjectSearch from "@/components/common/projects/search";
-import ProjectSources from "@/components/common/projects/sources";
-import { SearchForm } from "@/components/common/sidebar/v2/search-form";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
@@ -16,7 +9,6 @@ import { useBlockEditor } from "@/hooks/use-block-editor";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { initialContent } from "@/lib/data/initialContent";
 import { RootState } from "@/store";
-import Admin from "@/views/Admin";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { EditorContent } from "@tiptap/react";
 import {

@@ -1,8 +1,7 @@
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { cn } from "@/lib/utils";
 import { ChevronDown, ChevronRight, Circle } from "lucide-react";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface MenuItem {
   label: string;

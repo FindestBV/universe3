@@ -1,11 +1,8 @@
-import { setLockPage } from "@/api/documents/documentSlice";
+// import { setLockPage } from "@/api/documents/documentSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import LockPageConfirm from "@/components/common/dialogs/lock-page-confirm";
-import MinimizableDialog from "@/components/common/dialogs/minimizable-dialog";
-import ShareObject from "@/components/common/dialogs/share-object";
 import UserAvatar from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { RootState } from "@/store";
 import { WebSocketStatus } from "@hocuspocus/provider";
 import {
@@ -18,22 +15,17 @@ import {
   Bold,
   ChevronDown,
   ChevronUp,
-  Download,
   Grid2x2,
   ImagePlus,
   Italic,
   Link,
   List,
   ListOrdered,
-  MoreHorizontal,
-  Network,
   Paperclip,
   Pilcrow,
-  Pin,
   SquarePlus,
   Subscript,
   Superscript,
-  Trash,
   Underline,
 } from "lucide-react";
 
@@ -56,7 +48,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
   const [isPinned, setIsPinned] = useState<boolean>(false);
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
   const isLocked = useSelector((state: RootState) => state.document.isLocked);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   if (!editor) return null;
 

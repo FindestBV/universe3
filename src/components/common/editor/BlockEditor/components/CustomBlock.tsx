@@ -1,6 +1,6 @@
 import LineChart from "@/components/common/utilities/line-chart";
 import { NodeViewContent, NodeViewWrapper } from "@tiptap/react";
-import { Loader, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 import { useEffect, useState } from "react";
 
