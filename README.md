@@ -114,13 +114,58 @@ universe3/
   |   ├── assets           # assets
   │   ├── components/      # React components
   │   │   └── login/
-  |   |   └── shared/
+  |   |   └── common/
   |   |   |     └── cards/
+  |   |   |     └── dialogs/
+  |   |   |     └── editor
+  |   |   |     |   └── extensions
+  |   |   |     |   └── menus
+  |   |   |     |   └── Pages (* Covers Source, Page, Entity, Study)
+  |   |   |     |   |     └── BlockEditor
+  |   |   |     |   |          └── BlockEditor
+  |   |   |     |   |          └── components
+  |   |   |     |   |                 └── TableOfContents
+  |   |   |     |   |                 └── TOCSideBar
+  |   |   |     |   |                 └── CustomBlock
+  |   |   |     |   |                 └── CustomGraphBlock
+  |   |   |     |   |                 └── EditorHeader
+  |   |   |     |   |                 └── EditorInfo
+  |   |   |     |   |                 └── EditorTitle
+  |   |   |     |   |                 └── IntakeSheetComponent
+  |   |   |     |   |                 └── MaturityRadarComponent
+  |   |   |     |   |                 └── NestedMenu
+  |   |   |     |   |                 └── ReferencesSidebar
+  |   |   |     |   |                 └── ViewEditSwitch
+  |   |   |     |   |          └── commands
+  |   |   |     |   |          └── types
+  |   |   |     |   └── panels
+  |   |   |     |   └── Projects * Very likely to be merged with main BlockEditor
+  |   |   |     |   |     └── BlockEditor
+  |   |   |     |   |          └── BlockEditor
+  |   |   |     |   |          └── components
+  |   |   |     |   |                 └── TableOfContents
+  |   |   |     |   |                 └── TOCSideBar
+  |   |   |     |   |                 └── CustomBlock
+  |   |   |     |   |                 └── CustomGraphBlock
+  |   |   |     |   |                 └── EditorHeader
+  |   |   |     |   |                 └── EditorInfo
+  |   |   |     |   |                 └── EditorTitle
+  |   |   |     |   |                 └── IntakeSheetComponent
+  |   |   |     |   |                 └── MaturityRadarComponent
+  |   |   |     |   |                 └── NestedMenu
+  |   |   |     |   |                 └── ReferencesSidebar
+  |   |   |     |   |                 └── ViewEditSwitch
+  |   |   |     |   |          └── commands
+  |   |   |     |   |          └── types
+  |   |   |     |   └── ui
+  |   |   |     └── forms/
   |   |   |     └── layout/
   |   |   |     └── loaders/
-  |   |   |     └── dialogs/
+  |   |   |     └── login/
+  |   |   |     └── projects
   |   |   |     └── search/
   |   |   |     └── sidebar/v2
+  |   |   |     └── user
   |   |   |     └── utilities/
   |   |   |
   |   |   └── ui/          # shadcn/ui primatives/components
