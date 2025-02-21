@@ -1,4 +1,16 @@
 .askIgorModal{
+
+    .askIgorEditor {
+        
+        > .tiptap .ProseMirror{
+            padding: 0!important;
+            
+            p{
+                @apply text-sm;
+            }
+        }
+    }
+
     .summonIgorBtn{
         @apply flex items-center gap-1 rounded-md bg-[#fff000] p-2 font-bold text-[#000000] transition-all ease-linear hover:bg-[#F9F9F9] hover:text-black;
         font-size: 14px; 
@@ -17,9 +29,11 @@
         max-height: 600px;
         }
 
-        .Tiptap {
-        width: calc(100% / 3 * 2);
-        }
+        
+        
+        // .Tiptap {
+        // width: calc(100% / 3 * 2);
+        // }
 
         .Search {
         border-left: 1px solid #eee;

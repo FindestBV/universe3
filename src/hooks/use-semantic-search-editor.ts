@@ -15,9 +15,9 @@ export const useSemanticSearchEditor = ({
     extensions: [StarterKit],
     content: `
       <div class="RAG_editor">
-        <h3>
+        <p>
           Write your question on the linked sources (e.g. What are the main technologies mentioned?)
-        </h3>
+        </p>
       </div>
 
     `,

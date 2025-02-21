@@ -99,6 +99,11 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
   const debouncedContent = useDebounce(content, 1000);
 
   const { editor } = useSemanticSearchEditor({
+    editorProps: {
+      attributes: {
+        class: "askIgorModal",
+      },
+    },
     onCreate: ({ editor }) => {
       console.log("Editor Created:", editor);
       setContent(editor.getText());
@@ -175,8 +180,10 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
                     <div className="relative">
                       {editor ? (
                         <>
-                          hehehe
-                          <EditorContent editor={editor} />
+                          <EditorContent
+                            editor={editor}
+                            className="askIgorEditor w-full rounded-sm bg-slate-200"
+                          />
                         </>
                       ) : (
                         <p>Loading editor...</p>
