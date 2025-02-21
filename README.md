@@ -118,9 +118,9 @@ universe3/
   |   |   |     └── cards/
   |   |   |     └── layout/
   |   |   |     └── loaders/
-  |   |   |     └── modals/
+  |   |   |     └── dialogs/
   |   |   |     └── search/
-  |   |   |     └── sidebar/
+  |   |   |     └── sidebar/v2
   |   |   |     └── utilities/
   |   |   |
   |   |   └── ui/          # shadcn/ui primatives/components
@@ -139,20 +139,33 @@ universe3/
   |   ├── styles/          # CSS stylesheets
   │   |   └── colors/
   │   |   └── components/
+  │   |   |    └── buttons
+  |   |   |    └── cards
+  |   |   |    └── dialogs **
+  |   |   |    └── forms
+  |   |   |    └── sidebar
+  |   |   ├─── active-queries.scss
+  |   |   ├─── dashboard.scss
+  |   |   ├─── editor.scss
+  |   |   ├─── page.scss
+  |   |   ├─── searchbar.scss
+  |   |   ├─── user-avatar.scss
   │   |   └── typography/
   │   |   └── utilities
   │   |   └── universe.scss
-  │   ├── types            # Utility functions
-  │   ├── views            # React views - please note: will be (significantly) reduced further
-  |   |   └── Dashboard/
-  |   |   └── DataView/
-  │   |   └── Document/
-  │   |   └── Documents/
-  │   |   └── Entities/
+  │   ├── types               # Utility functions
+  │   ├── views               # React views - please note: will be (significantly) reduced further
+  |   |   └── AdvancedSearch  ** FOR REFACTOR
+  |   |   └── Dashboard       ** FOR REFACTOR
+  │   |   └── Page            # handles rendered output for Sources, Pages, Project
+  │   |   └── Pages           # Formerly "entities"/"studies"
+  │   |   └── Projects        ** Holding view for Projects/Dashboard
+  │   |   └── Project         ** Static dev view for Projects/{id}
   │   |   └── Inbox/
-  │   |   └── LoginPage/
-  │   |   └── NotFound/
-  │   |   └── Queries/
+  │   |   └── LoginPage
+  │   |   └── NotFound
+  │   |   └── Source          ** Formerly 'Document'
+  │   |   └── Sources         ** Holding view for Sources. Formerly 'Documents'
   │   |   └── Studies
   │   ├── App.tsx          # Application entry point
   │   └── main.tsx         # Main rendering file
