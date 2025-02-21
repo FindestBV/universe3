@@ -7,8 +7,6 @@ import { Search } from "lucide-react";
 
 import { useEffect, useState } from "react";
 
-import { useGetStudiesQuery } from "../api/documents/documentApi";
-
 export const AdvancedSearch: React.FC = () => {
   const [selectedSearchItems, setSelectedSearchItems] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
@@ -59,7 +57,7 @@ export const AdvancedSearch: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <div className="view_advancedSearch">
       <div className="w-full bg-gray-100 p-12">
         <div className="advancedSearchOptions flex flex-col gap-4">
           <div className="flex items-center gap-4">
@@ -106,7 +104,7 @@ export const AdvancedSearch: React.FC = () => {
           ) : null}
         </CardContent>
       </div>
-    </>
+    </div>
   );
 };
 

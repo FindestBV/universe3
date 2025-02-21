@@ -1,16 +1,6 @@
 import GenericCard from "@/components/common/cards/generic-card";
-// import { EntityCard } from "@/components/common/entity-card";
 import DocumentsSkeleton from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
-import { Link, Trash2 } from "lucide-react";
 
 import React, { useState } from "react";
 

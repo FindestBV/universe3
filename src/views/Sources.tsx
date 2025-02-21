@@ -1,17 +1,7 @@
-// import { DocumentCard } from "@/components/common/document-card";
 import { useGetSavedDocumentsQuery } from "@/api/documents/documentApi";
 import { GenericCard } from "@/components/common/cards/generic-card";
 import DocumentsSkeleton from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
-import { Link, Trash2 } from "lucide-react";
 
 import { useEffect, useState } from "react";
 
@@ -30,26 +20,26 @@ export const Sources: React.FC = () => {
 
   const totalPages = data ? Math.ceil(data.totalCount / documentsPerPage) : 1;
 
-  const handlePageChange = (page: number) => setCurrentPage(page);
-  const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-  const handlePreviousPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+  // const handlePageChange = (page: number) => setCurrentPage(page);
+  // const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  // const handlePreviousPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 
-  const handleSelectAll = (checked: boolean) => {
-    setIsChecked(!isChecked);
-    if (checked && data) {
-      setSelectedDocs(new Set(data.documents.map((doc) => doc.id)));
-    } else {
-      setSelectedDocs(new Set());
-    }
-  };
+  // const handleSelectAll = (checked: boolean) => {
+  //   setIsChecked(!isChecked);
+  //   if (checked && data) {
+  //     setSelectedDocs(new Set(data.documents.map((doc) => doc.id)));
+  //   } else {
+  //     setSelectedDocs(new Set());
+  //   }
+  // };
 
-  const bulkSelectAction = () => {
-    console.log(`collective action on ${selectedDocs}`, selectedDocs);
-  };
+  // const bulkSelectAction = () => {
+  //   console.log(`collective action on ${selectedDocs}`, selectedDocs);
+  // };
 
-  const bulkDeSelectAction = () => {
-    setSelectedDocs(new Set());
-  };
+  // const bulkDeSelectAction = () => {
+  //   setSelectedDocs(new Set());
+  // };
 
   const handleSelectDoc = (id: string, checked: boolean) => {
     const newSelected = new Set(selectedDocs);

@@ -1,4 +1,3 @@
-// Imports
 import { currentUser } from "@/api/auth/authSlice";
 import { AppSidebar } from "@/components/common/sidebar/v2/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -7,8 +6,7 @@ import { persistor, store } from "@/store";
 import { LoginPage } from "@/views/LoginPage";
 import { PersistGate } from "redux-persist/integration/react";
 
-import { useEffect, useRef } from "react";
-import { lazy } from "react";
+import { lazy, useEffect, useRef } from "react";
 import { Provider as ReduxStoreProvider, useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";

@@ -188,8 +188,8 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   };
 
   const truncatedText = useTruncateText(name || title, 280);
-  const itemImage = images && images[0]?.path;
-  const itemCaption = images && images[0]?.caption;
+  // const itemImage = images && images[0]?.path;
+  // const itemCaption = images && images[0]?.caption;
   return (
     <div className="itemCard">
       <div className={`innerCardMain bg-white ${isSources ? "gap-4" : ""}`}>

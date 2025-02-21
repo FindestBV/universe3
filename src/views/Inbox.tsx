@@ -1,17 +1,6 @@
 import { InboxCard } from "@/components/common/cards/inbox-card";
 import DocumentsSkeleton from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-// Import your Pagination buttons (assumed to render just the chevron icons)
-import { PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
-import { Link, Trash2 } from "lucide-react";
 
 import { useState } from "react";
 

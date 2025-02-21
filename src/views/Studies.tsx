@@ -1,17 +1,6 @@
 import GenericCard from "@/components/common/cards/generic-card";
-import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 import { DocumentsSkeleton } from "@/components/common/loaders/documents-skeleton";
-// import { StudyCard } from "@/components/common/study-card";
 import { CardContent } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
-import { Link, Trash2 } from "lucide-react";
 
 import { useEffect, useState } from "react";
 
