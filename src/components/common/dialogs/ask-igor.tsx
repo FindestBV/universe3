@@ -1,16 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
+import { useDebounce } from "@/hooks/use-debounce";
+import { useSemanticSearch } from "@/hooks/use-semantic-search";
+import { useSemanticSearchEditor } from "@/hooks/use-semantic-search-editor";
+// import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
+import { EditorContent } from "@tiptap/react";
 import {
   Award,
+  Bot,
   Check,
   ChevronRight,
   File,
   FlaskConical,
   Globe,
   Link,
-  Loader2,
   Maximize2,
   Minimize2,
   X,
@@ -18,48 +22,49 @@ import {
 } from "lucide-react";
 
 import { useState } from "react";
-import { toast } from "react-hot-toast";
+
+// import { toast } from "react-hot-toast";
 
 // import LinkedCounts from "../cards/linked-counts";
 
 // Simulated article fetching function
-const simulateFetchArticles = (setArticles: any, setLoading: any, setIsFetching: any) => {
-  setLoading(true);
-  setIsFetching(true);
+// const simulateFetchArticles = (setArticles: any, setLoading: any, setIsFetching: any) => {
+//   setLoading(true);
+//   setIsFetching(true);
 
-  const articles = [
-    "How AI is Changing the World",
-    "The Future of React",
-    "Why TypeScript is Taking Over",
-    "State Management in 2024",
-    "Best Practices for UI/UX",
-    "Exploring Edge Computing",
-    "A Guide to Serverless Architecture",
-    "Understanding GraphQL",
-    "Introduction to Web3",
-    "Optimizing Performance in React",
-  ];
+//   const articles = [
+//     "How AI is Changing the World",
+//     "The Future of React",
+//     "Why TypeScript is Taking Over",
+//     "State Management in 2024",
+//     "Best Practices for UI/UX",
+//     "Exploring Edge Computing",
+//     "A Guide to Serverless Architecture",
+//     "Understanding GraphQL",
+//     "Introduction to Web3",
+//     "Optimizing Performance in React",
+//   ];
 
-  let counter = 0;
-  const interval = setInterval(() => {
-    if (counter < articles.length) {
-      setArticles((prev: string[]) => [...prev, articles[counter]]);
-      counter++;
-    } else {
-      clearInterval(interval);
-      setLoading(false);
-      setIsFetching(false);
-      toast.success("Search completed successfully!");
-    }
-  }, 2000);
+//   let counter = 0;
+//   const interval = setInterval(() => {
+//     if (counter < articles.length) {
+//       setArticles((prev: string[]) => [...prev, articles[counter]]);
+//       counter++;
+//     } else {
+//       clearInterval(interval);
+//       setLoading(false);
+//       setIsFetching(false);
+//       toast.success("Search completed successfully!");
+//     }
+//   }, 2000);
 
-  setTimeout(() => {
-    clearInterval(interval);
-    setLoading(false);
-    setIsFetching(false);
-    toast.success("Search completed successfully!");
-  }, 15000);
-};
+//   setTimeout(() => {
+//     clearInterval(interval);
+//     setLoading(false);
+//     setIsFetching(false);
+//     toast.success("Search completed successfully!");
+//   }, 15000);
+// };
 
 function PresetButton({
   title,
@@ -86,23 +91,29 @@ function PresetButton({
 }
 
 const AskIgorModal: React.FC = ({ ...props }: any) => {
-  const [question, setQuestion] = useState("");
   const [activeTab, setActiveTab] = useState("report");
   const [isMinimized, setIsMinimized] = useState(false); // Track minimization state
   const [isOpen, setIsOpen] = useState(false); // Track if modal is open
-  const [articles, setArticles] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
+  const [content, setContent] = useState<string | undefined>();
+  const debouncedContent = useDebounce(content, 1000);
 
-  const handleSearch = () => {
-    if (!isFetching && question.trim() !== "") {
-      setArticles([]);
-      simulateFetchArticles(setArticles, setLoading, setIsFetching);
-    }
-  };
+  const { editor } = useSemanticSearchEditor({
+    onCreate: ({ editor }) => {
+      console.log("Editor Created:", editor);
+      setContent(editor.getText());
+    },
+    onUpdate: ({ editor }) => {
+      console.log("Editor Updated:", editor);
+      setContent(editor.getText());
+    },
+  });
 
-  console.log("in ask igor modal", props?.iconOnly);
-  console.log("label in ask igor dialog", props?.label);
+  console.log("editor?", editor);
+  console.log("content?", content);
+  console.log("debounced?", debouncedContent);
+
+  const { isSearching, results, groups } = useSemanticSearch(isOpen ? debouncedContent : undefined);
 
   return (
     <div className="askIgorModal">
@@ -122,7 +133,6 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
             </button>
           </div>
         </DialogTrigger>
-
         {/* Dialog Content */}
         {!isMinimized && (
           <DialogContent className="flex h-auto flex-col bg-white p-0 sm:max-w-[1000px] [&>button]:hidden">
@@ -131,7 +141,9 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
               {/* Left Column - Input Section */}
               <div className="flex flex-col justify-between gap-12 p-6">
                 <div>
-                  <h1 className="mb-8 text-4xl font-bold">IGOR</h1>
+                  <h1 className="mb-8 flex items-center gap-2 text-4xl font-black">
+                    <Bot size={36} className="font-black" /> IGOR
+                  </h1>
                   <p className="iconText py-2 font-black">Linked sources</p>
 
                   {/* Compose from LinkedCounts ? */}
@@ -161,12 +173,15 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
                   <div className="space-y-2">
                     <h5 className="text-sm font-bold">Ask me anything about the linked sources</h5>
                     <div className="relative">
-                      <Textarea
-                        value={question}
-                        onChange={(e) => setQuestion(e.target.value)}
-                        placeholder="Type your question here..."
-                        className="min-h-[120px] resize-none bg-white pr-12 focus:outline-none focus-visible:ring-offset-0"
-                      />
+                      {editor ? (
+                        <>
+                          hehehe
+                          <EditorContent editor={editor} />
+                        </>
+                      ) : (
+                        <p>Loading editor...</p>
+                      )}
+
                       <Button
                         size="icon"
                         className="absolute bottom-3 right-3 bg-blue-500 text-white hover:bg-slate-300"
@@ -301,26 +316,57 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
                   </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto bg-gray-50 p-4">
-                  {loading ? (
-                    <p className="flex items-center gap-2 text-sm text-gray-500">
-                      Searching...
-                      <span className="animate-spin">
-                        <Loader2 />
-                      </span>
-                    </p>
-                  ) : (
-                    <div className="mt-8">
-                      <ul className="list-disc pl-5">
-                        {articles.map((article, index) => (
-                          <li key={index} className="text-sm text-gray-700">
-                            {article}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
+                <aside className={"Search"}>
+                  <strong>Existing documents</strong>
+                  <div className={"divider"} />
+                  {isSearching ? (
+                    <div className="hint purple-spinner">Sort by highest match...</div>
+                  ) : null}
+                  {!isSearching && groups && groups.length
+                    ? groups.map((group, i) => {
+                        return (
+                          <div key={group.name} className={"SearchResultGroup"}>
+                            <div className={"SearchResultGroup__Header"}>
+                              <div className={"SearchResultGroup__Title"}>
+                                Matching score {i === 0 && "🔥"} {i === 1 && "🏄🏼‍♂️"} {i === 2 && "🍐"}
+                              </div>
+                              <div className={"SearchResultGroup__Similarity"}>
+                                {group.similarity.from === group.similarity.to
+                                  ? `>= ${(group.similarity.from * 100).toFixed(0)}`
+                                  : `${(group.similarity.from * 100).toFixed(0)} - ${(
+                                      group.similarity.to * 100
+                                    ).toFixed(0)}`}
+                                %
+                              </div>
+                            </div>
+                            {group.results && group.results.length
+                              ? group.results.map((document, i) => (
+                                  <details
+                                    key={`${i}-${document.name}`}
+                                    className={"SearchResultItem"}
+                                  >
+                                    <summary className={"SearchResultItem__Summary"}>
+                                      <div className={"SearchResultItem__Header"}>
+                                        <div className={"SearchResultItem__Title"}>
+                                          {document.name}
+                                        </div>
+                                        <div className={"SearchResultItem__Similarity"}>
+                                          {(document.cosine_similarity * 100).toFixed(0)}%
+                                        </div>
+                                      </div>
+                                    </summary>
+
+                                    <div className={"SearchResultItem__Content"}>
+                                      {document.content}
+                                    </div>
+                                  </details>
+                                ))
+                              : null}
+                          </div>
+                        );
+                      })
+                    : null}
+                </aside>
               </div>
             </div>
           </DialogContent>

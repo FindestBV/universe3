@@ -10,7 +10,14 @@ function groupResults(
   numClusters: number = 3,
 ): SearchResultGroup[] | undefined {
   if (!results || !Array.isArray(results) || results.length === 0) {
-    return;
+    console.warn("groupResults: No valid search results provided.");
+    return undefined;
+  }
+
+  // Ensure all results have `cosine_similarity`
+  if (!results.every((res) => typeof res.cosine_similarity === "number")) {
+    console.error("groupResults: Missing cosine_similarity in some results", results);
+    return undefined;
   }
 
   if (results.length < numClusters) {
@@ -20,7 +27,7 @@ function groupResults(
   const data = results.map((result) => [result.cosine_similarity]);
   const kmeansResult = kmeans(data, numClusters, {});
 
-  // Map centroids directly to their sorted order using indexed objects
+  // Sort cluster indices
   const sortedClusterIndices = kmeansResult.centroids
     .map((_, index) => index)
     .sort((a, b) => kmeansResult.centroids[b][0] - kmeansResult.centroids[a][0]);
@@ -30,36 +37,24 @@ function groupResults(
     .map((_, i) => ({
       name: `Group ${i + 1}`,
       results: [],
-      similarity: {
-        from: -Infinity,
-        to: Infinity,
-      },
+      similarity: { from: -Infinity, to: Infinity },
     }));
 
-  // Map cluster indices from original to sorted order
-  const clusterMapping = sortedClusterIndices.reduce<{ [key: number]: number }>(
-    (acc, clusterIndex, sortedIndex) => {
-      acc[clusterIndex] = sortedIndex;
-      return acc;
-    },
-    {},
-  );
+  // Map clusters
+  const clusterMapping = sortedClusterIndices.reduce((acc, clusterIndex, sortedIndex) => {
+    acc[clusterIndex] = sortedIndex;
+    return acc;
+  }, {});
 
-  // Assign results to sorted clusters and simultaneously compute 'from' and 'to' values
   kmeansResult.clusters.forEach((clusterIndex, resultIndex) => {
     const groupIndex = clusterMapping[clusterIndex];
     const group = groupedResults[groupIndex];
     const similarity = results[resultIndex].cosine_similarity;
 
-    group.results?.push(results[resultIndex]);
+    group.results.push(results[resultIndex]);
 
-    if (group.similarity.from === undefined || similarity > group.similarity.from) {
-      group.similarity.from = similarity;
-    }
-
-    if (group.similarity.to === undefined || similarity < group.similarity.to) {
-      group.similarity.to = similarity;
-    }
+    group.similarity.from = Math.max(group.similarity.from, similarity);
+    group.similarity.to = Math.min(group.similarity.to, similarity);
   });
 
   return groupedResults;
@@ -74,7 +69,7 @@ export const useSemanticSearch = (
   performSearch: (term: string) => Promise<void>;
   reset: () => void;
   results: SearchResult[] | undefined;
-  groups: SearchResultGroup[] | undefined;
+  groups: SearchResult[] | undefined;
 } => {
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | undefined>();
@@ -90,9 +85,12 @@ export const useSemanticSearch = (
       setValidationErrors(undefined);
 
       const response = (await ky
-        .post("/api/search", {
-          json: { content: term },
-        })
+        .post(
+          "https://api-test.findest.com/api/linking/08dd502d-0ee9-4b43-8a16-ea15b5812da6/haslinkedtypes?objectType[]=3&objectType[]=6",
+          {
+            json: { content: term },
+          },
+        )
         .json()) as SearchResult[];
 
       setResults(response);

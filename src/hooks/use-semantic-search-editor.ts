@@ -1,3 +1,4 @@
+// useSemanticSearchEditor.ts
 import { EditorEvents } from "@tiptap/core";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -13,15 +14,11 @@ export const useSemanticSearchEditor = ({
     immediatelyRender: false,
     extensions: [StarterKit],
     content: `
-      <h3>
-        How to integrate OpenAI in your Tiptap Editor
-      </h3>
-      <p></p>
-      <ol>
-        <li>Create a Tiptap Cloud account and choose a plan that fit’s your needs.</li>
-        <li>You also need to create an account on OpenAI and get your API key.</li>
-        <li>…</li>
-      </ol>
+      <div class="raggyEditor">
+        <h3>
+          Y'all mind if I do some Lollygaggin'?
+        </h3>
+      </div>
 
     `,
     onCreate: (props) => onCreate && onCreate(props),

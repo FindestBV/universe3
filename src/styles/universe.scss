@@ -225,3 +225,7 @@ p{
   font-weight: 400;
   letter-spacing: .496px;
 }
+
+.raggyEditor{
+  @apply min-h-[120px] resize-none bg-white pr-12 focus:outline-none focus-visible:ring-offset-0;
+}
