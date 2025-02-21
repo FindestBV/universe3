@@ -15,6 +15,7 @@
 // cards
 @use './components/cards/inbox-card.scss';
 @use './components/cards/item-card.scss';
+@use './components/cards/voting-card.scss';
 
 // dialogs
 @use './components/dialogs/ask-igor-modal.scss';
@@ -185,166 +186,6 @@
   }
 }
 
-
-
-.directedGraphNodeTooltip {
-	width: 300px;
-  min-height: 50px;
-  position: absolute;
-  background: white;
-  border-radius: 4px;
-	font-weight: 500;
-	padding: 16px 32px;
-	box-shadow: -1px 1px 4px rgba(0, 0, 0, 0.16);
-	word-break: break-word;
-}
-
-.graphContainer {
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-}
-
-.packGraphContainer {
-  width: 100%;
-  height: 400px;
-  position: relative;
-  overflow: hidden;
-  padding: 0 0 5em 0;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-}
-
-.forceDirectionGraph {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-}
-
-.forceDirectionGraphContainer{
-  @apply relative flex h-[320px] w-full flex-col items-start justify-start gap-1 overflow-y-scroll rounded-xl; 
-}
-
-.fitToView svg {
-  display: block;
-  margin: auto;
-}
-
-// .universeOverview {
-// 	width: 100%;
-// 	position: relative;
-// 	padding: 16px 64px 0;
-// 	overflow: auto;
-// 	display: flex;
-// 	flex-wrap: wrap;
-
-// 	.loader {
-// 		position: absolute;
-// 		left: calc(50% - 45px);
-// 		top: calc(50% - 45px);
-// 		z-index: 1;
-// 	}
-
-// 	.box {
-// 		flex: 50%;
-// 		display: flex;
-// 		flex-direction: column;
-// 		width: 50%;
-// 		height: 50%;
-// 		padding: 0 0 32px 32px;
-
-// 		&.left {
-// 			padding-right: 16px;
-// 			padding-left: 0px;
-// 		}
-// 		.graphBoxContainer {
-// 			position: relative;
-// 			height: calc(100% - 38px);
-// 			overflow: hidden;
-
-// 			.hoverContentContainer {
-// 				position: absolute;
-// 				top: 0;
-// 				left: 0;
-// 				right: 0;
-// 				align-items: center;
-// 				justify-content: center;
-// 				flex-direction: column;
-// 				background-color: rgba(18, 36, 72, 0.53);
-// 				border-radius: 4px;
-// 				display: flex;
-// 				visibility: hidden;
-// 				width: 100%;
-// 				height: 100%;
-// 				-webkit-transition: all .3s ease-in-out;
-// 				opacity: 0.1;
-// 				transition: all .3s ease-in-out;
-// 				cursor: pointer;
-
-// 				.seeRelationsButton {
-// 					background-color: #3CE9F0;
-// 					color: #122448;
-// 					flex-direction: row;
-// 					svg {
-// 						margin: 0 0 0 10px;
-// 					}
-// 				}
-
-// 				.seeItemTypesButton {
-// 					background-color: #F0F0F0;
-// 					color: #122448;
-// 					flex-direction: row;
-// 					svg {
-// 						margin: 0 0 0 10px;
-// 					}
-// 				}
-
-// 				.hoverText {
-// 					background-color: #122448;
-// 					padding: 10px;
-// 					font-size: 12px;
-// 					color: white;
-// 					border-radius: 4px;
-// 					max-width: 185px;
-// 					margin-top: 8px;
-// 				}
-// 			}
-
-// 			&:hover {
-// 				.hoverContentContainer {
-// 					opacity: 1;
-// 					visibility: visible;
-// 				}
-// 			}
-// 		}
-// 	}
-
-// 	.title {
-// 		margin-bottom: 12px;
-// 		color: #252525;
-// 		font-size: 18px;
-// 		font-weight: 600;
-// 		letter-spacing: .144px;
-// 		line-height: 24px;
-// 		cursor: default;
-// 	}
-// }
-
-.pageTypeGraph {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  overflow: hidden;
-  inset: 0;
-}
-
 @supports (hanging-punctuation: first) and (font: -apple-system-body) and (-webkit-appearance: none) {
   .safari-only {
     background-color: green;
@@ -355,21 +196,6 @@ html:has(.view-transition) {
   transition: opacity 0.5s;
   opacity: 0.5; /* Fades out the page */
 }
-
-.d-view-modal {
-  width: 100%;
-  height: 70vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  overflow: hidden; /* Ensures the content stays within bounds */
-}
-
-.d-view-modal svg {
-  width: 40%!important; /* Ensure the SVG scales */
-  height: 100%!important;
-}
-
 
 .connections{
   font-size: 10px;

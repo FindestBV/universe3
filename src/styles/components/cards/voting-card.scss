@@ -1,0 +1,21 @@
+.votingCard{
+    @apply w-full rounded-lg border bg-white px-4 py-2 shadow-sm;
+
+    .innerCardContainer{
+
+        @apply flex items-center justify-between gap-4; 
+        
+        .innerCardContent{
+            @apply flex gap-8;
+            .innerCardList{
+                @apply flex items-start gap-1; 
+            }
+            .innerCardToggleTrigger{
+                @apply text-sm font-semibold text-gray-500 transition-colors hover:text-black; 
+            }
+            .innerCardTogglePanel{
+                @apply mt-2 overflow-hidden rounded-lg bg-gray-100 p-4 text-sm text-gray-700; 
+            }
+        }
+    }
+}

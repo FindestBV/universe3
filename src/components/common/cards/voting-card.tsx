@@ -12,10 +12,10 @@ export default function VotingCard({ star }: VotingCardProps) {
   const [showDetails, setShowDetails] = useState(false);
 
   return (
-    <div className="w-full rounded-lg border bg-white px-4 py-2 shadow-sm">
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex gap-8">
-          <div className="flex items-start gap-1">
+    <div className="votingCard">
+      <div className="innerCardContainer">
+        <div className="innerCardContent">
+          <div className="innerCardList">
             {[1, 2, 3, 4, 5].map((starValue) => (
               <button
                 key={starValue}
@@ -32,10 +32,7 @@ export default function VotingCard({ star }: VotingCardProps) {
           </div>
           <h2 className="text-sm font-semibold">Tyvek paper (polyethelene based)</h2>
         </div>
-        <button
-          onClick={() => setShowDetails((prev) => !prev)}
-          className="text-sm font-semibold text-gray-500 transition-colors hover:text-black"
-        >
+        <button onClick={() => setShowDetails((prev) => !prev)} className="innerCardToggleTrigger">
           {showDetails ? "Hide" : "Show"}
         </button>
       </div>
@@ -47,7 +44,7 @@ export default function VotingCard({ star }: VotingCardProps) {
           animate={{ height: "auto", opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.1 }}
-          className="mt-2 overflow-hidden rounded-lg bg-gray-100 p-4 text-sm text-gray-700"
+          className="innerCardTogglePanel"
         >
           <p className="text-sm">
             This is some additional detail text. It provides more information about the item.
