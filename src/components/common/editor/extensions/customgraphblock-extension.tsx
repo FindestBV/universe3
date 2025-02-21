@@ -1,7 +1,7 @@
 import { mergeAttributes, Node } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 
-import CustomGraphBlock from "../BlockEditor/components/CustomGraphBlock";
+import CustomGraphBlock from "../Pages/BlockEditor/components/CustomGraphBlock";
 
 export default Node.create({
   name: "customGraphBlock",
