@@ -57,6 +57,7 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
           ],
         },
         maxWidth: "calc(100vw - 16px)",
+        zIndex: 50,
       }}
       editor={editor}
       pluginKey="textMenu"
