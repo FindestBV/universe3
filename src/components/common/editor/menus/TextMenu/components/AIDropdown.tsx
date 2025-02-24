@@ -1,3 +1,4 @@
+import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import { DropdownButton } from "@/components/common/editor/ui/Dropdown";
 import { Icon } from "@/components/common/editor/ui/Icon";
 import { Surface } from "@/components/common/editor/ui/Surface";
@@ -44,9 +45,7 @@ export const AIDropdown = ({
           className="text-purple-500 hover:text-purple-600 active:text-purple-600 dark:text-purple-400 dark:hover:text-purple-300 dark:active:text-purple-400"
           activeClassname="text-purple-600 hover:text-purple-600 dark:text-purple-400 dark:hover:text-purple-200"
         >
-          <Icon name="Sparkles" className="mr-1" />
-          AI Tools
-          <Icon name="ChevronDown" className="ml-1 h-2 w-2" />
+          <AskIgorModal />
         </Toolbar.Button>
       </Dropdown.Trigger>
       <Dropdown.Content asChild>

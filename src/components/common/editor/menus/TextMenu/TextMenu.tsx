@@ -1,7 +1,9 @@
+import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import { ColorPicker } from "@/components/common/editor/panels";
 import { Icon } from "@/components/common/editor/ui/Icon";
 import { Surface } from "@/components/common/editor/ui/Surface";
 import { Toolbar } from "@/components/common/editor/ui/Toolbar";
+import { AskIgor } from "@/stories/04-utilities/dialog/Dialog.stories";
 import * as Popover from "@radix-ui/react-popover";
 import { BubbleMenu, Editor } from "@tiptap/react";
 
@@ -62,7 +64,7 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
       updateDelay={100}
     >
       <Toolbar.Wrapper>
-        <AIDropdown
+        {/* <AIDropdown
           onCompleteSentence={commands.onCompleteSentence}
           onEmojify={commands.onEmojify}
           onFixSpelling={commands.onFixSpelling}
@@ -72,7 +74,8 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
           onTldr={commands.onTldr}
           onTone={commands.onTone}
           onTranslate={commands.onTranslate}
-        />
+        /> */}
+        <AskIgorModal />
         <Toolbar.Divider />
         <MemoContentTypePicker options={blockOptions} />
         <MemoFontFamilyPicker onChange={commands.onSetFont} value={states.currentFont || ""} />
