@@ -22,11 +22,11 @@ const MenuItemComponent: React.FC<MenuItemProps> = ({ item, level = 0 }) => {
     <li className="relative">
       {level > 0 && <div className="absolute left-[-20px] top-0 h-full w-[2px] bg-gray-200" />}
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <CollapsibleTrigger className="relative flex w-full items-center gap-1 rounded-md py-2 transition-colors">
+        <CollapsibleTrigger className="relative flex w-full items-center gap-1 rounded-md py-2 transition-colors hover:bg-black hover:text-white">
           {level > 0 && (
             <div className="absolute left-[-20px] top-1/2 h-[2px] w-[20px] bg-gray-200" />
           )}
-          <div className="rounded-full p-1 transition-colors hover:bg-gray-200">
+          <div className="rounded-full p-1 transition-colors">
             {hasChildren ? (
               isOpen ? (
                 <ChevronDown className="h-4 w-4" />
