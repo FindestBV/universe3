@@ -129,7 +129,7 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
         <DialogTrigger asChild>
           <div>
             <button
-              className="summonIgorBtn"
+              className={`summonIgorBtn ${props?.isToolbar ? "toolBarIgor" : ""}`}
               onClick={() => {
                 setIsMinimized(false);
                 setIsOpen(true);

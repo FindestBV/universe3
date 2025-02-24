@@ -20,21 +20,16 @@ import {
   ChevronUp,
   Download,
   Grid2x2,
+  HighlighterIcon,
   ImagePlus,
   Italic,
   Link,
   List,
-  ListOrdered,
-  MoreHorizontal,
-  Network,
   Paperclip,
   Pilcrow,
-  Pin,
   SquarePlus,
   Subscript,
   Superscript,
-  Trash,
-  Underline,
 } from "lucide-react";
 
 import { memo, useEffect, useState } from "react";
@@ -74,12 +69,6 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
       icon: <Italic size={16} />,
     },
     {
-      label: "Underline",
-      command: () => editor.chain().focus().toggleUnderline?.().run(),
-      isActive: editor.isActive("underline"),
-      icon: <Underline size={16} />,
-    },
-    {
       label: "Superscript",
       command: () => editor.chain().focus().toggleSuperscript?.().run(),
       isActive: editor.isActive("superscript"),
@@ -93,16 +82,10 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
     },
 
     {
-      label: "Bullet List",
+      label: "Highlight",
       command: () => editor.chain().focus().toggleBulletList().run(),
-      isActive: editor.isActive("bulletList"),
-      icon: <List size={16} />,
-    },
-    {
-      label: "Numbered List",
-      command: () => editor.chain().focus().toggleOrderedList().run(),
-      isActive: editor.isActive("orderedList"),
-      icon: <ListOrdered size={16} />,
+      isActive: editor.isActive("highlight"),
+      icon: <HighlighterIcon size={16} />,
     },
   ];
 
@@ -190,7 +173,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
       <div className="mr-4 flex flex-row items-center justify-center gap-2 border-r border-neutral-200 pr-4 text-right dark:border-neutral-200">
         {isEditing && !isLocked ? (
           <>
-            <AskIgorModal />
+            <AskIgorModal isToolbar={true} />
             <DropdownMenu onOpenChange={(open) => setIsDropdownOpen(open)}>
               <DropdownMenuTrigger asChild>
                 <Button className="h-9 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400">

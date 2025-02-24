@@ -31,7 +31,7 @@ export const EditorHeader = ({ editor, collabState, users, documentId }: EditorH
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
 
   return (
-    <div className="editorHeader rounded-sm border border-slate-200 p-2">
+    <div className="editorHeader">
       <EditorInfo
         characters={characters}
         words={words}

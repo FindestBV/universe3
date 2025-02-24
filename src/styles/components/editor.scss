@@ -535,7 +535,7 @@
 }
 
 .editorHeader{
-  @apply flex flex-none flex-row items-center py-0 text-black dark:border-neutral-200 dark:bg-white dark:text-black overflow-y-scroll; 
+  @apply flex flex-none flex-row items-center py-0 text-black dark:border-neutral-200 dark:bg-white dark:text-black overflow-y-scroll rounded-sm border border-slate-200 p-2;
   // z-index: 49; 
   min-height: 50px;
 }
