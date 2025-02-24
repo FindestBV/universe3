@@ -51,6 +51,7 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [showNumbers, setShowNumbers] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [shouldRenderGraph, setShouldRenderGraph] = useState(false);
 
   const pathSegments = window.location.pathname.split("/");
   const pageId = pathSegments[pathSegments.length - 1];
@@ -82,7 +83,7 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
 
   const drawRadar = useCallback(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !shouldRenderGraph) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -224,16 +225,16 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
     }
 
     ctx.restore();
-  }, [radarData, showNumbers]);
+  }, [radarData, showNumbers, shouldRenderGraph]);
 
   // Redraw whenever data changes
   useEffect(() => {
-    if (radarData) {
+    if (radarData && shouldRenderGraph) {
       requestAnimationFrame(() => {
         drawRadar();
       });
     }
-  }, [radarData, drawRadar]);
+  }, [radarData, drawRadar, shouldRenderGraph]);
 
   const handleOpenDialog = useCallback(() => setIsDialogOpen(true), []);
   const handleCloseDialog = useCallback(() => setIsDialogOpen(false), []);
@@ -241,6 +242,7 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
   const handleContinue = useCallback(() => {
     updateAttributes?.({ settings: { ...node?.attrs?.settings, customText: inputValue } });
     setIsDialogOpen(false);
+    setShouldRenderGraph(true);
   }, [inputValue, node?.attrs?.settings, updateAttributes]);
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -252,13 +254,15 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
       <div className="maturity-radar-container relative w-auto max-w-full overflow-y-scroll">
         <h3>Maturity Radar v2</h3>
         <div className="flex flex-col items-center">
-          <canvas
-            ref={canvasRef}
-            width="800"
-            height="800"
-            className="mt-4 rounded border border-gray-200"
-            style={{ width: "800px", height: "800px" }}
-          />
+          {shouldRenderGraph && (
+            <canvas
+              ref={canvasRef}
+              width="800"
+              height="800"
+              className="mt-4 rounded border border-gray-200"
+              style={{ width: "800px", height: "800px" }}
+            />
+          )}
           {isLoading ? (
             <p>Loading...</p>
           ) : isError ? (
@@ -306,6 +310,7 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
       handleCloseDialog,
       handleContinue,
       handleInputChange,
+      shouldRenderGraph,
     ],
   );
 
