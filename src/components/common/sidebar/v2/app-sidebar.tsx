@@ -67,7 +67,7 @@ const data = {
       ],
     },
     {
-      title: "Sources",
+      title: "Search",
       url: "#",
       icon: Link,
       items: [
@@ -92,7 +92,7 @@ const data = {
   ],
 };
 
-function SidebarToggle() {
+function SidebarToggle({ sidebarState }: string) {
   const { toggleSidebar } = useSidebar();
 
   return (
@@ -103,10 +103,10 @@ function SidebarToggle() {
           onClick={toggleSidebar}
           className="w-full items-center justify-start gap-1 hover:bg-none"
         >
-          <div className="mt-1 flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
-            <Globe className="size-5 text-slate-600" />
+          <div className="mt-1 flex aspect-square size-8 items-center justify-center rounded-lg">
+            <Globe className={`size-5 ${sidebarState ? "text-slate-600" : "text-white"}`} />
           </div>
-          <div className="mt-1 grid flex-1 text-left text-lg text-slate-700">
+          <div className={`text-slate-700" mt-1 grid flex-1 text-left text-lg`}>
             <span className="truncate font-semibold">Universe</span>
           </div>
         </SidebarMenuButton>
@@ -124,13 +124,13 @@ export function AppSidebar({ isOpen, ...props }: React.ComponentProps<typeof Sid
     <Sidebar
       collapsible="icon"
       {...props}
-      className={`mainSidebar ${sidebarState ? "bg-white" : "bg-gray-800"}`}
+      className={`mainSidebar ${sidebarState ? "bg-white" : "bg-[#757575]"}`}
     >
-      <SidebarHeader>
+      <SidebarHeader sidebarState={sidebarState}>
         <SidebarToggle />
       </SidebarHeader>
       <SidebarContent className="mt-9">
-        <NavMain items={data.navMain} />
+        <NavMain items={data.navMain} sidebarState={sidebarState} />
       </SidebarContent>
       <SidebarFooter className="sidebarFooter">
         {/* <NavUser user={data.user} /> */}

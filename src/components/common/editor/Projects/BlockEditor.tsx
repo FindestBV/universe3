@@ -265,7 +265,7 @@ export const BlockEditor = ({
                       <Button
                         className="border border-slate-300 bg-slate-100 text-black hover:bg-slate-200"
                         onClick={() => {
-                          navigateWithTransition(`/dashboard`);
+                          navigateWithTransition(`/projects/dashboard`);
                         }}
                       >
                         <ArrowLeft /> Back to the Universe

@@ -10,7 +10,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { Circle, File, Home, Inbox, Link, Minus, Network, Plus } from "lucide-react";
+import { Circle, File, Inbox, Link, Minus, Network, Plus, Search } from "lucide-react";
 
 import { createElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -20,32 +20,32 @@ import { SearchForm } from "./search-form";
 
 const data = {
   navMain: [
-    { title: "Dashboard", url: "/projects/dashboard", icon: Home },
+    { title: "Search", url: "/pages", icon: Search },
     { title: "Inbox", url: "/inbox", icon: Inbox },
-    {
-      title: "Projects",
-      url: "/projects",
-      icon: Circle,
-      items: [{ title: "Entities", url: "/pages/entities" }],
-    },
-    {
-      title: "Pages",
-      url: "/pages",
-      icon: File,
-      items: [
-        { title: "Entities", url: "/pages/entities" },
-        { title: "Studies", url: "/pages/studies" },
-      ],
-    },
-    {
-      title: "Sources",
-      url: "/sources",
-      icon: Link,
-    },
+    // {
+    //   title: "Projects",
+    //   url: "/projects",
+    //   icon: Circle,
+    //   items: [{ title: "Entities", url: "/pages/entities" }],
+    // },
+    // {
+    //   title: "Pages",
+    //   url: "/pages",
+    //   icon: File,
+    //   items: [
+    //     { title: "Entities", url: "/pages/entities" },
+    //     { title: "Studies", url: "/pages/studies" },
+    //   ],
+    // },
+    // {
+    //   title: "Sources",
+    //   url: "/sources",
+    //   icon: Link,
+    // },
   ],
 };
 
-export function NavMain() {
+export function NavMain({ sidebarState }: string) {
   const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({});
   const { open, setOpen } = useSidebar();
   const location = useLocation();
@@ -87,7 +87,7 @@ export function NavMain() {
         </div>
       )}
 
-      <SidebarMenu className="w-full">
+      <SidebarMenu className="mt-6 w-full">
         {data.navMain.map((item) => {
           const isActive = item.items?.some((subItem) => subItem.url === currentPath);
 
