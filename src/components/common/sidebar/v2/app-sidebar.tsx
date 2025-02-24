@@ -92,7 +92,7 @@ const data = {
   ],
 };
 
-function SidebarToggle({ sidebarState }: string) {
+function SidebarToggle({ sidebarState }: boolean) {
   const { toggleSidebar } = useSidebar();
 
   return (
@@ -106,7 +106,7 @@ function SidebarToggle({ sidebarState }: string) {
           <div className="mt-1 flex aspect-square size-8 items-center justify-center rounded-lg">
             <Globe className={`size-5 ${sidebarState ? "text-slate-600" : "text-white"}`} />
           </div>
-          <div className={`text-slate-700" mt-1 grid flex-1 text-left text-lg`}>
+          <div className={`text-slate-700" mt-1 grid flex-1 text-left text-lg text-gray-700`}>
             <span className="truncate font-semibold">Universe</span>
           </div>
         </SidebarMenuButton>
