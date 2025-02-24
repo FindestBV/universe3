@@ -3,6 +3,8 @@ import type { SavedDocumentResponse } from "@/types/types";
 
 import { api } from "../api";
 
+// Maturity Radar, Requirements Table
+
 export const projectApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getSavedMaturityRadars: builder.query<SavedDocumentResponse, { page: number; limit: number }>({

@@ -182,7 +182,7 @@ export const BlockEditor = ({
 
   return (
     <div className="flex" ref={menuContainerRef}>
-      <div className="flex-2 relative flex h-full max-w-full flex-col">
+      <div className="flex-2 relative flex h-full w-full flex-col">
         <div className="flex flex-row overflow-hidden">
           {/* Begin Aside */}
 
@@ -309,7 +309,7 @@ export const BlockEditor = ({
               <EditorContent
                 key={editor?.view?.id || "editor"}
                 editor={editor}
-                className="flex overflow-y-scroll pb-16 pt-8"
+                className="flex overflow-y-scroll pb-16 pl-14 pt-8"
               />
               <ContentItemMenu editor={editor} />
               <LinkMenu editor={editor} appendTo={menuContainerRef} />
