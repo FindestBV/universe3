@@ -186,15 +186,15 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
   }, [isLocked]);
 
   return (
-    <div className="flex w-full items-center justify-start">
-      <div className="mr-4 flex flex-row justify-center gap-2 border-r border-neutral-200 pr-4 text-right dark:border-neutral-200">
+    <div className="flex w-full items-center justify-center">
+      <div className="mr-4 flex flex-row items-center justify-center gap-2 border-r border-neutral-200 pr-4 text-right dark:border-neutral-200">
         {isEditing && !isLocked ? (
           <>
             <AskIgorModal />
             <DropdownMenu onOpenChange={(open) => setIsDropdownOpen(open)}>
               <DropdownMenuTrigger asChild>
                 <Button className="h-9 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400">
-                  <Pilcrow size={16} />
+                  <Pilcrow size={16} /> Paragraph
                   {isDropdownOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                 </Button>
               </DropdownMenuTrigger>

@@ -20,6 +20,7 @@ import {
   ChevronUp,
   Download,
   Grid2x2,
+  Highlighter,
   ImagePlus,
   Italic,
   Link,
@@ -73,12 +74,12 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
       isActive: editor.isActive("italic"),
       icon: <Italic size={16} />,
     },
-    {
-      label: "Underline",
-      command: () => editor.chain().focus().toggleUnderline?.().run(),
-      isActive: editor.isActive("underline"),
-      icon: <Underline size={16} />,
-    },
+    // {
+    //   label: "Underline",
+    //   command: () => editor.chain().focus().toggleUnderline?.().run(),
+    //   isActive: editor.isActive("underline"),
+    //   icon: <Underline size={16} />,
+    // },
     {
       label: "Superscript",
       command: () => editor.chain().focus().toggleSuperscript?.().run(),
@@ -90,6 +91,12 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
       command: () => editor.chain().focus().toggleSubscript?.().run(),
       isActive: editor.isActive("subscript"),
       icon: <Subscript size={16} />,
+    },
+    {
+      label: "Highlight",
+      command: () => editor.chain().focus().toggleSubscript?.().run(),
+      isActive: editor.isActive("highlight"),
+      icon: <Highlighter size={16} />,
     },
 
     {
@@ -186,7 +193,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
   }, [isLocked]);
 
   return (
-    <div className="flex w-full items-center justify-start">
+    <div className="flex w-full items-center justify-between">
       <div className="mr-4 flex flex-row justify-center gap-2 border-r border-neutral-200 pr-4 text-right dark:border-neutral-200">
         {isEditing && !isLocked ? (
           <>
@@ -194,7 +201,7 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
             <DropdownMenu onOpenChange={(open) => setIsDropdownOpen(open)}>
               <DropdownMenuTrigger asChild>
                 <Button className="h-9 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400">
-                  <Pilcrow size={16} />
+                  <Pilcrow size={16} /> Paragraph
                   {isDropdownOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                 </Button>
               </DropdownMenuTrigger>
