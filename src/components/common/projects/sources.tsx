@@ -62,7 +62,7 @@ export const ProjectSources = () => {
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className={`p-2 text-sm ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-200 font-bold" : "text-black"}`}
+                      className={`p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-200 font-bold" : "text-black"}`}
                       onDoubleClick={() => renameTab(tab.id)} // Double-click to rename
                     >
                       {tab.label}
@@ -80,7 +80,7 @@ export const ProjectSources = () => {
                 </div>
               </TabsList>
 
-              <TabsContent value="all" className="mt-2 space-y-2">
+              <TabsContent value="all" className="mt-2 space-y-2 transition-all duration-150">
                 <div className="overviewHeader py-4">
                   <h1 className="mb-2 text-4xl font-bold">Sources</h1>
                   <p className="mb-4 text-sm">
@@ -227,7 +227,7 @@ export const ProjectSources = () => {
                   </div>
                 </div>
               </TabsContent>
-              <TabsContent value="science" className="mt-2 space-y-2">
+              <TabsContent value="science" className="mt-2 space-y-2 transition-all duration-150">
                 <div className="w-full">
                   <div className="flex flex-col">
                     {[1, 2, 3, 4, 5, 6].map((item) => (
@@ -361,7 +361,7 @@ export const ProjectSources = () => {
                   </div>
                 </div>
               </TabsContent>
-              <TabsContent value="patents" className="mt-2 space-y-2">
+              <TabsContent value="patents" className="mt-2 space-y-2 transition-all duration-150">
                 <div className="w-full">
                   <div className="flex flex-col">
                     {[1, 2, 3, 4, 5, 6].map((item) => (

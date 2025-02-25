@@ -134,7 +134,7 @@ export const ProjectOverView = () => {
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className={`p-2 text-sm ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-200 font-bold" : "text-black"}`}
+                    className={`p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-200 font-bold" : "text-black"}`}
                     onDoubleClick={() => renameTab(tab.id)} // Double-click to rename
                   >
                     {tab.label}
@@ -157,7 +157,7 @@ export const ProjectOverView = () => {
                   <p className="p-4 text-sm">Content for {tab.label}</p>
                 </TabsContent>
               ))} */}
-            <TabsContent value="overview" className="mt-2 space-y-2">
+            <TabsContent value="overview" className="mt-2 space-y-2 transition-all duration-150">
               <>
                 <div className="overviewHeader py-4">
                   <h1 className="mb-4 text-4xl font-bold">
@@ -200,7 +200,10 @@ export const ProjectOverView = () => {
                 </div>
               </>
             </TabsContent>
-            <TabsContent value="technologies" className="mt-2 w-full flex-grow space-y-2">
+            <TabsContent
+              value="technologies"
+              className="mt-2 w-full flex-grow space-y-2 transition-all duration-150"
+            >
               <div className="flex w-full flex-col">
                 {/* Header Row */}
                 <div className="flex w-full px-4 py-2 font-semibold">
@@ -221,7 +224,10 @@ export const ProjectOverView = () => {
 
               {/* <PresetButton title="Other general keyword" description="Either based on general knowledge or the sources linked." className="bg-slate-100" /> */}
             </TabsContent>
-            <TabsContent value="queries" className="mt-2 space-y-2 py-4">
+            <TabsContent
+              value="queries"
+              className="mt-2 space-y-2 py-4 transition-all duration-150"
+            >
               <h3 className="py-4 font-bold">Active Queries</h3>
               <PresetButton
                 title="Other general keyword"

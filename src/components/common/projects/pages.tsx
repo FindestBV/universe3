@@ -60,7 +60,7 @@ export const ProjectPages = () => {
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className={`p-2 text-sm ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-200 font-bold" : "text-black"}`}
+                      className={`p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-200 font-bold" : "text-black"}`}
                       onDoubleClick={() => renameTab(tab.id)} // Double-click to rename
                     >
                       {tab.label}
@@ -77,7 +77,7 @@ export const ProjectPages = () => {
                   <AskIgorModal iconOnly={true} />
                 </div>
               </TabsList>
-              <TabsContent value="all" className="mt-2 space-y-2">
+              <TabsContent value="all" className="mt-2 space-y-2 transition-all duration-150">
                 <div className="w-full">
                   <div className="overviewHeader py-4">
                     <h1 className="mb-2 text-4xl font-bold">Pages</h1>
@@ -224,7 +224,7 @@ export const ProjectPages = () => {
                   </div>
                 </div>
               </TabsContent>
-              <TabsContent value="studies" className="mt-2 space-y-2">
+              <TabsContent value="studies" className="mt-2 space-y-2 transition-all duration-150">
                 <div className="w-full">
                   <div className="flex flex-col">
                     {[1, 2, 3, 4, 5].map((item) => (
@@ -358,7 +358,7 @@ export const ProjectPages = () => {
                   </div>
                 </div>
               </TabsContent>
-              <TabsContent value="entities" className="mt-2 space-y-2">
+              <TabsContent value="entities" className="mt-2 space-y-2 transition-all duration-150">
                 <div className="w-full">
                   <div className="flex flex-col">
                     {[1, 2, 3, 4, 5].map((item) => (
