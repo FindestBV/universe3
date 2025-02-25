@@ -115,7 +115,20 @@ universe3/
   │   ├── components/      # React components
   |   |   └── common/
   |   |   |     └── cards/
-  |   |   |     └── dialogs/
+  |   |   |     └── dialogs
+  |   |   |     |   └── add-link-to-item
+  |   |   |     |   └── advanced-search-dialog
+  |   |   |     |   └── askIgor
+  |   |   |     |   └── connect-query
+  |   |   |     |   └── connect-to-entity
+  |   |   |     |   └── create-item-dialog
+  |   |   |     |   └── create-project-dialog
+  |   |   |     |   └── create-query-dialog
+  |   |   |     |   └── create-tech-overview
+  |   |   |     |   └── lock-page-confirm
+  |   |   |     |   └── project-search-dialog
+
+
   |   |   |     └── editor
   |   |   |     |   └── extensions
   |   |   |     |   └── menus
@@ -182,6 +195,7 @@ universe3/
   |   |   └── api.ts       # Base
   │   |   └── auth/        # Auth API
   │   |   └── documents/   # Documents, Entities & Studies - API queries/mutations all live here
+  │   |   └── projects     # Projects - API queries/mutations all live here
   │   |   └── search/      # Search
   │   |   └── activity/    # Activity
   │   |   └── utilities/   # Utility - it does something, but probably best stored separately
