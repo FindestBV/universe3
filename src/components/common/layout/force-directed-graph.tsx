@@ -5,6 +5,7 @@
  * It **offloads graph simulation computations to a Web Worker**, significantly improving UI performance
  * by keeping the main thread free for responsive interactions.
  *
+ *
  * ## Features:
  * - **Force Simulation**: Uses `d3-force` to dynamically arrange nodes.
  * - **Web Worker Offloading**: Moves physics calculations off the main thread for smooth rendering.
@@ -13,6 +14,7 @@
  *   - **Zoom & Pan**: Uses `d3-zoom` to navigate the graph.
  *   - **Hover & Tooltips**: Displays information when hovering over nodes.
  *   - **Node Dragging**: Allows repositioning of nodes dynamically.
+ *
  *
  * ## Performance Optimizations:
  * - **Web Worker (Multi-Threading)**: Prevents UI lag by running the force simulation in a background thread.
@@ -54,6 +56,7 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
   useEffect(() => {
     if (!linkingData || linkingData.length === 0) return;
 
+    // to be offloaded to a global worker.
     const workerCode = `
       self.onmessage = (event) => {
         const { nodes, links } = event.data;
