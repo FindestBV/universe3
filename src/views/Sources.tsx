@@ -1,5 +1,5 @@
 import { useGetSavedDocumentsQuery } from "@/api/documents/documentApi";
-import { GenericCard } from "@/components/common/cards/item-card";
+import { ItemCard } from "@/components/common/cards/item-card";
 import DocumentsSkeleton from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
 
@@ -95,7 +95,7 @@ export const Sources: React.FC = () => {
         {data && (
           <div>
             {data.documents.slice(0, documentsPerPage).map((doc) => (
-              <GenericCard
+              <ItemCard
                 itemType="source"
                 key={doc.id}
                 {...doc}
