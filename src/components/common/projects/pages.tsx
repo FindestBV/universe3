@@ -10,6 +10,7 @@
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
+import { Plus } from "lucide-react";
 
 import { useState } from "react";
 
