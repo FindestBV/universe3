@@ -33,7 +33,7 @@ const objectTypeMapping = {
   queryCount: 15,
 };
 
-const LinkedCounts = ({
+export const LinkedCounts = ({
   linkedCounts,
   id,
   prefetch,
