@@ -16,6 +16,8 @@ export const Studies: React.FC = () => {
     { refetchOnMountOrArgChange: true },
   );
 
+  console.log("studies", data);
+
   const handleSelectStudy = (id: string, checked: boolean) => {
     const newSelected = new Set(selectedStudies);
     if (checked) {

@@ -70,8 +70,55 @@ export const documentApi = api.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
     }),
 
-    getConnectedObjects: builder.query<ConnectedObject[], { id: string; type: string }>({
-      query: ({ id, type }) => `linking/${id}?objectType[]=${type}`,
+    getConnectedObjects: builder.query<ConnectedObject[], { id: string; type: number }>({
+      query: ({ id, type }) => {
+        let endpoint = "";
+
+        switch (type) {
+          case 1:
+            endpoint = `linking/${id}?objectType[]=1`;
+            break;
+          case 2:
+            endpoint = `saveddocument/linkedto/${id}`;
+            break;
+          case 3:
+            endpoint = `savedfile/linkedto/${id}`;
+            break;
+          case 4:
+            endpoint = `image/linkedto/${id}`;
+            break;
+          case 5:
+            endpoint = `image/linkedto/${id}`;
+            break;
+          case 6:
+            endpoint = `sciencearticle/linkedto/${id}`;
+            break;
+          case 7:
+            endpoint = `uspatent/linkedto/${id}`;
+            break;
+          case 8:
+            endpoint = `weblink/linkedto/${id}`;
+            break;
+          case 9:
+            endpoint = `magpatent/linkedto/${id}`;
+            break;
+          case 10:
+            endpoint = `comment/linkedto/${id}`;
+            break;
+          case 11:
+            endpoint = `file/linkedto/${id}`;
+            break;
+          default:
+            throw new Error(`Invalid type: ${type}`);
+        }
+
+        return {
+          url: endpoint,
+        };
+      },
+      providesTags: (result, error, { id, type }) => [
+        { type: "ConnectedObject", id, subtype: type },
+      ],
     }),
 
     getAttachedFiles: builder.query<ConnectedObject[], { id: string }>({
@@ -379,6 +426,13 @@ export const documentApi = api.injectEndpoints({
     }),
   }),
 });
+
+export const usePrefetchedData = (id: string, type: number) => {
+  return useGetConnectedObjectsQuery(
+    { id, type },
+    { skip: !id }, // Prevents fetching if `id` is missing
+  );
+};
 
 export const {
   useGetSavedDocumentsQuery,

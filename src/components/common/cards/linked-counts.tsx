@@ -1,3 +1,4 @@
+import { usePrefetchedData } from "@/api/documents/documentApi";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { BookOpenCheck, Fingerprint, Highlighter, Image, Paperclip } from "lucide-react";
 
@@ -41,10 +42,24 @@ const LinkedCounts = ({
   prefetchedItems = [],
 }) => {
   const [hoveredObjects, setHoveredObjects] = useState({});
+  const [loadingStates, setLoadingStates] = useState({});
+
+  // Iterate over linkedCounts to prefetch data for all types
+  Object.entries(linkedCounts).forEach(([key]) => {
+    const objectType = objectTypeMapping[key];
+    if (objectType !== undefined) {
+      // Call `usePrefetchedData` for each object type
+      const { data, isFetching } = usePrefetchedData(id, objectType);
+      if (data) {
+        hoveredObjects[key] = data;
+      }
+    }
+  });
 
   useEffect(() => {
     console.log("Received prefetchedItems:", prefetchedItems);
-    // Merge prefetched items into hoveredObjects state when they change
+    console.log("Received linkedCounts:", linkedCounts);
+
     if (prefetchedItems.length > 0) {
       setHoveredObjects((prev) => {
         const updatedObjects = { ...prev };
@@ -52,7 +67,7 @@ const LinkedCounts = ({
           console.log("Processing prefetched item:", { id, type, data });
           const key = Object.keys(objectTypeMapping).find((k) => objectTypeMapping[k] === type);
           if (key) {
-            updatedObjects[key] = data && data.map((obj) => ({ id: obj.id, name: obj.name }));
+            updatedObjects[key] = data?.map((obj) => ({ id: obj.id, name: obj.name }));
           }
         });
         console.log("Updated hoveredObjects:", updatedObjects);
@@ -61,22 +76,27 @@ const LinkedCounts = ({
     }
   }, [prefetchedItems]);
 
-  const handleMouseEnter = async (key, objectType) => {
-    console.log(`Mouse entered on ${key}, fetching related objects...`);
-    if (!hoveredObjects[key]) {
-      try {
-        const result = await prefetch?.({ id, type: objectType });
-        console.log(`Fetched result for ${key}:`, result);
-        if (result && Array.isArray(result)) {
-          setHoveredObjects((prev) => ({
-            ...prev,
-            [key]: result.map((obj) => ({ id: obj.id, name: obj.name })),
-          }));
-        }
-      } catch (error) {
-        console.error("Error fetching related objects:", error);
+  const handleMouseEnter = (key, objectType) => {
+    console.log(`Mouse entered on ${key}, prefetching related objects...`);
+
+    setLoadingStates((prev) => ({ ...prev, [key]: true }));
+
+    prefetch?.({ id, type: objectType });
+
+    setTimeout(() => {
+      const { data, isFetching } = useGetConnectedObjectsQuery(
+        { id, type: objectType },
+        { skip: !id },
+      );
+
+      if (!isFetching) {
+        setHoveredObjects((prev) => ({
+          ...prev,
+          [key]: data || [],
+        }));
+        setLoadingStates((prev) => ({ ...prev, [key]: false }));
       }
-    }
+    }, 300); // Small delay for Redux cache update
   };
 
   return (
@@ -87,10 +107,7 @@ const LinkedCounts = ({
           .map(([key, value]) => {
             const IconComponent = typeIcons[key] || null;
             const objectType = objectTypeMapping[key] || -1;
-            const relatedObjects =
-              hoveredObjects[key] || connectedObjects?.filter((obj) => obj.type === objectType);
-
-            console.log(`Rendering linkedCounts item: ${key}, relatedObjects:`, relatedObjects);
+            const relatedObjects = hoveredObjects[key] || [];
 
             return (
               <Tooltip key={key}>
@@ -107,9 +124,13 @@ const LinkedCounts = ({
                 <TooltipContent side="top" className="z-50 rounded-md bg-white p-2 shadow-lg">
                   <ul className="tooltipContent">
                     {relatedObjects.length > 0 ? (
-                      relatedObjects.map((obj) => <li key={obj.id}>{obj.name}</li>)
+                      relatedObjects.map((item) => (
+                        <li key={item.id} onClick={() => onItemClick(item.id)}>
+                          {item?.name || item?.title} - {item?.type}
+                        </li>
+                      ))
                     ) : (
-                      <li className="text-sm">No related items</li>
+                      <p>No linked objects found.</p>
                     )}
                   </ul>
                 </TooltipContent>

@@ -29,7 +29,11 @@
  *
  * @returns {JSX.Element} The rendered ItemCard component.
  */
-import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/api/documents/documentApi";
+import {
+  useGetConnectedObjectsQuery,
+  useLazyGetConnectedObjectsQuery,
+  usePrefetch,
+} from "@/api/documents/documentApi";
 import { AddLinkToItem } from "@/components/common/dialogs/add-link-to-item";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -129,11 +133,10 @@ export const ItemCard: React.FC<ItemCardProps> = ({
   images,
 }) => {
   const [prefetchedItems, setPrefetchedItems] = useState<Record<string, any>[]>([]);
-  const [prefetchedIds, setPrefetchedIds] = useState(new Set());
   const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
   const navigateWithTransition = useNavigateWithTransition();
 
-  console.log("connectedObjects - itemCard", connectedObjects);
+  console.log("prefetchConnectedObjects", prefetchConnectedObjects);
 
   const renderFirstThreeParagraphs = (descriptionString: string) => {
     if (!descriptionString) {
@@ -171,30 +174,13 @@ export const ItemCard: React.FC<ItemCardProps> = ({
     );
   };
 
-  const handlePrefetch = async ({ id, type }) => {
-    // Create a unique key for this id+type combination
-    const prefetchKey = `${id}-${type}`;
+  const handlePrefetch = ({ id, type }: { id: string; type: number }) => {
+    console.log("Prefetching data for", id, type);
 
-    // Check if we've already prefetched this item
-    if (prefetchedIds.has(prefetchKey)) {
-      // Already prefetched, do nothing
-      return;
-    }
-
-    try {
-      // Mark as prefetched immediately to prevent duplicate calls
-      setPrefetchedIds((prev) => new Set([...prev, prefetchKey]));
-
-      // Perform the prefetch
-      const result = await prefetchConnectedObjects({ id, type }, { force: false });
-
-      // Store the prefetched data
-      setPrefetchedItems((prev) => [...prev, { id, type, data: result }]);
-    } catch (error) {
-      console.error("Error while prefetching links:", error);
-
-      // Even on error, we don't want to try again, so we keep it in the prefetchedIds set
-    }
+    prefetchConnectedObjects(
+      { id, type },
+      { force: false }, // Ensures it does not refetch if cached
+    );
   };
 
   const location = useLocation();
@@ -280,10 +266,10 @@ export const ItemCard: React.FC<ItemCardProps> = ({
               <LinkedCounts
                 id={id}
                 linkedCounts={linkedCounts}
-                prefetch={({ id, type }) => handlePrefetch({ id, type })}
-                onItemClick={(id: string) => console.log(`Item clicked: ${id}`)}
+                prefetch={handlePrefetch}
+                onItemClick={(id) => console.log(`Item clicked: ${id}`)}
                 connectedObjects={connectedObjects}
-                prefetchedItems={prefetchedItems} // Pass the prefetched items
+                prefetchedItems={prefetchedItems}
               />
             </div>
           </div>
