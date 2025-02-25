@@ -33,14 +33,7 @@ const objectTypeMapping = {
   queryCount: 15,
 };
 
-export const LinkedCounts = ({
-  linkedCounts,
-  id,
-  prefetch,
-  onItemClick,
-  connectedObjects = [],
-  prefetchedItems = [],
-}) => {
+export const LinkedCounts = ({ linkedCounts, id, prefetch, onItemClick, prefetchedItems = [] }) => {
   const [hoveredObjects, setHoveredObjects] = useState({});
   const [loadingStates, setLoadingStates] = useState({});
 
@@ -61,7 +54,7 @@ export const LinkedCounts = ({
       setHoveredObjects((prev) => {
         const updatedObjects = { ...prev };
         prefetchedItems.forEach(({ id, type, data }) => {
-          console.log("Processing prefetched item:", { id, type, data });
+          // console.log("Processing prefetched item:", { id, type, data });
           const key = Object.keys(objectTypeMapping).find((k) => objectTypeMapping[k] === type);
           if (key) {
             updatedObjects[key] = data?.map((obj) => ({ id: obj.id, name: obj.name }));
@@ -74,7 +67,7 @@ export const LinkedCounts = ({
   }, [prefetchedItems]);
 
   const handleMouseEnter = (key, objectType) => {
-    console.log(`Mouse entered on ${key}, prefetching related objects...`);
+    // console.log(`Mouse entered on ${key}, prefetching related objects...`);
 
     setLoadingStates((prev) => ({ ...prev, [key]: true }));
 

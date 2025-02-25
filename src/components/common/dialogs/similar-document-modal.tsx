@@ -57,7 +57,7 @@ import UserAvatar from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { ExternalLink, Trash2, Upload } from "lucide-react";
 
 import { useEffect, useState } from "react";
@@ -82,6 +82,7 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
   type,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("documentInfo");
 
   const linkItemToOther = (id: string) => {
     console.log(`item with ${id} linked`);
@@ -175,7 +176,7 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
                 </a>
               </Button>
               <div className="flex items-center gap-2">
-                <Button className="rounded-md bg-[#006A86] px-4 py-1 text-white hover:bg-blue-600">
+                <Button variant="ghost" className="rounded-md border px-4 py-1 hover:bg-blue-600">
                   Actions
                 </Button>
                 <UserAvatar username="Ro" />
@@ -195,32 +196,31 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
               <h1 className={`flex-1 text-3xl font-black text-black`}>{title || "Document"}</h1>
             </div>
 
-            {/* <h6 className="text-lg font-bold">Connections:</h6>
-            <div className="mt-2 flex flex-wrap gap-4">
-              {isLoadingConnected ? (
-                <p>Loading connections...</p>
-              ) : connectedDocuments && connectedDocuments?.length > 0 ? (
-                connectedDocuments.map((doc: any) => (
-                  <div key={doc.id} className="connected-object Entity">
-                    <a
-                      href={`/pages/entities/${doc.id}`}
-                      className="text-blue-500 hover:underline"
-                    >
-                      {doc.title || "Unnamed Document"}
-                    </a>
-                  </div>
-                ))
-              ) : (
-                <p>No connected documents found.</p>
-              )}
-            </div> */}
-
-            <Tabs defaultValue="documentInfo" className="mt-6">
+            <Tabs defaultValue="documentInfo" className="mt-6" onValueChange={setActiveTab}>
               <TabsList className="mb-4 w-full justify-start rounded-none border-b border-[#f1f1f1] bg-transparent">
-                <TabsTrigger value="documentInfo">Document Information</TabsTrigger>
-                <TabsTrigger value="attachments">Attachments</TabsTrigger>
+                <TabsTrigger
+                  value="documentInfo"
+                  className={`linear p-2 text-sm transition-all duration-150 ${
+                    activeTab === "documentInfo"
+                      ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
+                      : "text-gray-500"
+                  }`}
+                >
+                  Document Information
+                </TabsTrigger>
+
+                <TabsTrigger
+                  value="attachments"
+                  className={`linear p-2 text-sm transition-all duration-150 ${
+                    activeTab === "attachments"
+                      ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
+                      : "text-gray-500"
+                  }`}
+                >
+                  Attachments
+                </TabsTrigger>
               </TabsList>
-              <TabsContent value="documentInfo">
+              <TabsContent value="documentInfo" className="linear transition-all duration-300">
                 {isLoadingDocument ? (
                   <p>Loading document...</p>
                 ) : (
@@ -231,6 +231,7 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
                       onItemClick={(id) => console.log(`Item clicked: ${id}`)}
                       connectedObjects={fetchedDocument?.connectedObjects || []}
                     />
+
                     <h4 className="pb-2 font-black">Document Abstract</h4>
                     <div className="flex flex-row gap-4">
                       <div className="w-3/4">
