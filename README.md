@@ -113,7 +113,6 @@ universe3/
   ├── src/
   |   ├── assets           # assets
   │   ├── components/      # React components
-  │   │   └── login/
   |   |   └── common/
   |   |   |     └── cards/
   |   |   |     └── dialogs/
@@ -157,12 +156,18 @@ universe3/
   |   |   |     |   |                 └── ViewEditSwitch
   |   |   |     |   |          └── commands
   |   |   |     |   |          └── types
+  |   |   |     |   |
   |   |   |     |   └── ui
   |   |   |     └── forms/
   |   |   |     └── layout/
   |   |   |     └── loaders/
   |   |   |     └── login/
   |   |   |     └── projects
+  |   |   |     |      └── overview
+  |   |   |     |      └── pages
+  |   |   |     |      └── search
+  |   |   |     |      └── sources
+  |   |   |     |
   |   |   |     └── search/
   |   |   |     └── sidebar/v2
   |   |   |     └── user
@@ -198,6 +203,7 @@ universe3/
   │   |   └── typography/
   │   |   └── utilities
   │   |   └── universe.scss
+  │   |
   │   ├── types               # Utility functions
   │   ├── views               # React views - please note: will be (significantly) reduced further
   |   |   └── AdvancedSearch  ** FOR REFACTOR
@@ -212,9 +218,11 @@ universe3/
   │   |   └── Source          ** Formerly 'Document'
   │   |   └── Sources         ** Holding view for Sources. Formerly 'Documents'
   │   |   └── Studies
+  │   |
   │   ├── App.tsx          # Application entry point
   │   └── main.tsx         # Main rendering file
   |   └── store.ts         # Redux Store
+  │
   ├── eslint.config.js     # ESLint configuration
   ├── index.html           # HTML entry point
   ├── postcss.config.js    # PostCSS configuration
