@@ -34,6 +34,7 @@
  *
  * @returns {JSX.Element} The rendered ShareObject component.
  */
+import AddUsersForm from "@/components/common/forms/add-users";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -41,8 +42,6 @@ import { Switch } from "@/components/ui/switch";
 import { Users } from "lucide-react";
 
 import { useState } from "react";
-
-import AddUsersForm from "../forms/add-users";
 
 export const ShareObject: React.FC<{
   parentId: string;

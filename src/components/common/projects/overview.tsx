@@ -1,3 +1,13 @@
+/**
+ * ProjectOverView component provides an overview of projects with tab navigation.
+ * This is Relevant for Universe Projects
+ *
+ * @component
+ * @example
+ * return <ProjectOverView />;
+ *
+ * @returns {JSX.Element} A project overview component with dynamic tab functionality.
+ */
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
@@ -29,6 +39,17 @@ const dialogs = [
   { id: "3", title: "Answer a Specific Question" },
   { id: "4", title: "Explore a specific technology" },
 ];
+
+/**
+ * PresetButton component renders a button with a title and description.
+ *
+ * @component
+ * @param {Object} props - The properties of the PresetButton component.
+ * @param {string} [props.title] - The title of the button.
+ * @param {string} [props.description] - The description displayed under the title.
+ * @param {string} props.className - Additional CSS classes for styling.
+ * @returns {JSX.Element} A styled button component.
+ */
 
 function PresetButton({
   title,

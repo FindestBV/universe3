@@ -1,3 +1,12 @@
+/**
+ * Project Sources component provides an overview of project Pages with tab navigation.
+ * This is Relevant for Universe Projects/Sources
+ *
+ * @component
+ * @example
+ *
+ * @returns {JSX.Element} A project overview component with dynamic tab functionality.
+ */
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";

@@ -1,3 +1,13 @@
+/**
+ * DocumentSkeleton component displays a placeholder skeleton UI while the actual document content is loading.
+ *
+ * @component
+ * @example
+ * return <DocumentSkeleton />;
+ *
+ * @param {DocumentSkeletonProps} props - The properties for the DocumentSkeleton component.
+ * @returns {JSX.Element} A skeleton placeholder for a document.
+ */
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface DocumentSkeletonProps {

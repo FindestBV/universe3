@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/select";
 import { useAppDispatch, useAppSelector } from "@/store";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 const languages = [

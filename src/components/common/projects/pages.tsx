@@ -1,9 +1,17 @@
+/**
+ * ProjectOverView component provides an overview of project Pages with tab navigation.
+ * This is Relevant for Universe Projects/Pages
+ *
+ * @component
+ * @example
+ *
+ * @returns {JSX.Element} A project overview component with dynamic tab functionality.
+ */
+import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
 
 import { useState } from "react";
-
-import AskIgorModal from "../dialogs/ask-igor";
 
 export const ProjectPages = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
