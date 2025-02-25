@@ -1,4 +1,4 @@
-import GenericCard from "@/components/common/cards/item-card";
+import ItemCard from "@/components/common/cards/item-card";
 import { DocumentsSkeleton } from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
 
@@ -46,7 +46,7 @@ export const Studies: React.FC = () => {
         {data && (
           <div>
             {data.studies.slice(0, studiesPerPage).map((study) => (
-              <GenericCard
+              <ItemCard
                 id={study.id}
                 itemType="study"
                 key={study.id}

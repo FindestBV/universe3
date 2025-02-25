@@ -10,7 +10,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { Circle, File, Inbox, Link, Minus, Network, Plus, Search } from "lucide-react";
+import { Inbox, Minus, Network, Plus, Search } from "lucide-react";
 
 import { createElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";

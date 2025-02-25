@@ -1,5 +1,5 @@
 import { useAdvancedSearchQuery } from "@/api/search/searchApi";
-import GenericCard from "@/components/common/cards/item-card";
+import ItemCard from "@/components/common/cards/item-card";
 import CreateQueryDialog from "@/components/common/dialogs/create-query-dialog";
 import { DocumentsSkeleton } from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
@@ -90,7 +90,7 @@ export const AdvancedSearch: React.FC = () => {
             <div>
               {advancedSearchData &&
                 advancedSearchData.queries.map((item) => (
-                  <GenericCard
+                  <ItemCard
                     id={item.id}
                     itemType="advancedSearchItem"
                     key={item.id}

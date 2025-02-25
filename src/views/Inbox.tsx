@@ -1,4 +1,4 @@
-import GenericCard from "@/components/common/cards/item-card";
+import ItemCard from "@/components/common/cards/item-card";
 import DocumentsSkeleton from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
 
@@ -10,9 +10,7 @@ export const Inbox: React.FC = () => {
   const [selectedDocs, setSelectedDocs] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [documentsPerPage, setDocumentsPerPage] = useState(12);
-  // const [tempLoading, setTempLoading] = useState(false);
   const [filters, setFilters] = useState<string[]>([]);
-  // const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const { data, isLoading, isError, error, refetch } = useGetMyDocumentInboxQuery(
     { page: currentPage, limit: documentsPerPage, filters },
@@ -45,7 +43,7 @@ export const Inbox: React.FC = () => {
         {data && (
           <div>
             {data.documents.slice(0, documentsPerPage).map((doc) => (
-              <GenericCard
+              <ItemCard
                 key={doc.id}
                 {...doc}
                 itemType="study"
