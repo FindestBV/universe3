@@ -8,7 +8,7 @@ import ProjectOverView from "@/components/common/projects/overview";
 import ProjectPages from "@/components/common/projects/pages";
 import ProjectSearch from "@/components/common/projects/search";
 import ProjectSources from "@/components/common/projects/sources";
-import { SearchForm } from "@/components/common/sidebar/v2/search-form";
+import { SearchForm } from "@/components/common/sidebar/search-form";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";

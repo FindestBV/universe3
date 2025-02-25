@@ -1,5 +1,5 @@
 import { currentUser } from "@/api/auth/authSlice";
-import { AppSidebar } from "@/components/common/sidebar/v2/app-sidebar";
+import { AppSidebar } from "@/components/common/sidebar/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { persistor, store } from "@/store";

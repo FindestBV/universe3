@@ -32,7 +32,7 @@
  * @returns {JSX.Element} The rendered AppSidebar component.
  */
 import { currentUser } from "@/api/auth/authSlice";
-import { NavMain } from "@/components/common/sidebar/v2/nav-main";
+import { NavMain } from "@/components/common/sidebar/nav-main";
 import UserAvatar from "@/components/common/utilities/user-avatar";
 import {
   Sidebar,
