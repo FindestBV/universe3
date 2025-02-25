@@ -1,3 +1,35 @@
+/**
+ * Global Search Bar Component
+ *
+ * This component provides **general search functionality** across multiple entities,
+ * including **Entities, Documents, Queries, and Studies**.
+ *
+ * ## Features:
+ * - **Debounced search requests** to optimize performance.
+ * - **Dynamic filtering** via input fields and category tabs.
+ * - **Integration with RTK Query** (`useSearchItemsMutation`) to fetch results.
+ * - **Live search feedback** (`isLoading`, `hasSearched` states).
+ * - **Clear/reset functionality** to refresh search.
+ * - **Accessible search input with labels and indicators**.
+ *
+ * ## How to Customize:
+ * - Modify `TABS` to include additional entity types.
+ * - Adjust `filterResults()` logic to format search results differently.
+ * - Change API call parameters in `searchItems(queryString)`.
+ * - Adjust UI styles for the search box and results dropdown.
+ *
+ * @component
+ * @example
+ * <SearchBar />
+ *
+ * @dependencies
+ * - **Redux Toolkit (RTK Query)**: Fetches search results.
+ * - **Lucide Icons**: Provides UI elements (`Search`, `Loader`, `X`).
+ * - **ShadCN UI Components**: Used for the form layout.
+ * - **Custom Hooks**: Uses `useDebounce()` for optimized requests.
+ *
+ * @returns {JSX.Element} The rendered SearchBar component.
+ */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useSearchItemsMutation } from "@/api/search/searchApi";
 import { useDebounce } from "@/hooks/use-debounce";
@@ -22,7 +54,6 @@ export const SearchBar = () => {
   const [selectedTab, setSelectedTab] = useState(TABS[0]); // Default to "All"
   const [hasSearched, setHasSearched] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-
   const [searchItems, { data, isLoading }] = useSearchItemsMutation();
 
   const debouncedTriggerSearch = useDebounce(() => {

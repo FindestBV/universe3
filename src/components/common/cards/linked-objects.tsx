@@ -1,38 +1,42 @@
+/**
+ * LinkedObjects Component
+ *
+ * This component displays a list of linked objects (e.g., users, entities, or related items)
+ * with interactive tooltips and hover cards. It is primarily used to show connections
+ * between different entities within the application.
+ *
+ * The component utilizes:
+ * - **ShadCN HoverCard** for displaying additional information on hover.
+ * - **Radix Tooltip** for enhanced user experience.
+ * - **Avatar component** to display profile images or fallback initials.
+ *
+ * @component
+ * @param {Object} [props] - The component props.
+ * @param {Object.<string, number>} [props.linkedObjects] - A mapping of item types to their respective counts.
+ * @param {string} [props.id] - Unique identifier for the entity.
+ * @param {Function} [props.prefetch] - Optional function for prefetching data when hovering over an item.
+ * @param {Function} [props.onItemClick] - Optional function called when an item is clicked.
+ * @param {Array<Object>} [props.connectedObjects] - A list of related objects, each containing:
+ *   @param {string} connectedObjects[].id - The unique ID of the related object.
+ *   @param {string} connectedObjects[].name - The display name of the related object.
+ *   @param {number} connectedObjects[].type - The type of the related object.
+ *   @param {string} [connectedObjects[].url] - Optional URL associated with the related object.
+ *
+ * @example
+ * <LinkedObjects
+ *   linkedObjects={{ entityCount: 3, documentCount: 5 }}
+ *   id="1234"
+ *   prefetch={(data) => console.log("Prefetching", data)}
+ *   onItemClick={(id) => console.log("Clicked", id)}
+ *   connectedObjects={[{ id: "5678", name: "Study A", type: 4, url: "/study/5678" }]}
+ * />
+ *
+ * @returns {JSX.Element} The rendered LinkedObjects component.
+ */
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
-import { BookOpenCheck, Fingerprint, Highlighter, Image, Paperclip } from "lucide-react";
 import { CalendarIcon } from "lucide-react";
-
-// // Icons for types
-// const typeIcons = {
-//   documentCount: BookOpenCheck,
-//   studyCount: BookOpenCheck,
-//   entityCount: Fingerprint,
-//   imageCount: Image,
-//   fileCount: Paperclip,
-//   highlightCount: Highlighter,
-// };
-
-// // Mapping LinkedObjects keys to tObjectTypeEnum values
-// const objectTypeMapping: { [key: string]: number } = {
-//   entityCount: 1,
-//   documentCount: 2,
-//   highlightCount: 3,
-//   studyCount: 4,
-//   imageCount: 5,
-//   scienceArticleCount: 6,
-//   usPatentCount: 7,
-//   weblinkCount: 8,
-//   magPatentCount: 9,
-//   commentCount: 10,
-//   fileCount: 11,
-//   tenantCount: 12,
-//   organizationCount: 13,
-//   caseCount: 14,
-//   queryCount: 15,
-// };
 
 interface LinkedObjectsProps {
   linkedObjects?: { [key: string]: number };

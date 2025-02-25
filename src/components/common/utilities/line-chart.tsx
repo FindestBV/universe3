@@ -1,3 +1,9 @@
+/**
+ * LINECHART - CUSTOM TIP TAP (WIP)
+ * @component
+ *
+ * @returns {JSX.Element} The rendered LINECHART component.
+ */
 import * as d3 from "d3";
 
 import React, { useEffect, useRef } from "react";

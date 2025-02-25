@@ -1,5 +1,5 @@
 import { useGetSavedDocumentsQuery } from "@/api/documents/documentApi";
-import { GenericCard } from "@/components/common/cards/generic-card";
+import { GenericCard } from "@/components/common/cards/item-card";
 import DocumentsSkeleton from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
 

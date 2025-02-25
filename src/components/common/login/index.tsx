@@ -1,13 +1,45 @@
+/**
+ * Login Component (WIP)
+ *
+ * This component handles **user authentication** via **email-based login**.
+ * It will be integrated with **RTK Query Auth**, supporting **magic links** in future iterations.
+ *
+ * ## Features:
+ * - **Email validation** (only `@findest.com` domain allowed).
+ * - **Basic authentication simulation** (set credentials via Redux and navigate).
+ * - **Loading state handling** using `MutatingDots` spinner.
+ * - **Form validation** (regex for email structure).
+ * - **Error messaging** for invalid email input.
+ * - **Redirection to dashboard** after successful login.
+ * - **Future Enhancements**: Magic link authentication, OAuth support, and persistent sessions.
+ *
+ * ## Customization:
+ * - **Modify email validation** in `emailRegex` to allow different domains.
+ * - **Replace `setTimeout()` with real API request** to an authentication service.
+ * - **Wire up RTK Query `useLoginMutation()`** instead of `setCredentials()`.
+ * - **Implement remember-me functionality** with cookies/localStorage.
+ *
+ * @component
+ * @example
+ * <Login />
+ *
+ * @dependencies
+ * - **Redux Toolkit**: Manages authentication state.
+ * - **React-Router**: Redirects to `/projects/dashboard` post-login.
+ * - **ShadCN UI Components**: Uses `Button` for submission.
+ * - **React Hooks**: `useState()` for form fields and `useEffect()` for side effects.
+ *
+ * @returns {JSX.Element} The rendered Login component.
+ */
 import { setCredentials } from "@/api/auth/authSlice";
 import { Globe } from "lucide-react";
 
-// Adjust the import path for your store
 import { useState } from "react";
 import { MutatingDots } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+export const Login = () => {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Dummy loading state
   const [isError, setIsError] = useState(false); // Dummy loading state

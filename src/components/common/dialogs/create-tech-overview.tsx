@@ -1,14 +1,23 @@
 /**
- * CreateProjectDialog Component
+ * CreateTechOverviewDialog Component
  *
- * This component provides a **multi-step dialog** that allows users to create a new project,
- * specifically for structuring a **scientific landscape**. The project creation process includes:
+ * This component provides a **multi-step form** to create a **Technology Overview** project.
+ * It is designed to help users **structure scientific landscapes** and visualize research
+ * areas using a **graph-based approach**.
  *
- * - **Step-based navigation** guiding users through project setup.
- * - **Options to define project type** (e.g., Page, Study, Query).
- * - **Dynamic input fields** based on user selections.
- * - **Predefined templates** for structured research projects.
- * - **Validation for required fields** before allowing submission.
+ * ## Features:
+ * - **Step-based project creation** guiding users through the setup process.
+ * - **Supports multiple entity types** (`Page`, `Study`, `Query`).
+ * - **Graph-based representation** to map relationships between research topics.
+ * - **Dynamic input fields** based on selection.
+ * - **Predefined templates** for structuring research projects.
+ * - **Validation for required fields** before submission.
+ *
+ * ## Customization:
+ * - **Modify the project structure** in the `handleTypeSelect` and `updateFormData` functions.
+ * - **Adjust graph rendering settings** to visualize research data connections.
+ * - **Customize query parameters** inside the queryTemplates array.
+ * - **Update the result visualization** inside the final project overview.
  *
  * @component
  * @param {Object} props - The component props.
@@ -16,20 +25,20 @@
  * @param {string} [props.type] - Type of project (e.g., "techoverview" for tech landscapes).
  *
  * @example
- * <CreateProjectDialog title="Create Research Study" type="study" />
+ * <CreateTechOverviewDialog title="Create Tech Landscape" type="techoverview" />
  *
  * @dependencies
  * - **ShadCN UI Components**: Dialog, DialogTrigger, DialogContent, DialogTitle, Button, Card
  * - **Lucide Icons**: Plus
  * - **React Hooks**: useState (for managing steps and form input)
+ * - **Graph Visualization**: (Future Implementation) for mapping technology landscapes.
  *
- * @returns {JSX.Element} The rendered CreateProjectDialog component.
+ * @returns {JSX.Element} The rendered CreateTechOverviewDialog component.
  */
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -67,7 +76,7 @@ const queryTemplates = [
   },
 ];
 
-export function CreateProjectDialog({ ...props }: any) {
+export function CreateTechOverviewDialog({ ...props }: any) {
   const [formData, setFormData] = useState<FormData>({
     type: null,
     title: "",
@@ -281,4 +290,4 @@ export function CreateProjectDialog({ ...props }: any) {
   );
 }
 
-export default CreateProjectDialog;
+export default CreateTechOverviewDialog;

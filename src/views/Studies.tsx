@@ -1,4 +1,4 @@
-import GenericCard from "@/components/common/cards/generic-card";
+import GenericCard from "@/components/common/cards/item-card";
 import { DocumentsSkeleton } from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
 
@@ -11,27 +11,12 @@ export const Studies: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [studiesPerPage, setStudiesPerPage] = useState(12);
   const [filters, setFilters] = useState<string[]>([]); // State for filters
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  // const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const { data, isLoading, isError, error, refetch } = useGetStudiesQuery(
     { page: currentPage, limit: studiesPerPage },
     { refetchOnMountOrArgChange: true },
   );
-
-  // const totalPages = data ? Math.ceil(data.totalCount / studiesPerPage) : 1;
-
-  // const handlePageChange = (page: number) => setCurrentPage(page);
-  // const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-  // const handlePreviousPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-
-  const handleSelectAll = (checked: boolean) => {
-    setIsChecked(!isChecked);
-    if (checked && data) {
-      setSelectedStudies(new Set(data.studies.map((study) => study.id)));
-    } else {
-      setSelectedStudies(new Set());
-    }
-  };
 
   const handleSelectStudy = (id: string, checked: boolean) => {
     const newSelected = new Set(selectedStudies);
@@ -41,26 +26,6 @@ export const Studies: React.FC = () => {
       newSelected.delete(id);
     }
     setSelectedStudies(newSelected);
-  };
-
-  const handleStudiesPerPageChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = parseInt(e.target.value, 10);
-    setStudiesPerPage(value);
-    setCurrentPage(1); // Reset to first page
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    refetch();
-  };
-
-  const filterOptions = ["SCIENCE", "PATENT", "WEBPAGE"];
-
-  const handleAddFilter = (filterType: string) => {
-    if (!filters.includes(filterType)) {
-      setFilters([...filters, filterType]);
-    }
-  };
-
-  const handleRemoveFilter = (filter: string) => {
-    setFilters(filters.filter((f) => f !== filter));
   };
 
   useEffect(() => {
@@ -73,71 +38,6 @@ export const Studies: React.FC = () => {
         <div className="flex items-center gap-2">
           <h1 className="pt-2 text-xl font-bold">Studies</h1>
         </div>
-
-        {/* <div className="mr-4 flex flex-grow items-center gap-4">
-          {filters.length > 0 && (
-            <div className="ml-auto flex flex-wrap gap-2">
-              {filters.map((filter) => (
-                <div
-                  key={filter}
-                  onClick={() => handleRemoveFilter(filter)}
-                  className="cursor-pointer rounded-md bg-blue-100 px-4 py-2 text-sm font-medium text-blue-800 transition hover:bg-red-100 hover:text-red-800"
-                >
-                  {filter} ×
-                </div>
-              ))}
-            </div>
-          )}
-        </div> */}
-
-        {/* <div className="flex items-center gap-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                type="button"
-                id="add-filter"
-                className={`group mb-2 mt-2 flex items-center justify-center gap-2 rounded-md border px-4 py-2 text-gray-800 shadow-sm transition-all duration-150 ${
-                  filters.length > 0
-                    ? "bg-blue-50 font-black"
-                    : "bg-gray hover:bg-blue-50 hover:font-black"
-                }`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className={`lucide lucide-filter ${filters.length > 0 ? "fill-black" : "group-hover:fill-black"}`}
-                >
-                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-                </svg>
-                Add Filters
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="relative z-50 w-full bg-white shadow-lg">
-              <DropdownMenuGroup>
-                {filterOptions.map((option) => (
-                  <DropdownMenuItem
-                    key={option}
-                    onClick={() => !filters.includes(option) && handleAddFilter(option)} // Prevent onClick if already selected
-                    className={`w-full px-8 py-2 ${
-                      filters.includes(option)
-                        ? "cursor-not-allowed bg-gray-200 text-gray-400" // Greyed out style for selected items
-                        : "cursor-pointer hover:bg-gray-100" // Default style for unselected items
-                    }`}
-                  >
-                    {option}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div> */}
       </div>
 
       <CardContent className="p-0">

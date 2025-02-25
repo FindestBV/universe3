@@ -22,26 +22,6 @@ const data = {
   navMain: [
     { title: "Search", url: "/pages", icon: Search },
     { title: "Inbox", url: "/inbox", icon: Inbox },
-    // {
-    //   title: "Projects",
-    //   url: "/projects",
-    //   icon: Circle,
-    //   items: [{ title: "Entities", url: "/pages/entities" }],
-    // },
-    // {
-    //   title: "Pages",
-    //   url: "/pages",
-    //   icon: File,
-    //   items: [
-    //     { title: "Entities", url: "/pages/entities" },
-    //     { title: "Studies", url: "/pages/studies" },
-    //   ],
-    // },
-    // {
-    //   title: "Sources",
-    //   url: "/sources",
-    //   icon: Link,
-    // },
   ],
 };
 

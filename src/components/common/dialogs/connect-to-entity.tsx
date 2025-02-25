@@ -1,3 +1,34 @@
+/**
+ * ConnectToEntity Component
+ *
+ * This component allows users to **connect an existing entity or study** to an active item.
+ * It provides functionality to:
+ *
+ * - **Display the current parent entity** the connection is being made from.
+ * - **Select a relationship type** (default: "is a child of").
+ * - **Input a name** for the new link.
+ * - **Attach the entity to the specified parent**.
+ * - **Cancel the operation**, resetting input fields.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.attachToItem - Function to attach an entity to the parent item.
+ * @param {string} props.parentId - The ID of the parent item (study/entity).
+ * @param {string} props.parentTitle - The title of the parent item.
+ *
+ * @example
+ * <ConnectToEntity
+ *   attachToItem={(id) => console.log("Entity attached to:", id)}
+ *   parentId="study-123"
+ *   parentTitle="AI Research Study"
+ * />
+ *
+ * @dependencies
+ * - **ShadCN UI Components**: Dialog, DialogTrigger, DialogContent, Button
+ * - **React Hooks**: useState (for managing modal state & form input)
+ *
+ * @returns {JSX.Element} The rendered ConnectToEntity component.
+ */
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 

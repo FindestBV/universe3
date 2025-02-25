@@ -1,3 +1,47 @@
+/**
+ * ForceDirectedGraphView Component (WIP)
+ *
+ * This component renders a **Force-Directed Graph** using an HTML Canvas and a Web Worker.
+ * It **offloads graph simulation computations to a Web Worker**, significantly improving UI performance
+ * by keeping the main thread free for responsive interactions.
+ *
+ *
+ * ## Features:
+ * - **Force Simulation**: Uses `d3-force` to dynamically arrange nodes.
+ * - **Web Worker Offloading**: Moves physics calculations off the main thread for smooth rendering.
+ * - **Canvas Rendering**: Optimized for large datasets and high-performance drawing.
+ * - **Interactivity**:
+ *   - **Zoom & Pan**: Uses `d3-zoom` to navigate the graph.
+ *   - **Hover & Tooltips**: Displays information when hovering over nodes.
+ *   - **Node Dragging**: Allows repositioning of nodes dynamically.
+ *
+ *
+ * ## Performance Optimizations:
+ * - **Web Worker (Multi-Threading)**: Prevents UI lag by running the force simulation in a background thread.
+ * - **Canvas Rendering**: More efficient than SVG for large graphs.
+ * - **Batch Rendering**: Uses a single draw call instead of updating DOM elements.
+ * - **Alpha Decay & Velocity Decay**: Controls the damping effect for better stabilization.
+ *
+ * ## Customization & Settings:
+ * - **Graph Layout**: Modify force properties (`charge`, `linkDistance`, `gravity`) in the worker code.
+ * - **Zoom Controls**: Adjust default zoom levels via `zoomExtent` or `initialZoom`.
+ * - **Node Styling**: Customize `nodeRadius`, `nodeColor`, and tooltips.
+ * - **Edge Styling**: Modify `strokeWidth`, `edgeColor`, or implement curved edges.
+ *
+ * @component
+ * @param {Object} props - Component props.
+ * @param {Object[]} props.linkingData - Array of node objects `{ id, label, group }` with their connections.
+ *
+ * @example
+ * <ForceDirectedGraphView linkingData={[{ id: "1", label: "Node A", group: 1 }]} />
+ *
+ * @dependencies
+ * - **D3.js**: Used for force simulation, zooming, and event handling.
+ * - **Web Workers**: Runs force simulation calculations asynchronously.
+ * - **React Hooks**: Manages state updates for rendering.
+ *
+ * @returns {JSX.Element} The rendered ForceDirectedGraphView component.
+ */
 import { select, zoom, zoomIdentity } from "d3";
 
 import { FC, useEffect, useRef, useState } from "react";
@@ -12,6 +56,7 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
   useEffect(() => {
     if (!linkingData || linkingData.length === 0) return;
 
+    // to be offloaded to a global worker.
     const workerCode = `
       self.onmessage = (event) => {
         const { nodes, links } = event.data;

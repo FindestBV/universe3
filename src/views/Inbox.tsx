@@ -1,4 +1,4 @@
-import { InboxCard } from "@/components/common/cards/inbox-card";
+import GenericCard from "@/components/common/cards/item-card";
 import DocumentsSkeleton from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
 
@@ -10,28 +10,14 @@ export const Inbox: React.FC = () => {
   const [selectedDocs, setSelectedDocs] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [documentsPerPage, setDocumentsPerPage] = useState(12);
-  const [tempLoading, setTempLoading] = useState(false);
+  // const [tempLoading, setTempLoading] = useState(false);
   const [filters, setFilters] = useState<string[]>([]);
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  // const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const { data, isLoading, isError, error, refetch } = useGetMyDocumentInboxQuery(
     { page: currentPage, limit: documentsPerPage, filters },
     { refetchOnMountOrArgChange: true },
   );
-
-  const totalPages = data ? Math.ceil(data.totalCount / documentsPerPage) : 1;
-
-  const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-  const handlePreviousPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-
-  const handleSelectAll = (checked: boolean) => {
-    setIsChecked(!isChecked);
-    if (checked && data) {
-      setSelectedDocs(new Set(data.documents.map((doc) => doc.id)));
-    } else {
-      setSelectedDocs(new Set());
-    }
-  };
 
   const handleSelectDoc = (id: string, checked: boolean) => {
     const newSelected = new Set(selectedDocs);
@@ -43,27 +29,6 @@ export const Inbox: React.FC = () => {
     setSelectedDocs(newSelected);
   };
 
-  const handleDocumentsPerPageChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = parseInt(e.target.value, 10);
-    setDocumentsPerPage(value);
-    setCurrentPage(1);
-    setTempLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    setTempLoading(false);
-    refetch();
-  };
-
-  const filterOptions = ["SCIENCE", "PATENT", "WEBPAGE", "NOT LINKED"];
-
-  const handleAddFilter = (filterType: string) => {
-    if (!filters.includes(filterType)) {
-      setFilters([...filters, filterType]);
-    }
-  };
-
-  const handleRemoveFilter = (filter: string) => {
-    setFilters(filters.filter((f) => f !== filter));
-  };
   return (
     <div className="flex h-full w-full flex-col px-12 max-sm:px-4">
       <div className="mb-2 flex items-center justify-between gap-1 rounded-lg">
@@ -80,9 +45,10 @@ export const Inbox: React.FC = () => {
         {data && (
           <div>
             {data.documents.slice(0, documentsPerPage).map((doc) => (
-              <InboxCard
+              <GenericCard
                 key={doc.id}
                 {...doc}
+                itemType="study"
                 isSelected={selectedDocs.has(doc.id)}
                 onSelect={handleSelectDoc}
                 images={doc.images}

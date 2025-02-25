@@ -1,3 +1,34 @@
+/**
+ * ItemCard Component
+ *
+ * This component displays items output by an index or listing view. It is used in multiple sections, including:
+ * - Inbox
+ * - Pages
+ * - Sources main sections
+ * - Related content areas (e.g., linked documents)
+ *
+ * It is adaptable based on the props passed from its parent component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {number} props.id - Unique identifier for the item.
+ * @param {string} props.title - The title of the item.
+ * @param {string} props.name - The display name of the item.
+ * @param {string} props.type - The type/category of the item.
+ * @param {Date} props.dateAdded - The timestamp when the item was added.
+ * @param {Date} props.dateCreated - The timestamp when the item was originally created.
+ * @param {string} props.createdByUsername - The username of the creator.
+ * @param {string} props.url - The URL associated with the item.
+ * @param {string} props.abstract - A short summary or description of the item.
+ * @param {boolean} props.isSelected - Whether the item is selected in a multi-select scenario.
+ * @param {Function} [props.onSelect] - Optional callback function triggered when the item is selected.
+ * @param {Object} props.connectedObjects - Metadata about related objects linked to this item.
+ * @param {Object} props.searchInformation - Additional search-related metadata.
+ * @param {Object} props.linkedCounts - Statistics on how this item is linked to others.
+ * @param {Array<Object>} props.images - List of associated images (each item in the array should be an object with image details).
+ *
+ * @returns {JSX.Element} The rendered ItemCard component.
+ */
 import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/api/documents/documentApi";
 import { AddLinkToItem } from "@/components/common/dialogs/add-link-to-item";
 import { Button } from "@/components/ui/button";
@@ -78,7 +109,7 @@ export const ConnectedObjectsDialog = ({
   );
 };
 
-export const GenericCard: React.FC<GenericCardProps> = ({
+export const ItemCard: React.FC<ItemCardProps> = ({
   id,
   title,
   name,
@@ -273,4 +304,4 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   );
 };
 
-export default GenericCard;
+export default ItemCard;

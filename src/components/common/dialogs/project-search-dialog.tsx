@@ -1,10 +1,40 @@
+/**
+ * ProjectSearchDialog Component
+ *
+ * This component provides a **modal-based interface** for **searching and exploring projects**.
+ * It allows users to initiate a project search and visualize key project-related insights.
+ *
+ * ## Features:
+ * - **Dialog-based project search** with structured content sections.
+ * - **Dynamic search initiation** triggered by a button.
+ * - **Predefined research categories** (Trends, Emerging Technologies, Key Players).
+ * - **Structured landscape overview** to help users navigate project results.
+ *
+ * ## Customization:
+ * - **Modify the default dialog title** using the `dialogTitle` prop.
+ * - **Update the research structure** in the provided content sections.
+ * - **Extend search parameters** by integrating filters and inputs.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} [props.dialogTitle="Default title"] - Title of the search dialog.
+ *
+ * @example
+ * <ProjectSearchDialog dialogTitle="Search Research Projects" />
+ *
+ * @dependencies
+ * - **ShadCN UI Components**: Dialog, DialogTrigger, DialogContent, DialogTitle, Button, Card.
+ * - **Lucide Icons**: ChevronRight.
+ * - **React Hooks**: `useState` for managing dialog state.
+ *
+ * @returns {JSX.Element} The rendered ProjectSearchDialog component.
+ */
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -16,7 +46,7 @@ import { useState } from "react";
 export const ProjectSearchDialog = ({ dialogTitle }: string) => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
-  console.log("props", dialogTitle);
+  // console.log("props", dialogTitle);
 
   return (
     <div className="projectSearchDialog">

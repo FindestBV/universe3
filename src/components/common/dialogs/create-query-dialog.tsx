@@ -1,3 +1,44 @@
+/**
+ * CreateQueryDialog Component
+ *
+ * This component provides a **multi-step form** that allows users to define and execute a **new search query**.
+ * It enables users to:
+ *
+ * - **Define a query name and description** (Step 1).
+ * - **Select parameters and filters** (Step 2).
+ * - **Execute and retrieve search results** (Step 3).
+ * - **Minimize, store, re-run, or delete the query** after execution.
+ *
+ * ## Features:
+ * - **Dynamic Step Navigation**: Users proceed through structured query creation steps.
+ * - **Redux State Management**: Manages the modal state (`open`, `minimized`, `loading`) and fetches results.
+ * - **Async Query Execution**: Simulates API request and fetches search results.
+ * - **User Actions on Results**: Users can store, re-run, or delete queries.
+ * - **Supports Different Query Types**: Can handle different query categories (General, Science, Technology, Health).
+ *
+ * ## Customization:
+ * - **Modify the step logic** inside `handleStartQuery` and `handleRunQuery` functions.
+ * - **Customize query parameters** inside the form fields in Step 2.
+ * - **Update the query execution logic** inside `handleRunQuery` (replace the mock API call).
+ * - **Change query result handling** by modifying how results are stored in Redux.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} [props.id] - Optional query ID (for modifying existing queries).
+ * @param {string} props.icon - The name of the query icon.
+ * @param {string} props.queryType - The type of query being executed.
+ *
+ * @example
+ * <CreateQueryDialog id="query-123" icon="Beaker" queryType="Science" />
+ *
+ * @dependencies
+ * - **Redux**: Manages dialog state and query results.
+ * - **ShadCN UI Components**: Dialog, DialogTrigger, DialogContent, DialogHeader.
+ * - **Lucide Icons**: ArrowRightCircle, Beaker, Rainbow, Award.
+ * - **React Hooks**: `useState`, `useEffect` for handling state changes.
+ *
+ * @returns {JSX.Element} The rendered CreateQueryDialog component.
+ */
 import { currentUser } from "@/api/auth/authSlice";
 import {
   closeDialog,

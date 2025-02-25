@@ -180,14 +180,24 @@ export const ProjectOverView = () => {
               </>
             </TabsContent>
             <TabsContent value="technologies" className="mt-2 w-full flex-grow space-y-2">
-              <div className="flex w-full flex-col gap-4 py-4">
-                <VotingCard star={4} />
-                <VotingCard star={4} />
-                <VotingCard star={3} />
-                <VotingCard star={3} />
-                <VotingCard star={2} />
-                <VotingCard star={1} />
+              <div className="flex w-full flex-col">
+                {/* Header Row */}
+                <div className="flex w-full px-4 py-2 font-semibold">
+                  <div className="flex w-1/4 items-center">Rating</div>
+                  <div className="flex w-3/4 items-center">Page Titles</div>
+                </div>
+
+                {/* List of Voting Cards */}
+                <div className="flex w-full flex-col gap-2 py-2">
+                  <VotingCard star={4} />
+                  <VotingCard star={4} />
+                  <VotingCard star={3} />
+                  <VotingCard star={3} />
+                  <VotingCard star={2} />
+                  <VotingCard star={1} />
+                </div>
               </div>
+
               {/* <PresetButton title="Other general keyword" description="Either based on general knowledge or the sources linked." className="bg-slate-100" /> */}
             </TabsContent>
             <TabsContent value="queries" className="mt-2 space-y-2 py-4">

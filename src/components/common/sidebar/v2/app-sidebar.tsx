@@ -1,3 +1,36 @@
+/**
+ * AppSidebar Component
+ *
+ * This component serves as the **global sidebar navigation** in the application.
+ * It allows users to navigate between different sections such as:
+ * - **Inbox**
+ * - **Projects**
+ * - **Pages** (Entities, Studies)
+ * - **Search** (General, Team, Billing, Limits)
+ *
+ * ## Features:
+ * - **Collapsible Sidebar:** Users can toggle between an expanded or icon-only view.
+ * - **Dynamic Menu Items:** Supports nested navigation with expandable sub-menus.
+ * - **User Avatar Integration:** Displays the current user's profile picture.
+ * - **State Management:** Uses `useSidebar()` for sidebar state control.
+ * - **Persistent Sidebar State:** Saves the open/closed state to localStorage.
+ * - **Active Page Highlighting:** Highlights the currently active page.
+ * - **Hooks into Redux Store:** Retrieves the authenticated user from `authSlice`.
+ *
+ * ## How to Customize:
+ * - Modify `data.navMain` to add or remove sections.
+ * - Adjust `SidebarToggle` to change the sidebar behavior.
+ * - Modify `NavMain` to update the navigation UI.
+ * - Add new sections using `SidebarMenuItem` and `SidebarMenuSubItem`.
+ * - Adjust sidebar styles via `className` for background, borders, etc.
+ *
+ * @component
+ * @example
+ * <AppSidebar isOpen={true} />
+ *
+ * @param {boolean} isOpen - Controls whether the sidebar is open or collapsed.
+ * @returns {JSX.Element} The rendered AppSidebar component.
+ */
 import { currentUser } from "@/api/auth/authSlice";
 import { NavMain } from "@/components/common/sidebar/v2/nav-main";
 import UserAvatar from "@/components/common/utilities/user-avatar";
@@ -14,7 +47,6 @@ import {
 } from "@/components/ui/sidebar";
 import { Circle, File, Globe, Link, SquareTerminal } from "lucide-react";
 
-import * as React from "react";
 import { useSelector } from "react-redux";
 
 // This is sample data.
