@@ -1,5 +1,6 @@
 import { TiptapCollabProvider } from "@hocuspocus/provider";
-import { Doc as YDoc } from "yjs";
+
+// import { Doc as YDoc } from "yjs";
 
 import { useEffect, useState } from "react";
 

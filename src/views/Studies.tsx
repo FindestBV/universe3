@@ -10,8 +10,6 @@ export const Studies: React.FC = () => {
   const [selectedStudies, setSelectedStudies] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [studiesPerPage, setStudiesPerPage] = useState(12);
-  const [filters, setFilters] = useState<string[]>([]); // State for filters
-  // const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const { data, isLoading, isError, error, refetch } = useGetStudiesQuery(
     { page: currentPage, limit: studiesPerPage },
