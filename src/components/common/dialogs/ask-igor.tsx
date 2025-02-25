@@ -1,3 +1,45 @@
+/**
+ * AskIgorModal Component
+ *
+ * This component provides an interactive AI-powered search and query interface,
+ * integrating with the LLM-based AskIgor model. It enables users to:
+ *
+ * - **Ask questions** via a prompt textarea.
+ * - **Select from presets** for quick query generation.
+ * - **Run new queries** and fetch AI-generated responses.
+ * - **Manage query states**, including active and preloaded queries.
+ * - **Minimize the modal** for background processing.
+ * - **Interact with search results**, linked sources, and external documents.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {boolean} [props.isToolbar] - If true, modifies the modal for use within a toolbar.
+ * @param {boolean} [props.iconOnly] - If true, displays only an icon instead of a full label.
+ * @param {string} [props.label] - Custom label for the trigger button.
+ * @param {Object[]} [props.preloadedQueries] - List of preloaded queries available on initialization.
+ * @param {Object[]} [props.connectedQueries] - List of queries linked to existing documents.
+ * @param {Function} [props.onRunQuery] - Callback function triggered when a new query is executed.
+ * @param {Function} [props.onCancelQuery] - Callback function triggered when a query is canceled.
+ *
+ * @example
+ * <AskIgorModal
+ *   isToolbar={true}
+ *   iconOnly={false}
+ *   label="Ask Igor"
+ *   preloadedQueries={[{ id: 1, question: "What is quantum computing?" }]}
+ *   connectedQueries={[{ id: 2, question: "Related AI research" }]}
+ *   onRunQuery={(query) => console.log("Running query:", query)}
+ *   onCancelQuery={(queryId) => console.log("Cancelling query:", queryId)}
+ * />
+ *
+ * @dependencies
+ * - **ShadCN UI Components**: Dialog, Button, Textarea, Tabs
+ * - **Radix UI**: Tabs, Dialog
+ * - **Lucide Icons**: Zap, Check, File, FlaskConical, Maximize2, Minimize2, ChevronRight
+ * - **Custom Hooks**: `useDebounce`, `useSemanticSearch`, `useSemanticSearchEditor`
+ *
+ * @returns {JSX.Element} The rendered AskIgorModal component.
+ */
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
@@ -6,7 +48,7 @@ import { useSemanticSearch } from "@/hooks/use-semantic-search";
 import { useSemanticSearchEditor } from "@/hooks/use-semantic-search-editor";
 // import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { EditorContent } from "@tiptap/react";
+// import { EditorContent } from "@tiptap/react";
 import {
   Award,
   Bot,

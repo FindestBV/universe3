@@ -1,19 +1,32 @@
 /**
- * Item Card (aka 'Generic Card')
+ * ItemCard Component
  *
- * This component displays a items being output by an index or listing view or component.
- * It is used to render list items in the: Inbox, Pages, Sources main sections, as well as in related content out sections
- * such as linked documents.
- * 
- * It is designed to be adaptable by modifying the props passed to the component from a parent.
+ * This component displays items output by an index or listing view. It is used in multiple sections, including:
+ * - Inbox
+ * - Pages
+ * - Sources main sections
+ * - Related content areas (e.g., linked documents)
+ *
+ * It is adaptable based on the props passed from its parent component.
  *
  * @component
  * @param {Object} props - The component props.
- * @param {number} props.star - The rating value (number of stars, from 1 to 5).
- * @param {string} props.title - The title of the rated item.
- * @param {Function} [props.onShow] - Optional function called when the "Show" button is clicked.
+ * @param {number} props.id - Unique identifier for the item.
+ * @param {string} props.title - The title of the item.
+ * @param {string} props.name - The display name of the item.
+ * @param {string} props.type - The type/category of the item.
+ * @param {Date} props.dateAdded - The timestamp when the item was added.
+ * @param {Date} props.dateCreated - The timestamp when the item was originally created.
+ * @param {string} props.createdByUsername - The username of the creator.
+ * @param {string} props.url - The URL associated with the item.
+ * @param {string} props.abstract - A short summary or description of the item.
+ * @param {boolean} props.isSelected - Whether the item is selected in a multi-select scenario.
+ * @param {Function} [props.onSelect] - Optional callback function triggered when the item is selected.
+ * @param {Object} props.connectedObjects - Metadata about related objects linked to this item.
+ * @param {Object} props.searchInformation - Additional search-related metadata.
+ * @param {Object} props.linkedCounts - Statistics on how this item is linked to others.
+ * @param {Array<Object>} props.images - List of associated images (each item in the array should be an object with image details).
  *
-
  * @returns {JSX.Element} The rendered ItemCard component.
  */
 import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/api/documents/documentApi";

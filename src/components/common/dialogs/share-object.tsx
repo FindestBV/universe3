@@ -1,3 +1,39 @@
+/**
+ * ShareObject Component (WIP)
+ *
+ * This component provides a **modal interface** to enable project visibility sharing
+ * with other users. It allows users to:
+ *
+ * - **Add users** to share the project with.
+ * - **Manage sharing settings** (toggle visibility for the project and linked objects).
+ * - **Modify relationships** within the shared environment.
+ *
+ * ## Features:
+ * - **User selection form** via `AddUsersForm` to specify collaborators.
+ * - **Toggle-based settings** for sharing visibility.
+ * - **Dynamic modal controlled by state**.
+ * - **Expandable for role-based permissions** in future updates.
+ *
+ * ## Customization:
+ * - **Modify default sharing settings** inside the `Switch` components.
+ * - **Extend permissions logic** for finer access control.
+ * - **Integrate backend API** to persist sharing preferences.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.parentId - The ID of the parent project/entity being shared.
+ * @param {string} props.parentTitle - The title of the parent project/entity.
+ *
+ * @example
+ * <ShareObject parentId="project-123" parentTitle="AI Research Project" />
+ *
+ * @dependencies
+ * - **ShadCN UI Components**: Dialog, DialogTrigger, DialogContent, Button, Switch, Label.
+ * - **Lucide Icons**: Users.
+ * - **React Hooks**: `useState` for managing modal state.
+ *
+ * @returns {JSX.Element} The rendered ShareObject component.
+ */
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";

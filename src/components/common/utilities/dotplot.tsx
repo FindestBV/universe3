@@ -1,4 +1,9 @@
-import React from "react";
+/**
+ * DOTPLOT - CUSTOM TIP TAP (WIP)
+ * @component
+ *
+ * @returns {JSX.Element} The rendered DOTPLOT component.
+ */
 
 const topics = [
   "Welding Techniques and Residual Stresses",

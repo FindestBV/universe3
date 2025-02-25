@@ -1,3 +1,33 @@
+/**
+ * ConnectQuery Component
+ *
+ * This component provides users with the ability to **connect an existing query**
+ * to an active item (e.g., study, entity, project). Users can:
+ *
+ * - **Input a query name** to associate with the item.
+ * - **Choose a relationship type** (future expansion).
+ * - **Attach the query** to the specified `parentId`.
+ * - **Cancel the operation**, resetting input fields.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.attachToItem - Function to attach a query to an item.
+ * @param {string} props.parentId - The ID of the parent item (to which the query is linked).
+ * @param {string} props.parentTitle - The title of the parent item.
+ *
+ * @example
+ * <ConnectQuery
+ *   attachToItem={(id) => console.log("Query attached to:", id)}
+ *   parentId="entity-123"
+ *   parentTitle="Quantum Research"
+ * />
+ *
+ * @dependencies
+ * - **ShadCN UI Components**: Dialog, DialogTrigger, DialogContent, Button
+ * - **React Hooks**: useState (for managing modal state & form input)
+ *
+ * @returns {JSX.Element} The rendered ConnectQuery component.
+ */
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
@@ -7,6 +37,8 @@ export const ConnectQuery: React.FC<{
   attachToItem: (id: string) => void;
   parentId: string;
   parentTitle: string;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
 }> = ({ attachToItem, parentId, parentTitle }) => {
   const [relationship, setRelationship] = useState("child");
   const [linkName, setLinkName] = useState("");

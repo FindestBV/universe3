@@ -1,3 +1,52 @@
+/**
+ * SimilarDocumentModal Component
+ *
+ * This component renders a **modal window** that lists **similar documents** related to
+ * the **currently active item** (documents, studies, entities, or projects).
+ * It provides **detailed document metadata**, **linked documents**, and **attachments**.
+ *
+ * ## Features:
+ * - **Lists similar documents** based on the active item.
+ * - **Displays document metadata** including abstracts, journal name, and publication date.
+ * - **Supports multiple item types** (`entity`, `study`, `document`, `linkedObjects`).
+ * - **Fetches document data dynamically** using `useGetDocumentByIdQuery`.
+ * - **Retrieves connected documents** using `useGetEntityConnectedDocsQuery`.
+ * - **Includes an "Open Article" button** for external document access.
+ * - **Displays linked document counts** using the `LinkedCounts` component.
+ * - **Supports an "Attachments" tab** for listing attached files (non-editable).
+ *
+ * ## Customization:
+ * - **Modify the document metadata display** inside the `searchInformation` section.
+ * - **Customize document fetching behavior** by adjusting API query parameters.
+ * - **Extend the attachments tab** to support file previews or downloads.
+ * - **Refactor handling for linked objects** if additional document relationships are needed.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.title - The title of the document.
+ * @param {string} props.id - The unique ID of the document.
+ * @param {any} [props.mainContents] - The main contents of the document (if available).
+ * @param {any} [props.searchInformation] - Additional document metadata (journal, date, etc.).
+ * @param {boolean} [props.isOpenAccess] - Indicates if the document is open access.
+ * @param {"entity" | "study" | "document" | "linkedObjects"} props.type - The type of the active item.
+ *
+ * @example
+ * <SimilarDocumentModal
+ *   title="Advances in AI Research"
+ *   id="doc-123"
+ *   type="document"
+ *   isOpenAccess={true}
+ * />
+ *
+ * @dependencies
+ * - **Redux Toolkit Query**: Fetches document data using `useGetDocumentByIdQuery()`.
+ * - **ShadCN UI Components**: Dialog, Button, Tabs, Checkbox.
+ * - **Lucide Icons**: ExternalLink, Trash2, Upload.
+ * - **LinkedCounts Component**: Displays linked documents count.
+ * - **React Hooks**: `useState`, `useEffect` for managing modal state.
+ *
+ * @returns {JSX.Element} The rendered SimilarDocumentModal component.
+ */
 import {
   useGetDocumentByIdQuery,
   useGetEntityConnectedDocsQuery,

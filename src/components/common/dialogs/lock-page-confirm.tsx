@@ -1,3 +1,36 @@
+/**
+ * LockPageConfirm Component
+ *
+ * This component provides a **confirmation dialog** for toggling the **lock state** of a page.
+ * Users can **lock** or **unlock** a document, with a confirmation step before executing the action.
+ *
+ * ## Features:
+ * - **Displays a lock/unlock icon** that triggers the confirmation dialog.
+ * - **Redux state management** to update the page lock status.
+ * - **Confirmation step** to prevent accidental actions.
+ * - **Dynamic UI** that adapts based on the current lock state.
+ *
+ * ## Customization:
+ * - **Modify the lock/unlock behavior** in the `handleConfirm` function.
+ * - **Adjust button styles** to match your UI theme.
+ * - **Update dialog messages** based on specific use cases.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.id - The ID of the document to be locked/unlocked.
+ * @param {boolean} props.isLocked - Indicates whether the document is currently locked.
+ *
+ * @example
+ * <LockPageConfirm id="doc-123" isLocked={false} />
+ *
+ * @dependencies
+ * - **Redux**: Uses `useDispatch` to update the page lock state.
+ * - **ShadCN UI Components**: Dialog, DialogTrigger, DialogContent, Button.
+ * - **Lucide Icons**: Lock, LockOpen.
+ * - **React Hooks**: `useState` for managing the dialog state.
+ *
+ * @returns {JSX.Element} The rendered LockPageConfirm component.
+ */
 import { setLockPage } from "@/api/documents/documentSlice";
 import { Button } from "@/components/ui/button";
 import {

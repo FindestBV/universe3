@@ -1,3 +1,38 @@
+/**
+ * Comments Component (WIP)
+ *
+ * This component displays and manages **comments and replies** for a given item.
+ * It supports **nested replies**, **editing**, and **deleting** of comments,
+ * ensuring a structured discussion format.
+ *
+ * ## Features:
+ * - **Displays a list of comments** with user avatars and timestamps.
+ * - **Supports nested replies** (recursively rendered).
+ * - **Allows users to edit and delete their own comments**.
+ * - **Provides an input field** for adding new comments (to be wired up).
+ * - **Includes UI animations** for edit/delete controls (opacity on hover).
+ *
+ * ## Customization:
+ * - **Wire up the comment submission** logic inside the `<form>` handlers.
+ * - **Implement API calls** to save, edit, and delete comments.
+ * - **Customize recursive replies rendering** by modifying `renderReplies()`.
+ * - **Extend user permissions** for moderation (admin role for deletions).
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Array} props.connectedComments - An array of comments linked to the active item.
+ *
+ * @example
+ * <Comments connectedComments={commentData} />
+ *
+ * @dependencies
+ * - **Redux Toolkit Query**: Fetches `currentUser` via `useSelector(currentUser)`.
+ * - **ShadCN UI Components**: Button.
+ * - **Custom Components**: `UserAvatar` for user profile images.
+ * - **React Hooks**: `useState` for managing edit mode.
+ *
+ * @returns {JSX.Element} The rendered Comments component.
+ */
 import { currentUser } from "@/api/auth/authSlice";
 import UserAvatar from "@/components/common/utilities/user-avatar";
 import { Button } from "@/components/ui/button";

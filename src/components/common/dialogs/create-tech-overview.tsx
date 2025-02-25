@@ -1,34 +1,51 @@
+/**
+ * CreateTechOverviewDialog Component
+ *
+ * This component provides a **multi-step form** to create a **Technology Overview** project.
+ * It is designed to help users **structure scientific landscapes** and visualize research
+ * areas using a **graph-based approach**.
+ *
+ * ## Features:
+ * - **Step-based project creation** guiding users through the setup process.
+ * - **Supports multiple entity types** (`Page`, `Study`, `Query`).
+ * - **Graph-based representation** to map relationships between research topics.
+ * - **Dynamic input fields** based on selection.
+ * - **Predefined templates** for structuring research projects.
+ * - **Validation for required fields** before submission.
+ *
+ * ## Customization:
+ * - **Modify the project structure** in the `handleTypeSelect` and `updateFormData` functions.
+ * - **Adjust graph rendering settings** to visualize research data connections.
+ * - **Customize query parameters** inside the queryTemplates array.
+ * - **Update the result visualization** inside the final project overview.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} [props.title] - Custom dialog title (defaults to "Create new project").
+ * @param {string} [props.type] - Type of project (e.g., "techoverview" for tech landscapes).
+ *
+ * @example
+ * <CreateTechOverviewDialog title="Create Tech Landscape" type="techoverview" />
+ *
+ * @dependencies
+ * - **ShadCN UI Components**: Dialog, DialogTrigger, DialogContent, DialogTitle, Button, Card
+ * - **Lucide Icons**: Plus
+ * - **React Hooks**: useState (for managing steps and form input)
+ * - **Graph Visualization**: (Future Implementation) for mapping technology landscapes.
+ *
+ * @returns {JSX.Element} The rendered CreateTechOverviewDialog component.
+ */
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-import {
-  ChevronLeft,
-  Database,
-  FileText,
-  GraduationCap,
-  Link as LinkIcon,
-  Plus,
-  X,
-} from "lucide-react";
+import { Plus } from "lucide-react";
 
 import { useState } from "react";
 

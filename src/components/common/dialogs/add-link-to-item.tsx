@@ -1,3 +1,45 @@
+/**
+ * AddLinkToItemDialog Component
+ *
+ * This dialog presents users with the ability to connect a **link** to an **active item**
+ * (such as a study, entity, or project). It provides a structured way to:
+ *
+ * - **Select or input a URL** to associate with the active item.
+ * - **Choose an existing document or external reference** as the linked item.
+ * - **Preview the linked content** before confirming the connection.
+ * - **Allow searching and filtering** for relevant items to link.
+ * - **Manage multiple links**, allowing users to add, edit, or remove connections.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {boolean} [props.isOpen] - Controls whether the dialog is open.
+ * @param {Function} [props.onOpenChange] - Callback function triggered when the dialog opens or closes.
+ * @param {string} props.activeItemId - The ID of the item to which a link is being added.
+ * @param {string} [props.initialURL] - Optional preloaded URL for linking.
+ * @param {Object[]} [props.suggestedLinks] - List of suggested links that may be relevant.
+ * @param {Function} [props.onConfirm] - Callback function executed when a link is successfully added.
+ * @param {Function} [props.onCancel] - Callback function executed when the user cancels the operation.
+ *
+ * @example
+ * <AddLinkToItemDialog
+ *   isOpen={true}
+ *   onOpenChange={(open) => console.log("Dialog state:", open)}
+ *   activeItemId="study-123"
+ *   initialURL="https://example.com"
+ *   suggestedLinks={[
+ *     { id: "doc-456", title: "AI in Healthcare", url: "https://aihealth.com" },
+ *   ]}
+ *   onConfirm={(link) => console.log("Link added:", link)}
+ *   onCancel={() => console.log("Linking cancelled")}
+ * />
+ *
+ * @dependencies
+ * - **ShadCN UI Components**: Dialog, Button, Input, Select, List
+ * - **Custom Hooks**: `useFetchSuggestedLinks`
+ * - **Lucide Icons**: Link, X, Check
+ *
+ * @returns {JSX.Element} The rendered AddLinkToItemDialog component.
+ */
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Link } from "lucide-react";
 

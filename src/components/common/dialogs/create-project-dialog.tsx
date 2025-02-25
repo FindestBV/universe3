@@ -1,3 +1,30 @@
+/**
+ * CreateProjectDialog Component
+ *
+ * This component provides a **multi-step dialog** that allows users to create a new project,
+ * specifically for structuring a **scientific landscape**. The project creation process includes:
+ *
+ * - **Step-based navigation** guiding users through project setup.
+ * - **Options to define project type** (e.g., Page, Study, Query).
+ * - **Dynamic input fields** based on user selections.
+ * - **Predefined templates** for structured research projects.
+ * - **Validation for required fields** before allowing submission.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} [props.title] - Custom dialog title (defaults to "Create new project").
+ * @param {string} [props.type] - Type of project (e.g., "techoverview" for tech landscapes).
+ *
+ * @example
+ * <CreateProjectDialog title="Create Research Study" type="study" />
+ *
+ * @dependencies
+ * - **ShadCN UI Components**: Dialog, DialogTrigger, DialogContent, DialogTitle, Button, Card
+ * - **Lucide Icons**: Plus
+ * - **React Hooks**: useState (for managing steps and form input)
+ *
+ * @returns {JSX.Element} The rendered CreateProjectDialog component.
+ */
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -9,26 +36,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-import {
-  ChevronLeft,
-  Database,
-  FileText,
-  GraduationCap,
-  Link as LinkIcon,
-  Plus,
-  X,
-} from "lucide-react";
+import { Plus } from "lucide-react";
 
 import { useState } from "react";
 

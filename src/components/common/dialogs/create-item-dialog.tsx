@@ -1,3 +1,32 @@
+/**
+ * CreateItemModal Component
+ *
+ * This component provides a **multi-step dialog** that allows users to create different types of items.
+ * It supports various entity types such as **Pages, Studies, and Queries**, and dynamically
+ * adapts based on user selection.
+ *
+ * Features:
+ * - **Step-based navigation** for structured item creation.
+ * - **Supports multiple entity types** (`Page`, `Study`, `Query`).
+ * - **Dynamic form fields** based on selection.
+ * - **Query Template Selection** for database-related queries.
+ * - **Validation for required fields** before proceeding to the next step.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} [props.title] - Custom dialog title (defaults to "Create new project").
+ * @param {string} [props.type] - Type of the dialog (e.g., "techoverview" for tech landscapes).
+ *
+ * @example
+ * <CreateItemModal title="Create Research Study" type="study" />
+ *
+ * @dependencies
+ * - **ShadCN UI Components**: Dialog, DialogTrigger, DialogContent, Button, Input, Select, Textarea
+ * - **Lucide Icons**: Plus, X, ChevronLeft, FileText, GraduationCap, Database
+ * - **React Hooks**: useState (for managing steps and form input)
+ *
+ * @returns {JSX.Element} The rendered CreateItemModal component.
+ */
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

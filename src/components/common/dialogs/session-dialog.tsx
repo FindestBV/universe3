@@ -1,3 +1,36 @@
+/**
+ * SessionDialog Component
+ *
+ * This component triggers a **session-based dialog** after a short interval (default: **2 seconds**)
+ * when the user loads the dashboard. It prompts the user to **select a project to focus on**
+ * or create a new one.
+ *
+ * ## Features:
+ * - **Automatically opens after a delay** upon dashboard load.
+ * - **Displays recent projects** from the user's activity data.
+ * - **Allows users to navigate to a selected project** or create a new one.
+ * - **Dismissable dialog** with a future flag to remember user preference.
+ * - **Handles loading states** while fetching activity data.
+ *
+ * ## Customization:
+ * - **Modify the trigger delay** in the `useEffect` timeout (`2000ms` by default).
+ * - **Update the navigation logic** inside `handleNavigateToEntities`.
+ * - **Customize dialog messages** to match user workflows.
+ * - **Integrate persistent dismissal flag** to prevent reopening if dismissed.
+ *
+ * @component
+ * @example
+ * <SessionDialog />
+ *
+ * @dependencies
+ * - **ShadCN UI Components**: Dialog, DialogTrigger, DialogContent, DialogTitle.
+ * - **Redux Toolkit Query**: Fetches recent activity using `useGetMyRecentActivityQuery()`.
+ * - **Lucide Icons**: ChevronRight, Loader.
+ * - **React Hooks**: `useState`, `useEffect` for managing dialog state.
+ * - **Custom Hooks**: `useNavigateWithTransition` for smooth navigation.
+ *
+ * @returns {JSX.Element} The rendered SessionDialog component.
+ */
 import { useGetMyRecentActivityQuery } from "@/api/activity/activityApi";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";

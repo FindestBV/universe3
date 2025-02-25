@@ -1,3 +1,29 @@
+/**
+ * AdvancedSearchModal Component
+ *
+ * This component triggers an **Advanced Search Dialog**, which integrates an external
+ * search interface via an embedded **iframe**. It is used for performing complex
+ * queries and retrieving detailed search results.
+ *
+ * **Work in Progress (WIP)**: This component is subject to further enhancements
+ * and refinements.
+ *
+ * Features:
+ * - **Modal-based search interface** powered by ShadCN’s `Dialog`.
+ * - **Trigger button with an icon** to open the search dialog.
+ * - **Embedded iframe** displaying an external search tool.
+ * - **Customizable URL parameters** for user-specific search environments.
+ *
+ * @component
+ * @example
+ * <AdvancedSearchModal />
+ *
+ * @dependencies
+ * - **ShadCN UI Components**: Dialog, DialogTrigger, DialogContent
+ * - **Lucide Icons**: Search
+ *
+ * @returns {JSX.Element} The rendered AdvancedSearchModal component.
+ */
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Search } from "lucide-react";
 
