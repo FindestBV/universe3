@@ -23,6 +23,13 @@ const dummyData = [
   { id: "5", name: "Leaf A2", lowerLevelNodes: [] },
 ];
 
+const dialogs = [
+  { id: "1", title: "Extract Information" },
+  { id: "2", title: "Extract Patents" },
+  { id: "3", title: "Answer a Specific Question" },
+  { id: "4", title: "Explore a specific technology" },
+];
+
 function PresetButton({
   title,
   description,
@@ -158,16 +165,9 @@ export const ProjectOverView = () => {
                     </div>
                     <br />
                     <div className="flex flex-col gap-2">
-                      <ProjectSearchDialog />
-                      <PresetButton title="Extract Patents" className="bg-slate-100" />
-                      <PresetButton
-                        title="Extract Scientific Publications"
-                        className="bg-slate-100"
-                      />
-                      <PresetButton
-                        title="Extract from Scientific Topics"
-                        className="bg-slate-100"
-                      />
+                      {dialogs.map((d) => (
+                        <ProjectSearchDialog key={d.id} dialogTitle={d.title} />
+                      ))}
                     </div>
                   </div>
 
