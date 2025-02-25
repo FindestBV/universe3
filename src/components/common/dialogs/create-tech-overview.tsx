@@ -59,7 +59,7 @@ const queryTemplates = [
   },
 ];
 
-export function CreateProjectDialog({ ...props }: any) {
+export function CreateTechOverviewDialog({ ...props }: any) {
   const [formData, setFormData] = useState<FormData>({
     type: null,
     title: "",
@@ -273,4 +273,4 @@ export function CreateProjectDialog({ ...props }: any) {
   );
 }
 
-export default CreateProjectDialog;
+export default CreateTechOverviewDialog;
