@@ -128,14 +128,9 @@ export const ItemCard: React.FC<ItemCardProps> = ({
   linkedCounts = {},
   images,
 }) => {
-  // const navigate = useNavigate();
   const [prefetchedItems, setPrefetchedItems] = useState<Record<string, any>[]>([]);
   const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
   const navigateWithTransition = useNavigateWithTransition();
-
-  // if (connectedObjects) {
-  //   console.log("generic card", connectedObjects);
-  // }
 
   const renderFirstThreeParagraphs = (descriptionString: string) => {
     if (!descriptionString) {
@@ -187,7 +182,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
   const isSources = currentPath.includes("sources");
   const isEntity = currentPath.includes("entities");
   const isStudy = currentPath.includes("studies");
-  const isAdvancedSearch = currentPath.includes("queries");
+  // const isAdvancedSearch = currentPath.includes("queries");
 
   const handleCheckboxChange = (checked: boolean) => onSelect(id, checked);
   const handleCardClick = () => {
@@ -219,8 +214,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
   };
 
   const truncatedText = useTruncateText(name || title, 280);
-  // const itemImage = images && images[0]?.path;
-  // const itemCaption = images && images[0]?.caption;
+
   return (
     <div className="itemCard">
       <div className={`innerCardMain bg-white ${isSources ? "gap-4" : ""}`}>
@@ -272,16 +266,10 @@ export const ItemCard: React.FC<ItemCardProps> = ({
               />
             </div>
           </div>
-          {/* {isStudy && itemImage ? (
-            <div className="mt-6 w-1/4 self-start">
-              <img src={itemImage} alt={itemCaption} />
-              {/* <figcaption>{itemCaption}</figcaption> 
-            </div>
-          ) : null} */}
+
           <div className="flex flex-row items-start gap-2">
             <div className="flex flex-row items-center gap-4">
               <div className="time">{formatDate(dateCreated ? dateCreated : dateAdded)}</div>
-              {/* <CreatorTooltip createdByUsername={createdByUsername} /> */}
             </div>
           </div>
         </Card>
