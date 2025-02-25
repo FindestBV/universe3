@@ -1,4 +1,4 @@
-import GenericCard from "@/components/common/cards/generic-card";
+import ItemCard from "@/components/common/cards/item-card";
 import DocumentsSkeleton from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
 
@@ -104,7 +104,7 @@ export const Pages: React.FC = () => {
             {data?.entities
               .slice(0, entitiesPerPage)
               .map((ent) => (
-                <GenericCard
+                <ItemCard
                   itemType="entity"
                   key={ent.id}
                   {...ent}

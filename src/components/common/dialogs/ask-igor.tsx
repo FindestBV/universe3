@@ -25,47 +25,7 @@ import {
 import { useState } from "react";
 
 // import { toast } from "react-hot-toast";
-
 // import LinkedCounts from "../cards/linked-counts";
-
-// Simulated article fetching function
-// const simulateFetchArticles = (setArticles: any, setLoading: any, setIsFetching: any) => {
-//   setLoading(true);
-//   setIsFetching(true);
-
-//   const articles = [
-//     "How AI is Changing the World",
-//     "The Future of React",
-//     "Why TypeScript is Taking Over",
-//     "State Management in 2024",
-//     "Best Practices for UI/UX",
-//     "Exploring Edge Computing",
-//     "A Guide to Serverless Architecture",
-//     "Understanding GraphQL",
-//     "Introduction to Web3",
-//     "Optimizing Performance in React",
-//   ];
-
-//   let counter = 0;
-//   const interval = setInterval(() => {
-//     if (counter < articles.length) {
-//       setArticles((prev: string[]) => [...prev, articles[counter]]);
-//       counter++;
-//     } else {
-//       clearInterval(interval);
-//       setLoading(false);
-//       setIsFetching(false);
-//       toast.success("Search completed successfully!");
-//     }
-//   }, 2000);
-
-//   setTimeout(() => {
-//     clearInterval(interval);
-//     setLoading(false);
-//     setIsFetching(false);
-//     toast.success("Search completed successfully!");
-//   }, 15000);
-// };
 
 function PresetButton({
   title,

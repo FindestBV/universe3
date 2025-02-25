@@ -1,3 +1,21 @@
+/**
+ * Item Card (aka 'Generic Card')
+ *
+ * This component displays a items being output by an index or listing view or component.
+ * It is used to render list items in the: Inbox, Pages, Sources main sections, as well as in related content out sections
+ * such as linked documents.
+ * 
+ * It is designed to be adaptable by modifying the props passed to the component from a parent.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {number} props.star - The rating value (number of stars, from 1 to 5).
+ * @param {string} props.title - The title of the rated item.
+ * @param {Function} [props.onShow] - Optional function called when the "Show" button is clicked.
+ *
+
+ * @returns {JSX.Element} The rendered ItemCard component.
+ */
 import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/api/documents/documentApi";
 import { AddLinkToItem } from "@/components/common/dialogs/add-link-to-item";
 import { Button } from "@/components/ui/button";
@@ -78,7 +96,7 @@ export const ConnectedObjectsDialog = ({
   );
 };
 
-export const GenericCard: React.FC<GenericCardProps> = ({
+export const ItemCard: React.FC<ItemCardProps> = ({
   id,
   title,
   name,
@@ -273,4 +291,4 @@ export const GenericCard: React.FC<GenericCardProps> = ({
   );
 };
 
-export default GenericCard;
+export default ItemCard;

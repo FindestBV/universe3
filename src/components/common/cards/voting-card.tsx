@@ -1,3 +1,21 @@
+/**
+ * VotingCard Component
+ *
+ * This component displays a rating system using stars and a corresponding page title.
+ * It is designed for use in a rating list where users can visually assess the ranking
+ * of different items.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {number} props.star - The rating value (number of stars, from 1 to 5).
+ * @param {string} props.title - The title of the rated item.
+ * @param {Function} [props.onShow] - Optional function called when the "Show" button is clicked.
+ *
+ * @example
+ * <VotingCard star={4} title="Polyethylene-based Paper" onShow={() => console.log("Show clicked")} />
+ *
+ * @returns {JSX.Element} The rendered VotingCard component.
+ */
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 

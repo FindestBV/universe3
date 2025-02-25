@@ -1,4 +1,4 @@
-import GenericCard from "@/components/common/cards/generic-card";
+import GenericCard from "@/components/common/cards/item-card";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {
