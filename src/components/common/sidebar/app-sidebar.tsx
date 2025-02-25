@@ -124,7 +124,8 @@ const data = {
   ],
 };
 
-function SidebarToggle({ sidebarState }: boolean) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function SidebarToggle({ sidebarState }: any) {
   const { toggleSidebar } = useSidebar();
 
   return (
@@ -158,11 +159,11 @@ export function AppSidebar({ isOpen, ...props }: React.ComponentProps<typeof Sid
       {...props}
       className={`mainSidebar ${sidebarState ? "bg-white" : "bg-[#757575]"}`}
     >
-      <SidebarHeader sidebarState={sidebarState}>
-        <SidebarToggle />
+      <SidebarHeader>
+        <SidebarToggle sidebarState={sidebarState} />
       </SidebarHeader>
       <SidebarContent className="mt-9">
-        <NavMain items={data.navMain} sidebarState={sidebarState} />
+        <NavMain items={data.navMain} sidebarState={sidebarState} className="nav-main" />
       </SidebarContent>
       <SidebarFooter className="sidebarFooter">
         {/* <NavUser user={data.user} /> */}

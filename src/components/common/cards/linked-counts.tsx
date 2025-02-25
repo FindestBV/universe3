@@ -57,9 +57,6 @@ const LinkedCounts = ({
   });
 
   useEffect(() => {
-    console.log("Received prefetchedItems:", prefetchedItems);
-    console.log("Received linkedCounts:", linkedCounts);
-
     if (prefetchedItems.length > 0) {
       setHoveredObjects((prev) => {
         const updatedObjects = { ...prev };

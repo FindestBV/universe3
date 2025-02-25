@@ -136,8 +136,6 @@ export const ItemCard: React.FC<ItemCardProps> = ({
   const prefetchConnectedObjects = usePrefetch("getConnectedObjects");
   const navigateWithTransition = useNavigateWithTransition();
 
-  console.log("prefetchConnectedObjects", prefetchConnectedObjects);
-
   const renderFirstThreeParagraphs = (descriptionString: string) => {
     if (!descriptionString) {
       return <p>No content available.</p>;
