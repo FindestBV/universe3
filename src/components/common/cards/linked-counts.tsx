@@ -1,39 +1,7 @@
-/**
- * LinkedCounts Component
- *
- * This component displays a count of different linked items related to a given entity.
- * It is primarily used for Pages (Entities/Studies) and renders chip-like elements with
- * appropriate icons and colors to indicate different linked item types.
- *
- * The component is designed to be dynamic and customizable through props, and it utilizes:
- * - **Redux Prefetching** for efficient data loading
- * - **ShadCN's Tooltip (via Radix)** to show related items on hover
- *
- * @component
- * @param {Object} props - The component props.
- * @param {Object.<string, number>} props.linkedCounts - A mapping of item types to their respective counts.
- * @param {string} props.id - Unique identifier for the entity.
- * @param {Function} [props.prefetch] - Optional function for prefetching data when hovering over an item.
- * @param {Function} [props.onItemClick] - Optional function called when an item is clicked.
- * @param {Array<Object>} [props.connectedObjects] - A list of related objects, each containing:
- *   @param {string} connectedObjects[].id - The unique ID of the related object.
- *   @param {string} connectedObjects[].name - The display name of the related object.
- *   @param {number} connectedObjects[].type - The type of the related object.
- *   @param {string} [connectedObjects[].url] - Optional URL associated with the related object.
- *
- * @example
- * <LinkedCounts
- *   linkedCounts={{ documentCount: 3, studyCount: 5 }}
- *   id="1234"
- *   prefetch={(data) => console.log("Prefetching", data)}
- *   onItemClick={(id) => console.log("Clicked", id)}
- *   connectedObjects={[{ id: "5678", name: "Study A", type: 4, url: "/study/5678" }]}
- * />
- *
- * @returns {JSX.Element} The rendered LinkedCounts component.
- */
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { BookOpenCheck, Fingerprint, Highlighter, Image, Paperclip } from "lucide-react";
+
+import { useEffect, useState } from "react";
 
 // Icons for types
 const typeIcons = {
@@ -46,7 +14,7 @@ const typeIcons = {
 };
 
 // Mapping linkedCounts keys to tObjectTypeEnum values
-const objectTypeMapping: { [key: string]: number } = {
+const objectTypeMapping = {
   entityCount: 1,
   documentCount: 2,
   highlightCount: 3,
@@ -64,41 +32,72 @@ const objectTypeMapping: { [key: string]: number } = {
   queryCount: 15,
 };
 
-interface LinkedCountsProps {
-  linkedCounts: { [key: string]: number };
-  id: string;
-  prefetch?: (args: { id: string; type: number }) => void;
-  onItemClick?: (id: string) => void;
-  connectedObjects?: { id: string; name: string; type: number; url?: string }[];
-}
-
-export const LinkedCounts: React.FC<LinkedCountsProps> = ({
+const LinkedCounts = ({
   linkedCounts,
   id,
   prefetch,
   onItemClick,
   connectedObjects = [],
+  prefetchedItems = [],
 }) => {
+  const [hoveredObjects, setHoveredObjects] = useState({});
+
+  useEffect(() => {
+    console.log("Received prefetchedItems:", prefetchedItems);
+    // Merge prefetched items into hoveredObjects state when they change
+    if (prefetchedItems.length > 0) {
+      setHoveredObjects((prev) => {
+        const updatedObjects = { ...prev };
+        prefetchedItems.forEach(({ id, type, data }) => {
+          console.log("Processing prefetched item:", { id, type, data });
+          const key = Object.keys(objectTypeMapping).find((k) => objectTypeMapping[k] === type);
+          if (key) {
+            updatedObjects[key] = data && data.map((obj) => ({ id: obj.id, name: obj.name }));
+          }
+        });
+        console.log("Updated hoveredObjects:", updatedObjects);
+        return updatedObjects;
+      });
+    }
+  }, [prefetchedItems]);
+
+  const handleMouseEnter = async (key, objectType) => {
+    console.log(`Mouse entered on ${key}, fetching related objects...`);
+    if (!hoveredObjects[key]) {
+      try {
+        const result = await prefetch?.({ id, type: objectType });
+        console.log(`Fetched result for ${key}:`, result);
+        if (result && Array.isArray(result)) {
+          setHoveredObjects((prev) => ({
+            ...prev,
+            [key]: result.map((obj) => ({ id: obj.id, name: obj.name })),
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching related objects:", error);
+      }
+    }
+  };
+
   return (
-    <ul className="linkedCounts flex flex-wrap gap-2">
-      {Object.entries(linkedCounts)
-        .filter(([, value]) => value > 0) // Only show items with counts > 0
-        .map(([key, value], idx) => {
-          const IconComponent = typeIcons[key as keyof typeof typeIcons] || null;
-          const objectType = objectTypeMapping[key] || -1;
+    <TooltipProvider>
+      <ul className="linkedCounts flex flex-wrap gap-2">
+        {Object.entries(linkedCounts)
+          .filter(([, value]) => value > 0)
+          .map(([key, value]) => {
+            const IconComponent = typeIcons[key] || null;
+            const objectType = objectTypeMapping[key] || -1;
+            const relatedObjects =
+              hoveredObjects[key] || connectedObjects?.filter((obj) => obj.type === objectType);
 
-          // Filter connectedObjects by type
-          const relatedObjects = connectedObjects.filter((obj) => obj.type === objectType);
-          console.log(objectType);
-          console.log("related objects", relatedObjects);
+            console.log(`Rendering linkedCounts item: ${key}, relatedObjects:`, relatedObjects);
 
-          return (
-            <TooltipProvider key={idx}>
-              <Tooltip>
+            return (
+              <Tooltip key={key}>
                 <TooltipTrigger asChild>
                   <li
                     className={`linkedCounts__item ${key}`}
-                    onMouseEnter={() => prefetch?.({ id, type: objectType })}
+                    onMouseEnter={() => handleMouseEnter(key, objectType)}
                     onClick={() => onItemClick?.(id)}
                   >
                     {IconComponent && <IconComponent size={16} />}
@@ -108,21 +107,17 @@ export const LinkedCounts: React.FC<LinkedCountsProps> = ({
                 <TooltipContent side="top" className="z-50 rounded-md bg-white p-2 shadow-lg">
                   <ul className="tooltipContent">
                     {relatedObjects.length > 0 ? (
-                      relatedObjects.map((obj) => (
-                        <li key={obj.id}>
-                          <a href={obj.url || "#"}>{obj.name}</a>
-                        </li>
-                      ))
+                      relatedObjects.map((obj) => <li key={obj.id}>{obj.name}</li>)
                     ) : (
-                      <li>No related items</li>
+                      <li className="text-sm">No related items</li>
                     )}
                   </ul>
                 </TooltipContent>
               </Tooltip>
-            </TooltipProvider>
-          );
-        })}
-    </ul>
+            );
+          })}
+      </ul>
+    </TooltipProvider>
   );
 };
 

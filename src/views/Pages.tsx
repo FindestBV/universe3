@@ -12,7 +12,7 @@ export const Pages: React.FC = () => {
   const [entitiesPerPage, setEntitiesPerPage] = useState(12);
   // const [_tempLoading, setTempLoading] = useState(false);
   const [filters, setFilters] = useState<string[]>([]);
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  // const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const { data, isLoading, isError, error, refetch } = useGetEntitiesQuery(
     { page: currentPage, limit: entitiesPerPage },
