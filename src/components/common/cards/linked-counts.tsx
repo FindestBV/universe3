@@ -62,6 +62,7 @@ const objectTypeMapping = {
 export const LinkedCounts = ({ linkedCounts, id, prefetch, onItemClick, prefetchedItems = [] }) => {
   const [hoveredObjects, setHoveredObjects] = useState({});
   const [loadingStates, setLoadingStates] = useState({});
+  const [prefetchedKeys, setPrefetchedKeys] = useState(new Set()); // ✅ Track which items have been prefetched
 
   // ✅ Prefetch all linked data at the top level of the component
   const prefetchedData = useLinkedCountsData(id, linkedCounts, objectTypeMapping);
@@ -82,8 +83,12 @@ export const LinkedCounts = ({ linkedCounts, id, prefetch, onItemClick, prefetch
   }, [prefetchedItems]);
 
   const handleMouseEnter = (key, objectType) => {
+    if (prefetchedKeys.has(key)) return; // Avoid redundant prefetches
+
     setLoadingStates((prev) => ({ ...prev, [key]: true }));
     prefetch?.({ id, type: objectType });
+
+    setPrefetchedKeys((prevKeys) => new Set(prevKeys).add(key)); // Track as prefetched
 
     setTimeout(() => {
       const { data, isFetching } = prefetchedData[key] || {};
