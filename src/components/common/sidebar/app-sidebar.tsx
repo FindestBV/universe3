@@ -123,7 +123,7 @@ export function AppSidebar({ isOpen: propIsOpen, ...props }: React.ComponentProp
   const sidebarState = contextIsOpen ?? propIsOpen; // ✅ Ensure sidebarState is always defined
 
   const user = useSelector(currentUser); // Get user from Redux
-
+  console.log(user);
   return (
     <Sidebar
       collapsible="icon"
@@ -139,7 +139,7 @@ export function AppSidebar({ isOpen: propIsOpen, ...props }: React.ComponentProp
       </SidebarContent>
 
       <SidebarFooter className="sidebarFooter">
-        <UserAvatar username={user?.name} /> {/* ✅ Ensure `user?.name` is passed correctly */}
+        <UserAvatar username="R" /> {/* ✅ Ensure `user?.name` is passed correctly */}
       </SidebarFooter>
 
       <SidebarRail />
