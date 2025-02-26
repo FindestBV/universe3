@@ -4,7 +4,7 @@ import { authApi } from "@/api/auth/authApi";
 import authSlice from "@/api/auth/authSlice";
 import { documentApi } from "@/api/documents/documentApi";
 import documentSlice from "@/api/documents/documentSlice";
-import { projectApi } from "@/api/projects/projectsApi";
+import { projectApi } from "@/api/projects/projectApi";
 import { searchApi } from "@/api/search/searchApi";
 import languageReducer from "@/api/utilities/languageSlice";
 import sidebarReducer from "@/api/utilities/sidebarSlice";

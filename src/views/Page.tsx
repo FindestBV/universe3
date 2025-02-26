@@ -35,7 +35,7 @@ export const Page: React.FC = () => {
   const connectedEntities = fetchedEntity?.entities;
 
   if (fetchedEntity) {
-    console.log("fetched entity full obj", fetchedEntity);
+    // console.log("fetched entity full obj", fetchedEntity);
     try {
       parsedDescription = JSON.parse(fetchedEntity?.description);
       // console.log("Parsed description:", parsedDescription.content);
@@ -45,14 +45,6 @@ export const Page: React.FC = () => {
   }
 
   useEffect(() => {
-    if (parsedDescription) {
-      // console.log("blooper", typeof parsedDescription);
-      // console.log("connectedObjects", connectedObjects);
-      // console.log("connectedQueries", connectedQueries);
-      // console.log("connectedComments", connectedComments);
-      // console.log("connectedEntities", connectedEntities);
-      console.log("blooper", parsedDescription);
-    }
     window.scroll(0, 0);
   }, [fetchedEntity, parsedDescription]);
 

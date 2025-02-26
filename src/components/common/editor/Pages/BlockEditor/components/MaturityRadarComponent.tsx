@@ -1,7 +1,7 @@
 import {
   useCreateMaturityRadarMutation,
   useGetMaturityRadarQuery,
-} from "@/api/projects/projectsApi";
+} from "@/api/projects/projectApi";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

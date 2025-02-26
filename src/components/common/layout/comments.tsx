@@ -45,7 +45,7 @@ export const Comments = ({ connectedComments }: any) => {
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const user = useSelector(currentUser);
 
-  console.log("connected comments", connectedComments);
+  // console.log("connected comments", connectedComments);
 
   const editComment = (id: string) => {
     setIsEditing(isEditing === id ? null : id);

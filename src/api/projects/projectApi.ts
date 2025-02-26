@@ -113,6 +113,27 @@ export const projectApi = api.injectEndpoints({
       }),
       invalidatesTags: [{ type: "ProjectPages" }],
     }),
+
+    getMaturityRadar: builder.query<SavedDocumentResponse, string>({
+      query: (id) => `/maturity-radar/4/${id}`,
+      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+      overrideExisting: true,
+    }),
+
+    createMaturityRadar: builder.mutation({
+      queryFn: (id) => {
+        return {
+          data: {
+            id,
+            status: "success",
+            message: "Dummy response for createMaturityRadar",
+            createdAt: new Date().toISOString(),
+          },
+        };
+      },
+      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+      overrideExisting: true,
+    }),
   }),
 });
 
@@ -135,4 +156,6 @@ export const {
   useGetResultsOverviewTableQuery,
   useAddMaturityRadarToPagesMutation,
   useDeleteProjectPageMutation,
+  useGetMaturityRadarQuery,
+  useCreateMaturityRadarMutation,
 } = projectApi;
