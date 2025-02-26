@@ -3,7 +3,7 @@ import type { SavedDocumentResponse } from "@/types/types";
 
 import { api } from "../api";
 
-export const projectsApi = api.injectEndpoints({
+export const projectApi = api.injectEndpoints({
   endpoints: (builder) => ({
     // Fetch all projects
     getProjects: builder.query<SavedDocumentResponse, { page: number; limit: number }>({
@@ -135,4 +135,4 @@ export const {
   useGetResultsOverviewTableQuery,
   useAddMaturityRadarToPagesMutation,
   useDeleteProjectPageMutation,
-} = projectsApi;
+} = projectApi;
