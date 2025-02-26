@@ -127,8 +127,11 @@ universe3/
   |   |   |     |   └── create-tech-overview
   |   |   |     |   └── lock-page-confirm
   |   |   |     |   └── project-search-dialog
-
-
+  |   |   |     |   └── session-dialog
+  |   |   |     |   └── share-object
+  |   |   |     |   └── similar-document-modal
+  |   |   |     |
+  |   |   |     |
   |   |   |     └── editor
   |   |   |     |   └── extensions
   |   |   |     |   └── menus

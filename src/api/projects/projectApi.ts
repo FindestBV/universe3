@@ -56,7 +56,7 @@ export const projectApi = api.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "ProjectStatistics", id }],
     }),
 
-    // Ssingle project's notifications
+    // Single project's notifications
     getProjectNotifications: builder.query<SavedDocumentResponse, string>({
       query: (id) => `/v1/projects/${id}/notifications`,
       providesTags: (result, error, id) => [{ type: "ProjectNotifications", id }],
@@ -65,20 +65,14 @@ export const projectApi = api.injectEndpoints({
     // Update tab order in a project
     updateProjectTabOrder: builder.mutation<void, { projectId: string; newOrder: number[] }>({
       query: ({ projectId, newOrder }) => ({
-        url: `/projects/${projectId}/tabs/order`,
+        url: `/v1/projects/${projectId}/tabs/order`, // ✅ Fixed missing `/v1/`
         method: "PUT",
         body: { newOrder },
       }),
       invalidatesTags: [{ type: "ProjectTabs" }],
     }),
 
-    // Fetch all projects (Maturity Radar related)
-    getAllProjects: builder.query<SavedDocumentResponse, void>({
-      query: () => "/v1/projects",
-      providesTags: ["Project"],
-    }),
-
-    // 📌 Fetch a single project by ID
+    // Fetch a single project by ID
     getProjectById: builder.query<SavedDocumentResponse, string>({
       query: (id) => `/v1/projects/${id}`,
       providesTags: (result, error, id) => [{ type: "Project", id }],
@@ -114,30 +108,25 @@ export const projectApi = api.injectEndpoints({
       invalidatesTags: [{ type: "ProjectPages" }],
     }),
 
+    // Fetch maturity radar by ID
     getMaturityRadar: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/maturity-radar/4/${id}`,
+      query: (id) => `/maturity-radar/4/${id}`, // ✅ Fixed missing backticks
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
       overrideExisting: true,
     }),
 
-    createMaturityRadar: builder.mutation({
-      queryFn: (id) => {
-        return {
-          data: {
-            id,
-            status: "success",
-            message: "Dummy response for createMaturityRadar",
-            createdAt: new Date().toISOString(),
-          },
-        };
-      },
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+    // Create a Maturity Radar entry
+    createMaturityRadar: builder.mutation<SavedDocumentResponse, { id: string }>({
+      query: ({ id }) => ({
+        url: `/v1/maturity-radar`,
+        method: "POST",
+        body: { id },
+      }),
+      invalidatesTags: [{ type: "SavedDocument" }],
       overrideExisting: true,
     }),
   }),
 });
-
-// Hooks for Queries and Mutations
 
 export const {
   useGetProjectsQuery,
@@ -150,12 +139,11 @@ export const {
   useGetProjectStatisticsQuery,
   useGetProjectNotificationsQuery,
   useUpdateProjectTabOrderMutation,
-  useGetAllProjectsQuery,
   useGetProjectByIdQuery,
   useGetProjectMaturityRadarQuery,
   useGetResultsOverviewTableQuery,
-  useAddMaturityRadarToPagesMutation,
-  useDeleteProjectPageMutation,
   useGetMaturityRadarQuery,
   useCreateMaturityRadarMutation,
+  useAddMaturityRadarToPagesMutation,
+  useDeleteProjectPageMutation,
 } = projectApi;

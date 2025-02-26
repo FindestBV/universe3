@@ -29,7 +29,11 @@
  *
  * @returns {JSX.Element} The rendered ItemCard component.
  */
-import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/api/documents/documentApi";
+import {
+  useGetConnectedObjectsQuery,
+  useLazyGetConnectedObjectsQuery,
+  usePrefetch,
+} from "@/api/documents/documentApi";
 import { AddLinkToItem } from "@/components/common/dialogs/add-link-to-item";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -168,13 +172,13 @@ export const ItemCard: React.FC<ItemCardProps> = ({
     );
   };
 
-  const handlePrefetch = async ({ id, type }: { id: string; type: string }) => {
-    try {
-      const data = await prefetchConnectedObjects({ id, type }, { force: false });
-      setPrefetchedItems((prevItems) => [...prevItems, { id, type, data }]);
-    } catch (error) {
-      // console.log("error whle prefetching links", error);
-    }
+  const handlePrefetch = ({ id, type }: { id: string; type: number }) => {
+    // console.log("Prefetching data for", id, type);
+
+    prefetchConnectedObjects(
+      { id, type },
+      { force: false }, // Ensures it does not refetch if cached
+    );
   };
 
   const location = useLocation();
@@ -260,9 +264,10 @@ export const ItemCard: React.FC<ItemCardProps> = ({
               <LinkedCounts
                 id={id}
                 linkedCounts={linkedCounts}
-                prefetch={({ id, type }) => handlePrefetch({ id, type })}
+                prefetch={handlePrefetch}
                 onItemClick={(id) => console.log(`Item clicked: ${id}`)}
                 connectedObjects={connectedObjects}
+                prefetchedItems={prefetchedItems}
               />
             </div>
           </div>

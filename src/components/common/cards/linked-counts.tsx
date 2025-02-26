@@ -23,17 +23,21 @@
  *
  * @example
  * <LinkedCounts
- *   linkedCounts={{ documentCount: 3, studyCount: 5 }}
- *   id="1234"
- *   prefetch={(data) => console.log("Prefetching", data)}
- *   onItemClick={(id) => console.log("Clicked", id)}
- *   connectedObjects={[{ id: "5678", name: "Study A", type: 4, url: "/study/5678" }]}
+ *   id={id}
+ *   linkedCounts={linkedCounts}
+ *   prefetch={handlePrefetch}
+ *   onItemClick={(id) => console.log(`Item clicked: ${id}`)}
+ *   connectedObjects={connectedObjects}
+ *   prefetchedItems={prefetchedItems}
  * />
  *
  * @returns {JSX.Element} The rendered LinkedCounts component.
  */
+import useLinkedCountsData from "@/hooks/use-linked-counts-data";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { BookOpenCheck, Fingerprint, Highlighter, Image, Paperclip } from "lucide-react";
+
+import { useEffect, useState } from "react";
 
 // Icons for types
 const typeIcons = {
@@ -45,60 +49,76 @@ const typeIcons = {
   highlightCount: Highlighter,
 };
 
-// Mapping linkedCounts keys to tObjectTypeEnum values
-const objectTypeMapping: { [key: string]: number } = {
+// Mapping linkedCounts keys to object type values
+const objectTypeMapping = {
   entityCount: 1,
   documentCount: 2,
   highlightCount: 3,
   studyCount: 4,
   imageCount: 5,
-  scienceArticleCount: 6,
-  usPatentCount: 7,
-  weblinkCount: 8,
-  magPatentCount: 9,
-  commentCount: 10,
   fileCount: 11,
-  tenantCount: 12,
-  organizationCount: 13,
-  caseCount: 14,
-  queryCount: 15,
 };
 
-interface LinkedCountsProps {
-  linkedCounts: { [key: string]: number };
-  id: string;
-  prefetch?: (args: { id: string; type: number }) => void;
-  onItemClick?: (id: string) => void;
-  connectedObjects?: { id: string; name: string; type: number; url?: string }[];
-}
+export const LinkedCounts = ({ linkedCounts, id, prefetch, onItemClick, prefetchedItems = [] }) => {
+  const [hoveredObjects, setHoveredObjects] = useState({});
+  const [loadingStates, setLoadingStates] = useState({});
+  const [prefetchedKeys, setPrefetchedKeys] = useState(new Set()); // ✅ Track which items have been prefetched
 
-export const LinkedCounts: React.FC<LinkedCountsProps> = ({
-  linkedCounts,
-  id,
-  prefetch,
-  onItemClick,
-  connectedObjects = [],
-}) => {
+  // ✅ Prefetch all linked data at the top level of the component
+  const prefetchedData = useLinkedCountsData(id, linkedCounts, objectTypeMapping);
+
+  useEffect(() => {
+    if (prefetchedItems.length > 0) {
+      setHoveredObjects((prev) => {
+        const updatedObjects = { ...prev };
+        prefetchedItems.forEach(({ id, type, data }) => {
+          const key = Object.keys(objectTypeMapping).find((k) => objectTypeMapping[k] === type);
+          if (key) {
+            updatedObjects[key] = data?.map((obj) => ({ id: obj.id, name: obj.name }));
+          }
+        });
+        return updatedObjects;
+      });
+    }
+  }, [prefetchedItems]);
+
+  const handleMouseEnter = (key, objectType) => {
+    if (prefetchedKeys.has(key)) return; // Avoid redundant prefetches
+
+    setLoadingStates((prev) => ({ ...prev, [key]: true }));
+    prefetch?.({ id, type: objectType });
+
+    setPrefetchedKeys((prevKeys) => new Set(prevKeys).add(key)); // Track as prefetched
+
+    setTimeout(() => {
+      const { data, isFetching } = prefetchedData[key] || {};
+      if (!isFetching) {
+        setHoveredObjects((prev) => ({
+          ...prev,
+          [key]: data || [],
+        }));
+        setLoadingStates((prev) => ({ ...prev, [key]: false }));
+      }
+    }, 300);
+  };
+
   return (
-    <ul className="linkedCounts flex flex-wrap gap-2">
-      {Object.entries(linkedCounts)
-        .filter(([, value]) => value > 0) // Only show items with counts > 0
-        .map(([key, value], idx) => {
-          const IconComponent = typeIcons[key as keyof typeof typeIcons] || null;
-          const objectType = objectTypeMapping[key] || -1;
+    <TooltipProvider>
+      <ul className="linkedCounts flex flex-wrap gap-2">
+        {Object.entries(linkedCounts)
+          .filter(([, value]) => value > 0)
+          .map(([key, value]) => {
+            const IconComponent = typeIcons[key] || null;
+            const objectType = objectTypeMapping[key] || -1;
+            const { data, isFetching } = prefetchedData[key] || {};
+            const relatedObjects = hoveredObjects[key] || [];
 
-          // Filter connectedObjects by type
-          const relatedObjects = connectedObjects.filter((obj) => obj.type === objectType);
-          // console.log(objectType);
-          // console.log("related objects", relatedObjects);
-
-          return (
-            <TooltipProvider key={idx}>
-              <Tooltip>
+            return (
+              <Tooltip key={key}>
                 <TooltipTrigger asChild>
                   <li
                     className={`linkedCounts__item ${key}`}
-                    onMouseEnter={() => prefetch?.({ id, type: objectType })}
+                    onMouseEnter={() => handleMouseEnter(key, objectType)}
                     onClick={() => onItemClick?.(id)}
                   >
                     {IconComponent && <IconComponent size={16} />}
@@ -107,22 +127,23 @@ export const LinkedCounts: React.FC<LinkedCountsProps> = ({
                 </TooltipTrigger>
                 <TooltipContent side="top" className="z-50 rounded-md bg-white p-2 shadow-lg">
                   <ul className="tooltipContent">
+                    {isFetching ? "Loading..." : ""}
                     {relatedObjects.length > 0 ? (
-                      relatedObjects.map((obj) => (
-                        <li key={obj.id}>
-                          <a href={obj.url || "#"}>{obj.name}</a>
+                      relatedObjects.map((item) => (
+                        <li key={item.id} onClick={() => onItemClick(item.id)}>
+                          {item?.name || item?.title} - {item?.type}
                         </li>
                       ))
                     ) : (
-                      <li>No related items</li>
+                      <p>No linked objects found.</p>
                     )}
                   </ul>
                 </TooltipContent>
               </Tooltip>
-            </TooltipProvider>
-          );
-        })}
-    </ul>
+            );
+          })}
+      </ul>
+    </TooltipProvider>
   );
 };
 

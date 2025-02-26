@@ -51,17 +51,6 @@ export const ShareObject: React.FC<{
   const [linkName, setLinkName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleCancel = () => {
-    setRelationship("child"); // Reset dropdown
-    setLinkName(""); // Reset input field
-    setIsOpen(false); // Close the modal
-  };
-
-  const handleSave = () => {
-    // Add save functionality here
-    setIsOpen(false); // Close modal after save
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>

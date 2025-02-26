@@ -135,8 +135,7 @@ export function AppSidebar({ isOpen: propIsOpen, ...props }: React.ComponentProp
       </SidebarHeader>
 
       <SidebarContent className="mt-9">
-        <NavMain items={data.navMain} sidebarState={sidebarState} />{" "}
-        {/* ✅ Ensure sidebarState is passed */}
+        <NavMain items={data.navMain} sidebarState={sidebarState} />
       </SidebarContent>
 
       <SidebarFooter className="sidebarFooter">
