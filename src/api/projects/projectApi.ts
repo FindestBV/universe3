@@ -65,7 +65,7 @@ export const projectApi = api.injectEndpoints({
     // Update tab order in a project
     updateProjectTabOrder: builder.mutation<void, { projectId: string; newOrder: number[] }>({
       query: ({ projectId, newOrder }) => ({
-        url: `/v1/projects/${projectId}/tabs/order`, // ✅ Fixed missing `/v1/`
+        url: `/v1/projects/${projectId}/tabs/order`,
         method: "PUT",
         body: { newOrder },
       }),
@@ -110,7 +110,7 @@ export const projectApi = api.injectEndpoints({
 
     // Fetch maturity radar by ID
     getMaturityRadar: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/maturity-radar/4/${id}`, // ✅ Fixed missing backticks
+      query: (id) => `/maturity-radar/4/${id}`,
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
       overrideExisting: true,
     }),
