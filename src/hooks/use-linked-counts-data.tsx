@@ -4,16 +4,19 @@ import { usePrefetchedData } from "@/api/documents/documentApi";
  * Custom hook to fetch prefetched data for linked counts
  */
 const useLinkedCountsData = (id, linkedCounts, objectTypeMapping) => {
-  const results = {};
-
-  for (const key of Object.keys(linkedCounts)) {
+  // Create an object where each key calls `usePrefetchedData` at the top level
+  const prefetchedData = Object.entries(linkedCounts).reduce((acc, [key]) => {
     const objectType = objectTypeMapping[key];
 
-    // ✅ Call `usePrefetchedData` at the top level!
-    results[key] = usePrefetchedData(id, objectType);
-  }
+    // Only call `usePrefetchedData` if objectType is valid
+    if (objectType !== undefined) {
+      acc[key] = usePrefetchedData(id, objectType); // Hook is called at top level ✅
+    }
 
-  return results; // This now returns the fetched data properly.
+    return acc;
+  }, {});
+
+  return prefetchedData;
 };
 
 export default useLinkedCountsData;
