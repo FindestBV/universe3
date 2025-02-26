@@ -75,22 +75,11 @@ export const BlockEditor = ({
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
   const navigateWithTransition = useNavigateWithTransition();
 
-  console.log("block editor type", type);
-
-  const toggleLeftSideBar = () => {
-    setIsLeftSidebarOpen(!isLeftSideBarOpen);
-  };
-
-  const toggleInnerSidebar = () => {
-    console.log(isSidebarCollapsed);
-    setIsSidebarCollapsed(!isSidebarCollapsed);
-  };
-
   const parsedContent = useMemo(() => {
     try {
       // Parse content if it's a string, otherwise use it as is
       if (typeof content === "string" || typeof content.type === "doc") {
-        console.log(typeof content);
+        // console.log(typeof content);
         return JSON.parse(content);
       }
       // Ensure it has the required structure
@@ -100,7 +89,7 @@ export const BlockEditor = ({
       // Fallback for invalid content
       return { type: "doc", content: [] };
     } catch (error) {
-      console.error("Error parsing content:", error);
+      // console.error("Error parsing content:", error);
       return { type: "doc", content: initialContent }; // Default fallback
     }
   }, [content]);
@@ -108,7 +97,7 @@ export const BlockEditor = ({
   const saveContent = useCallback(
     async (content: any) => {
       if (JSON.stringify(content) === lastSavedContent) {
-        console.log("No changes detected.");
+        // console.log("No changes detected.");
         return;
       }
 
@@ -124,7 +113,7 @@ export const BlockEditor = ({
         }
         setLastSavedContent(JSON.stringify(content));
       } catch (error) {
-        console.error("Error saving content:", error);
+        // console.error("Error saving content:", error);
       }
     },
     [currentId, lastSavedContent, updateDraft, createDraft, content],
@@ -138,14 +127,6 @@ export const BlockEditor = ({
       saveContent(updatedJSON);
     },
   });
-
-  // Debugging: Check if `customImage` is in the editor schema
-  if (editor) {
-    console.log("rendered rtitle", title);
-    console.log("schema nodes?", editor.schema.nodes);
-    console.log("editor in BlockEditor", editor);
-    console.log("editor in BlockEditor", connectedInbox);
-  }
 
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
   const isLocked = useSelector((state: RootState) => state.document.isLocked);
@@ -167,7 +148,7 @@ export const BlockEditor = ({
 
   const triggerExpand = () => {
     setIsTitleExpanded(!isTitleExpanded);
-    console.log(isTitleExpanded ? "expanded" : "normal");
+    // console.log(isTitleExpanded ? "expanded" : "normal");
   };
 
   const projectStructure = [
@@ -195,7 +176,7 @@ export const BlockEditor = ({
   }, [isEditing, saveContent]);
 
   useEffect(() => {
-    console.log("currentView", currentView);
+    // console.log("currentView", currentView);
   }, [currentView]);
 
   if (!editor) {

@@ -49,11 +49,11 @@ export const Comments = ({ connectedComments }: any) => {
 
   const editComment = (id: string) => {
     setIsEditing(isEditing === id ? null : id);
-    console.log(`Editing comment with id ${id}`);
+    // console.log(`Editing comment with id ${id}`);
   };
 
   const deleteComment = (id: string) => {
-    console.log(`Deleting comment with id ${id}`);
+    // console.log(`Deleting comment with id ${id}`);
     setIsEditing(null);
   };
 

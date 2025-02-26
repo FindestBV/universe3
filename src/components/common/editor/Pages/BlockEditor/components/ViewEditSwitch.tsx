@@ -13,8 +13,6 @@ const ViewEditSwitch = ({ id }) => {
   const dispatch = useDispatch();
 
   const handleEditStart = () => {
-    console.log("Editing started for document:", id);
-    console.log(isEditing);
     setIsEditMode((prev) => !prev);
     // Validate `id`
     if (!id || typeof id !== "string") {
@@ -27,8 +25,6 @@ const ViewEditSwitch = ({ id }) => {
   };
 
   const handleStopEditing = () => {
-    console.log("Editing stopped for document:", id);
-    console.log(isEditing);
     setIsEditMode((prev) => !prev);
     // Validate `id`
     if (!id || typeof id !== "string") {

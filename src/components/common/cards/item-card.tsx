@@ -173,7 +173,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
       const data = await prefetchConnectedObjects({ id, type }, { force: false });
       setPrefetchedItems((prevItems) => [...prevItems, { id, type, data }]);
     } catch (error) {
-      console.log("error whle prefetching links", error);
+      // console.log("error whle prefetching links", error);
     }
   };
 

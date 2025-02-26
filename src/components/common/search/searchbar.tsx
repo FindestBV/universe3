@@ -69,7 +69,7 @@ export const SearchBar = () => {
       searchItems(queryString)
         .unwrap()
         .then((response) => {
-          console.log("Search response:", response);
+          // console.log("Search response:", response);
         })
         .catch((error) => {
           console.error("Error fetching search results:", error);

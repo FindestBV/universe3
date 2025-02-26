@@ -47,7 +47,7 @@ import { useDispatch } from "react-redux";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const LockPageConfirm = ({ id, isLocked }: any) => {
-  console.log("lock page", isLocked);
+  // console.log("lock page", isLocked);
   const dispatch = useDispatch();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 

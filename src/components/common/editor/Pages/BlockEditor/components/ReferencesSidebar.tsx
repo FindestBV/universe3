@@ -6,7 +6,7 @@ export const ReferencesSidebar: React.FC<{
   editor?: string;
 }> = ({ editor }) => {
   const scrollToSection = (sectionId: string) => {
-    console.log("scrollto", sectionId);
+    // console.log("scrollto", sectionId);
     const sectionElement = document.querySelector(sectionId); // Find the section
     if (sectionElement) {
       sectionElement.scrollIntoView({

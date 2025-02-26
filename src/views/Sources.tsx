@@ -75,7 +75,6 @@ export const Sources: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("current", data ? data : "nada");
     window.scroll(0, 0);
   }, [data]);
 

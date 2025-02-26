@@ -19,7 +19,7 @@ const HappinessSelector = () => {
   const handleHappinessSelect = (level: { level: any; emoji?: string; label?: string }) => {
     // @ts-expect-error blah
     setSelectedHappiness(level);
-    console.log(`Selected happiness level: ${level.level}`);
+    // console.log(`Selected happiness level: ${level.level}`);
   };
 
   return (

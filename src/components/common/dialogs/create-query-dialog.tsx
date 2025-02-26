@@ -123,7 +123,7 @@ export const CreateQueryDialog: React.FC<CreateQueryDialogProps> = ({ id, icon, 
   };
 
   useEffect(() => {
-    console.log("queryid?", id + " " + queryType);
+    // console.log("queryid?", id + " " + queryType);
     if (!isDialogOpen) {
       setQueryName("");
       setQueryDescription("");

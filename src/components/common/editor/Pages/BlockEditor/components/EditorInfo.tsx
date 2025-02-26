@@ -164,10 +164,6 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
     setIsPinned(!isPinned);
   };
 
-  useEffect(() => {
-    console.log("is page locked?", isLocked);
-  }, [isLocked]);
-
   return (
     <div className="flex w-full items-center justify-between">
       <div className="mr-4 flex flex-row items-center justify-center gap-2 border-r border-neutral-200 pr-4 text-right dark:border-neutral-200">

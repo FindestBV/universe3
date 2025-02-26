@@ -35,8 +35,6 @@ export const Source: React.FC = () => {
     refetchOnMountOrArgChange: false,
   });
 
-  console.log("fetched doc wth attachement (hopefully)", fetchedDocument);
-
   const scienceArticles = fetchedDocument?.scienceArticles;
   const attachedFiles = fetchedDocument?.attachedFiles;
 

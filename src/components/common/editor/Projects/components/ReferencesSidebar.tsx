@@ -53,7 +53,7 @@ export const ReferencesSidebar: React.FC<{
   };
 
   const scrollToSection = (sectionId: string) => {
-    console.log("scrollto", sectionId);
+    // console.log("scrollto", sectionId);
     const sectionElement = document.querySelector(sectionId); // Find the section
     if (sectionElement) {
       sectionElement.scrollIntoView({
@@ -94,7 +94,7 @@ export const ReferencesSidebar: React.FC<{
             <Button
               className="fixed right-0"
               onClick={() => {
-                console.log("X button clicked, toggling sidebar");
+                // console.log("X button clicked, toggling sidebar");
                 onToggleInnerSidebar();
               }}
             >

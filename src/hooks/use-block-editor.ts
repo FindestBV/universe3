@@ -75,7 +75,7 @@ export const useBlockEditor = ({
   const parsedContent = useMemo(() => {
     try {
       const parsed = typeof content === "string" ? JSON.parse(content) : content;
-      console.log("blockeditor, title", title);
+      // console.log("blockeditor, title", title);
 
       // Ensure parsed content exists and is an array
       const parsedContentArray = Array.isArray(parsed?.content) ? parsed.content : [];

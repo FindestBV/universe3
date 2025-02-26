@@ -109,18 +109,14 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
     //   },
     // },
     onCreate: ({ editor }) => {
-      console.log("Editor Created:", editor);
+      // console.log("Editor Created:", editor);
       setContent(editor.getText());
     },
     onUpdate: ({ editor }) => {
-      console.log("Editor Updated:", editor);
+      // console.log("Editor Updated:", editor);
       setContent(editor.getText());
     },
   });
-
-  console.log("editor?", editor);
-  console.log("content?", content);
-  console.log("debounced?", debouncedContent);
 
   const { isSearching, results, groups } = useSemanticSearch(isOpen ? debouncedContent : undefined);
 

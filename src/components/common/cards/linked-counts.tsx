@@ -89,8 +89,8 @@ export const LinkedCounts: React.FC<LinkedCountsProps> = ({
 
           // Filter connectedObjects by type
           const relatedObjects = connectedObjects.filter((obj) => obj.type === objectType);
-          console.log(objectType);
-          console.log("related objects", relatedObjects);
+          // console.log(objectType);
+          // console.log("related objects", relatedObjects);
 
           return (
             <TooltipProvider key={idx}>

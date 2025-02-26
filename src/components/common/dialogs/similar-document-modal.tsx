@@ -109,7 +109,7 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      console.log("Modal opened. Fetching document and connected queries...");
+      // console.log("Modal opened. Fetching document and connected queries...");
       refetchDocument();
       refetchConnectedDocuments();
     }

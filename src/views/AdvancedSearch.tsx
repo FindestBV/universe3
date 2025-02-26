@@ -30,9 +30,9 @@ export const AdvancedSearch: React.FC = () => {
     }
   };
 
-  const handleAnimationComplete = () => {
-    console.log("Animation completed!");
-  };
+  // const handleAnimationComplete = () => {
+  //   console.log("Animation completed!");
+  // };
 
   const handleSelectItem = (id: string, checked: boolean) => {
     const newSelected = new Set(selectedSearchItems);

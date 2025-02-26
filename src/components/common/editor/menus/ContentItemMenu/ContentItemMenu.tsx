@@ -20,7 +20,7 @@ export const ContentItemMenu = ({ editor }: ContentItemMenuProps) => {
   const data = useData();
   const actions = useContentItemActions(editor, data.currentNode, data.currentNodePos);
 
-  console.log("inside content item", editor);
+  // console.log("inside content item", editor);
 
   useEffect(() => {
     if (menuOpen) {

@@ -2,7 +2,7 @@
 import { forceCenter, forceCollide, forceLink, forceManyBody, forceSimulation } from "d3-force";
 
 self.onmessage = (event) => {
-  console.log("Worker received data:", event.data);
+  // console.log("Worker received data:", event.data);
   const { nodes, links } = event.data;
 
   const simulation = forceSimulation(nodes)

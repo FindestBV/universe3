@@ -791,7 +791,7 @@ const CustomBlock = ({ node, updateAttributes }) => {
   const { dataUrl, id = "" } = node.attrs;
   // const { id } = node.attrs.id;
 
-  console.log("I should be the id display", id);
+  // console.log("I should be the id display", id);
   const [chartData, setChartData] = useState([]);
   const [dataOutput, setDataOutput] = useState();
   const [loading, setLoading] = useState(true); // Track loading state
@@ -802,12 +802,12 @@ const CustomBlock = ({ node, updateAttributes }) => {
 
   useEffect(() => {
     if (dataUrl) {
-      console.log("Fetching data from:", dataUrl);
+      // console.log("Fetching data from:", dataUrl);
 
       fetch(dataUrl)
         .then((res) => res.json())
         .then((data) => {
-          console.log("Remote data received", data);
+          // console.log("Remote data received", data);
           setDataOutput(data);
 
           // Simulate transformed data (modify as needed)

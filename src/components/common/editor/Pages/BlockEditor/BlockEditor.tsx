@@ -67,13 +67,13 @@ export const BlockEditor = ({
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
   const navigateWithTransition = useNavigateWithTransition();
 
-  console.log("block editor type", type);
+  // console.log("block editor type", type);
 
   const parsedContent = useMemo(() => {
     try {
       // Parse content if it's a string, otherwise use it as is
       if (typeof content === "string" || typeof content.type === "doc") {
-        console.log(typeof content);
+        // console.log(typeof content);
         return JSON.parse(content);
       }
       // Ensure it has the required structure
@@ -91,7 +91,7 @@ export const BlockEditor = ({
   const saveContent = useCallback(
     async (content: any) => {
       if (JSON.stringify(content) === lastSavedContent) {
-        console.log("No changes detected.");
+        // console.log("No changes detected.");
         return;
       }
 
@@ -122,14 +122,6 @@ export const BlockEditor = ({
     },
   });
 
-  // Debugging: Check if `customImage` is in the editor schema
-  if (editor) {
-    console.log("rendered rtitle", title);
-    console.log("schema nodes?", editor.schema.nodes);
-    console.log("editor in BlockEditor", editor);
-    console.log("editor in BlockEditor", connectedInbox);
-  }
-
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
   const isLocked = useSelector((state: RootState) => state.document.isLocked);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
@@ -145,7 +137,7 @@ export const BlockEditor = ({
 
   const triggerExpand = () => {
     setIsTitleExpanded(!isTitleExpanded);
-    console.log(isTitleExpanded ? "expanded" : "normal");
+    // console.log(isTitleExpanded ? "expanded" : "normal");
   };
 
   const projectStructure = [
@@ -173,7 +165,7 @@ export const BlockEditor = ({
   }, [isEditing, saveContent]);
 
   useEffect(() => {
-    console.log("currentView", currentView);
+    // console.log("currentView", currentView);
   }, [currentView]);
 
   if (!editor) {

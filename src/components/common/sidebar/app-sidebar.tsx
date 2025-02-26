@@ -49,7 +49,7 @@ import { Circle, File, Globe, Link, SquareTerminal } from "lucide-react";
 
 import { useSelector } from "react-redux";
 
-// This is sample data.
+// Sidebar Data
 const data = {
   user: {
     name: "Ronan O'Leary",
@@ -58,29 +58,16 @@ const data = {
   },
 
   navMain: [
-    {
-      title: "Inbox",
-      url: "#",
-      icon: SquareTerminal,
-    },
+    { title: "Inbox", url: "#", icon: SquareTerminal },
     {
       title: "Projects",
       url: "#",
       icon: Circle,
       isActive: false,
       items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
+        { title: "Genesis", url: "#" },
+        { title: "Explorer", url: "#" },
+        { title: "Quantum", url: "#" },
       ],
     },
     {
@@ -88,14 +75,8 @@ const data = {
       url: "#",
       icon: File,
       items: [
-        {
-          title: "Entities",
-          url: "/pages/entities",
-        },
-        {
-          title: "Studies",
-          url: "/pages/studies",
-        },
+        { title: "Entities", url: "/pages/entities" },
+        { title: "Studies", url: "/pages/studies" },
       ],
     },
     {
@@ -103,29 +84,18 @@ const data = {
       url: "#",
       icon: Link,
       items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
+        { title: "General", url: "#" },
+        { title: "Team", url: "#" },
+        { title: "Billing", url: "#" },
+        { title: "Limits", url: "#" },
       ],
     },
   ],
 };
 
-function SidebarToggle({ sidebarState }: boolean) {
-  const { toggleSidebar } = useSidebar();
+// Sidebar Toggle Component
+function SidebarToggle() {
+  const { toggleSidebar, isOpen = false } = useSidebar(); // ✅ Ensure `isOpen` is defined
 
   return (
     <SidebarMenu>
@@ -136,9 +106,9 @@ function SidebarToggle({ sidebarState }: boolean) {
           className="w-full items-center justify-start gap-1 hover:bg-none"
         >
           <div className="mt-1 flex aspect-square size-8 items-center justify-center rounded-lg">
-            <Globe className={`size-5 ${sidebarState ? "text-slate-600" : "text-white"}`} />
+            <Globe className={`size-5 ${isOpen ? "text-slate-600" : "text-white"}`} />
           </div>
-          <div className={`text-slate-700" mt-1 grid flex-1 text-left text-lg text-gray-700`}>
+          <div className="mt-1 grid flex-1 text-left text-lg text-gray-700">
             <span className="truncate font-semibold">Universe</span>
           </div>
         </SidebarMenuButton>
@@ -147,9 +117,11 @@ function SidebarToggle({ sidebarState }: boolean) {
   );
 }
 
-export function AppSidebar({ isOpen, ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { open } = useSidebar();
-  const sidebarState = isOpen ?? open;
+// Main Sidebar Component
+export function AppSidebar({ isOpen: propIsOpen, ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { isOpen: contextIsOpen } = useSidebar(); // ✅ Get sidebar state from context
+  const sidebarState = contextIsOpen ?? propIsOpen; // ✅ Ensure sidebarState is always defined
+
   const user = useSelector(currentUser); // Get user from Redux
 
   return (
@@ -158,16 +130,19 @@ export function AppSidebar({ isOpen, ...props }: React.ComponentProps<typeof Sid
       {...props}
       className={`mainSidebar ${sidebarState ? "bg-white" : "bg-[#757575]"}`}
     >
-      <SidebarHeader sidebarState={sidebarState}>
+      <SidebarHeader>
         <SidebarToggle />
       </SidebarHeader>
+
       <SidebarContent className="mt-9">
-        <NavMain items={data.navMain} sidebarState={sidebarState} />
+        <NavMain items={data.navMain} sidebarState={sidebarState} />{" "}
+        {/* ✅ Ensure sidebarState is passed */}
       </SidebarContent>
+
       <SidebarFooter className="sidebarFooter">
-        {/* <NavUser user={data.user} /> */}
-        <UserAvatar username={user} />
+        <UserAvatar username={user?.name} /> {/* ✅ Ensure `user?.name` is passed correctly */}
       </SidebarFooter>
+
       <SidebarRail />
     </Sidebar>
   );

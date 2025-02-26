@@ -25,7 +25,7 @@ interface LineChartProps {
 
 const LineChart: React.FC<LineChartProps> = ({ data, width = 940, height = 500, text, id }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
-  console.log("line chart, should be item id in url", id);
+  // console.log("line chart, should be item id in url", id);
   useEffect(() => {
     if (!data.length) return;
 

@@ -126,7 +126,7 @@ export function CreateItemModal({ ...props }: any) {
   };
 
   const handleSubmit = () => {
-    console.log("Form submitted:", formData);
+    // console.log("Form submitted:", formData);
     setOpen(false);
     // Reset form
     setFormData({
