@@ -33,7 +33,7 @@
  *
  * @returns {JSX.Element} The rendered LinkedCounts component.
  */
-import { usePrefetchedData } from "@/api/documents/documentApi";
+import useLinkedCountsData from "@/hooks/use-linked-counts-data";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { BookOpenCheck, Fingerprint, Highlighter, Image, Paperclip } from "lucide-react";
 
@@ -49,71 +49,44 @@ const typeIcons = {
   highlightCount: Highlighter,
 };
 
-// Mapping linkedCounts keys to tObjectTypeEnum values
+// Mapping linkedCounts keys to object type values
 const objectTypeMapping = {
   entityCount: 1,
   documentCount: 2,
   highlightCount: 3,
   studyCount: 4,
   imageCount: 5,
-  scienceArticleCount: 6,
-  usPatentCount: 7,
-  weblinkCount: 8,
-  magPatentCount: 9,
-  commentCount: 10,
   fileCount: 11,
-  tenantCount: 12,
-  organizationCount: 13,
-  caseCount: 14,
-  queryCount: 15,
 };
 
 export const LinkedCounts = ({ linkedCounts, id, prefetch, onItemClick, prefetchedItems = [] }) => {
   const [hoveredObjects, setHoveredObjects] = useState({});
   const [loadingStates, setLoadingStates] = useState({});
 
-  // Iterate over linkedCounts to prefetch data for all types
-  Object.entries(linkedCounts).forEach(([key]) => {
-    const objectType = objectTypeMapping[key];
-    if (objectType !== undefined) {
-      // Call `usePrefetchedData` for each object type
-      const { data, isFetching } = usePrefetchedData(id, objectType);
-      if (data) {
-        hoveredObjects[key] = data;
-      }
-    }
-  });
+  // ✅ Prefetch all linked data at the top level of the component
+  const prefetchedData = useLinkedCountsData(id, linkedCounts, objectTypeMapping);
 
   useEffect(() => {
     if (prefetchedItems.length > 0) {
       setHoveredObjects((prev) => {
         const updatedObjects = { ...prev };
         prefetchedItems.forEach(({ id, type, data }) => {
-          // console.log("Processing prefetched item:", { id, type, data });
           const key = Object.keys(objectTypeMapping).find((k) => objectTypeMapping[k] === type);
           if (key) {
             updatedObjects[key] = data?.map((obj) => ({ id: obj.id, name: obj.name }));
           }
         });
-        console.log("Updated hoveredObjects:", updatedObjects);
         return updatedObjects;
       });
     }
   }, [prefetchedItems]);
 
   const handleMouseEnter = (key, objectType) => {
-    // console.log(`Mouse entered on ${key}, prefetching related objects...`);
-
     setLoadingStates((prev) => ({ ...prev, [key]: true }));
-
     prefetch?.({ id, type: objectType });
 
     setTimeout(() => {
-      const { data, isFetching } = useGetConnectedObjectsQuery(
-        { id, type: objectType },
-        { skip: !id },
-      );
-
+      const { data, isFetching } = prefetchedData[key] || {};
       if (!isFetching) {
         setHoveredObjects((prev) => ({
           ...prev,
@@ -121,7 +94,7 @@ export const LinkedCounts = ({ linkedCounts, id, prefetch, onItemClick, prefetch
         }));
         setLoadingStates((prev) => ({ ...prev, [key]: false }));
       }
-    }, 300); // Small delay for Redux cache update
+    }, 300);
   };
 
   return (
@@ -132,6 +105,7 @@ export const LinkedCounts = ({ linkedCounts, id, prefetch, onItemClick, prefetch
           .map(([key, value]) => {
             const IconComponent = typeIcons[key] || null;
             const objectType = objectTypeMapping[key] || -1;
+            const { data, isFetching } = prefetchedData[key] || {};
             const relatedObjects = hoveredObjects[key] || [];
 
             return (
@@ -148,6 +122,7 @@ export const LinkedCounts = ({ linkedCounts, id, prefetch, onItemClick, prefetch
                 </TooltipTrigger>
                 <TooltipContent side="top" className="z-50 rounded-md bg-white p-2 shadow-lg">
                   <ul className="tooltipContent">
+                    {isFetching ? "Loading..." : ""}
                     {relatedObjects.length > 0 ? (
                       relatedObjects.map((item) => (
                         <li key={item.id} onClick={() => onItemClick(item.id)}>
