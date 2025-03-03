@@ -34,7 +34,7 @@
  *
  * @returns {JSX.Element} The rendered ShareObject component.
  */
-import AddUsersForm from "@/components/common/forms/add-users";
+import AddUsersForm from "@/components/common/dialogs/forms/add-users";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";

@@ -1,4 +1,4 @@
-import AddUsersForm from "@/components/common/forms/add-users";
+import AddUsersForm from "@/components/common/dialogs/forms/add-users";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof AddUsersForm> = {

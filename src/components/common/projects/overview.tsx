@@ -261,12 +261,12 @@ export const ProjectOverView = () => {
                 className="bg-slate-100"
               />
               <PresetButton
-                title="Constant Annoyance"
+                title="Drilling"
                 description="Either based on general knowledge or the sources linked."
                 className="bg-slate-100"
               />
               <PresetButton
-                title="Drilling noises"
+                title="More Drilling"
                 description="Either based on general knowledge or the sources linked."
                 className="bg-slate-100"
               />
