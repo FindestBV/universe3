@@ -77,10 +77,13 @@ export const BlockEditor = ({
 
   const parsedContent = useMemo(() => {
     try {
-      // Parse content if it's a string, otherwise use it as is
-      if (typeof content === "string" || typeof content.type === "doc") {
-        // console.log(typeof content);
+      // Parse content if it's a string
+      if (typeof content === "string") {
         return JSON.parse(content);
+      }
+      // Handle doc type content
+      if (content && typeof content === "object" && "type" in content && content.type === "doc") {
+        return content;
       }
       // Ensure it has the required structure
       if (typeof content === "object") {

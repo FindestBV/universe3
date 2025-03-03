@@ -65,7 +65,7 @@ export const projectApi = api.injectEndpoints({
     // Update tab order in a project
     updateProjectTabOrder: builder.mutation<void, { projectId: string; newOrder: number[] }>({
       query: ({ projectId, newOrder }) => ({
-        url: `/v1/projects/${projectId}/tabs/order`,
+        url: `/v1/projects/${projectId}/tabs/update-order`,
         method: "PUT",
         body: { newOrder },
       }),
@@ -138,7 +138,8 @@ export const projectApi = api.injectEndpoints({
 
           socket.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            updateCachedData((draft) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            updateCachedData((draft: any) => {
               Object.assign(draft, data);
             });
           };
