@@ -1,0 +1,66 @@
+@use '../colors' as colors;
+
+.findest-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+
+  &.primary {
+    background-color: colors.$primaryButtonColorDefault;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background-color: colors.$primaryButtonColorHover;
+    }
+
+    &:disabled {
+      background-color: colors.$primaryButtonColorDisabled;
+      cursor: not-allowed;
+    }
+  }
+
+  &.secondary {
+    background-color: colors.$secondaryButtonColorDefault;
+    color: colors.$main-text-color;
+
+    &:hover:not(:disabled) {
+      background-color: colors.$secondaryButtonColorHover;
+    }
+
+    &:disabled {
+      background-color: colors.$secondaryButtonColorDefault;
+      color: colors.$findest-dark-gray;
+      cursor: not-allowed;
+    }
+  }
+
+  &.ghost {
+    background-color: transparent;
+    color: colors.$main-text-color;
+
+    &:hover:not(:disabled) {
+      background-color: colors.$secondaryButtonColorHoverLight;
+    }
+
+    &:disabled {
+      color: colors.$findest-dark-gray;
+      cursor: not-allowed;
+    }
+  }
+
+  &.small {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  &.large {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.125rem;
+  }
+} 

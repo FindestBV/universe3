@@ -1,5 +1,4 @@
-
-@import '../colors/colors.scss';
+@use '../colors' as colors;
 
 .editorMainContent,
 .compactEditorContent {
@@ -47,7 +46,7 @@
             &:not(:has(a)):has(br) {
               &::before {
                 content: "Type a caption";
-                color: $findest-dark-gray;
+                color: colors.$findest-dark-gray;
                 font-size: 10px;  
                 line-height: 20px;
                 letter-spacing: 0.252px;
@@ -86,14 +85,14 @@
     }
 
     p.is-editor-empty:first-child::before {
-      color: $findest-dark-gray;
+      color: colors.$findest-dark-gray;
       content: attr(data-placeholder);
       pointer-events: none;
       position: absolute;
     }
 
     p.is-empty::before {
-      color: $findest-dark-gray;
+      color: colors.$findest-dark-gray;
       content: attr(data-placeholder);
       pointer-events: none;
       position: absolute;
@@ -116,7 +115,7 @@
         text-overflow: ellipsis;
         max-width: 100%;
         cursor: pointer;
-        color: $main-text-color;
+        color: colors.$main-text-color;
 
         &::before {
             display: flex;
@@ -129,41 +128,41 @@
     }
 
     .file-reference-link {
-      background-color: $attachment-color-10;
-      border-color: $attachment-color-10;
+      background-color: colors.$attachment-color-10;
+      border-color: colors.$attachment-color-10;
 
       &::before {
         font: var(--fa-font-solid);
         content: "\f0c6";
-        color: $attachment-count-color;
+        color: colors.$attachment-count-color;
         text-decoration: underline;
-        text-decoration-color: $attachment-color-10;
+        text-decoration-color: colors.$attachment-color-10;
       }
     }
 
     .entity-reference-link {
-        background-color: $entity-color-10;
-        border-color: $entity-color-10;
+        background-color: colors.$entity-color-10;
+        border-color: colors.$entity-color-10;
 
         &::before {
             font: var(--fa-font-solid);
             content: "\f6d1";
-            color: $entity-count-color;
+            color: colors.$entity-count-color;
             text-decoration: underline;
-            text-decoration-color: $entity-color-10;
+            text-decoration-color: colors.$entity-color-10;
         }
     }
 
     .study-reference-link {
-        background-color: $study-color-10;
-        border-color: $study-color-10;
+        background-color: colors.$study-color-10;
+        border-color: colors.$study-color-10;
 
         &::before {
             font: var(--fa-font-solid);
             content: "\f5da";
-            color: $study-count-color;
+            color: colors.$study-count-color;
             text-decoration: underline;
-            text-decoration-color: $study-color-10;
+            text-decoration-color: colors.$study-color-10;
         }
     }
   }
@@ -193,7 +192,7 @@
       letter-spacing: 0.252px;
       display: inline;
       margin-right: 4em !important;
-      color: $findest-dark-gray;
+      color: colors.$findest-dark-gray;
       min-width: 1px; // To be able to see the cursor when it is focused
 
       #text {
@@ -203,14 +202,14 @@
         letter-spacing: 0.252px;
         display: inline;
         margin-right: 4px !important;
-        color: $findest-dark-gray;
+        color: colors.$findest-dark-gray;
       }
 
       a {
         font-size: 10px;  
         line-height: 20px;
         letter-spacing: 0.252px;
-        color: $findest-blue;
+        color: colors.$findest-blue;
         text-decoration: none;
         word-break: normal;
         cursor: pointer;
@@ -232,7 +231,7 @@
   }
 
   blockquote {
-    background-color: $light-gray;
+    background-color: colors.$light-gray;
     padding: 8px 16px;
     border-radius: 4px;
     border: 1px solid transparent;
@@ -242,11 +241,11 @@
     cursor: default;
 
     &.has-focus {
-      border: 1px solid $findest-blue;
+      border: 1px solid colors.$findest-blue;
     }
 
     &:hover {
-      border: 1px solid $findest-gray;
+      border: 1px solid colors.$findest-gray;
     }
 
     p {
@@ -255,7 +254,7 @@
     }
 
     a {
-      color: $findest-blue;
+      color: colors.$findest-blue;
       text-decoration: none;
       cursor: pointer;
 
@@ -301,7 +300,7 @@
     &:after {
       font-family: "Font Awesome 6 Pro", "Roboto", sans-serif;
       content: "\f111";
-      color: $notification-red;
+      color: colors.$notification-red;
       font-weight: 900;
       height: inherit;
       line-height: 12px;
@@ -330,8 +329,8 @@
     &::before {
       font-family: "Font Awesome 6 Pro", "Roboto", sans-serif;
       content: '\f005 \f005 \f005 \f005 \f005';
-      color: $light-gray-2;
-      background: linear-gradient(90deg, $findest-yellow var(--percent), $light-gray-2 var(--percent));
+      color: colors.$light-gray-2;
+      background: linear-gradient(90deg, colors.$findest-yellow var(--percent), colors.$light-gray-2 var(--percent));
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -416,8 +415,8 @@
 
   .selectedCell {
     border-style: double;
-    border-color: $findest-blue;
-    background-color: $blue-100;
+    border-color: colors.$findest-blue;
+    background-color: colors.$blue-100;
   }
 
   :not(.ProseMirror-selectednode) {
@@ -434,24 +433,24 @@
       }
 
       &.has-focus {
-        border: 1px solid $findest-blue;
+        border: 1px solid colors.$findest-blue;
       }
 
       &:has(span.has-focus) {
-        border: 1px solid $findest-blue;
+        border: 1px solid colors.$findest-blue;
       }
     }
   }
 
   .custom-image:not(.ProseMirror-selectednode) {
       &.has-focus {
-        border: 1px solid $findest-blue;
+        border: 1px solid colors.$findest-blue;
       }
     }
 
   blockquote:not(.ProseMirror-selectednode) {
     &.has-focus {
-      border: 1px solid $findest-blue;
+      border: 1px solid colors.$findest-blue;
     }
   }
 
@@ -476,7 +475,7 @@
         &:not(:has(a)):has(br) {
           &::before {
             content: "Type a caption";
-            color: $findest-dark-gray;
+            color: colors.$findest-dark-gray;
             font-size: 10px;  
             line-height: 20px;
             letter-spacing: 0.252px;

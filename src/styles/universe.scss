@@ -1,33 +1,32 @@
 /* Collect styling isolated to components and include here*/
 /* This will be more modular */
 
-@use './colors/colors.scss';
-@use './components/user-avatar.scss';
-@use './components/buttons/create-new-button.scss';
-
-@use './components/searchbar.scss';
-@use './components/page.scss';
-@use './components/editor.scss';
-@use './utilities/animations.scss';
-@use './utilities/findest-button.scss';
+@use 'colors' as colors;
+@use './components/user-avatar';
+@use './components/buttons/create-new-button';
+@use './components/searchbar';
+@use './components/page';
+@use './components/editor';
+@use './utilities/animations';
+@use './utilities/_findest-button';
 
 // cards
-@use './components/cards/item-card.scss';
-@use './components/cards/voting-card.scss';
+@use './components/cards/item-card';
+@use './components/cards/voting-card';
 
 // dialogs
-@use './components/dialogs/ask-igor-modal.scss';
-@use './components/dialogs/create-item-modal.scss';
-@use './components/dialogs/project-search-dialog.scss';
-@use './components/dialogs/session-dialog.scss';
+@use './components/dialogs/ask-igor-modal';
+@use './components/dialogs/create-item-modal';
+@use './components/dialogs/project-search-dialog';
+@use './components/dialogs/session-dialog';
 
 // layout
-@use './components/sidebar/sidebar.scss';
-@use './components/dashboard.scss';
+@use './components/sidebar/sidebar';
+@use './components/dashboard';
 
 // views
-@use './views/advanced-search.scss';
-@use './views/login.scss';
+@use './views/advanced-search';
+@use './views/login';
 
 @tailwind base;
 @tailwind components;
@@ -206,7 +205,7 @@ html:has(.view-transition) {
   font-weight: 500;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #757575;
+  color: colors.$findest-dark-gray;
   margin-bottom: 4px;
 }
 
@@ -215,7 +214,7 @@ html:has(.view-transition) {
 }
 
 .labelText{
-  color: #252525; 
+  color: colors.$main-text-color; 
   font-size: 10px; 
   font-weight: 500; 
   line-height: 16px;
@@ -232,4 +231,13 @@ p{
 
 .raggyEditor{
   @apply min-h-[120px] resize-none bg-white pr-12 focus:outline-none focus-visible:ring-offset-0;
+}
+
+// Example of using colors
+.primary-bg {
+  background-color: colors.$findest-blue;
+}
+
+.secondary-text {
+  color: colors.$findest-dark-gray;
 }

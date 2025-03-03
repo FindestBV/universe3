@@ -1,0 +1,64 @@
+@use '../../colors' as colors;
+
+.editorMainContent,
+.compactEditorContent {
+  .tiptap.ProseMirror > * {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+.editor_main{
+  @apply flex flex-col; 
+}
+
+.tiptap {
+  * {
+    &:first-child {
+      margin-top: 0;
+      @apply pb-2;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &.ProseMirror {
+    @apply px-28;
+
+    p:first-child:last-child {
+      &.is-editor-empty {
+        position: relative;
+        min-height: 75px;
+      }
+    }
+
+    &[contenteditable="true"] {
+      .custom-image {
+        &:not(.has-focus):hover {
+          .custom-image-caption {
+            &:not(:has(a)):has(br) {
+              &::before {
+                content: "Type a caption";
+                color: colors.$findest-dark-gray;
+                font-size: 10px;  
+                line-height: 20px;
+                letter-spacing: 0.252px;
+                display: inline;
+                margin-right: 4em !important;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Rest of your editor styles, using the imported color variables with namespace
+    .entity-reference-link {
+      color: colors.$main-text-color;
+      background-color: colors.$entity-color-10;
+      // ... rest of the styles
+    }
+  }
+} 

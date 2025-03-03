@@ -21,6 +21,7 @@ import AskIgorModal from "../dialogs/ask-igor";
 import ConnectQuery from "../dialogs/connect-query";
 import CreateItemModal from "../dialogs/create-item-dialog";
 import CreateProjectDialog from "../dialogs/create-project-dialog";
+import GenericDialog from "../dialogs/generic-dialog";
 import ProjectSearchDialog from "../dialogs/project-search-dialog";
 import { DevBanner } from "../layout/dev-banner";
 import OverviewForceDirected from "../layout/overview-force-directed";
@@ -82,6 +83,7 @@ export const ProjectOverView = () => {
     { id: "queries", label: "Queries" },
   ]);
   const [activeTabActive, setIsActiveTabActive] = useState<string>("overview");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -181,6 +183,21 @@ export const ProjectOverView = () => {
                   <div className="w-1/2">
                     <h3 className="text-md mb-2 pt-3 font-semibold">Get started</h3>
                     <div className="flex flex-col gap-2">
+                      <GenericDialog
+                        variant="addLink"
+                        title="Add Link"
+                        open={isOpen}
+                        onOpenChange={setIsOpen}
+                        parentTitle="Parent Document"
+                        onConfirm={(data: { relationship: string; linkName: string }) => {
+                          // Type-safe data handling
+                          console.log(data.relationship, data.linkName);
+                        }}
+                        initialData={{
+                          relationship: "child",
+                          linkName: "",
+                        }}
+                      />
                       <CreateProjectDialog title={"Create a scientific landscape"} />
                       <CreateItemModal title={"Create a technology overview"} />
                     </div>

@@ -1,0 +1,18 @@
+@forward './variables';
+@use './variables' as v;
+
+// Export module
+:export {
+  mainBackgroundColor: v.$main-background-color;
+  mainTextColor: v.$main-text-color;
+  findestBlue: v.$findest-blue;
+  findestYellow: v.$findest-yellow;
+  findestDarkGray: v.$findest-dark-gray;
+  findestGray: v.$findest-gray;
+  findestPurple: v.$findest-purple;
+  findestRed: v.$findest-red;
+  entityColor10: v.$entity-color-10;
+  studyColor10: v.$study-color-10;
+  attachmentColor10: v.$attachment-color-10;
+  // Add other colors you need to export to JS here
+} 

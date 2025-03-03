@@ -1,8 +1,12 @@
 import { useState } from "react";
 
-const AddUsersForm = () => {
+interface AddUsersFormProps {
+  users: string[];
+  onChange: (users: string[]) => void;
+}
+
+const AddUsersForm: React.FC<AddUsersFormProps> = ({ users, onChange }) => {
   const [email, setEmail] = useState(""); // Current email input
-  const [users, setUsers] = useState<string[]>([]); // List of added users
 
   const handleAddUser = (e: React.FormEvent) => {
     e.preventDefault();
@@ -11,7 +15,7 @@ const AddUsersForm = () => {
       alert("Please enter a valid email address.");
       return;
     }
-    setUsers((prevUsers) => [...prevUsers, email]);
+    onChange([...users, email]);
     setEmail(""); // Clear the input
   };
 
