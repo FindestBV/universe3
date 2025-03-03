@@ -138,7 +138,6 @@ export const projectApi = api.injectEndpoints({
 
           socket.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             updateCachedData((draft: any) => {
               Object.assign(draft, data);
             });
