@@ -42,13 +42,11 @@
  */
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { useDebounce } from "@/hooks/use-debounce";
 import { useSemanticSearch } from "@/hooks/use-semantic-search";
 import { useSemanticSearchEditor } from "@/hooks/use-semantic-search-editor";
-// import { Textarea } from "@/components/ui/textarea";
+import { AskIgorProps } from "@/types/ask-igor";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-// import { EditorContent } from "@tiptap/react";
+import { EditorContent } from "@tiptap/react";
 import {
   Award,
   Bot,
@@ -66,21 +64,20 @@ import {
 
 import { useState } from "react";
 
-// import { toast } from "react-hot-toast";
-// import LinkedCounts from "../cards/linked-counts";
-
 function PresetButton({
   title,
   description,
+  onClick,
 }: {
   title: string;
   description: string;
-  className: string;
+  onClick?: () => void;
 }) {
   return (
     <Button
       variant="ghost"
       className="group h-auto w-full justify-between bg-slate-100 p-2 hover:bg-slate-400"
+      onClick={onClick}
     >
       <div className="flex items-start gap-4">
         <div className="text-left">
@@ -93,52 +90,56 @@ function PresetButton({
   );
 }
 
-const AskIgorModal: React.FC = ({ ...props }: any) => {
-  const [question, setQuestion] = useState("What do you want to ask about?");
+const AskIgorModal: React.FC<AskIgorProps> = ({
+  isToolbar = false,
+  iconOnly = false,
+  label = "Ask Igor",
+  onRunQuery,
+}) => {
   const [activeTab, setActiveTab] = useState("report");
-  const [isMinimized, setIsMinimized] = useState(false); // Track minimization state
-  const [isOpen, setIsOpen] = useState(false); // Track if modal is open
-  const [loading, setLoading] = useState(false);
-  const [content, setContent] = useState<string | undefined>();
-  const debouncedContent = useDebounce(content, 1000);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const { editor } = useSemanticSearchEditor({
-    // editorProps: {
-    //   attributes: {
-    //     class: "askIgorModal",
-    //   },
-    // },
-    onCreate: ({ editor }) => {
-      // console.log("Editor Created:", editor);
-      setContent(editor.getText());
-    },
-    onUpdate: ({ editor }) => {
-      // console.log("Editor Updated:", editor);
-      setContent(editor.getText());
+  const { editor, isReady, isEmpty, characterCount, maxLength } = useSemanticSearchEditor({
+    onUpdate: () => {
+      // Handle content updates if needed
     },
   });
 
-  const { isSearching, results, groups } = useSemanticSearch(isOpen ? debouncedContent : undefined);
+  const { isSearching, error, groups, totalResults, searchMetadata } = useSemanticSearch(
+    editor?.getText(),
+    {
+      debounceMs: 1000,
+      similarityThreshold: 0.7,
+      maxResults: 10,
+    },
+  );
+
+  const handleRunQuery = async () => {
+    const content = editor?.getText();
+    if (content && onRunQuery) {
+      await onRunQuery(content);
+    }
+  };
 
   return (
     <div className="askIgorModal">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        {/* Trigger to Open Dialog */}
         <DialogTrigger asChild>
           <div>
             <button
-              className={`summonIgorBtn ${props?.isToolbar ? "toolBarIgor" : ""}`}
+              className={`summonIgorBtn ${isToolbar ? "toolBarIgor" : ""}`}
               onClick={() => {
                 setIsMinimized(false);
                 setIsOpen(true);
               }}
             >
               <Zap size={20} className="zppr" />
-              {props?.iconOnly ? null : props?.label ? props.label : "Ask Igor"}
+              {iconOnly ? null : label}
             </button>
           </div>
         </DialogTrigger>
-        {/* Dialog Content */}
+
         {!isMinimized && (
           <DialogContent className="flex h-auto flex-col bg-white p-0 sm:max-w-[1000px] [&>button]:hidden">
             <DialogTitle className="hidden text-lg sm:text-xl">Ask Igor</DialogTitle>
@@ -151,7 +152,6 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
                   </h1>
                   <p className="iconText py-2 font-black">Linked sources</p>
 
-                  {/* Compose from LinkedCounts ? */}
                   <ul className="flex gap-2 pb-4">
                     <li className="flex items-center gap-1 rounded-sm bg-slate-100 p-1 text-sm">
                       <File size={16} className="rounded-sm bg-blue-800 px-1 text-white" />
@@ -178,39 +178,34 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
                   <div className="space-y-2">
                     <h5 className="text-sm font-bold">Ask me anything about the linked sources</h5>
                     <div className="relative">
-                      <Textarea
-                        value={question}
-                        onChange={(e) => setQuestion(e.target.value)}
-                        placeholder="Type your question here..."
-                        className="min-h-[120px] resize-none bg-white pr-12 focus:outline-none focus-visible:ring-offset-0"
-                      />
-                      <Button
-                        size="icon"
-                        className="absolute bottom-3 right-3 bg-blue-500 text-white hover:bg-slate-300"
-                        onClick={() => console.log("search")}
-                      />
-                      {/* {editor ? (
-                        <>
-                          <EditorContent
-                            editor={editor}
-                            className="askIgorEditor w-full rounded-sm bg-slate-200"
-                          />
-                        </>
+                      {isReady ? (
+                        <EditorContent
+                          editor={editor}
+                          className="prose prose-sm w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        />
                       ) : (
-                        <p>Loading editor...</p>
-                      )} */}
-
-                      <Button
-                        size="icon"
-                        className="absolute bottom-3 right-3 bg-blue-500 text-white hover:bg-slate-300"
-                        onClick={() => console.log("search")}
-                      >
-                        <ChevronRight className="h-4 w-4" />
-                      </Button>
+                        <div className="h-[120px] animate-pulse rounded-md bg-slate-100" />
+                      )}
+                      {!isEmpty && (
+                        <Button
+                          size="icon"
+                          className="absolute bottom-3 right-3 bg-blue-500 text-white hover:bg-slate-300"
+                          onClick={handleRunQuery}
+                          disabled={isSearching}
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                      )}
+                      {characterCount > 0 && (
+                        <div className="mt-1 text-right text-xs text-gray-500">
+                          {characterCount}/{maxLength}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
 
+                {/* Presets Section */}
                 <div className="space-y-4">
                   <h5 className="text-sm font-bold">Or pick a preset</h5>
                   <Tabs defaultValue="report" className="w-full" onValueChange={setActiveTab}>
@@ -250,75 +245,98 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
                       <PresetButton
                         title="General description"
                         description="Either based on general knowledge or the sources linked."
-                        className="bg-slate-100"
+                        onClick={() => {
+                          // Handle general description preset
+                        }}
                       />
                       <PresetButton
                         title="Section"
                         description="Give me a title and I will write the section."
-                        className="bg-slate-100"
+                        onClick={() => {
+                          // Handle section preset
+                        }}
                       />
                       <PresetButton
                         title="Standard Report"
                         description="Introduction, methods, results and conclusion."
-                        className="bg-slate-100"
+                        onClick={() => {
+                          // Handle standard report preset
+                        }}
                       />
                       <PresetButton
                         title="Tailored Report"
                         description="Introduction, methods, results and conclusion."
-                        className="bg-slate-100"
+                        onClick={() => {
+                          // Handle tailored report preset
+                        }}
                       />
                     </TabsContent>
                     <TabsContent value="extract" className="mt-2 space-y-2">
                       <PresetButton
                         title="Extract Information"
                         description="Search through specific documents."
-                        className="bg-slate-100"
+                        onClick={() => {
+                          // Handle extract information preset
+                        }}
                       />
                       <PresetButton
                         title="Extract Patents"
                         description="Search through specific documents."
-                        className="bg-slate-100"
+                        onClick={() => {
+                          // Handle extract patents preset
+                        }}
                       />
                       <PresetButton
                         title="Extract Scientific Publications"
                         description="Search through specific documents."
-                        className="bg-slate-100"
+                        onClick={() => {
+                          // Handle extract scientific publications preset
+                        }}
                       />
                       <PresetButton
                         title="Extract from Scientific Topics"
                         description="Search through specific documents."
-                        className="bg-slate-100"
+                        onClick={() => {
+                          // Handle extract from scientific topics preset
+                        }}
                       />
                     </TabsContent>
                     <TabsContent value="other" className="mt-2 space-y-2">
                       <PresetButton
                         title="Other general keyword"
                         description="Either based on general knowledge or the sources linked."
-                        className="bg-slate-100"
+                        onClick={() => {
+                          // Handle other general keyword preset
+                        }}
                       />
                       <PresetButton
                         title="General description"
                         description="Either based on general knowledge or the sources linked."
-                        className="bg-slate-100"
+                        onClick={() => {
+                          // Handle general description preset
+                        }}
                       />
                       <PresetButton
                         title="Waterboarding"
                         description="Either based on general knowledge or the sources linked."
-                        className="bg-slate-100"
+                        onClick={() => {
+                          // Handle waterboarding preset
+                        }}
                       />
                       <PresetButton
                         title="Sleep deprevation"
                         description="Either based on general knowledge or the sources linked."
-                        className="bg-slate-100"
+                        onClick={() => {
+                          // Handle sleep deprevation preset
+                        }}
                       />
                     </TabsContent>
                   </Tabs>
                 </div>
               </div>
 
-              {/* Right Column - Output Section */}
+              {/* Right Column - Results Section */}
               <div className="flex h-full flex-col">
-                {/* Minimize & Close Buttons (Top Right) */}
                 <div className="absolute right-0 flex justify-end gap-0 p-4">
                   <button
                     onClick={() => setIsMinimized(true)}
@@ -334,56 +352,69 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
                   </button>
                 </div>
 
-                <aside className={"Search"}>
-                  <strong>Existing documents</strong>
-                  <div className={"divider"} />
-                  {isSearching ? (
-                    <div className="hint purple-spinner">Sort by highest match...</div>
-                  ) : null}
-                  {!isSearching && groups && groups.length
-                    ? groups.map((group, i) => {
-                        return (
-                          <div key={group.name} className={"SearchResultGroup"}>
-                            <div className={"SearchResultGroup__Header"}>
-                              <div className={"SearchResultGroup__Title"}>
-                                Matching score {i === 0 && "🔥"} {i === 1 && "🏄🏼‍♂️"} {i === 2 && "🍐"}
-                              </div>
-                              <div className={"SearchResultGroup__Similarity"}>
-                                {group.similarity.from === group.similarity.to
-                                  ? `>= ${(group.similarity.from * 100).toFixed(0)}`
-                                  : `${(group.similarity.from * 100).toFixed(0)} - ${(
-                                      group.similarity.to * 100
-                                    ).toFixed(0)}`}
-                                %
+                <aside className="Search">
+                  <strong>Search Results</strong>
+                  <div className="divider" />
+                  {isSearching && <div className="hint purple-spinner">Searching...</div>}
+                  {error && <div className="error-message">{error}</div>}
+                  {groups?.map((group, groupIndex) => (
+                    <div key={groupIndex} className="SearchResultGroup">
+                      <div className="SearchResultGroup__Header">
+                        <div className="SearchResultGroup__Title">
+                          Matching score {groupIndex === 0 && "🔥"} {groupIndex === 1 && "🏄🏼‍♂️"}{" "}
+                          {groupIndex === 2 && "🍐"}
+                        </div>
+                        <div className="SearchResultGroup__Similarity">
+                          {group.similarity.from === group.similarity.to
+                            ? `>= ${(group.similarity.from * 100).toFixed(0)}`
+                            : `${(group.similarity.from * 100).toFixed(0)} - ${(
+                                group.similarity.to * 100
+                              ).toFixed(0)}`}
+                          %
+                        </div>
+                      </div>
+                      {group.results?.map((result, index) => (
+                        <details key={`${result.id}-${index}`} className="SearchResultItem">
+                          <summary className="SearchResultItem__Summary">
+                            <div className="SearchResultItem__Header">
+                              <div className="SearchResultItem__Title">{result.name}</div>
+                              <div className="SearchResultItem__Similarity">
+                                {(result.cosine_similarity * 100).toFixed(0)}%
                               </div>
                             </div>
-                            {group.results && group.results.length
-                              ? group.results.map((document, i) => (
-                                  <details
-                                    key={`${i}-${document.name}`}
-                                    className={"SearchResultItem"}
+                          </summary>
+                          <div className="SearchResultItem__Content">
+                            {result.content}
+                            {result.metadata && (
+                              <div className="SearchResultItem__Metadata">
+                                <span className="text-xs text-gray-500">
+                                  Source: {result.metadata.source} | Type: {result.metadata.type}
+                                </span>
+                                {result.metadata.url && (
+                                  <a
+                                    href={result.metadata.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-xs text-blue-500 hover:underline"
                                   >
-                                    <summary className={"SearchResultItem__Summary"}>
-                                      <div className={"SearchResultItem__Header"}>
-                                        <div className={"SearchResultItem__Title"}>
-                                          {document.name}
-                                        </div>
-                                        <div className={"SearchResultItem__Similarity"}>
-                                          {(document.cosine_similarity * 100).toFixed(0)}%
-                                        </div>
-                                      </div>
-                                    </summary>
-
-                                    <div className={"SearchResultItem__Content"}>
-                                      {document.content}
-                                    </div>
-                                  </details>
-                                ))
-                              : null}
+                                    View source
+                                  </a>
+                                )}
+                              </div>
+                            )}
                           </div>
-                        );
-                      })
-                    : null}
+                        </details>
+                      ))}
+                    </div>
+                  ))}
+                  {totalResults > 0 && (
+                    <div className="mt-4 text-sm text-gray-500">
+                      Found {totalResults} results in{" "}
+                      {searchMetadata?.processingTime
+                        ? `${(searchMetadata.processingTime / 1000).toFixed(2)}s`
+                        : "..."}
+                    </div>
+                  )}
                 </aside>
               </div>
             </div>
@@ -394,17 +425,17 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
       {/* Minimized View */}
       {isMinimized && (
         <div
-          className={`minimizedDialog ${loading ? "bg-[#84A7E2]" : "bg-yellow-400"}`}
+          className={`minimizedDialog ${isSearching ? "bg-[#84A7E2]" : "bg-yellow-400"}`}
           onClick={() => {
             setIsMinimized(false);
             setIsOpen(true);
           }}
         >
-          <p className={`flex gap-2 text-sm ${loading ? "text-white" : "text-black"}`}>
-            <Zap className={`${loading ? "" : "zppr"}`} />{" "}
-            {loading ? "Asking IGOR..." : "Search complete!"}
+          <p className={`flex gap-2 text-sm ${isSearching ? "text-white" : "text-black"}`}>
+            <Zap className={`${isSearching ? "" : "zppr"}`} />{" "}
+            {isSearching ? "Asking IGOR..." : "Search complete!"}
           </p>
-          <button className={`text-sm ${loading ? "text-white" : "text-black"}`}>
+          <button className={`text-sm ${isSearching ? "text-white" : "text-black"}`}>
             <Maximize2 size={16} />
           </button>
         </div>

@@ -11,6 +11,8 @@ import { Provider as ReduxStoreProvider, useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
+import { ProjectView } from "./views/ProjectView";
+
 // Lazy-loaded views (TEMP! Will sort this out with some proper Routing )
 const AdvancedSearch = lazy(() => import("@/views/AdvancedSearch"));
 // const Dashboard = lazy(() => import("@/views/Dashboard"));
@@ -58,6 +60,7 @@ function AuthenticatedLayout() {
               <Routes location={location}>
                 {/* TEMP!! THIS WILL BE REFACTORED */}
                 <Route path="/projects/dashboard" element={<Projects />} />
+                <Route path="/projects/projectview" element={<ProjectView projectId={""} />} />
                 <Route path="/projects/:id" element={<Project />} />
                 <Route path="/pages" element={<Pages />} />
                 <Route path="/pages/studies" element={<Studies />} />
