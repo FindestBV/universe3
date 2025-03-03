@@ -1,3 +1,4 @@
+// Prepare for ProjectsAPI
 // src/features/projectsApi.ts
 import type { SavedDocumentResponse } from "@/types/types";
 
