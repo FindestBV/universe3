@@ -1,5 +1,13 @@
 .askIgorModal{
 
+    > .tiptap .ProseMirror{
+        padding: 0!important;
+        
+        p{
+            @apply text-sm;
+        }
+    }
+
     .askIgorEditor {
         
         > .tiptap .ProseMirror{
