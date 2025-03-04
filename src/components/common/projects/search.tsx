@@ -85,7 +85,7 @@ export const ProjectSearch = () => {
                   value="overview"
                   className={`linear p-2 text-sm transition-all duration-150 ${
                     activeTabActive === "overview"
-                      ? "border-b-2 border-blue-800 bg-blue-200 font-bold"
+                      ? "border-b-2 border-blue-800 bg-blue-50 font-bold"
                       : "text-black"
                   }`}
                 >
