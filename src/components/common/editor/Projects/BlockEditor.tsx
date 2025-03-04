@@ -120,7 +120,7 @@ export const BlockEditor = ({
 
   const { editor, collabState, users } = useBlockEditor({
     title,
-    content: parsedContent,
+    // content: parsedContent,
     onUpdate({ editor }) {
       const updatedJSON = editor.getJSON();
       saveContent(updatedJSON);
