@@ -101,9 +101,6 @@ export const BlockEditor = ({
           //   id: currentId,
           //   content,
           // });
-        } else {
-          // const response = await createDraft({ content });
-          setCurrentId(response.data.id);
         }
         setLastSavedContent(JSON.stringify(content));
       } catch (error) {
