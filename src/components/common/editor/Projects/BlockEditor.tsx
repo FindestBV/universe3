@@ -74,24 +74,24 @@ export const BlockEditor = ({
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
   const navigateWithTransition = useNavigateWithTransition();
 
-  const parsedContent = useMemo(() => {
-    try {
-      // Parse content if it's a string, otherwise use it as is
-      if (typeof content === "string" || typeof content.type === "doc") {
-        // console.log(typeof content);
-        return JSON.parse(content);
-      }
-      // Ensure it has the required structure
-      if (typeof content === "object") {
-        return content;
-      }
-      // Fallback for invalid content
-      return { type: "doc", content: [] };
-    } catch (error) {
-      // console.error("Error parsing content:", error);
-      return { type: "doc", content: initialContent }; // Default fallback
-    }
-  }, [content]);
+  // const parsedContent = useMemo(() => {
+  //   try {
+  //     // Parse content if it's a string, otherwise use it as is
+  //     if (typeof content === "string" || typeof content.type === "doc") {
+  //       // console.log(typeof content);
+  //       return JSON.parse(content);
+  //     }
+  //     // Ensure it has the required structure
+  //     if (typeof content === "object") {
+  //       return content;
+  //     }
+  //     // Fallback for invalid content
+  //     return { type: "doc", content: [] };
+  //   } catch (error) {
+  //     // console.error("Error parsing content:", error);
+  //     return { type: "doc", content: initialContent }; // Default fallback
+  //   }
+  // }, [content]);
 
   const saveContent = useCallback(
     async (content: any) => {
