@@ -150,7 +150,7 @@ export const projectApi = api.injectEndpoints({
       invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
     }),
 
-    // Maturity Radar Operations (preserved from original)
+    // Maturity Radar Operations (preserved from initial implementation)
     getProjectMaturityRadar: builder.query<SavedDocumentResponse, string>({
       query: (id) => `/v1/projects/${id}/maturity-radar`,
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
