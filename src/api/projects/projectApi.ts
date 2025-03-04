@@ -157,8 +157,10 @@ export const projectApi = api.injectEndpoints({
     }),
 
     getMaturityRadar: builder.query<SavedDocumentResponse, string>({
-      // TODO: Modify this to correctly pass the object type - mapped from the ye olde ENUM
-      query: (id: string, objectType: any) => `/maturity-radar/${objectType}/${id}`,
+      //  TODO: Modify this to correctly pass the object type - mapped from the ye olde ENUM
+      //  query: (id: string, objectType: any) => `/maturity-radar/${objectType}/${id}`,
+      //  Temp hardcoding of type.
+      query: (id) => `/maturity-radar/{4/${id}`,
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
     }),
 
