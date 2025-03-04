@@ -42,8 +42,13 @@ export interface AskIgorProps {
     id: string;
     question: string;
   }>;
-  onRunQuery?: (query: string) => Promise<void>;
+  onRunQuery?: (
+    query: string,
+    context?: { projectId?: string; project?: ProjectType },
+  ) => Promise<void>;
   onCancelQuery?: (queryId: string) => void;
+  projectId?: string;
+  project?: ProjectType;
 }
 
 export interface EditorState {
