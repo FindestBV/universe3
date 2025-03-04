@@ -1,120 +1,166 @@
 // src/features/projectsApi.ts
-import type { SavedDocumentResponse } from "@/types/types";
+import type {
+  Project,
+  ProjectPage,
+  ProjectSource,
+  ProjectTab,
+  SavedDocumentResponse,
+} from "@/types/types";
 
 import { api } from "../api";
 
+export interface ProjectsResponse {
+  data: Project[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
 export const projectApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    // Fetch all projects
-    getProjects: builder.query<SavedDocumentResponse, { page: number; limit: number }>({
+    // Project List Operations
+    getProjects: builder.query<ProjectsResponse, { page: number; limit: number }>({
       query: ({ page, limit }) => ({
-        url: "/v1/projects",
+        url: "/api/v1/projects",
         params: { page, limit },
       }),
       providesTags: ["SavedDocument"],
     }),
 
-    // Single project's pages
-    getProjectPages: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}/pages`,
+    // Single Project Operations
+    getProjectById: builder.query<Project, string>({
+      query: (id) => `/api/v1/projects/${id}`,
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
     }),
 
-    // Single project's saved sources
-    getProjectSavedSources: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}/saved-sources`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+    deleteProject: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/api/v1/projects/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["SavedDocument"],
     }),
 
-    // Single project's overview
-    getProjectOverview: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}/overview`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+    updateProject: builder.mutation<Project, { id: string; data: Partial<Project> }>({
+      query: ({ id, data }) => ({
+        url: `/api/v1/projects/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "SavedDocument", id }],
     }),
 
-    // Single project's structure
-    getProjectStructure: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}/structure`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+    createProject: builder.mutation<Project, Partial<Project>>({
+      query: (data) => ({
+        url: `/api/v1/projects`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["SavedDocument"],
     }),
 
-    // Single project's tabs
-    getProjectTabs: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}/tabs`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+    // Saved Sources Operations
+    addSavedSource: builder.mutation<
+      void,
+      { projectId: string; sourceData: Partial<ProjectSource> }
+    >({
+      query: ({ projectId, sourceData }) => ({
+        url: `/api/v1/projects/${projectId}/saved-sources`,
+        method: "POST",
+        body: sourceData,
+      }),
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
     }),
 
-    // Get specific tab inside a project
-    getProjectTabById: builder.query<SavedDocumentResponse, { projectId: string; tabId: string }>({
-      query: ({ projectId, tabId }) => `/v1/projects/${projectId}/tabs/${tabId}`,
-      providesTags: (result, error, { tabId }) => [{ type: "SavedDocument", id: tabId }],
+    removeSavedSource: builder.mutation<void, { projectId: string; sourceId: string }>({
+      query: ({ projectId, sourceId }) => ({
+        url: `/api/v1/projects/${projectId}/saved-sources/${sourceId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
     }),
 
-    // Single project's statistics
-    getProjectStatistics: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}/statistics`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+    bulkAddSavedSources: builder.mutation<
+      void,
+      { projectId: string; sources: Partial<ProjectSource>[] }
+    >({
+      query: ({ projectId, sources }) => ({
+        url: `/api/v1/projects/${projectId}/saved-sources/bulk`,
+        method: "POST",
+        body: { sources },
+      }),
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
     }),
 
-    // Single project's notifications
-    getProjectNotifications: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}/notifications`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+    // Pages Operations
+    addPage: builder.mutation<void, { projectId: string; pageData: Partial<ProjectPage> }>({
+      query: ({ projectId, pageData }) => ({
+        url: `/api/v1/projects/${projectId}/pages`,
+        method: "POST",
+        body: pageData,
+      }),
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
     }),
 
-    // Update tab order in a project
+    removePage: builder.mutation<void, { projectId: string; pageId: string }>({
+      query: ({ projectId, pageId }) => ({
+        url: `/api/v1/projects/${projectId}/pages/${pageId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    bulkAddPages: builder.mutation<void, { projectId: string; pages: Partial<ProjectPage>[] }>({
+      query: ({ projectId, pages }) => ({
+        url: `/api/v1/projects/${projectId}/pages/bulk`,
+        method: "POST",
+        body: { pages },
+      }),
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    // Tabs Operations
+    createProjectTab: builder.mutation<void, { projectId: string; tabData: Partial<ProjectTab> }>({
+      query: ({ projectId, tabData }) => ({
+        url: `/api/v1/projects/${projectId}/tabs`,
+        method: "POST",
+        body: tabData,
+      }),
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    updateProjectTab: builder.mutation<
+      void,
+      { projectId: string; tabId: string; tabData: Partial<ProjectTab> }
+    >({
+      query: ({ projectId, tabId, tabData }) => ({
+        url: `/api/v1/projects/${projectId}/tabs/${tabId}`,
+        method: "PATCH",
+        body: tabData,
+      }),
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
     updateProjectTabOrder: builder.mutation<void, { projectId: string; newOrder: number[] }>({
       query: ({ projectId, newOrder }) => ({
-        url: `/v1/projects/${projectId}/tabs/update-order`,
-        method: "PUT",
+        url: `/api/v1/projects/${projectId}/tabs/update-order`,
+        method: "PATCH",
         body: { newOrder },
       }),
-      invalidatesTags: [{ type: "SavedDocument" }],
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
     }),
 
-    // Fetch a single project by ID
-    getProjectById: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
-    }),
-
-    // Project's maturity radar data
+    // Maturity Radar Operations (preserved from original)
     getProjectMaturityRadar: builder.query<SavedDocumentResponse, string>({
       query: (id) => `/v1/projects/${id}/maturity-radar`,
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
     }),
 
-    // Results overview table
-    getResultsOverviewTable: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/results-overview-tables/${id}`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
-    }),
-
-    // Add Maturity Radar data to pages
-    addMaturityRadarToPages: builder.mutation<void, { projectId: string; pageId: string }>({
-      query: ({ projectId, pageId }) => ({
-        url: `/v1/maturity-radar/${projectId}/pages/${pageId}`,
-        method: "POST",
-      }),
-      invalidatesTags: [{ type: "SavedDocument" }],
-    }),
-
-    // Remove page from a project
-    deleteProjectPage: builder.mutation<void, { projectId: string; pageId: string }>({
-      query: ({ projectId, pageId }) => ({
-        url: `/v1/projects/${projectId}/pages/${pageId}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: [{ type: "SavedDocument" }],
-    }),
-
-    // Fetch maturity radar by ID
     getMaturityRadar: builder.query<SavedDocumentResponse, string>({
       query: (id) => `/maturity-radar/4/${id}`,
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
     }),
 
-    // Create a Maturity Radar entry
     createMaturityRadar: builder.mutation<SavedDocumentResponse, { id: string }>({
       query: ({ id }) => ({
         url: `/v1/maturity-radar`,
@@ -124,53 +170,42 @@ export const projectApi = api.injectEndpoints({
       invalidatesTags: [{ type: "SavedDocument" }],
     }),
 
-    // WebSocket subscription endpoint
-    subscribeToProject: builder.mutation<void, string>({
-      query: (projectId) => ({
-        url: `/v1/projects/${projectId}/subscribe`,
+    addMaturityRadarToPages: builder.mutation<void, { projectId: string; pageId: string }>({
+      query: ({ projectId, pageId }) => ({
+        url: `/v1/maturity-radar/${projectId}/pages/${pageId}`,
         method: "POST",
       }),
-      async onCacheEntryAdded(projectId, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
-        try {
-          await cacheDataLoaded;
-
-          const socket = new WebSocket(`${process.env.NEXT_PUBLIC_WS_URL}/projects/${projectId}`);
-
-          socket.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            updateCachedData((draft: any) => {
-              Object.assign(draft, data);
-            });
-          };
-
-          await cacheEntryRemoved;
-          socket.close();
-        } catch (error) {
-          console.error("WebSocket subscription error:", error);
-        }
-      },
+      invalidatesTags: [{ type: "SavedDocument" }],
     }),
   }),
 });
 
 export const {
+  // Project Operations
   useGetProjectsQuery,
-  useGetProjectPagesQuery,
-  useGetProjectSavedSourcesQuery,
-  useGetProjectOverviewQuery,
-  useGetProjectStructureQuery,
-  useGetProjectTabsQuery,
-  useGetProjectTabByIdQuery,
-  useGetProjectStatisticsQuery,
-  useGetProjectNotificationsQuery,
-  useUpdateProjectTabOrderMutation,
   useGetProjectByIdQuery,
+  useDeleteProjectMutation,
+  useUpdateProjectMutation,
+  useCreateProjectMutation,
+
+  // Saved Sources Operations
+  useAddSavedSourceMutation,
+  useRemoveSavedSourceMutation,
+  useBulkAddSavedSourcesMutation,
+
+  // Pages Operations
+  useAddPageMutation,
+  useRemovePageMutation,
+  useBulkAddPagesMutation,
+
+  // Tabs Operations
+  useCreateProjectTabMutation,
+  useUpdateProjectTabMutation,
+  useUpdateProjectTabOrderMutation,
+
+  // Maturity Radar Operations
   useGetProjectMaturityRadarQuery,
-  useGetResultsOverviewTableQuery,
   useGetMaturityRadarQuery,
   useCreateMaturityRadarMutation,
   useAddMaturityRadarToPagesMutation,
-  useDeleteProjectPageMutation,
-  useSubscribeToProjectMutation,
 } = projectApi;

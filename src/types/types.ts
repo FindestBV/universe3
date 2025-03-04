@@ -212,3 +212,40 @@ export interface SearchResult {
   content: string;
   cosine_similarity: number;
 }
+
+export interface Project {
+  id: string;
+  title: string;
+  description?: string;
+  dateCreated: string;
+  dateModified: string;
+  status: string;
+}
+
+export interface ProjectPage {
+  id: string;
+  title: string;
+  content: string;
+  projectId: string;
+  dateCreated: string;
+  dateModified: string;
+}
+
+export interface ProjectTab {
+  id: string;
+  title: string;
+  content: string;
+  projectId: string;
+  order: number;
+  dateCreated: string;
+  dateModified: string;
+}
+
+export interface ProjectSource {
+  id: string;
+  title: string;
+  url: string;
+  type: string;
+  projectId: string;
+  dateAdded: string;
+}
