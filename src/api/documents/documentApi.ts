@@ -143,6 +143,13 @@ export const documentApi = api.injectEndpoints({
 
     // INITIAL. BELOW IS A WIP.
 
+    /* DRAFT FUNCTIONALITY - EXPERIMENTAL (DISABLED)
+    To re-enable:
+    1. Implement proper API endpoints
+    2. Remove skip: true from queries
+    3. Update URLs to point to proper API
+    4. Update types and error handling
+    
     createDraft: builder.mutation({
       query: (initialData: { content?: string; createdAt?: string }) => {
         const payload = {
@@ -150,19 +157,17 @@ export const documentApi = api.injectEndpoints({
           createdAt: initialData.createdAt || new Date().toISOString(),
         };
         return {
-          // change to correct endpoint
-          url: "https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments",
+          url: "draft", // TODO: implement proper endpoint
           method: "POST",
           body: payload,
         };
       },
-      invalidatesTags: ["Draft"], // Invalidate cached drafts
+      invalidatesTags: ["Draft"],
     }),
 
-    // Update the active record drawn from drafts.
     updateDraft: builder.mutation({
       query: ({ id, content, updatedAt }: { id: string; content: string; updatedAt: string }) => ({
-        url: `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/1`,
+        url: `draft/${id}`, // TODO: implement proper endpoint
         method: "PUT",
         body: { content, updatedAt },
       }),
@@ -190,10 +195,10 @@ export const documentApi = api.injectEndpoints({
     }),
 
     fetchDraft: builder.query({
-      query: (id: string) =>
-        `https://67005c054da5bd237553e174.mockapi.io/api/move-ro-move/saveddocuments/1`,
+      query: (id: string) => `draft/${id}`, // TODO: implement proper endpoint
       providesTags: (result, error, id) => [{ type: "Draft", id }],
     }),
+    */
 
     // Entities
 
@@ -440,8 +445,6 @@ export const {
   useGetSideBarDocumentsQuery,
   useGetConnectedObjectsQuery,
   useLazyGetConnectedObjectsQuery,
-  useCreateDraftMutation,
-  useUpdateDraftMutation,
   useGetEntitiesQuery,
   useGetEntityByIdQuery,
   useGetStudiesQuery,

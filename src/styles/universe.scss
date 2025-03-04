@@ -1,6 +1,7 @@
 /* Collect styling isolated to components and include here*/
 /* This will be more modular */
 
+@use './colors/colors.scss';
 @use './components/user-avatar.scss';
 @use './components/buttons/create-new-button.scss';
 

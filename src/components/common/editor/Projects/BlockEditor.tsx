@@ -1,22 +1,21 @@
-import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
-import ConnectQuery from "@/components/common/dialogs/connect-query";
-import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
-import Comments from "@/components/common/layout/comments";
+// import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
+// import ConnectQuery from "@/components/common/dialogs/connect-query";
+// import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
+// import Comments from "@/components/common/layout/comments";
 // import { TOCSidebar } from "./components/TOCSidebar";
-
 import ProjectOverView from "@/components/common/projects/overview";
 import ProjectPages from "@/components/common/projects/pages";
 import ProjectSearch from "@/components/common/projects/search";
 import ProjectSources from "@/components/common/projects/sources";
-import { SearchForm } from "@/components/common/sidebar/search-form";
-import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
-import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
-import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
+// import { SearchForm } from "@/components/common/sidebar/search-form";
+// import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
+// import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
+// import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
 import { useBlockEditor } from "@/hooks/use-block-editor";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { initialContent } from "@/lib/data/initialContent";
 import { RootState } from "@/store";
-import { EditorContent } from "@tiptap/react";
+// import { EditorContent } from "@tiptap/react";
 import {
   ArrowLeft,
   ChevronDown,
@@ -68,8 +67,8 @@ export const BlockEditor = ({
   const [isLeftSideBarOpen, setIsLeftSidebarOpen] = useState<boolean>(true);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [isTitleExpanded, setIsTitleExpanded] = useState<boolean>(false);
-  const [createDraft] = useCreateDraftMutation();
-  const [updateDraft] = useUpdateDraftMutation();
+  // const [createDraft] = useCreateDraftMutation();
+  // const [updateDraft] = useUpdateDraftMutation();
   const [currentId, setCurrentId] = useState<string | null>(null);
   const [lastSavedContent, setLastSavedContent] = useState<string | null>(null); // To track changes
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
@@ -103,12 +102,12 @@ export const BlockEditor = ({
 
       try {
         if (currentId) {
-          await updateDraft({
-            id: currentId,
-            content,
-          });
+          // await updateDraft({
+          //   id: currentId,
+          //   content,
+          // });
         } else {
-          const response = await createDraft({ content });
+          // const response = await createDraft({ content });
           setCurrentId(response.data.id);
         }
         setLastSavedContent(JSON.stringify(content));
@@ -116,7 +115,7 @@ export const BlockEditor = ({
         // console.error("Error saving content:", error);
       }
     },
-    [currentId, lastSavedContent, updateDraft, createDraft, content],
+    [currentId, lastSavedContent, content],
   );
 
   const { editor, collabState, users } = useBlockEditor({

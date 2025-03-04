@@ -29,11 +29,7 @@
  *
  * @returns {JSX.Element} The rendered ItemCard component.
  */
-import {
-  useGetConnectedObjectsQuery,
-  useLazyGetConnectedObjectsQuery,
-  usePrefetch,
-} from "@/api/documents/documentApi";
+import { useLazyGetConnectedObjectsQuery, usePrefetch } from "@/api/documents/documentApi";
 import { AddLinkToItem } from "@/components/common/dialogs/add-link-to-item";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";

@@ -1,4 +1,4 @@
-import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
+// import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
 import ConnectQuery from "@/components/common/dialogs/connect-query";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
 import Comments from "@/components/common/layout/comments";
@@ -58,10 +58,10 @@ export const BlockEditor = ({
   connectedStudies?: string;
   connectedEntities?: string;
 }) => {
-  const menuContainerRef = useRef(null);
+  const menuContainerRef = useRef<HTMLDivElement>(null);
   const [isTitleExpanded, setIsTitleExpanded] = useState<boolean>(false);
-  const [createDraft] = useCreateDraftMutation();
-  const [updateDraft] = useUpdateDraftMutation();
+  // const [createDraft] = useCreateDraftMutation();
+  // const [updateDraft] = useUpdateDraftMutation();
   const [currentId, setCurrentId] = useState<string | null>(null);
   const [lastSavedContent, setLastSavedContent] = useState<string | null>(null); // To track changes
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
@@ -97,12 +97,12 @@ export const BlockEditor = ({
 
       try {
         if (currentId) {
-          await updateDraft({
-            id: currentId,
-            content,
-          });
+          // await updateDraft({
+          //   id: currentId,
+          //   content,
+          // });
         } else {
-          const response = await createDraft({ content });
+          // const response = await createDraft({ content });
           setCurrentId(response.data.id);
         }
         setLastSavedContent(JSON.stringify(content));
@@ -110,7 +110,7 @@ export const BlockEditor = ({
         console.error("Error saving content:", error);
       }
     },
-    [currentId, lastSavedContent, updateDraft, createDraft, content],
+    [currentId, lastSavedContent, content],
   );
 
   const { editor, collabState, users } = useBlockEditor({
@@ -300,12 +300,12 @@ export const BlockEditor = ({
               </div>
               <EditorContent key={editor?.view?.id || "editor"} editor={editor} className="" />
               <ContentItemMenu editor={editor} />
-              <LinkMenu editor={editor} appendTo={menuContainerRef} />
+              <LinkMenu editor={editor} containerRef={menuContainerRef} />
               <TextMenu editor={editor} />
-              <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
-              <TableRowMenu editor={editor} appendTo={menuContainerRef} />
-              <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
-              <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
+              <ColumnsMenu editor={editor} containerRef={menuContainerRef} />
+              <TableRowMenu editor={editor} containerRef={menuContainerRef} />
+              <TableColumnMenu editor={editor} containerRef={menuContainerRef} />
+              <ImageBlockMenu editor={editor} containerRef={menuContainerRef} />
               <div className="editorContentContainer" id="linkedDocuments">
                 <h3 className="itemTitle flex items-center gap-4">
                   Linked documents <Download size={16} />

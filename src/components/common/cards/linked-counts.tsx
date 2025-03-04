@@ -35,7 +35,15 @@
  */
 import useLinkedCountsData from "@/hooks/use-linked-counts-data";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
-import { BookOpenCheck, Fingerprint, Highlighter, Image, Paperclip } from "lucide-react";
+import {
+  BookOpenCheck,
+  Fingerprint,
+  Highlighter,
+  Image,
+  Lock,
+  LockOpenIcon,
+  Paperclip,
+} from "lucide-react";
 
 import { useEffect, useState } from "react";
 
@@ -131,6 +139,7 @@ export const LinkedCounts = ({ linkedCounts, id, prefetch, onItemClick, prefetch
                     {relatedObjects.length > 0 ? (
                       relatedObjects.map((item) => (
                         <li key={item.id} onClick={() => onItemClick(item.id)}>
+                          {item?.isOpenAccess ? <LockOpenIcon /> : <Lock />}
                           {item?.name || item?.title} - {item?.type}
                         </li>
                       ))

@@ -113,7 +113,6 @@ export const projectApi = api.injectEndpoints({
     getMaturityRadar: builder.query<SavedDocumentResponse, string>({
       query: (id) => `/maturity-radar/4/${id}`,
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
-      overrideExisting: true,
     }),
 
     // Create a Maturity Radar entry
@@ -124,9 +123,9 @@ export const projectApi = api.injectEndpoints({
         body: { id },
       }),
       invalidatesTags: [{ type: "SavedDocument" }],
-      overrideExisting: true,
     }),
   }),
+  overrideExisting: true,
 });
 
 export const {
