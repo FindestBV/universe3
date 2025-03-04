@@ -3,7 +3,7 @@
 A React + Vite template powered by shadcn/ui. This repository will serve as a base for the Findest Universe, next version, implementing modern frontend technologies, development best practices, and a clean, modular, and scalable architecture.
 
 [ShadCn](https://ui.shadcn.com/) is used as the base component library. See the [shadcn/ui](https://ui.shadcn.com/) documentation for more information.
-Component units install directly in to <pre>src/components/ui/</pre>. From here, they can be called in any component, and passed props/styling and configuration to extend and customise the primitive.
+Component units install directly in to `src/components/ui/`. From here, they can be called in any component, and passed props/styling and configuration to extend and customise the primitive.
 
 ## DISCLAIMER:
 
@@ -107,143 +107,59 @@ The project structure follows a standard React application layout:
 
 ```
 universe3/
-  ├── .storybook           # Storybook
   ├── node_modules/        # Project dependencies
-  ├── public/              # Public
+  ├── public/              # Public assets
   ├── src/
-  |   ├── assets           # assets
-  │   ├── components/      # React components
-  |   |   └── common/
+  |   ├── assets/         # Static assets
+  │   ├── components/     # React components
+  |   |   └── common/     # Shared components
   |   |   |     └── cards/
-  |   |   |     └── dialogs
-  |   |   |     |   └── add-link-to-item
-  |   |   |     |   └── advanced-search-dialog
-  |   |   |     |   └── askIgor
-  |   |   |     |   └── connect-query
-  |   |   |     |   └── connect-to-entity
-  |   |   |     |   └── create-item-dialog
-  |   |   |     |   └── create-project-dialog
-  |   |   |     |   └── create-query-dialog
-  |   |   |     |   └── create-tech-overview
-  |   |   |     |   └── lock-page-confirm
-  |   |   |     |   └── project-search-dialog
-  |   |   |     |   └── session-dialog
-  |   |   |     |   └── share-object
-  |   |   |     |   └── similar-document-modal
-  |   |   |     |
-  |   |   |     |
-  |   |   |     └── editor
-  |   |   |     |   └── extensions
-  |   |   |     |   └── menus
-  |   |   |     |   └── Pages (* Covers Source, Page, Entity, Study)
-  |   |   |     |   |     └── BlockEditor
-  |   |   |     |   |          └── BlockEditor
-  |   |   |     |   |          └── components
-  |   |   |     |   |                 └── TableOfContents
-  |   |   |     |   |                 └── TOCSideBar
-  |   |   |     |   |                 └── CustomBlock
-  |   |   |     |   |                 └── CustomGraphBlock
-  |   |   |     |   |                 └── EditorHeader
-  |   |   |     |   |                 └── EditorInfo
-  |   |   |     |   |                 └── EditorTitle
-  |   |   |     |   |                 └── IntakeSheetComponent
-  |   |   |     |   |                 └── MaturityRadarComponent
-  |   |   |     |   |                 └── NestedMenu
-  |   |   |     |   |                 └── ReferencesSidebar
-  |   |   |     |   |                 └── ViewEditSwitch
-  |   |   |     |   |          └── commands
-  |   |   |     |   |          └── types
-  |   |   |     |   └── panels
-  |   |   |     |   └── Projects * Very likely to be merged with main BlockEditor
-  |   |   |     |   |     └── BlockEditor
-  |   |   |     |   |          └── BlockEditor
-  |   |   |     |   |          └── components
-  |   |   |     |   |                 └── TableOfContents
-  |   |   |     |   |                 └── TOCSideBar
-  |   |   |     |   |                 └── CustomBlock
-  |   |   |     |   |                 └── CustomGraphBlock
-  |   |   |     |   |                 └── EditorHeader
-  |   |   |     |   |                 └── EditorInfo
-  |   |   |     |   |                 └── EditorTitle
-  |   |   |     |   |                 └── IntakeSheetComponent
-  |   |   |     |   |                 └── MaturityRadarComponent
-  |   |   |     |   |                 └── NestedMenu
-  |   |   |     |   |                 └── ReferencesSidebar
-  |   |   |     |   |                 └── ViewEditSwitch
-  |   |   |     |   |          └── commands
-  |   |   |     |   |          └── types
-  |   |   |     |   |
-  |   |   |     |   └── ui
+  |   |   |     └── dialogs/
+  |   |   |     └── editor/
+  |   |   |     |   └── extensions/
+  |   |   |     |   └── menus/
+  |   |   |     |   └── Pages/
+  |   |   |     |   └── panels/
+  |   |   |     |   └── ui/
   |   |   |     └── forms/
   |   |   |     └── layout/
   |   |   |     └── loaders/
   |   |   |     └── login/
-  |   |   |     └── projects
-  |   |   |     |      └── overview
-  |   |   |     |      └── pages
-  |   |   |     |      └── search
-  |   |   |     |      └── sources
-  |   |   |     |
+  |   |   |     └── projects/
   |   |   |     └── search/
-  |   |   |     └── sidebar/v2
-  |   |   |     └── user
+  |   |   |     └── sidebar/
+  |   |   |     └── user/
   |   |   |     └── utilities/
   |   |   |
-  |   |   └── ui/          # shadcn/ui primatives/components
+  |   |   └── ui/        # shadcn/ui components
   |   |
-  │   ├── hooks/           # Misc hooks
-  │   ├── i18n/            # Support for i18n
-  │   ├── lib/             # Lib & Utils
-  │   ├── api/             # RTKQuery API Slices
-  |   |   └── api.ts       # Base
-  │   |   └── auth/        # Auth API
-  │   |   └── documents/   # Documents, Entities & Studies - API queries/mutations all live here
-  │   |   └── projects     # Projects - API queries/mutations all live here
-  │   |   └── search/      # Search
-  │   |   └── activity/    # Activity
-  │   |   └── utilities/   # Utility - it does something, but probably best stored separately
-  |   ├── stories          # Catch-all (for now) of Storybook config (WIP)
-  |   ├── styles/          # CSS stylesheets
+  │   ├── hooks/         # Custom React hooks
+  │   ├── i18n/          # Internationalization
+  │   ├── lib/           # Utilities and helpers
+  │   ├── api/          # API integration
+  |   |   └── api.ts    # Base API configuration
+  │   |   └── auth/     # Authentication
+  │   |   └── documents/ # Document management
+  │   |   └── projects/ # Project management
+  │   |   └── search/   # Search functionality
+  │   |   └── activity/ # Activity tracking
+  │   |   └── utilities/
+  │   ├── styles/       # Global styles
   │   |   └── colors/
   │   |   └── components/
-  │   |   |    └── buttons
-  |   |   |    └── cards
-  |   |   |    └── dialogs **
-  |   |   |    └── forms
-  |   |   |    └── sidebar
-  |   |   ├─── active-queries.scss
-  |   |   ├─── dashboard.scss
-  |   |   ├─── editor.scss
-  |   |   ├─── page.scss
-  |   |   ├─── searchbar.scss
-  |   |   ├─── user-avatar.scss
   │   |   └── typography/
-  │   |   └── utilities
-  │   |   └── universe.scss
+  │   |   └── utilities/
   │   |
-  │   ├── types               # Utility functions
-  │   ├── views               # React views - please note: will be (significantly) reduced further
-  |   |   └── AdvancedSearch  ** FOR REFACTOR
-  |   |   └── Dashboard       ** FOR REFACTOR
-  │   |   └── Page            # handles rendered output for Sources, Pages, Project
-  │   |   └── Pages           # Formerly "entities"/"studies"
-  │   |   └── Projects        ** Holding view for Projects/Dashboard
-  │   |   └── Project         ** Static dev view for Projects/{id}
-  │   |   └── Inbox/
-  │   |   └── LoginPage
-  │   |   └── NotFound
-  │   |   └── Source          ** Formerly 'Document'
-  │   |   └── Sources         ** Holding view for Sources. Formerly 'Documents'
-  │   |   └── Studies
-  │   |
-  │   ├── App.tsx          # Application entry point
-  │   └── main.tsx         # Main rendering file
-  |   └── store.ts         # Redux Store
+  │   ├── types/        # TypeScript type definitions
+  │   ├── views/        # Page components
+  │   ├── App.tsx       # Root component
+  │   └── main.tsx      # Entry point
+  |   └── store.ts      # Redux store configuration
   │
-  ├── eslint.config.js     # ESLint configuration
-  ├── index.html           # HTML entry point
-  ├── postcss.config.js    # PostCSS configuration
-  ├── tailwind.config.ts   # Tailwind CSS configuration
-  ├── tsconfig.json        # TypeScript configuration
-  └── vite.config.ts       # Vite configuration
+  ├── eslint.config.js  # ESLint configuration
+  ├── index.html        # HTML template
+  ├── postcss.config.js # PostCSS configuration
+  ├── tailwind.config.ts # Tailwind configuration
+  ├── tsconfig.json     # TypeScript configuration
+  └── vite.config.ts    # Vite configuration
 ```
