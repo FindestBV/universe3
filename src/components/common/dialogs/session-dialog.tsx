@@ -46,7 +46,7 @@ export const SessionDialog = () => {
   const navigateWithTransition = useNavigateWithTransition();
 
   const handleNavigateToEntities = (type: string, id: string) => {
-    navigateWithTransition(`/pages/studies/${id}`, { state: { id } });
+    navigateWithTransition(`/projects/${id}`, { state: { id } });
   };
 
   useEffect(() => {
