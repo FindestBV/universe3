@@ -14,8 +14,14 @@ export default ({ mode }) => {
         "@": resolve(__dirname, "./src"),
       },
     },
+    optimizeDeps: {
+      include: ["y-prosemirror"],
+      esbuildOptions: {
+        mainFields: ["module", "main"],
+      },
+    },
     define: {
-      "process.env": env, // Inject environment variables
+      "process.env": env,
       global: {},
     },
     build: {
