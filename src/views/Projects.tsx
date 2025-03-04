@@ -5,7 +5,7 @@ import {
 } from "@/api/documents/documentApi";
 import SessionDialog from "@/components/common/dialogs/session-dialog";
 // Import TipTap Editor
-import BlockEditor from "@/components/common/editor/Projects/BlockEditor";
+import BlockEditor from "@/components/common/editor/Pages/BlockEditor/BlockEditor";
 import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 
 import { useEffect } from "react";
