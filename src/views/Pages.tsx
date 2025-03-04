@@ -3,30 +3,42 @@ import DocumentsSkeleton from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
 
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
-import { useGetEntitiesQuery } from "../api/documents/documentApi";
+import { useGetEntitiesQuery, useGetStudiesQuery } from "../api/documents/documentApi";
 
 export const Pages: React.FC = () => {
-  const [selectedEntities, setSelectedEntities] = useState<Set<string>>(new Set());
+  const location = useLocation();
+  const pageType = location.pathname.split("/").pop() || "entities";
+
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
-  const [entitiesPerPage, setEntitiesPerPage] = useState(12);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
   // const [_tempLoading, setTempLoading] = useState(false);
   const [filters, setFilters] = useState<string[]>([]);
   // const [isChecked, setIsChecked] = useState<boolean>(false);
 
-  const { data, isLoading, isError, error, refetch } = useGetEntitiesQuery(
-    { page: currentPage, limit: entitiesPerPage },
-    { refetchOnMountOrArgChange: true },
+  const entitiesQuery = useGetEntitiesQuery(
+    { page: currentPage, limit: itemsPerPage },
+    { refetchOnMountOrArgChange: true, skip: pageType !== "entities" },
   );
 
-  const handleSelectDoc = (id: string, checked: boolean) => {
-    const newSelected = new Set(selectedEntities);
+  const studiesQuery = useGetStudiesQuery(
+    { page: currentPage, limit: itemsPerPage },
+    { refetchOnMountOrArgChange: true, skip: pageType !== "studies" },
+  );
+
+  const { data, isLoading, isError, error, refetch } =
+    pageType === "entities" ? entitiesQuery : studiesQuery;
+
+  const handleSelectItem = (id: string, checked: boolean) => {
+    const newSelected = new Set(selectedItems);
     if (checked) {
       newSelected.add(id);
     } else {
       newSelected.delete(id);
     }
-    setSelectedEntities(newSelected);
+    setSelectedItems(newSelected);
   };
 
   const handleRemoveFilter = (filter: string) => {
@@ -37,7 +49,9 @@ export const Pages: React.FC = () => {
     <div className="flex h-full w-full flex-col px-12 max-sm:px-4">
       <div className="mb-2 flex items-center justify-between gap-1 rounded-lg">
         <div className="flex items-center gap-2">
-          <h1 className="pt-2 text-xl font-bold">Pages</h1>
+          <h1 className="pt-2 text-xl font-bold">
+            {pageType.charAt(0).toUpperCase() + pageType.slice(1)}
+          </h1>
         </div>
 
         <div className="mr-4 flex flex-grow items-center gap-4">
@@ -59,20 +73,22 @@ export const Pages: React.FC = () => {
 
       <CardContent className="p-0">
         {isError && (
-          <div className="text-red-600">Error loading documents: {JSON.stringify(error)}</div>
+          <div className="text-red-600">
+            Error loading {pageType}: {JSON.stringify(error)}
+          </div>
         )}
         {isLoading && <DocumentsSkeleton />}
         {data && (
           <div>
-            {data?.entities
-              .slice(0, entitiesPerPage)
-              .map((ent) => (
+            {(pageType === "entities" ? data.entities : data.studies)
+              ?.slice(0, itemsPerPage)
+              .map((item) => (
                 <ItemCard
-                  itemType="entity"
-                  key={ent.id}
-                  {...ent}
-                  isSelected={selectedEntities.has(ent.id)}
-                  onSelect={handleSelectDoc}
+                  itemType={pageType === "entities" ? "entity" : "study"}
+                  key={item.id}
+                  {...item}
+                  isSelected={selectedItems.has(item.id)}
+                  onSelect={handleSelectItem}
                 />
               ))}
           </div>
