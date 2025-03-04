@@ -67,7 +67,7 @@ export const BlockEditor = ({
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
   const navigateWithTransition = useNavigateWithTransition();
 
-  // console.log("block editor type", type);
+  console.log("block editor type", type);
 
   const parsedContent = useMemo(() => {
     try {
