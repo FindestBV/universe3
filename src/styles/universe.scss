@@ -1,3 +1,7 @@
+@use "sass:math";
+
+
+
 /* Collect styling isolated to components and include here*/
 /* This will be more modular */
 
@@ -29,9 +33,12 @@
 @use './views/advanced-search.scss';
 @use './views/login.scss';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+// Import TailwindCSS
+@tailwind "base";
+@tailwind "components";
+@tailwind "utilities";
+
+
 
 .app-canvas{
   background: #Fcfcfc;
