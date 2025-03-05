@@ -73,20 +73,28 @@ export const BlockEditor = ({
 
   const parsedContent = useMemo(() => {
     try {
-      // Parse content if it's a string, otherwise use it as is
-      if (typeof content === "string" || content?.type === "doc") {
-        // console.log(typeof content);
+      // Handle null/undefined case
+      if (!content) {
+        return { type: "doc", content: [] };
+      }
+
+      // Parse string content (like JSON)
+      if (typeof content === "string") {
         return JSON.parse(content);
       }
-      // Ensure it has the required structure
-      if (typeof content === "object") {
+
+      // Handle object content
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (typeof content === "object" && content.type === "doc") {
         return content;
       }
+
       // Fallback for invalid content
       return { type: "doc", content: [] };
     } catch (error) {
       console.error("Error parsing content:", error);
-      return { type: "doc", content: initialContent }; // Default fallback
+      return { type: "doc", content: initialContent };
     }
   }, [content]);
 

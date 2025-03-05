@@ -52,7 +52,7 @@ function PresetButton({
 }
 
 export const ProjectSearch = () => {
-  const [activeTabActive, setIsActiveTabActive] = useState<string>("overview");
+  const [activeTabActive, setIsActiveTabActive] = useState<string>("external");
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -84,12 +84,12 @@ export const ProjectSearch = () => {
                 <TabsTrigger
                   value="overview"
                   className={`linear p-2 text-sm transition-all duration-150 ${
-                    activeTabActive === "overview"
+                    activeTabActive === "external"
                       ? "border-b-2 border-blue-800 bg-blue-50 font-bold"
                       : "text-black"
                   }`}
                 >
-                  Overview
+                  External document search
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="overview" className="mt-2 space-y-2">
