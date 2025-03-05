@@ -3,9 +3,9 @@ import {
   useGetEntityByIdQuery,
   useGetStudyByIdQuery,
 } from "@/api/documents/documentApi";
-// Import TipTap Editor
-import BlockEditor from "@/components/common/editor/Projects/BlockEditor";
 import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
+// Import TipTap Editor
+import { Dashboard } from "@/components/common/projects/dashboard";
 
 import { useEffect } from "react";
 import { useLocation, useParams } from "react-router";
@@ -56,7 +56,7 @@ export const Project: React.FC = () => {
         <>
           <div className="flex w-auto">
             <div className="w-full flex-col">
-              <BlockEditor
+              <Dashboard
                 type={"study"}
                 id={fetchedEntity?.id}
                 title={fetchedEntity?.title}

@@ -1,7 +1,7 @@
 import { mergeAttributes, Node } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 
-import CustomBlock from "../Pages/BlockEditor/components/CustomBlock";
+import CustomBlock from "../BlockEditor/components/CustomBlock";
 
 export default Node.create({
   name: "customBlock",

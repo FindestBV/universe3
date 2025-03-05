@@ -1,7 +1,7 @@
 import { mergeAttributes, Node } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 
-import IntakeSheetComponent from "../Pages/BlockEditor/components/IntakeSheetComponent";
+import IntakeSheetComponent from "../BlockEditor/components/IntakeSheetComponent";
 
 export default Node.create({
   name: "intakeSheet",

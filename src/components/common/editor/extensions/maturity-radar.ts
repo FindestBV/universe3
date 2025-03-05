@@ -1,7 +1,7 @@
 import { Node } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 
-import MaturityRadarComponent from "../Pages/BlockEditor/components/MaturityRadarComponent";
+import MaturityRadarComponent from "../BlockEditor/components/MaturityRadarComponent";
 
 export const MaturityRadar = Node.create({
   name: "maturityRadar",

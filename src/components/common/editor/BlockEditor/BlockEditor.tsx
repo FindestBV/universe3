@@ -28,10 +28,10 @@ import {
 import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
-import { LinkMenu } from "../../menus";
-import { ContentItemMenu } from "../../menus/ContentItemMenu";
-import { TextMenu } from "../../menus/TextMenu";
-import { Button } from "../../ui/Button";
+import { LinkMenu } from "../menus";
+import { ContentItemMenu } from "../menus/ContentItemMenu";
+import { TextMenu } from "../menus/TextMenu";
+import { Button } from "../ui/Button";
 import { EditorHeader } from "./components/EditorHeader";
 import NestedMenu from "./components/NestedMenu";
 import ReferencesSidebar from "./components/ReferencesSidebar";
