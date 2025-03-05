@@ -117,11 +117,14 @@ export const Dashboard = ({
                     className={`flex transition-all duration-150 ease-linear ${isTitleExpanded ? "w-[200%]" : "w-full"} justify-between bg-[linear-gradient(to_bottom_right,black_0%,black_70%,#60a5fa_80%,white_90%,#facc15_100%)] p-4`}
                   >
                     <>
-                      <p className="text-xs font-bold text-white">
-                        {isProjectDashboard
-                          ? "Your Universe Projects"
-                          : "Cross regeneration to maxim..."}
-                      </p>
+                      <div className="flex flex-col">
+                        <small className="text-xs font-bold text-white">Project</small>
+                        <p className="text-xs font-bold text-white">
+                          {isProjectDashboard
+                            ? "Your Universe Projects"
+                            : "Cross regeneration to maxim..."}
+                        </p>
+                      </div>
                       <div className="flex items-center gap-4">
                         <Eye
                           size={20}
@@ -196,7 +199,7 @@ export const Dashboard = ({
                       onClick={() => setCurrentView("search")}
                     >
                       <Search className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Search</span>
+                      <span className="text-sm font-medium text-gray-600">Project search</span>
                       <span className="ml-auto">
                         <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
                       </span>
@@ -206,7 +209,7 @@ export const Dashboard = ({
                       onClick={() => setCurrentView("pages")}
                     >
                       <File className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Pages</span>
+                      <span className="text-sm font-medium text-gray-600">Project pages</span>
                       <span className="ml-auto">
                         <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
                       </span>
@@ -216,7 +219,7 @@ export const Dashboard = ({
                       onClick={() => setCurrentView("sources")}
                     >
                       <Link className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Sources</span>
+                      <span className="text-sm font-medium text-gray-600">Project sources</span>
                       <span className="ml-auto">
                         <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
                       </span>
