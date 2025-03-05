@@ -8,14 +8,14 @@ import ProjectOverView from "@/components/common/projects/overview";
 import ProjectPages from "@/components/common/projects/pages";
 import ProjectSearch from "@/components/common/projects/search";
 import ProjectSources from "@/components/common/projects/sources";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 // import { SearchForm } from "@/components/common/sidebar/search-form";
 // import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 // import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 // import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
-import { useDashboard } from "@/hooks/use-block-editor";
+// import { useDashboard } from "@/hooks/use-block-editor";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
-import { initialContent } from "@/lib/data/initialContent";
+// import { initialContent } from "@/lib/data/initialContent";
 import { RootState } from "@/store";
 // import { EditorContent } from "@tiptap/react";
 import {
