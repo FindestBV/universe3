@@ -25,6 +25,9 @@
 @use './components/sidebar/sidebar.scss';
 @use './components/dashboard.scss';
 
+// projects
+@use './components/projects/overview.scss';
+
 // views
 @use './views/advanced-search.scss';
 @use './views/login.scss';

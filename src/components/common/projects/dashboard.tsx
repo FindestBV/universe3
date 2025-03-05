@@ -38,6 +38,8 @@ import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 
+import NestedMenu from "../editor/BlockEditor/components/NestedMenu";
+
 export const Dashboard = ({
   type,
   id,
@@ -239,6 +241,7 @@ export const Dashboard = ({
                         </span>
                       </div>
                     </div>
+                    <NestedMenu />
                     <nav className="space-y-2">
                       <ul className="refs">
                         {projectStructure.map((section) => (
@@ -284,9 +287,9 @@ export const Dashboard = ({
               </div>
             </div>
           </div>
-          <div className="w-full rounded-md bg-[#fcfcfc] p-4">
+          <div className="w-full rounded-md bg-[#F2F4F8]">
             <div
-              className={`mainEditor h-full w-full rounded-md bg-white shadow-md ${isEditing ? "prose-editor" : ""}`}
+              className={`mainEditor h-full w-full rounded-md bg-[#F2F4F8] ${isEditing ? "prose-editor" : ""}`}
               id="mainEditorStart"
             >
               {currentView === "overview" ? (

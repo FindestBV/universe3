@@ -8,10 +8,11 @@
  *
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
+import { useGetLinkingQuery, useGetMyRecentActivityQuery } from "@/api/activity/activityApi";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { ChevronRight, Plus, Search } from "lucide-react";
+import { ChevronRight, Loader, Plus, Search } from "lucide-react";
 
 import { useState } from "react";
 import { useLocation } from "react-router";
@@ -25,6 +26,16 @@ import ProjectSearchDialog from "../dialogs/project-search-dialog";
 import { DevBanner } from "../layout/dev-banner";
 import OverviewForceDirected from "../layout/overview-force-directed";
 
+/* Reusable Activity Item Component */
+const ActivityItem = ({ title }: { title: string }) => (
+  <div className="mb-2 flex w-full cursor-pointer flex-row items-center justify-between rounded-md bg-white p-4 hover:bg-gray-200">
+    <div className="flex flex-col">
+      <h3 className="text-sm font-semibold">{title}</h3>
+    </div>
+    <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+  </div>
+);
+
 const dummyData = [
   { id: "1", name: "Root", lowerLevelNodes: ["2", "3"] },
   { id: "2", name: "Child A", lowerLevelNodes: ["4", "5"] },
@@ -34,10 +45,10 @@ const dummyData = [
 ];
 
 const dialogs = [
-  { id: "1", title: "Extract Information" },
-  { id: "2", title: "Extract Patents" },
-  { id: "3", title: "Answer a Specific Question" },
-  { id: "4", title: "Explore a specific technology" },
+  { id: "1", title: "Extract Information", type: "extract" },
+  { id: "2", title: "Extract Patents", type: "extract" },
+  { id: "3", title: "Answer a Specific Question", type: "specific", tag: "question" },
+  { id: "4", title: "Explore a specific technology", type: "specific", tag: "technology" },
 ];
 
 /**
@@ -79,11 +90,16 @@ export const ProjectOverView = () => {
   const [tabs, setTabs] = useState([
     { id: "overview", label: "Overview" },
     { id: "technologies", label: "Technologies" },
-    { id: "queries", label: "Queries" },
+    // { id: "queries", label: "Queries" },
   ]);
+
   const [activeTabActive, setIsActiveTabActive] = useState<string>("overview");
+  const [activeSubTabActive, setIsActiveSubTabActive] = useState<string>("pages");
   const location = useLocation();
   const currentPath = location.pathname;
+
+  const { data: activityData, isLoading: activityDataIsLoading } = useGetMyRecentActivityQuery();
+  const { data: linkingData, isLoading: linkingDataIsLoading } = useGetLinkingQuery();
 
   const isProjectsDashboard = currentPath.includes("/projects/dashboard");
   // Function to add a new tab with a user-defined label
@@ -113,7 +129,7 @@ export const ProjectOverView = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
-      <div className="min-h-full w-full" id="projects-overview">
+      <div className="projects-overview min-h-full w-full" id="projects-overview">
         {isProjectsDashboard && <DevBanner />}
         <div className="mx-auto w-full p-8">
           <Tabs
@@ -152,48 +168,130 @@ export const ProjectOverView = () => {
               </div>
             </TabsList>
 
-            {/* {tabs.map((tab) => (
-                <TabsContent key={tab.id} value={tab.id} className="mt-2 space-y-2">
-                  <p className="p-4 text-sm">Content for {tab.label}</p>
-                </TabsContent>
-              ))} */}
             <TabsContent value="overview" className="mt-2 space-y-2 transition-all duration-150">
               <>
-                <div className="overviewHeader py-4">
-                  <h1 className="mb-4 text-4xl font-bold">
-                    {isProjectsDashboard
-                      ? "Your Universe Projects"
-                      : "Cross regeneration to maximimise macromolecule effusion."}
-                  </h1>
-                  <p className="mb-4 text-sm">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam autem, deleniti
-                    ratione fuga consectetur sint unde nostrum, numquam corrupti esse, porro ullam
-                    dolorum. Repudiandae laborum sit fugit. Ipsum odit mollitia molestiae nobis
-                    asperiores laborum, modi quos quisquam quibusdam, consectetur nostrum officiis
-                    veritatis iure ab distinctio, veniam nesciunt voluptas sed! Magnam praesentium
-                    id tenetur ducimus error magni quidem similique suscipit ad animi consequatur
-                    ipsa nobis numquam qui sed ullam nulla, voluptatibus iusto eaque accusantium
-                    sapiente.
-                  </p>
-                </div>
-
                 <div className="flex items-start gap-2">
                   <div className="w-1/2">
-                    <h3 className="text-md mb-2 pt-3 font-semibold">Get started</h3>
-                    <div className="flex flex-col gap-2">
-                      <CreateProjectDialog title={"Create a scientific landscape"} />
-                      <CreateItemModal title={"Create a technology overview"} />
+                    <div className="overviewHeader py-4">
+                      <h1 className="mb-4 max-w-2xl text-4xl font-bold">
+                        {isProjectsDashboard
+                          ? "Your Universe Projects"
+                          : "Cross regeneration to maximimise macromolecule effusion."}
+                      </h1>
                     </div>
-                    <br />
+                    {!isProjectsDashboard ? (
+                      <p className="text-md mb-4">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam autem,
+                        deleniti ratione fuga consectetur sint unde nostrum, numquam corrupti esse,
+                        porro ullam dolorum. Repudiandae laborum sit fugit. Ipsum odit mollitia
+                        molestiae nobis asperiores laborum.
+                      </p>
+                    ) : (
+                      <>
+                        <div className="flex flex-col gap-2">
+                          <CreateProjectDialog title={"Create a scientific landscape"} />
+                          <CreateItemModal title={"Create a technology overview"} />
+                        </div>
+                      </>
+                    )}
+                    <div className="recent_projects">
+                      <h3 className="title">Recent pages</h3>
+                      <div className="projects_container">
+                        {activityDataIsLoading ? (
+                          <div className="activity_loader">
+                            <Loader className="animate-spin text-gray-600" />
+                            <p className="loadingText">Loading Activity Data...</p>
+                          </div>
+                        ) : (
+                          activityData?.slice(0, 3).map((activity: any) => (
+                            <div
+                              key={activity.id}
+                              className="activity_list"
+                              onClick={() => handleNavigateToEntities(activity.type, activity.id)}
+                            >
+                              <div className="item">
+                                <h3 className="text-sm font-semibold">
+                                  {activity.name.length > 80
+                                    ? `${activity.name.slice(0, 80)}...`
+                                    : activity.name}
+                                </h3>
+                              </div>
+                              <ChevronRight className="icon" />
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Recent Activity Tabs */}
+                    <div className="mt-6">
+                      <h3 className="text-md my-2 font-semibold">Recent activity</h3>
+                      <Tabs
+                        defaultValue="pages"
+                        className="pb-4"
+                        onValueChange={setIsActiveSubTabActive}
+                      >
+                        <TabsList className="flex justify-start space-x-4 border-b border-slate-200 bg-transparent">
+                          <TabsTrigger
+                            value="pages"
+                            className={`linear p-2 text-sm transition-all duration-150 ${
+                              activeSubTabActive === "pages"
+                                ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            Pages
+                          </TabsTrigger>
+                          <TabsTrigger
+                            value="sources"
+                            className={`linear p-2 text-sm transition-all duration-150 ${
+                              activeSubTabActive === "sources"
+                                ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            Sources
+                          </TabsTrigger>
+                          <TabsTrigger
+                            value="team"
+                            className={`linear p-2 text-sm transition-all duration-150 ${
+                              activeSubTabActive === "team"
+                                ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            Team
+                          </TabsTrigger>
+                        </TabsList>
+
+                        {/* Activity Content */}
+                        <TabsContent value="pages" className="py-4 text-sm">
+                          <ActivityItem title="Alternatives to PPE" />
+                          <ActivityItem title="Cross regeneration to maximimise macromolecule effusion." />
+                          <ActivityItem title="Get Weld Soon" />
+                        </TabsContent>
+
+                        <TabsContent value="sources" className="py-4 text-sm">
+                          <ActivityItem title="Activity 3" />
+                          <ActivityItem title="Activity 4" />
+                        </TabsContent>
+
+                        <TabsContent value="team" className="py-4 text-sm">
+                          <ActivityItem title="Team 1" />
+                        </TabsContent>
+                      </Tabs>
+                    </div>
+
+                    {/* <br />
                     <div className="flex flex-col gap-2">
                       {dialogs.map((d) => (
                         <ProjectSearchDialog key={d.id} dialogTitle={d.title} />
                       ))}
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="w-1/2">
-                    <h3 className="text-md mb-2 pt-3 font-semibold">Pages graph</h3>
+                    {/* <h3 className="text-md mb-2 pt-3 font-semibold">Pages graph</h3> */}
 
                     <OverviewForceDirected linkingData={dummyData} />
                   </div>
