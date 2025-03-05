@@ -22,7 +22,8 @@ import {
   Search,
   Settings,
 } from "lucide-react";
-import * as Y from "y-prosemirror/dist/y-prosemirror.js";
+
+// import * as YProsemirror from "../../../../../../node_modules/y-prosemirror";
 
 import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -73,7 +74,7 @@ export const BlockEditor = ({
   const parsedContent = useMemo(() => {
     try {
       // Parse content if it's a string, otherwise use it as is
-      if (typeof content === "string" || typeof content.type === "doc") {
+      if (typeof content === "string" || content?.type === "doc") {
         // console.log(typeof content);
         return JSON.parse(content);
       }
