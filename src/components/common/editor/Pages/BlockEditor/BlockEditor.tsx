@@ -22,7 +22,6 @@ import {
   Search,
   Settings,
 } from "lucide-react";
-import * as Y from "y-prosemirror/dist/y-prosemirror.js";
 
 import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
