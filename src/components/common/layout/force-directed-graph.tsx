@@ -42,76 +42,68 @@
  *
  * @returns {JSX.Element} The rendered ForceDirectedGraphView component.
  */
-import { select, zoom, zoomIdentity } from "d3";
+import { ObjectTypeEnum } from "@/types/types";
+import GlobalGraphWorker from "@/workers/GlobalGraphWorker";
+import { drag as d3Drag, select, Simulation, zoom, zoomIdentity } from "d3";
 
 import { FC, useEffect, useRef, useState } from "react";
 
-const NODE_RADIUS = 40; // Node size
+const NODE_RADIUS = 30; // Node size
 
-export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData }) => {
+export const ForceDirectedGraphView: FC<{ linkingData: any[]; id: string }> = ({
+  linkingData,
+  id,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [graphData, setGraphData] = useState({ nodes: [], links: [] });
   const [hoveredNode, setHoveredNode] = useState(null); // Stores hovered node for tooltips
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 }); // Stores mouse coordinates
+
+  const forceGraphContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!linkingData || linkingData.length === 0) return;
 
-    // to be offloaded to a global worker.
-    const workerCode = `
-      self.onmessage = (event) => {
-        const { nodes, links } = event.data;
-        importScripts("https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js");
+    const graphWorker = GlobalGraphWorker.getWorker();
 
-        const width = 800, height = 800;
+    const handleMessage = ({ nodes, links }) => {
+      setGraphData({ nodes, links });
+    };
 
-        nodes.forEach((node) => {
-          node.x = node.x ?? (Math.random() * width - width / 2);
-          node.y = node.y ?? (Math.random() * height - height / 2);
-        });
+    GlobalGraphWorker.registerCallback(id, handleMessage);
 
-        links.forEach(link => {
-          link.source = nodes.find(n => n.id === link.source);
-          link.target = nodes.find(n => n.id === link.target);
-        });
-
-        let tickCount = 0, MAX_TICKS = 100;
-
-        const simulation = d3.forceSimulation(nodes)
-          .force("link", d3.forceLink(links).id(d => d.id).distance(160))
-          .force("charge", d3.forceManyBody().strength(-40)) 
-          .force("center", d3.forceCenter(0, 0))
-          .force("collision", d3.forceCollide(45))
-          .on("tick", () => {
-            if (tickCount++ >= MAX_TICKS) simulation.stop();
-            self.postMessage({ nodes, links });
-          });
-
-        self.onmessage = (event) => {
-          if (event.data === "STOP") simulation.stop();
-        };
-      };
-    `;
-
-    // 🔧 Create Web Worker
-    const blob = new Blob([workerCode], { type: "application/javascript" });
-    const worker = new Worker(URL.createObjectURL(blob));
-
-    worker.postMessage({
-      nodes: linkingData,
-      links: linkingData.flatMap((node) =>
-        (node.lowerLevelNodes || []).map((child) => ({ source: node.id, target: child.id })),
-      ),
+    graphWorker.postMessage({
+      type: "updateGraph",
+      data: {
+        graphId: id,
+        nodes: linkingData,
+        links: linkingData.flatMap((node) =>
+          (node.lowerLevelNodes || []).map((child) => ({
+            source: node.id,
+            target: child.id,
+          })),
+        ),
+      },
     });
 
-    worker.onmessage = (event) => {
-      setGraphData(event.data);
-    };
-
     return () => {
-      worker.postMessage("STOP");
-      worker.terminate();
+      GlobalGraphWorker.deregisterCallback(id);
+      graphWorker.postMessage({ type: "removeGraph", data: { graphId: id } });
     };
-  }, [linkingData]);
+  }, [linkingData, id]);
+
+  const getObjectTypeColor = (objectType: ObjectTypeEnum): string => {
+    switch (objectType) {
+      case ObjectTypeEnum.Entity:
+        return "#00ADEF";
+      case ObjectTypeEnum.Study:
+        return "#5856D6";
+      case ObjectTypeEnum.Query:
+        return "#A30076";
+      default:
+        return "#00ADEF";
+    }
+  };
 
   const draw = (canvas, ctx, transform, graphData) => {
     if (!canvas || !ctx) return;
@@ -141,7 +133,7 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
     graphData.nodes.forEach((node) => {
       ctx.beginPath();
       ctx.arc(node.x, node.y, NODE_RADIUS, 0, 2 * Math.PI);
-      ctx.fillStyle = node === hoveredNode ? "#FF5733" : "#000000";
+      ctx.fillStyle = node === hoveredNode ? getObjectTypeColor(node.objectType) : "#000000";
       ctx.fill();
       ctx.strokeStyle = "#FFF";
       ctx.lineWidth = 3;
@@ -160,8 +152,14 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
       const hovered = graphData.nodes.find(
         (node) => Math.hypot(node.x - mouseX, node.y - mouseY) < NODE_RADIUS,
       );
+      if (!hovered) return;
 
       setHoveredNode(hovered); // Store hovered node to show tooltip
+
+      const screenX = hovered.x * transform.k + transform.x;
+      const screenY = hovered.y * transform.k + transform.y;
+
+      setMousePosition({ x: screenX, y: screenY });
     });
 
     canvas.addEventListener("mouseleave", () => {
@@ -170,6 +168,27 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
   };
 
   // Enable Dragging of Nodes with Smooth Animation
+  const drag = (currSimulation: Simulation<INode, ILink>) => {
+    function dragstarted(event: D3DragEvent<Element, INode, INode>) {
+      if (!event.active) currSimulation.alphaTarget(0.3).restart();
+      event.subject.fx = event.subject.x;
+      event.subject.fy = event.subject.y;
+    }
+
+    function dragged(event: D3DragEvent<Element, INode, INode>) {
+      event.subject.fx = event.x;
+      event.subject.fy = event.y;
+    }
+
+    function dragended(event: D3DragEvent<Element, INode, INode>) {
+      if (!event.active) currSimulation.alphaTarget(0);
+      event.subject.fx = null;
+      event.subject.fy = null;
+    }
+
+    return d3Drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
+  };
+
   const setupDrag = (canvas, ctx, transform, graphData) => {
     let draggingNode = null;
 
@@ -216,6 +235,7 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
       });
 
     select(canvas).call(zoomBehavior);
+    // .call(drag(simulation) as (selection: Selection<BaseType | SVGGElement, INode, SVGGElement, undefined>, ...args: unknown[]) => void);
 
     // Set Initial Zoom & Centering (Scale 0.1)
     const initialScale = 0.1; // force it to be zoomed out
@@ -226,18 +246,18 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
 
     // Enable Features
     setupHoverEvents(canvas, transform, graphData);
-    setupDrag(canvas, ctx, transform, graphData);
+    //setupDrag(canvas, ctx, transform, graphData);
     draw(canvas, ctx, transform, graphData);
   }, [graphData]);
 
   return (
-    <div>
+    <div ref={forceGraphContainerRef} className="h-full w-full">
       {hoveredNode && (
         <div
           style={{
             position: "absolute",
-            left: "20px",
-            top: "10px",
+            left: `${mousePosition.x}px`,
+            top: `${mousePosition.y - 15}px`,
             background: "white",
             padding: "10px",
             borderRadius: "4px",
@@ -247,7 +267,11 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
           {hoveredNode.name} {hoveredNode.id}
         </div>
       )}
-      <canvas ref={canvasRef} width={800} height={800} />
+      <canvas
+        ref={canvasRef}
+        width={forceGraphContainerRef.current?.clientWidth}
+        height={forceGraphContainerRef.current?.clientHeight}
+      />
     </div>
   );
 };
