@@ -150,7 +150,7 @@ export const Dashboard = () => {
               <p className="ml-2 text-gray-700">Loading Relations Data...</p>
             </div>
           ) : (
-            <ForceDirectedGraphView linkingData={linkingData} isDashBoard={true} />
+            <ForceDirectedGraphView linkingData={linkingData} id="dashboardForceDirectedGraph" />
           )}
         </div>
       </div>
