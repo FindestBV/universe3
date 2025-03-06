@@ -24,10 +24,10 @@ export const Projects: React.FC = () => {
     ? useGetStudyByIdQuery(id, { refetchOnMountOrArgChange: false })
     : useGetEntityByIdQuery(id, { refetchOnMountOrArgChange: false });
 
-  // const { data, isLoading, isError, error, refetch } = useGetEntitiesQuery(
-  //   { page: 1, limit: 10 }, // Adjust page and limit as needed
-  //   { refetchOnMountOrArgChange: true },
-  // );
+  const { data, isLoading, isError, error, refetch } = useGetEntitiesQuery(
+    { page: 1, limit: 10 }, // Adjust page and limit as needed
+    { refetchOnMountOrArgChange: true },
+  );
 
   const inboxQuery = fetchedEntity?.connectedInboxItems;
   const connectedObjects = fetchedEntity?.connectedDocs;
