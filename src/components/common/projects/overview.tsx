@@ -3,7 +3,7 @@
  * @description A project overview component with dynamic tab functionality.
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
-import { useGetLinkingQuery, useGetMyRecentActivityQuery } from "@/api/activity/activityApi";
+import { useGetMyRecentActivityQuery } from "@/api/activity/activityApi";
 import ConnectQuery from "@/components/common/dialogs/connect-query";
 import CreateItemModal from "@/components/common/dialogs/create-item-dialog";
 import CreateProjectDialog from "@/components/common/dialogs/create-project-dialog";
@@ -40,6 +40,7 @@ import { useLocation } from "react-router-dom";
 
 import VotingCard from "../cards/voting-card";
 import AskIgorModal from "../dialogs/ask-igor";
+import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
 
 // Define the props type for AskIgorModal
@@ -386,6 +387,19 @@ export const ProjectOverView = () => {
         <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
           <DialogContent className="p-0 sm:max-w-[90%]">
             <RequirementsTable
+              isOpen={isConfigDialogOpen}
+              onClose={() => setIsConfigDialogOpen(false)}
+            />
+          </DialogContent>
+        </Dialog>
+      );
+    }
+
+    if (selectedTabType.id === "maturity") {
+      return (
+        <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
+          <DialogContent className="p-0 sm:max-w-[90%]">
+            <MaturityRadar
               isOpen={isConfigDialogOpen}
               onClose={() => setIsConfigDialogOpen(false)}
             />

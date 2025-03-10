@@ -229,3 +229,16 @@ export interface RequirementsTableProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+export interface ConfigDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export interface MaturityLevel {
+  id: string;
+  name: string;
+  color: string;
+}
+
+export type DialogType = "requirements" | "maturity" | "results";
