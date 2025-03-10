@@ -190,10 +190,18 @@ export const Dashboard = ({
                         setCurrentView("overview");
                       }}
                     >
-                      <Home className="h-5 w-5 text-white" />
-                      <span className="text-sm font-medium text-white">Project overview</span>
+                      <Home
+                        className={`h-5 w-5 text-gray-600 ${currentView === "overview" && "text-white"}`}
+                      />
+                      <span
+                        className={`text-sm font-medium text-gray-600 ${currentView === "overview" && "text-white"}`}
+                      >
+                        Project overview
+                      </span>
                       <span className="ml-auto">
-                        <ChevronRight className="rounded p-1 text-white hover:bg-blue-200" />
+                        <ChevronRight
+                          className={`${currentView === "overview" && "bg-none text-white"} p-1 text-gray-600 hover:bg-blue-200`}
+                        />
                       </span>
                     </li>
                     <li
