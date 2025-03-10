@@ -205,17 +205,17 @@ export const Dashboard = ({
                       </span>
                     </li>
                     <li
-                      className={`${currentView === "search" && "bg-blue-100"} m-2 flex max-w-full items-center gap-2 rounded-sm p-4 hover:bg-blue-100`}
+                      className={`${currentView === "search" && "bg-gray-200"} m-4 flex max-w-full items-center gap-2 rounded-full border p-2 hover:bg-blue-100`}
                       onClick={() => setCurrentView("search")}
                     >
                       <Search className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Project search</span>
-                      <span className="ml-auto">
-                        <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                      </span>
+                      <span className="text-sm font-medium text-gray-600">Search</span>
+                      <div className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-blue-300 text-xs font-black text-blue-600">
+                        2
+                      </div>
                     </li>
                     <li
-                      className={`${currentView === "pages" && "bg-black"} group m-2 flex max-w-full items-center gap-2 rounded-sm p-4 hover:bg-black`}
+                      className={`${currentView === "pages" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm p-4 hover:bg-black`}
                       onClick={() => setCurrentView("pages")}
                     >
                       <File className="h-5 w-5 group-hover:text-white" />
