@@ -1,6 +1,6 @@
-import { Column, Layer, RequirementsTableProps } from "@/types/types";
+import { Layer } from "@/types/types";
 import { AnimatePresence, motion } from "framer-motion";
-import { AlertCircle, Star, X } from "lucide-react";
+import { AlertCircle, X } from "lucide-react";
 
 import React, { useState } from "react";
 
