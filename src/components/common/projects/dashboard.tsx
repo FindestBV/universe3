@@ -185,7 +185,7 @@ export const Dashboard = ({
                 <div className="flex-1 overflow-y-auto">
                   <ul className="border-b border-gray-200">
                     <li
-                      className={`${currentView === "overview" && "bg-black"} group m-2 flex max-w-full items-center gap-2 rounded-sm p-4 hover:bg-black`}
+                      className={`${currentView === "overview" && "bg-black"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 hover:bg-black`}
                       onClick={() => {
                         setCurrentView("overview");
                       }}
@@ -205,7 +205,7 @@ export const Dashboard = ({
                       </span>
                     </li>
                     <li
-                      className={`${currentView === "search" && "bg-gray-200"} m-4 flex max-w-full items-center gap-2 rounded-full border p-2 hover:bg-blue-100`}
+                      className={`${currentView === "search" && "bg-gray-200"} m-4 flex max-w-full items-center gap-2 rounded-full border bg-gray-200 p-2`}
                       onClick={() => setCurrentView("search")}
                     >
                       <Search className="h-5 w-5" />
@@ -215,7 +215,7 @@ export const Dashboard = ({
                       </div>
                     </li>
                     <li
-                      className={`${currentView === "pages" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm p-4 hover:bg-black`}
+                      className={`${currentView === "pages" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 hover:bg-black`}
                       onClick={() => setCurrentView("pages")}
                     >
                       <File className="h-5 w-5 group-hover:text-white" />
@@ -227,7 +227,7 @@ export const Dashboard = ({
                       </span>
                     </li>
                     <li
-                      className={`${currentView === "sources" && "bg-black"} group m-2 flex max-w-full items-center gap-2 rounded-sm p-4 hover:bg-black`}
+                      className={`${currentView === "sources" && "bg-black"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 hover:bg-black`}
                       onClick={() => setCurrentView("sources")}
                     >
                       <Link className="h-5 w-5 group-hover:text-white" />
