@@ -56,7 +56,7 @@ export const ProjectSearch = () => {
 
   const [tabs, setTabs] = useState([
     { id: "overview", label: "External document search" },
-    { id: "internal", label: "Internal search" },
+    // { id: "internal", label: "Internal search" },
   ]);
 
   // Function to add a new tab with a user-defined label
@@ -112,10 +112,13 @@ export const ProjectSearch = () => {
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className={`p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-50 font-bold" : "text-black"}`}
+                      className={`flex p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-50 font-bold" : "text-black"}`}
                       onDoubleClick={() => renameTab(tab.id)}
                     >
                       {tab.label}
+                      <div className="-mt-2 ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-blue-300 text-xs font-black text-blue-600">
+                        3
+                      </div>
                     </TabsTrigger>
                   ))}
                 </div>

@@ -182,7 +182,7 @@ export const SearchBar = () => {
               onChange={handleInputChange}
               onPaste={handleInputPaste}
               onBlur={handleInputBlur}
-              className="flex w-full rounded-full bg-gradient-to-r from-[#F9FAF9] via-[#CBD5E1] via-40% to-[#E2E8F0] py-2 pl-10 text-black"
+              className="flex w-full rounded-full border border-slate-200 bg-gradient-to-r from-[#F9FAF9] via-[#CBD5E1] via-40% to-[#E2E8F0] py-2 pl-10 text-black"
               placeholder={t("searchPlaceholder")}
               aria-label="Search input"
             />
