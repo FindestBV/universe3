@@ -99,7 +99,7 @@ export const ProjectOverView = () => {
   const currentPath = location.pathname;
 
   const { data: activityData, isLoading: activityDataIsLoading } = useGetMyRecentActivityQuery();
-  const { data: linkingData, isLoading: linkingDataIsLoading } = useGetLinkingQuery();
+  // const { data: linkingData, isLoading: linkingDataIsLoading } = useGetLinkingQuery();
 
   const isProjectsDashboard = currentPath.includes("/projects/dashboard");
   // Function to add a new tab with a user-defined label
@@ -142,7 +142,7 @@ export const ProjectOverView = () => {
                 <TabsTrigger
                   key={"search"}
                   value={"search"}
-                  className={`p-2 text-sm ${activeTabActive === "search" ? "border-b-2 border-blue-800 bg-blue-50 font-bold" : "text-black"}`}
+                  className={`px-4 py-2 text-sm ${activeTabActive === "search" ? "border-b-2 border-blue-800 bg-blue-50 font-bold" : "text-black"}`}
                 >
                   <Search size={18} />
                 </TabsTrigger>
@@ -234,7 +234,7 @@ export const ProjectOverView = () => {
                         <TabsList className="flex justify-start space-x-4 border-b border-slate-200 bg-transparent">
                           <TabsTrigger
                             value="pages"
-                            className={`linear p-2 text-sm transition-all duration-150 ${
+                            className={`linear px-4 py-2 text-sm transition-all duration-150 ${
                               activeSubTabActive === "pages"
                                 ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                                 : "text-gray-500"
