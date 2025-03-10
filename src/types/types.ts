@@ -212,3 +212,20 @@ export interface SearchResult {
   content: string;
   cosine_similarity: number;
 }
+
+export interface Layer {
+  id: string;
+  name: string;
+  rating?: number;
+}
+
+export interface Column {
+  id: string;
+  title: string;
+  width?: number;
+}
+
+export interface RequirementsTableProps {
+  isOpen: boolean;
+  onClose: () => void;
+}

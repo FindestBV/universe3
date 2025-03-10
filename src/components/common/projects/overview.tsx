@@ -25,21 +25,22 @@ import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
 import {
-  BarChart2,
   ChevronRight,
   List,
+  ListFilter,
   Loader,
   Plus,
   RadarIcon,
   Search,
-  Table,
+  Star,
 } from "lucide-react";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import VotingCard from "../cards/voting-card";
 import AskIgorModal from "../dialogs/ask-igor";
+import RequirementsTable from "./config/requirements-table";
 
 // Define the props type for AskIgorModal
 declare module "../dialogs/ask-igor" {
@@ -127,13 +128,13 @@ const tabTypeOptions: TabTypeConfig[] = [
   {
     id: "results",
     label: "Results overview table",
-    icon: <Table className="h-4 w-4" />,
+    icon: <Star className="h-4 w-4" />,
     description: "Generate a table summarizing key results and findings.",
   },
   {
     id: "requirements",
     label: "Requirements table",
-    icon: <BarChart2 className="h-4 w-4" />,
+    icon: <ListFilter className="h-4 w-4" />,
     description: "Create a structured table of project requirements.",
   },
   {
@@ -143,6 +144,148 @@ const tabTypeOptions: TabTypeConfig[] = [
     description: "Visualize the maturity levels across different dimensions.",
   },
 ];
+
+// Tab configuration form component to manage isolated form state
+interface TabConfigFormProps {
+  selectedTabType: TabTypeConfig;
+  onSubmit: (formData: Record<string, string>) => void;
+  onCancel: () => void;
+}
+
+const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormProps) => {
+  // Local state for form data, isolated from parent component
+  const [formData, setFormData] = useState<Record<string, string>>({});
+
+  // Handle input changes
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  // Handle form submission
+  const handleSubmit = () => {
+    onSubmit(formData);
+  };
+
+  return (
+    <div>
+      <DialogHeader className="pb-4">
+        <DialogTitle className="flex items-center gap-2 text-lg">
+          <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 text-blue-700">
+            {selectedTabType.icon}
+          </span>
+          <span>Configure {selectedTabType.label}</span>
+        </DialogTitle>
+        <DialogDescription className="text-sm text-slate-500">
+          {selectedTabType.description}
+        </DialogDescription>
+      </DialogHeader>
+
+      <div className="grid gap-4 py-4">
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="tabName" className="text-right text-sm font-medium text-slate-700">
+            Tab Name
+          </Label>
+          <Input
+            id="tabName"
+            placeholder="Enter a name for this tab"
+            className="col-span-3 rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm"
+            value={formData.tabName || ""}
+            onChange={(e) => handleInputChange("tabName", e.target.value)}
+          />
+        </div>
+
+        {/* Dynamic form fields based on the selected tab type */}
+        {selectedTabType.id === "technologies" && (
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="techKeywords" className="text-right text-sm font-medium text-slate-700">
+              Keywords
+            </Label>
+            <Input
+              id="techKeywords"
+              placeholder="Enter keywords separated by commas"
+              className="col-span-3 rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm"
+              value={formData.techKeywords || ""}
+              onChange={(e) => handleInputChange("techKeywords", e.target.value)}
+            />
+          </div>
+        )}
+
+        {selectedTabType.id === "results" && (
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label
+              htmlFor="resultColumns"
+              className="text-right text-sm font-medium text-slate-700"
+            >
+              Columns
+            </Label>
+            <Input
+              id="resultColumns"
+              placeholder="Enter column names separated by commas"
+              className="col-span-3 rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm"
+              value={formData.resultColumns || ""}
+              onChange={(e) => handleInputChange("resultColumns", e.target.value)}
+            />
+          </div>
+        )}
+
+        {selectedTabType.id === "requirements" && (
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label
+              htmlFor="reqCategories"
+              className="text-right text-sm font-medium text-slate-700"
+            >
+              Categories
+            </Label>
+            <Input
+              id="reqCategories"
+              placeholder="Enter requirement categories"
+              className="col-span-3 rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm"
+              value={formData.reqCategories || ""}
+              onChange={(e) => handleInputChange("reqCategories", e.target.value)}
+            />
+          </div>
+        )}
+
+        {selectedTabType.id === "maturity" && (
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label
+              htmlFor="maturityDimensions"
+              className="text-right text-sm font-medium text-slate-700"
+            >
+              Dimensions
+            </Label>
+            <Input
+              id="maturityDimensions"
+              placeholder="Enter maturity dimensions"
+              className="col-span-3 rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm"
+              value={formData.maturityDimensions || ""}
+              onChange={(e) => handleInputChange("maturityDimensions", e.target.value)}
+            />
+          </div>
+        )}
+      </div>
+
+      <DialogFooter className="flex justify-end gap-2 border-t border-slate-200 pt-4">
+        <Button
+          variant="outline"
+          onClick={onCancel}
+          className="rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+        >
+          Cancel
+        </Button>
+        <Button
+          onClick={handleSubmit}
+          className="rounded-md bg-black px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+        >
+          Create Tab
+        </Button>
+      </DialogFooter>
+    </div>
+  );
+};
 
 export const ProjectOverView = () => {
   const [tabs, setTabs] = useState([
@@ -158,39 +301,38 @@ export const ProjectOverView = () => {
   const navigateWithTransition = useNavigateWithTransition();
 
   const { data: activityData, isLoading: activityDataIsLoading } = useGetMyRecentActivityQuery();
-  const { data: linkingData } = useGetLinkingQuery();
-
-  console.log("linkingData", linkingData);
-  console.log("activityData", activityData);
 
   const isProjectsDashboard = currentPath.includes("/projects/dashboard");
 
   // State for the configuration dialog
   const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
   const [selectedTabType, setSelectedTabType] = useState<TabTypeConfig | null>(null);
-  const [configFormData, setConfigFormData] = useState<Record<string, string>>({});
 
   // Function to open the configuration dialog for a specific tab type
   const openTabConfigDialog = (tabType: TabTypeConfig) => {
     setSelectedTabType(tabType);
-    setConfigFormData({}); // Reset form data
     setIsConfigDialogOpen(true);
   };
 
   // Function to handle configuration form submission
-  const handleConfigSubmit = () => {
+  const handleConfigSubmit = (formData: Record<string, string>) => {
     if (!selectedTabType) return;
 
     // Create a new tab with the configured options
     const newId = selectedTabType.id + "-" + Date.now();
-    const newLabel = configFormData.tabName || selectedTabType.label;
+    const newLabel = formData.tabName || selectedTabType.label;
 
     setTabs([...tabs, { id: newId, label: newLabel }]);
     setIsActiveTabActive(newId);
 
     // Here you would send the configuration data to the backend
-    // Example: sendConfigToBackend(newId, selectedTabType.id, configFormData);
+    // Example: sendConfigToBackend(newId, selectedTabType.id, formData);
 
+    setIsConfigDialogOpen(false);
+  };
+
+  // Function to handle dialog cancellation
+  const handleDialogCancel = () => {
     setIsConfigDialogOpen(false);
   };
 
@@ -204,141 +346,66 @@ export const ProjectOverView = () => {
     );
   };
 
+  // Function to navigate to entities with view transitions - optimized with useCallback
+  const handleNavigateToEntities = useCallback(
+    (type: string, id: string) => {
+      // Determine the route based on the entity type
+      let route = "/projects";
+
+      // You can customize this logic based on your application's routing structure
+      switch (type.toLowerCase()) {
+        case "entity":
+          route = `/pages/entities/${id}`;
+          break;
+        case "study":
+          route = `/pages/studies/${id}`;
+          break;
+        case "project":
+          route = `/projects/${id}`;
+          break;
+        case "source":
+          route = `/sources/${id}`;
+          break;
+        default:
+          route = `/projects/${id}`;
+      }
+
+      // Navigate with view transitions for a smooth experience
+      navigateWithTransition(route);
+    },
+    [navigateWithTransition],
+  );
+
   // Configuration Dialog Component
   const TabConfigurationDialog = () => {
     if (!selectedTabType) return null;
 
+    // If the selected type is "requirements", render the RequirementsTable component
+    if (selectedTabType.id === "requirements") {
+      return (
+        <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
+          <DialogContent className="p-0 sm:max-w-[90%]">
+            <RequirementsTable
+              isOpen={isConfigDialogOpen}
+              onClose={() => setIsConfigDialogOpen(false)}
+            />
+          </DialogContent>
+        </Dialog>
+      );
+    }
+
+    // For other tab types, render the regular TabConfigForm
     return (
       <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              {selectedTabType.icon}
-              <span>Configure {selectedTabType.label}</span>
-            </DialogTitle>
-            <DialogDescription>{selectedTabType.description}</DialogDescription>
-          </DialogHeader>
-
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="tabName" className="text-right">
-                Tab Name
-              </Label>
-              <Input
-                id="tabName"
-                placeholder="Enter a name for this tab"
-                className="col-span-3"
-                value={configFormData.tabName || ""}
-                onChange={(e) => setConfigFormData({ ...configFormData, tabName: e.target.value })}
-              />
-            </div>
-
-            {/* Dynamic form fields based on the selected tab type */}
-            {selectedTabType.id === "technologies" && (
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="techKeywords" className="text-right">
-                  Keywords
-                </Label>
-                <Input
-                  id="techKeywords"
-                  placeholder="Enter keywords separated by commas"
-                  className="col-span-3"
-                  value={configFormData.techKeywords || ""}
-                  onChange={(e) =>
-                    setConfigFormData({ ...configFormData, techKeywords: e.target.value })
-                  }
-                />
-              </div>
-            )}
-
-            {selectedTabType.id === "results" && (
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="resultColumns" className="text-right">
-                  Columns
-                </Label>
-                <Input
-                  id="resultColumns"
-                  placeholder="Enter column names separated by commas"
-                  className="col-span-3"
-                  value={configFormData.resultColumns || ""}
-                  onChange={(e) =>
-                    setConfigFormData({ ...configFormData, resultColumns: e.target.value })
-                  }
-                />
-              </div>
-            )}
-
-            {selectedTabType.id === "requirements" && (
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="reqCategories" className="text-right">
-                  Categories
-                </Label>
-                <Input
-                  id="reqCategories"
-                  placeholder="Enter requirement categories"
-                  className="col-span-3"
-                  value={configFormData.reqCategories || ""}
-                  onChange={(e) =>
-                    setConfigFormData({ ...configFormData, reqCategories: e.target.value })
-                  }
-                />
-              </div>
-            )}
-
-            {selectedTabType.id === "maturity" && (
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="maturityDimensions" className="text-right">
-                  Dimensions
-                </Label>
-                <Input
-                  id="maturityDimensions"
-                  placeholder="Enter maturity dimensions"
-                  className="col-span-3"
-                  value={configFormData.maturityDimensions || ""}
-                  onChange={(e) =>
-                    setConfigFormData({ ...configFormData, maturityDimensions: e.target.value })
-                  }
-                />
-              </div>
-            )}
-          </div>
-
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsConfigDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleConfigSubmit}>Create Tab</Button>
-          </DialogFooter>
+        <DialogContent className="bg-white sm:max-w-[500px]">
+          <TabConfigForm
+            selectedTabType={selectedTabType}
+            onSubmit={handleConfigSubmit}
+            onCancel={handleDialogCancel}
+          />
         </DialogContent>
       </Dialog>
     );
-  };
-
-  // Function to navigate to entities with view transitions
-  const handleNavigateToEntities = (type: string, id: string) => {
-    // Determine the route based on the entity type
-    let route = "/projects";
-
-    // You can customize this logic based on your application's routing structure
-    switch (type.toLowerCase()) {
-      case "Entity":
-        route = `/pages/entities/${id}`;
-        break;
-      case "Study":
-        route = `/projects/${id}`;
-        break;
-      case "project":
-        route = `/projects/${id}`;
-        break;
-      case "Source":
-        route = `/sources/${id}`;
-        break;
-      default:
-        route = `/projects/${id}`;
-    }
-
-    // Navigate with view transitions for a smooth experience
-    navigateWithTransition(route);
   };
 
   return (
@@ -387,17 +454,17 @@ export const ProjectOverView = () => {
                         <Plus className="h-5 w-8" />
                       </button>
                     </TooltipTrigger>
-                    <TooltipContent className="w-64 p-0" align="end">
-                      <div className="flex flex-col rounded-md border bg-white shadow-md">
-                        <div className="border-b p-2 text-sm font-medium">Add new tab with</div>
+                    <TooltipContent className="w-72 p-0" align="end">
+                      <div className="flex flex-col rounded-md border border-slate-200 bg-white shadow-md">
+                        <div className="p-2 text-sm font-bold text-slate-700">Add new tab with</div>
                         <div className="flex flex-col p-1">
                           {tabTypeOptions.map((option) => (
                             <button
                               key={option.id}
-                              className="flex items-center gap-2 rounded-md p-2 text-left text-sm hover:bg-gray-100"
+                              className="flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-slate-100"
                               onClick={() => openTabConfigDialog(option)}
                             >
-                              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 text-blue-700">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black">
                                 {option.icon}
                               </span>
                               <span>{option.label}</span>
