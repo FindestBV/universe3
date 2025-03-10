@@ -185,57 +185,100 @@ export const Dashboard = ({
                 <div className="flex-1 overflow-y-auto">
                   <ul className="border-b border-gray-200">
                     <li
-                      className={`${currentView === "overview" && "bg-black"} group m-2 flex max-w-full items-center gap-2 rounded-sm p-4 hover:bg-black`}
+                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm p-4 ${
+                        currentView === "overview" ? "bg-black" : "bg-white"
+                      } hover:bg-black`}
                       onClick={() => {
                         setCurrentView("overview");
                       }}
                     >
                       <Home
-                        className={`h-5 w-5 text-gray-600 ${currentView === "overview" && "text-white"}`}
+                        className={`h-5 w-5 ${
+                          currentView === "overview" ? "text-white" : "text-gray-600"
+                        } group-hover:text-white`}
                       />
                       <span
-                        className={`text-sm font-medium text-gray-600 ${currentView === "overview" && "text-white"}`}
+                        className={`text-sm font-medium ${
+                          currentView === "overview" ? "text-white" : "text-gray-600"
+                        } group-hover:text-white`}
                       >
                         Project overview
                       </span>
                       <span className="ml-auto">
                         <ChevronRight
-                          className={`${currentView === "overview" && "bg-none text-white"} p-1 text-gray-600 hover:bg-blue-200`}
+                          className={`p-1 ${
+                            currentView === "overview" ? "text-white" : "bg-gray-100 text-gray-600"
+                          } rounded-sm group-hover:bg-transparent group-hover:text-white`}
                         />
                       </span>
                     </li>
                     <li
-                      className={`${currentView === "search" && "bg-blue-100"} m-2 flex max-w-full items-center gap-2 rounded-sm p-4 hover:bg-blue-100`}
+                      className={`m-4 flex max-w-full items-center gap-2 rounded-full border border-gray-200 p-2 ${
+                        currentView === "search" ? "bg-gray-100" : "bg-white"
+                      } hover:bg-gray-100`}
                       onClick={() => setCurrentView("search")}
                     >
-                      <Search className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Project search</span>
-                      <span className="ml-auto">
+                      <Search className="h-5 w-5 text-gray-600" />
+                      <span className="text-sm font-medium text-gray-600">Search</span>
+                      <div className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-blue-300 text-xs font-black text-blue-600">
+                        3
+                      </div>
+
+                      {/* <span className="ml-auto flex items-center gap-2">
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-200 text-xs font-medium text-gray-600">3</span>
                         <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                      </span>
+                      </span> */}
                     </li>
                     <li
-                      className={`${currentView === "pages" && "bg-black"} group m-2 flex max-w-full items-center gap-2 rounded-sm p-4 hover:bg-black`}
+                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm p-4 ${
+                        currentView === "pages" ? "bg-black" : "bg-white"
+                      } hover:bg-black`}
                       onClick={() => setCurrentView("pages")}
                     >
-                      <File className="h-5 w-5 group-hover:text-white" />
-                      <span className="text-sm font-medium text-gray-600 group-hover:text-white">
+                      <File
+                        className={`h-5 w-5 ${
+                          currentView === "pages" ? "text-white" : "text-gray-600"
+                        } group-hover:text-white`}
+                      />
+                      <span
+                        className={`text-sm font-medium ${
+                          currentView === "pages" ? "text-white" : "text-gray-600"
+                        } group-hover:text-white`}
+                      >
                         Project pages
                       </span>
                       <span className="ml-auto">
-                        <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200 hover:text-white" />
+                        <Plus
+                          className={`p-1 ${
+                            currentView === "pages" ? "text-white" : "bg-gray-100 text-gray-600"
+                          } rounded-sm group-hover:bg-transparent group-hover:text-white`}
+                        />
                       </span>
                     </li>
                     <li
-                      className={`${currentView === "sources" && "bg-black"} group m-2 flex max-w-full items-center gap-2 rounded-sm p-4 hover:bg-black`}
+                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm p-4 ${
+                        currentView === "sources" ? "bg-black" : "bg-white"
+                      } hover:bg-black`}
                       onClick={() => setCurrentView("sources")}
                     >
-                      <Link className="h-5 w-5 group-hover:text-white" />
-                      <span className="text-sm font-medium text-gray-600 group-hover:text-white">
+                      <Link
+                        className={`h-5 w-5 ${
+                          currentView === "sources" ? "text-white" : "text-gray-600"
+                        } group-hover:text-white`}
+                      />
+                      <span
+                        className={`text-sm font-medium ${
+                          currentView === "sources" ? "text-white" : "text-gray-600"
+                        } group-hover:text-white`}
+                      >
                         Project sources
                       </span>
                       <span className="ml-auto">
-                        <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                        <Plus
+                          className={`p-1 ${
+                            currentView === "sources" ? "text-white" : "bg-gray-100 text-gray-600"
+                          } rounded-sm group-hover:bg-transparent group-hover:text-white`}
+                        />
                       </span>
                     </li>
                   </ul>

@@ -9,6 +9,7 @@ import CreateItemModal from "@/components/common/dialogs/create-item-dialog";
 import CreateProjectDialog from "@/components/common/dialogs/create-project-dialog";
 import { DevBanner } from "@/components/common/layout/dev-banner";
 import OverviewForceDirected from "@/components/common/layout/overview-force-directed";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -518,13 +519,48 @@ export const ProjectOverView = () => {
                           ? "Your Universe Projects"
                           : "Cross regeneration to maximimise macromolecule effusion."}
                       </h1>
+
+                      {!isProjectsDashboard && (
+                        <div className="flex items-center gap-12 py-8">
+                          <div className="flex items-center gap-2">
+                            <h4 className="text-sm font-semibold">Owner</h4>
+                            <Avatar>
+                              <AvatarImage src="https://github.com/shadcn.png" />
+                              <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <h4 className="text-sm font-semibold">Contributors</h4>
+                            <Avatar>
+                              <AvatarImage src="https://github.com/shadcn.png" />
+                              <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                            <Avatar>
+                              <AvatarImage src="https://github.com/shadcn.png" />
+                              <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                            <Avatar>
+                              <AvatarImage src="https://github.com/shadcn.png" />
+                              <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                            <Avatar>
+                              <AvatarImage src="https://github.com/shadcn.png" />
+                              <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                            <div className="hoveborder flex items-center gap-2 rounded-full bg-gray-100 p-3">
+                              <Plus className="h-5 w-5" />
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
+
                     {!isProjectsDashboard ? (
                       <p className="text-md mb-4">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam autem,
-                        deleniti ratione fuga consectetur sint unde nostrum, numquam corrupti esse,
-                        porro ullam dolorum. Repudiandae laborum sit fugit. Ipsum odit mollitia
-                        molestiae nobis asperiores laborum.
+                        Cross regeneration is a sophisticated technique employed to <br />
+                        enhance the elution of macromolecules during the production process of
+                        specialized ion exchange resins, specifically fro 'Gent production'...
                       </p>
                     ) : (
                       <>
