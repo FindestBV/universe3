@@ -9,6 +9,7 @@ import CreateItemModal from "@/components/common/dialogs/create-item-dialog";
 import CreateProjectDialog from "@/components/common/dialogs/create-project-dialog";
 import { DevBanner } from "@/components/common/layout/dev-banner";
 import OverviewForceDirected from "@/components/common/layout/overview-force-directed";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -457,7 +458,7 @@ export const ProjectOverView = () => {
                 <TabsTrigger
                   key={"search"}
                   value={"search"}
-                  className={`px-4 py-2 text-sm ${activeTabActive === "search" ? "border-b-2 border-blue-800 bg-blue-50 font-bold" : "text-black"}`}
+                  className={`px-4 py-2 text-sm ${activeTabActive === "search" ? "border-b-2 border-blue-800 bg-blue-100 font-bold" : "text-black"}`}
                 >
                   <Search size={18} />
                 </TabsTrigger>
@@ -465,7 +466,7 @@ export const ProjectOverView = () => {
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className={`p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-50 font-bold" : "text-black"}`}
+                    className={`p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-100 font-bold" : "text-black"}`}
                     onDoubleClick={() => renameTab(tab.id)} // Double-click to rename
                   >
                     {tab.label}
@@ -485,12 +486,14 @@ export const ProjectOverView = () => {
                     </TooltipTrigger>
                     <TooltipContent className="w-72 p-0" align="end">
                       <div className="flex flex-col rounded-md border border-slate-200 bg-white shadow-md">
-                        <div className="p-2 text-sm font-bold text-slate-700">Add new tab with</div>
+                        <div className="px-4 py-2 text-sm font-bold text-slate-700">
+                          Add new tab with
+                        </div>
                         <div className="flex flex-col p-1">
                           {tabTypeOptions.map((option) => (
                             <button
                               key={option.id}
-                              className="flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-slate-100"
+                              className="flex items-center gap-2 rounded-md px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-100"
                               onClick={() => openTabConfigDialog(option)}
                             >
                               <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black">
@@ -518,14 +521,53 @@ export const ProjectOverView = () => {
                           ? "Your Universe Projects"
                           : "Cross regeneration to maximimise macromolecule effusion."}
                       </h1>
+
+                      {!isProjectsDashboard && (
+                        <div className="flex items-center gap-12 py-8">
+                          <div className="flex items-center gap-2">
+                            <h4 className="text-sm font-semibold">Owner</h4>
+                            <Avatar>
+                              <AvatarImage src="https://github.com/shadcn.png" />
+                              <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <h4 className="text-sm font-semibold">Contributors</h4>
+                            <Avatar>
+                              <AvatarImage src="https://github.com/shadcn.png" />
+                              <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                            <Avatar>
+                              <AvatarImage src="https://github.com/shadcn.png" />
+                              <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                            <Avatar>
+                              <AvatarImage src="https://github.com/shadcn.png" />
+                              <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                            <Avatar>
+                              <AvatarImage src="https://github.com/shadcn.png" />
+                              <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                            <div className="hoveborder flex items-center gap-2 rounded-full bg-gray-100 p-3">
+                              <Plus className="h-5 w-5" />
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
+
                     {!isProjectsDashboard ? (
-                      <p className="text-md mb-4">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam autem,
-                        deleniti ratione fuga consectetur sint unde nostrum, numquam corrupti esse,
-                        porro ullam dolorum. Repudiandae laborum sit fugit. Ipsum odit mollitia
-                        molestiae nobis asperiores laborum.
-                      </p>
+                      <>
+                        <p className="text-md mb-4">
+                          Cross regeneration is a sophisticated technique employed to <br />
+                          enhance the elution of macromolecules during the production process of
+                          specialized ion exchange resins, specifically fro 'Gent production'...
+                        </p>
+
+                        <AskIgorModal />
+                      </>
                     ) : (
                       <>
                         <div className="flex flex-col gap-2">
@@ -584,7 +626,7 @@ export const ProjectOverView = () => {
                           </TabsTrigger>
                           <TabsTrigger
                             value="sources"
-                            className={`linear p-2 text-sm transition-all duration-150 ${
+                            className={`linear px-4 py-2 text-sm transition-all duration-150 ${
                               activeSubTabActive === "sources"
                                 ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                                 : "text-gray-500"
@@ -594,7 +636,7 @@ export const ProjectOverView = () => {
                           </TabsTrigger>
                           <TabsTrigger
                             value="team"
-                            className={`linear p-2 text-sm transition-all duration-150 ${
+                            className={`linear px-4 py-2 text-sm transition-all duration-150 ${
                               activeSubTabActive === "team"
                                 ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                                 : "text-gray-500"

@@ -14,7 +14,7 @@ export const OverviewForceDirected: FC<{ linkingData: any[] }> = ({ linkingData 
     const nodes = linkingData.map((node) => ({
       id: node.id,
       x: Math.random() * 600,
-      y: Math.random() * 600,
+      y: Math.random() * 800,
     }));
 
     const links = linkingData.flatMap((node) =>

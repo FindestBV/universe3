@@ -206,11 +206,16 @@ export const Dashboard = ({
                       className={`${currentView === "search" && "bg-gray-200"} m-4 flex max-w-full items-center gap-2 rounded-full border bg-gray-200 p-2 transition-all duration-150 ease-linear`}
                       onClick={() => setCurrentView("search")}
                     >
-                      <Search className="h-5 w-5" />
+                      <Search className="h-5 w-5 text-gray-600" />
                       <span className="text-sm font-medium text-gray-600">Search</span>
                       <div className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-blue-300 text-xs font-black text-blue-600">
                         3
                       </div>
+
+                      {/* <span className="ml-auto flex items-center gap-2">
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-200 text-xs font-medium text-gray-600">3</span>
+                        <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                      </span> */}
                     </li>
                     <li
                       className={`${currentView === "pages" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
@@ -223,7 +228,11 @@ export const Dashboard = ({
                         Project pages
                       </span>
                       <span className="ml-auto">
-                        <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200 hover:text-white" />
+                        <Plus
+                          className={`p-1 ${
+                            currentView === "pages" ? "text-white" : "bg-gray-100 text-gray-600"
+                          } rounded-sm group-hover:bg-transparent group-hover:text-white`}
+                        />
                       </span>
                     </li>
                     <li
@@ -237,7 +246,11 @@ export const Dashboard = ({
                         Project sources
                       </span>
                       <span className="ml-auto">
-                        <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                        <Plus
+                          className={`p-1 ${
+                            currentView === "sources" ? "text-white" : "bg-gray-100 text-gray-600"
+                          } rounded-sm group-hover:bg-transparent group-hover:text-white`}
+                        />
                       </span>
                     </li>
                   </ul>
@@ -294,7 +307,7 @@ export const Dashboard = ({
                 {/* Settings Footer */}
                 <div className="border-t border-gray-200 bg-white p-4">
                   <div className="flex cursor-pointer items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
-                    <Settings className="h-4 w-4" />
+                    <Settings className="h-4 w-4" fill="#000000" />
                     <span>Project settings</span>
                   </div>
                 </div>
