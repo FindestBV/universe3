@@ -42,6 +42,7 @@ import VotingCard from "../cards/voting-card";
 import AskIgorModal from "../dialogs/ask-igor";
 import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
+import ResultsOverview from "./config/results-overview";
 
 // Define the props type for AskIgorModal
 declare module "../dialogs/ask-igor" {
@@ -385,7 +386,7 @@ export const ProjectOverView = () => {
     if (selectedTabType.id === "requirements") {
       return (
         <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
-          <DialogContent className="p-0 sm:max-w-[90%]">
+          <DialogContent className="flex h-screen max-h-full w-screen max-w-full flex-col border-0 bg-transparent p-0 shadow-none">
             <RequirementsTable
               isOpen={isConfigDialogOpen}
               onClose={() => setIsConfigDialogOpen(false)}
@@ -398,8 +399,21 @@ export const ProjectOverView = () => {
     if (selectedTabType.id === "maturity") {
       return (
         <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
-          <DialogContent className="p-0 sm:max-w-[90%]">
+          <DialogContent className="flex h-screen max-h-full w-screen max-w-full flex-col border-0 bg-transparent p-0 shadow-none">
             <MaturityRadar
+              isOpen={isConfigDialogOpen}
+              onClose={() => setIsConfigDialogOpen(false)}
+            />
+          </DialogContent>
+        </Dialog>
+      );
+    }
+
+    if (selectedTabType.id === "results") {
+      return (
+        <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
+          <DialogContent className="flex h-screen max-h-full w-screen max-w-full flex-col border-0 bg-transparent p-0 shadow-none">
+            <ResultsOverview
               isOpen={isConfigDialogOpen}
               onClose={() => setIsConfigDialogOpen(false)}
             />
@@ -411,7 +425,7 @@ export const ProjectOverView = () => {
     // For other tab types, render the regular TabConfigForm
     return (
       <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
-        <DialogContent className="bg-white sm:max-w-[500px]">
+        <DialogContent className="flex min-h-[60vh] flex-col border-0 bg-transparent p-0 shadow-none sm:max-w-[500px]">
           <TabConfigForm
             selectedTabType={selectedTabType}
             onSubmit={handleConfigSubmit}

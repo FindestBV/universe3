@@ -44,7 +44,7 @@ const MaturityRadar: React.FC<ConfigDialogProps> = ({ isOpen, onClose }) => {
             initial={{ scale: 0.95 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0.95 }}
-            className="flex max-h-[90vh] w-full max-w-6xl flex-col overflow-hidden rounded-lg bg-white shadow-xl md:flex-row"
+            className="mx-8 flex h-3/4 w-full max-w-full flex-col overflow-hidden rounded-lg bg-white shadow-xl md:flex-row"
           >
             {/* Sidebar */}
             <div className="w-full border-b border-gray-200 bg-gray-50 p-6 md:w-72 md:border-b-0 md:border-r">

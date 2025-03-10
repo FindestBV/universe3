@@ -1,9 +1,8 @@
+import { Column, Layer, RequirementsTableProps } from "@/types/types";
 import { AnimatePresence, motion } from "framer-motion";
 import { AlertCircle, Plus, RefreshCw, Star, X } from "lucide-react";
 
 import React, { useState } from "react";
-
-import { Column, Layer, RequirementsTableProps } from "./types";
 
 const RequirementsTable: React.FC<RequirementsTableProps> = ({ isOpen, onClose }) => {
   const [selectedLayer, setSelectedLayer] = useState<string>("Layer 1");
@@ -40,7 +39,7 @@ const RequirementsTable: React.FC<RequirementsTableProps> = ({ isOpen, onClose }
             initial={{ scale: 0.95 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0.95 }}
-            className="flex max-h-[90vh] w-full max-w-6xl flex-col overflow-hidden rounded-lg bg-white shadow-xl md:flex-row"
+            className="mx-8 flex h-3/4 w-full max-w-full flex-col overflow-hidden rounded-lg bg-white shadow-xl md:flex-row"
           >
             {/* Sidebar */}
             <div className="w-full border-b border-gray-200 bg-gray-50 p-6 md:w-72 md:border-b-0 md:border-r">
