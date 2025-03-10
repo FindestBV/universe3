@@ -185,19 +185,19 @@ export const Dashboard = ({
                 <div className="flex-1 overflow-y-auto">
                   <ul className="border-b border-gray-200">
                     <li
-                      className={`${currentView === "overview" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
+                      className={`${currentView === "overview" && "bg-black"} group m-2 flex max-w-full items-center gap-2 rounded-sm p-4 hover:bg-black`}
                       onClick={() => {
                         setCurrentView("overview");
                       }}
                     >
-                      <Home className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Project overview</span>
+                      <Home className="h-5 w-5 text-white" />
+                      <span className="text-sm font-medium text-white">Project overview</span>
                       <span className="ml-auto">
-                        <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                        <ChevronRight className="rounded p-1 text-white hover:bg-blue-200" />
                       </span>
                     </li>
                     <li
-                      className={`${currentView === "search" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
+                      className={`${currentView === "search" && "bg-blue-100"} m-2 flex max-w-full items-center gap-2 rounded-sm p-4 hover:bg-blue-100`}
                       onClick={() => setCurrentView("search")}
                     >
                       <Search className="h-5 w-5" />
@@ -207,21 +207,25 @@ export const Dashboard = ({
                       </span>
                     </li>
                     <li
-                      className={`${currentView === "pages" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
+                      className={`${currentView === "pages" && "bg-black"} group m-2 flex max-w-full items-center gap-2 rounded-sm p-4 hover:bg-black`}
                       onClick={() => setCurrentView("pages")}
                     >
-                      <File className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Project pages</span>
+                      <File className="h-5 w-5 group-hover:text-white" />
+                      <span className="text-sm font-medium text-gray-600 group-hover:text-white">
+                        Project pages
+                      </span>
                       <span className="ml-auto">
-                        <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                        <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200 hover:text-white" />
                       </span>
                     </li>
                     <li
-                      className={`${currentView === "sources" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
+                      className={`${currentView === "sources" && "bg-black"} group m-2 flex max-w-full items-center gap-2 rounded-sm p-4 hover:bg-black`}
                       onClick={() => setCurrentView("sources")}
                     >
-                      <Link className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Project sources</span>
+                      <Link className="h-5 w-5 group-hover:text-white" />
+                      <span className="text-sm font-medium text-gray-600 group-hover:text-white">
+                        Project sources
+                      </span>
                       <span className="ml-auto">
                         <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
                       </span>
@@ -248,7 +252,7 @@ export const Dashboard = ({
                           <li key={section.title}>
                             <button
                               onClick={() => toggleSection(section.title)}
-                              className="flex w-full items-center gap-2 rounded-md py-2 text-left text-sm font-medium text-gray-700"
+                              className="flex max-w-full items-center gap-2 rounded-md py-2 text-left text-sm font-medium text-gray-700"
                             >
                               {openSections[section.title] ? (
                                 <ChevronDown className="rounded-sm bg-gray-100 p-1 text-gray-500" />
