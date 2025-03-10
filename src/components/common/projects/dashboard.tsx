@@ -335,7 +335,7 @@ export const Dashboard = ({
                 {/* Settings Footer */}
                 <div className="border-t border-gray-200 bg-white p-4">
                   <div className="flex cursor-pointer items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
-                    <Settings className="h-4 w-4" />
+                    <Settings className="h-4 w-4" fill="#000000" />
                     <span>Project settings</span>
                   </div>
                 </div>

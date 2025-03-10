@@ -145,14 +145,14 @@ const AskIgorModal: React.FC<AskIgorModalProps> = ({
         <DialogTrigger asChild>
           <div>
             <button
-              className={`summonIgorBtn`}
+              className={`summonIgorBtn px-4 py-2`}
               onClick={() => {
                 setIsMinimized(false);
                 setIsOpen(true);
               }}
             >
               <Zap size={20} className="zppr" />
-              {iconOnly ? null : label ? label : "Ask Igor"}
+              {iconOnly ? null : label ? label : "Ask IGOR"}
             </button>
           </div>
         </DialogTrigger>
