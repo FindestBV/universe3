@@ -217,7 +217,7 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
                     <TabsList className="flex w-full justify-start gap-2 border-b border-slate-300">
                       <TabsTrigger
                         value="report"
-                        className={`linear p-2 text-sm transition-all duration-150 ${
+                        className={`linear px-4 py-2 text-sm transition-all duration-150 ${
                           activeTab === "report"
                             ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                             : "text-gray-500"
