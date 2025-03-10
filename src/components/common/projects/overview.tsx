@@ -478,7 +478,7 @@ export const ProjectOverView = () => {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <button
-                        className="flex items-center rounded-md p-2 text-gray-600 hover:bg-gray-200"
+                        className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
                         id="addNewTabButton"
                       >
                         <Plus className="h-5 w-8" />
