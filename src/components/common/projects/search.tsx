@@ -89,7 +89,7 @@ export const ProjectSearch = () => {
       <div className="min-h-full" id="projects-search">
         <div className="mx-auto max-w-full p-8">
           <div className="overviewHeader">
-            <h1 className="mb-2 text-4xl font-bold">Project search</h1>
+            <h1 className="mb-2 text-2xl font-bold">Project search</h1>
             <br />
             <div className="mx-auto max-w-[1024px]">
               <SearchBar />

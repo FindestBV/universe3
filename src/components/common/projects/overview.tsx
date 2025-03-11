@@ -455,13 +455,13 @@ export const ProjectOverView = () => {
           >
             <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
               <div className="flex gap-2">
-                <TabsTrigger
+                {/* <TabsTrigger
                   key={"search"}
                   value={"search"}
                   className={`px-4 py-2 text-sm ${activeTabActive === "search" ? "border-b-2 border-blue-800 bg-blue-100 font-bold" : "text-black"}`}
                 >
                   <Search size={18} />
-                </TabsTrigger>
+                </TabsTrigger> */}
                 {tabs.map((tab) => (
                   <TabsTrigger
                     key={tab.id}
@@ -507,7 +507,7 @@ export const ProjectOverView = () => {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-                <AskIgorModal iconOnly={true} />
+                {/* <AskIgorModal iconOnly={true} /> */}
               </div>
             </TabsList>
 

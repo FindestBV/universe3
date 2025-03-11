@@ -19,10 +19,11 @@ import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { List, ListFilter, Plus, RadarIcon, Star } from "lucide-react";
+import { Filter, List, ListFilter, Plus, RadarIcon, Search, Star } from "lucide-react";
 
 import { useState } from "react";
 
+import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
 import AskIgorModal from "../dialogs/ask-igor";
 import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
@@ -287,6 +288,48 @@ export const ProjectSources = () => {
     >
       <div className="min-h-full" id="project-sources">
         <div className="mx-auto max-w-full p-8">
+          <div className="overviewHeader flex justify-between">
+            <h1 className="mb-2 text-2xl font-bold">Sources</h1>
+
+            <div className="project-controls flex items-center gap-4">
+              <AdvancedSearchModal />
+              <ListFilter />
+              <div className="flex items-center gap-2">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
+                        id="addNewTabButton"
+                      >
+                        <Plus className="h-5 w-5" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent className="w-72 p-0" align="end">
+                      <div className="flex flex-col rounded-md border border-slate-200 bg-white shadow-md">
+                        <div className="p-2 text-sm font-bold text-slate-700">Add new tab with</div>
+                        <div className="flex flex-col p-1">
+                          {tabTypeOptions.map((option) => (
+                            <button
+                              key={option.id}
+                              className="flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-slate-100"
+                              onClick={() => openTabConfigDialog(option)}
+                            >
+                              <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black">
+                                {option.icon}
+                              </span>
+                              <span>{option.label}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+              <AskIgorModal />
+            </div>
+          </div>
           <div className="mt-0">
             <Tabs defaultValue="all" className="pb-4" onValueChange={setIsActiveTabActive}>
               <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
@@ -302,42 +345,6 @@ export const ProjectSources = () => {
                     </TabsTrigger>
                   ))}
                 </div>
-                <div className="flex items-center gap-2">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button
-                          className="flex items-center rounded-md p-2 text-gray-600 hover:bg-gray-200"
-                          id="addNewTabButton"
-                        >
-                          <Plus className="h-5 w-8" />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent className="w-72 p-0" align="end">
-                        <div className="flex flex-col rounded-md border border-slate-200 bg-white shadow-md">
-                          <div className="p-2 text-sm font-bold text-slate-700">
-                            Add new tab with
-                          </div>
-                          <div className="flex flex-col p-1">
-                            {tabTypeOptions.map((option) => (
-                              <button
-                                key={option.id}
-                                className="flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-slate-100"
-                                onClick={() => openTabConfigDialog(option)}
-                              >
-                                <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black">
-                                  {option.icon}
-                                </span>
-                                <span>{option.label}</span>
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <AskIgorModal isToolbar={true} iconOnly={true} />
-                </div>
               </TabsList>
 
               {/* Content sections for each tab */}
@@ -350,14 +357,6 @@ export const ProjectSources = () => {
                   >
                     {tab.id === "all" && (
                       <div className="w-full">
-                        <div className="overviewHeader py-4">
-                          <h1 className="mb-2 text-4xl font-bold">Sources</h1>
-                          <p className="mb-4 text-sm">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam autem,
-                            deleniti ratione fuga consectetur sint unde nostrum, numquam corrupti
-                            esse, porro ullam dolorum. Repudiandae laborum sit fugit.
-                          </p>
-                        </div>
                         <div className="flex flex-col">
                           {[1, 2, 3, 4, 5, 6].map((_, index) => (
                             <div key={index} className="itemCard">
