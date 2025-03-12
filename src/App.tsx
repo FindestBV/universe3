@@ -15,13 +15,13 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 const componentMap: Record<string, React.LazyExoticComponent<any>> = {
   "/projects/dashboard": lazy(() => import("@/views/Projects")),
   "/projects/:id": lazy(() => import("@/views/Project")),
-  "/pages": lazy(() => import("@/views/Pages")),
-  "/pages/studies": lazy(() => import("@/views/Pages")),
   "/pages/studies/:id": lazy(() => import("@/views/Page")),
-  "/sources": lazy(() => import("@/views/Sources")),
-  "/sources/:id": lazy(() => import("@/views/Source")),
-  "/pages/entities": lazy(() => import("@/views/Pages")),
   "/pages/entities/:id": lazy(() => import("@/views/Page")),
+  "/pages/studies": lazy(() => import("@/views/Pages")),
+  "/pages/entities": lazy(() => import("@/views/Pages")),
+  "/pages": lazy(() => import("@/views/Pages")),
+  "/sources/:id": lazy(() => import("@/views/Source")),
+  "/sources": lazy(() => import("@/views/Sources")),
   "/queries": lazy(() => import("@/views/AdvancedSearch")),
   "/inbox": lazy(() => import("@/views/Inbox")),
   "*": lazy(() => import("@/views/NotFound")),
@@ -31,11 +31,18 @@ const componentMap: Record<string, React.LazyExoticComponent<any>> = {
 const RenderComponent = () => {
   const location = useLocation();
   const Component = useMemo(() => {
+    // Sort routes by specificity (more segments first)
+    const sortedRoutes = Object.entries(componentMap).sort((a, b) => {
+      const aSegments = a[0].split("/").length;
+      const bSegments = b[0].split("/").length;
+      return bSegments - aSegments;
+    });
+
     // Handle wildcard route separately
     if (
       location.pathname !== "/" &&
-      !Object.keys(componentMap).some(
-        (key) =>
+      !sortedRoutes.some(
+        ([key]) =>
           key !== "*" && location.pathname.match(new RegExp(`^${key.replace(/:\w+/g, "[^/]+")}`)),
       )
     ) {
@@ -43,7 +50,7 @@ const RenderComponent = () => {
     }
 
     return (
-      Object.entries(componentMap).find(
+      sortedRoutes.find(
         ([key]) =>
           key !== "*" && location.pathname.match(new RegExp(`^${key.replace(/:\w+/g, "[^/]+")}$`)),
       )?.[1] || componentMap["*"]

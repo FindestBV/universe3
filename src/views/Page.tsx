@@ -35,10 +35,10 @@ export const Page: React.FC = () => {
   const connectedEntities = fetchedEntity?.entities;
 
   if (fetchedEntity) {
-    // console.log("fetched entity full obj", fetchedEntity);
+    console.log("fetched entity full obj", fetchedEntity);
     try {
       parsedDescription = JSON.parse(fetchedEntity?.description);
-      // console.log("Parsed description:", parsedDescription.content);
+      console.log("Parsed description:", parsedDescription.content);
     } catch (error) {
       console.error("Failed to parse description:", error);
     }
