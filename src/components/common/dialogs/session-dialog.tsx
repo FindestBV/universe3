@@ -65,7 +65,11 @@ export const SessionDialog = () => {
         <DialogContent className="sessionDialog bg-white">
           <DialogHeader>
             <DialogTitle>Good morning!</DialogTitle>
+            <div id="dialog-description" className="sr-only">
+              Please enter your session details
+            </div>
           </DialogHeader>
+
           <h2>What project do you want to focus on today?</h2>
 
           <div className="recent_projects">

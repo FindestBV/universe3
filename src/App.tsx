@@ -12,7 +12,7 @@ import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-ro
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 // Lazy-loaded views
-const componentMap: Record<string, React.LazyExoticComponent<React.FC>> = {
+const componentMap: Record<string, React.LazyExoticComponent<any>> = {
   "/projects/dashboard": lazy(() => import("@/views/Projects")),
   "/projects/:id": lazy(() => import("@/views/Project")),
   "/pages": lazy(() => import("@/views/Pages")),
@@ -28,7 +28,7 @@ const componentMap: Record<string, React.LazyExoticComponent<React.FC>> = {
 };
 
 // Dynamic render component
-const RenderComponent: React.FC = () => {
+const RenderComponent = () => {
   const location = useLocation();
   const Component = useMemo(() => {
     return (
@@ -46,7 +46,7 @@ const RenderComponent: React.FC = () => {
 };
 
 // Protected routes
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const user = useSelector(currentUser);
   const navigate = useNavigate();
 
@@ -58,7 +58,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 };
 
 // Authenticated Layout
-const AuthenticatedLayout: React.FC = () => {
+const AuthenticatedLayout = () => {
   const location = useLocation();
 
   return (
@@ -79,7 +79,7 @@ const AuthenticatedLayout: React.FC = () => {
 };
 
 // Main App component
-const App: React.FC = () => {
+const App = () => {
   return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
@@ -96,11 +96,11 @@ const App: React.FC = () => {
 };
 
 // Top-level wrapper
-const AppWrapper: React.FC = () => {
+const AppWrapper = () => {
   return (
     <ReduxStoreProvider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter>
+        <BrowserRouter future={{ v7_startTransition: true }}>
           <App />
         </BrowserRouter>
       </PersistGate>
