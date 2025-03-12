@@ -31,9 +31,21 @@ const componentMap: Record<string, React.LazyExoticComponent<any>> = {
 const RenderComponent = () => {
   const location = useLocation();
   const Component = useMemo(() => {
+    // Handle wildcard route separately
+    if (
+      location.pathname !== "/" &&
+      !Object.keys(componentMap).some(
+        (key) =>
+          key !== "*" && location.pathname.match(new RegExp(`^${key.replace(/:\w+/g, "[^/]+")}`)),
+      )
+    ) {
+      return componentMap["*"];
+    }
+
     return (
-      Object.entries(componentMap).find(([key]) =>
-        location.pathname.match(new RegExp(`^${key.replace(/:\w+/g, "\\w+")}$`)),
+      Object.entries(componentMap).find(
+        ([key]) =>
+          key !== "*" && location.pathname.match(new RegExp(`^${key.replace(/:\w+/g, "[^/]+")}$`)),
       )?.[1] || componentMap["*"]
     );
   }, [location.pathname]);
