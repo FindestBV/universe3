@@ -6,69 +6,69 @@ import { persistor, store } from "@/store";
 import { LoginPage } from "@/views/LoginPage";
 import { PersistGate } from "redux-persist/integration/react";
 
-import { lazy, useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useMemo } from "react";
 import { Provider as ReduxStoreProvider, useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-// Lazy-loaded views (TEMP! Will sort this out with some proper Routing )
-const AdvancedSearch = lazy(() => import("@/views/AdvancedSearch"));
-// const Dashboard = lazy(() => import("@/views/Dashboard"));
-const Sources = lazy(() => import("@/views/Sources"));
-const Source = lazy(() => import("@/views/Source"));
-const Pages = lazy(() => import("@/views/Pages"));
-const Page = lazy(() => import("@/views/Page"));
-const Projects = lazy(() => import("@/views/Projects"));
-const Project = lazy(() => import("@/views/Project"));
-const NotFoundPage = lazy(() => import("@/views/NotFound"));
-const Inbox = lazy(() => import("@/views/Inbox"));
+// Lazy-loaded views
+const componentMap: Record<string, React.LazyExoticComponent<React.FC>> = {
+  "/projects/dashboard": lazy(() => import("@/views/Projects")),
+  "/projects/:id": lazy(() => import("@/views/Project")),
+  "/pages": lazy(() => import("@/views/Pages")),
+  "/pages/studies": lazy(() => import("@/views/Pages")),
+  "/pages/studies/:id": lazy(() => import("@/views/Page")),
+  "/sources": lazy(() => import("@/views/Sources")),
+  "/sources/:id": lazy(() => import("@/views/Source")),
+  "/pages/entities": lazy(() => import("@/views/Pages")),
+  "/pages/entities/:id": lazy(() => import("@/views/Page")),
+  "/queries": lazy(() => import("@/views/AdvancedSearch")),
+  "/inbox": lazy(() => import("@/views/Inbox")),
+  "*": lazy(() => import("@/views/NotFound")),
+};
+
+// Dynamic render component
+const RenderComponent: React.FC = () => {
+  const location = useLocation();
+  const Component = useMemo(() => {
+    return (
+      Object.entries(componentMap).find(([key]) =>
+        location.pathname.match(new RegExp(`^${key.replace(/:\w+/g, "\\w+")}$`)),
+      )?.[1] || componentMap["*"]
+    );
+  }, [location.pathname]);
+
+  return (
+    <Suspense fallback={<div className="p-10 text-center">Loading...</div>}>
+      <Component />
+    </Suspense>
+  );
+};
 
 // Protected routes
-// @ts-expect-error blah
-const ProtectedRoute = ({ children }) => {
-  const user = useSelector(currentUser); // Get user from Redux
-  const isAuthenticated = !!user; // Check if user exists
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const user = useSelector(currentUser);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated, navigate]);
+    if (!user) navigate("/");
+  }, [user, navigate]);
 
-  if (!isAuthenticated) {
-    return null;
-  }
-
-  return children;
+  return user ? <>{children}</> : null;
 };
 
 // Authenticated Layout
-function AuthenticatedLayout() {
+const AuthenticatedLayout: React.FC = () => {
   const location = useLocation();
-  const nodeRef = useRef();
+
   return (
     <SidebarProvider>
       <AppSidebar />
       <div className="app-canvas w-full">
         <TransitionGroup component={null}>
-          <CSSTransition key={location.key} classNames="fade" timeout={1000} nodeRef={nodeRef}>
+          <CSSTransition key={location.key} classNames="fade" timeout={500}>
             <main className="pageContent">
-              <Routes location={location}>
-                {/* TEMP!! THIS WILL BE REFACTORED */}
-                <Route path="/projects/dashboard" element={<Projects />} />
-                <Route path="/projects/:id" element={<Project />} />
-                <Route path="/pages" element={<Pages />} />
-                <Route path="/pages/studies" element={<Pages />} />
-                <Route path="/pages/studies/:id" element={<Page />} />
-                <Route path="/sources" element={<Sources />} />
-                <Route path="/sources/:id" element={<Source />} />
-                <Route path="/pages/entities" element={<Pages />} />
-                <Route path="/pages/entities/:id" element={<Page />} />
-                <Route path="/queries" element={<AdvancedSearch />} />
-                <Route path="/inbox" element={<Inbox />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
+              <RenderComponent />
             </main>
           </CSSTransition>
         </TransitionGroup>
@@ -76,10 +76,10 @@ function AuthenticatedLayout() {
       <Toaster />
     </SidebarProvider>
   );
-}
+};
 
 // Main App component
-function App() {
+const App: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
@@ -91,13 +91,12 @@ function App() {
           </ProtectedRoute>
         }
       />
-      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
-}
+};
 
 // Top-level wrapper
-function AppWrapper() {
+const AppWrapper: React.FC = () => {
   return (
     <ReduxStoreProvider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -107,6 +106,6 @@ function AppWrapper() {
       </PersistGate>
     </ReduxStoreProvider>
   );
-}
+};
 
 export default AppWrapper;
