@@ -43,25 +43,25 @@ export const documentApi = api.injectEndpoints({
       // The builder query must still be defined on the api slice.
 
       async onQueryStarted(id, { dispatch, queryFulfilled }) {
-        try {
-          const { data: document } = await queryFulfilled;
-          const scienceArticles = await dispatch(
-            api.endpoints?.getDocumentRelatedScienceArticles.initiate(document.id),
-          ).unwrap();
+        const { data: document } = await queryFulfilled.catch(() => null);
+        if (!document) return;
 
-          const attachedFiles = await dispatch(
-            api.endpoints.getAttachedFiles.initiate(id),
-          ).unwrap();
+        const scienceArticles = await dispatch(
+          api.endpoints?.getDocumentRelatedScienceArticles.initiate(document.id),
+        )
+          .unwrap()
+          .catch(() => null);
 
-          dispatch(
-            api.util.updateQueryData("getDocumentById", id, (draft) => {
-              draft.scienceArticles = scienceArticles;
-              draft.attachedFiles = attachedFiles;
-            }),
-          );
-        } catch (error) {
-          console.error("Error in onQueryStarted for getEntityById:", error);
-        }
+        const attachedFiles = await dispatch(api.endpoints.getAttachedFiles.initiate(id))
+          .unwrap()
+          .catch(() => null);
+
+        dispatch(
+          api.util.updateQueryData("getDocumentById", id, (draft) => {
+            draft.scienceArticles = scienceArticles ?? [];
+            draft.attachedFiles = attachedFiles ?? [];
+          }),
+        );
       },
     }),
 
@@ -238,21 +238,25 @@ export const documentApi = api.injectEndpoints({
       async onQueryStarted(id, { dispatch }) {
         try {
           // get connected inbox items associated with this item Id
-          const inboxItems = await dispatch(
-            api.endpoints.getConnectedInboxItems.initiate(id),
-          ).unwrap();
+          const inboxItems = await dispatch(api.endpoints.getConnectedInboxItems.initiate(id))
+            .unwrap()
+            .catch(() => null);
           // get connected documents/objects associated with this item Id
-          const connectedDocs = await dispatch(
-            api.endpoints.getEntityConnectedDocs.initiate(id),
-          ).unwrap();
+          const connectedDocs = await dispatch(api.endpoints.getEntityConnectedDocs.initiate(id))
+            .unwrap()
+            .catch(() => null);
           // get connected queriess associated with this item Id
           const connectedQueries = await dispatch(
             api.endpoints.getEntityConnectedQueries.initiate(id),
-          ).unwrap();
+          )
+            .unwrap()
+            .catch(() => null);
           // get connected comments associated with this item Id
           const connectedComments = await dispatch(
             api.endpoints.getEntityConnectedComments.initiate(id),
-          ).unwrap();
+          )
+            .unwrap()
+            .catch(() => null);
 
           /* 
             upDateQueryData will then take the result of the initial query and appends the result of the actual actions.
@@ -400,8 +404,8 @@ export const documentApi = api.injectEndpoints({
           } catch (relatedDataError) {
             console.error("Error fetching related study data:", relatedDataError);
           }
-        } catch (error) {
-          console.error("Error in onQueryStarted for getStudyById:", error);
+        } catch {
+          // silent fail
         }
       },
     }),
