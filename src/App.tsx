@@ -4,90 +4,137 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { persistor, store } from "@/store";
 import { LoginPage } from "@/views/LoginPage";
+import NotFound from "@/views/NotFound";
 import { PersistGate } from "redux-persist/integration/react";
 
-import { lazy, Suspense, useEffect, useMemo } from "react";
+import { lazy, useEffect, useRef } from "react";
 import { Provider as ReduxStoreProvider, useSelector } from "react-redux";
-import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-// Lazy-loaded views
-const componentMap: Record<string, React.LazyExoticComponent<any>> = {
-  "/projects/dashboard": lazy(() => import("@/views/Projects")),
-  "/projects/:id": lazy(() => import("@/views/Project")),
-  "/pages/studies/:id": lazy(() => import("@/views/Page")),
-  "/pages/entities/:id": lazy(() => import("@/views/Page")),
-  "/pages/studies": lazy(() => import("@/views/Pages")),
-  "/pages/entities": lazy(() => import("@/views/Pages")),
-  "/pages": lazy(() => import("@/views/Pages")),
-  "/sources/:id": lazy(() => import("@/views/Source")),
-  "/sources": lazy(() => import("@/views/Sources")),
-  "/queries": lazy(() => import("@/views/AdvancedSearch")),
-  "/inbox": lazy(() => import("@/views/Inbox")),
-  "*": lazy(() => import("@/views/NotFound")),
-};
-
-// Dynamic render component
-const RenderComponent = () => {
-  const location = useLocation();
-  const Component = useMemo(() => {
-    // Sort routes by specificity (more segments first)
-    const sortedRoutes = Object.entries(componentMap).sort((a, b) => {
-      const aSegments = a[0].split("/").length;
-      const bSegments = b[0].split("/").length;
-      return bSegments - aSegments;
-    });
-
-    // Handle wildcard route separately
-    if (
-      location.pathname !== "/" &&
-      !sortedRoutes.some(
-        ([key]) =>
-          key !== "*" && location.pathname.match(new RegExp(`^${key.replace(/:\w+/g, "[^/]+")}`)),
-      )
-    ) {
-      return componentMap["*"];
-    }
-
-    return (
-      sortedRoutes.find(
-        ([key]) =>
-          key !== "*" && location.pathname.match(new RegExp(`^${key.replace(/:\w+/g, "[^/]+")}$`)),
-      )?.[1] || componentMap["*"]
-    );
-  }, [location.pathname]);
-
-  return (
-    <Suspense fallback={<div className="p-10 text-center">Loading...</div>}>
-      <Component />
-    </Suspense>
-  );
-};
+// Lazy-loaded views (TEMP! Will sort this out with some proper Routing )
+const AdvancedSearch = lazy(() => import("@/views/AdvancedSearch"));
+// const Dashboard = lazy(() => import("@/views/Dashboard"));
+const Sources = lazy(() => import("@/views/Sources"));
+const Source = lazy(() => import("@/views/Source"));
+const Pages = lazy(() => import("@/views/Pages"));
+const Page = lazy(() => import("@/views/Page"));
+const Projects = lazy(() => import("@/views/Projects"));
+const Project = lazy(() => import("@/views/Project"));
+const NotFoundPage = lazy(() => import("@/views/NotFound"));
+const Inbox = lazy(() => import("@/views/Inbox"));
 
 // Protected routes
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const user = useSelector(currentUser);
+// @ts-expect-error blah
+const ProtectedRoute = ({ children }) => {
+  const user = useSelector(currentUser); // Get user from Redux
+  const isAuthenticated = !!user; // Check if user exists
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) navigate("/");
-  }, [user, navigate]);
+    if (!isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
-  return user ? <>{children}</> : null;
+  if (!isAuthenticated) {
+    return null;
+  }
+
+  return children;
 };
 
-// Authenticated Layout
-const AuthenticatedLayout = () => {
+/**
+ * Type definition for route configuration
+ * Ensures consistent route object structure throughout the application
+ */
+type RouteConfig = {
+  path: string; // URL path for the route
+  component: React.ComponentType<any>; // Component to render for this route
+  type?: "study" | "entity"; // Optional type for special page handling
+  title?: string; // Optional title for navigation/breadcrumbs
+};
+
+/**
+ * Application route definitions
+ * Each route object defines how a specific URL path should be handled
+ * Routes are ordered by specificity (more specific routes first)
+ */
+const routes: RouteConfig[] = [
+  { path: "/projects/dashboard", component: Projects, title: "Projects" },
+  { path: "/projects/:id", component: Project, title: "Project Details" },
+  { path: "/pages", component: Pages, title: "Pages" },
+  { path: "/pages/studies", component: Pages, title: "Studies" },
+  // Special case: Study pages require additional type prop for query handling
+  { path: "/pages/studies/:id", component: Page, type: "study", title: "Study Details" },
+  { path: "/sources", component: Sources, title: "Sources" },
+  { path: "/sources/:id", component: Source, title: "Source Details" },
+  { path: "/pages/entities", component: Pages, title: "Entities" },
+  // Special case: Entity pages require additional type prop for query handling
+  { path: "/pages/entities/:id", component: Page, type: "entity", title: "Entity Details" },
+  { path: "/queries", component: AdvancedSearch, title: "Advanced Search" },
+  { path: "/inbox", component: Inbox, title: "Inbox" },
+  { path: "*", component: NotFoundPage, title: "Not Found" },
+];
+
+/**
+ * Props interface for the RenderComponent
+ * Defines the expected props and their types
+ */
+type RenderComponentProps = {
+  component: React.ComponentType<any>; // Component to be rendered
+  type?: "study" | "entity"; // Optional type for special page handling
+};
+
+/**
+ * RenderComponent handles the actual rendering of route components
+ * It manages special cases for study and entity pages by passing additional props
+ */
+const RenderComponent: React.FC<RenderComponentProps> = ({ component: Component, type }) => {
+  const { id } = useParams(); // Get URL parameters
+  // Conditionally render with type and id props for study/entity pages
+  return type ? <Component pageType={type} id={id} /> : <Component />;
+};
+
+/**
+ * AuthenticatedLayout provides the main application structure
+ * Includes sidebar, navigation, and page transitions
+ */
+function AuthenticatedLayout() {
   const location = useLocation();
+  // Properly typed ref for CSSTransition
+  const nodeRef = useRef<HTMLElement>(null);
 
   return (
     <SidebarProvider>
       <AppSidebar />
       <div className="app-canvas w-full">
+        {/* Handle page transition animations */}
         <TransitionGroup component={null}>
-          <CSSTransition key={location.key} classNames="fade" timeout={500}>
-            <main className="pageContent">
-              <RenderComponent />
+          <CSSTransition key={location.key} classNames="fade" timeout={1000} nodeRef={nodeRef}>
+            <main className="pageContent" ref={nodeRef}>
+              {/* Dynamic route rendering based on configuration */}
+              <Routes location={location}>
+                {routes.map(({ path, component, type }) => (
+                  <Route
+                    key={path}
+                    path={path}
+                    element={
+                      <RenderComponent
+                        component={component}
+                        {...(type && { type })} // Conditionally spread type prop
+                      />
+                    }
+                  />
+                ))}
+              </Routes>
             </main>
           </CSSTransition>
         </TransitionGroup>
@@ -95,10 +142,10 @@ const AuthenticatedLayout = () => {
       <Toaster />
     </SidebarProvider>
   );
-};
+}
 
 // Main App component
-const App = () => {
+function App() {
   return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
@@ -110,12 +157,13 @@ const App = () => {
           </ProtectedRoute>
         }
       />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
-};
+}
 
 // Top-level wrapper
-const AppWrapper = () => {
+function AppWrapper() {
   return (
     <ReduxStoreProvider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -125,6 +173,6 @@ const AppWrapper = () => {
       </PersistGate>
     </ReduxStoreProvider>
   );
-};
+}
 
 export default AppWrapper;
