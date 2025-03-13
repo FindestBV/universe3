@@ -106,6 +106,8 @@ const RenderComponent: React.FC<RenderComponentProps> = ({ component: Component,
 /**
  * AuthenticatedLayout provides the main application structure
  * Includes sidebar, navigation, and page transitions
+ * Note: Likely to not be last pass over this.
+ * TODO: validate against inadvertent race conditions.
  */
 function AuthenticatedLayout() {
   const location = useLocation();
