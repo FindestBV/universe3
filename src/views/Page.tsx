@@ -10,7 +10,7 @@ import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 import { useEffect } from "react";
 import { useLocation, useParams } from "react-router";
 
-export const Page: React.FC = () => {
+export const Page = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
 

@@ -7,7 +7,7 @@ import { Search } from "lucide-react";
 
 import { useEffect, useState } from "react";
 
-export const AdvancedSearch: React.FC = () => {
+export const AdvancedSearch = () => {
   const [selectedSearchItems, setSelectedSearchItems] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);

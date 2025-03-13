@@ -10,7 +10,7 @@ import { Dashboard } from "@/components/common/projects/dashboard";
 import { useEffect } from "react";
 import { useLocation, useParams } from "react-router";
 
-export const Project: React.FC = () => {
+export const Project = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
 

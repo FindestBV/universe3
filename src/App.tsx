@@ -97,7 +97,8 @@ type RenderComponentProps = {
  * RenderComponent handles the actual rendering of route components
  * It manages special cases for study and entity pages by passing additional props
  */
-const RenderComponent: React.FC<RenderComponentProps> = ({ component: Component, type }) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const RenderComponent = ({ component: Component, type }: any) => {
   const { id } = useParams(); // Get URL parameters
   // Conditionally render with type and id props for study/entity pages
   return type ? <Component pageType={type} id={id} /> : <Component />;
@@ -169,7 +170,7 @@ function AppWrapper() {
   return (
     <ReduxStoreProvider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter future={{ v7_startTransition: true }}>
+        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <App />
         </BrowserRouter>
       </PersistGate>
