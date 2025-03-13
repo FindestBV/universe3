@@ -10,7 +10,7 @@ import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 import { useEffect } from "react";
 import { useLocation, useParams } from "react-router";
 
-export const Page: React.FC = () => {
+export const Page = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
 
@@ -37,7 +37,7 @@ export const Page: React.FC = () => {
   if (fetchedEntity) {
     try {
       parsedDescription = JSON.parse(fetchedEntity?.description);
-      // console.log("Parsed description:", parsedDescription.content);
+      console.log("Parsed description:", parsedDescription.content);
     } catch (error) {
       console.error("Failed to parse description:", error);
     }

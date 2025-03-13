@@ -40,7 +40,7 @@ const dataPoints = [
   { topic: 4, institution: 2, size: 15, type: "education" },
 ];
 
-const DotPlot: React.FC = () => {
+const DotPlot = () => {
   return (
     <div className="flex w-full items-center justify-center overflow-auto bg-gray-900 p-6 text-white">
       <div className="relative min-h-[550px]">

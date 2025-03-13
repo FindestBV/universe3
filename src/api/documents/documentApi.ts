@@ -360,29 +360,46 @@ export const documentApi = api.injectEndpoints({
 
       async onQueryStarted(id, { dispatch, queryFulfilled }) {
         try {
-          // Get the main document
+          // Attempt to fetch the main document
           const { data: study } = await queryFulfilled;
+          if (!study) throw new Error("Study data not found");
 
-          // Fetch additional related data
-          const [inboxItems, connectedStudies, connectedDocs, connectedComments, maturityRadar] =
-            await Promise.all([
-              dispatch(api.endpoints.getConnectedInboxItems.initiate(id)).unwrap(),
-              dispatch(api.endpoints.getStudyConnectedQueries.initiate(id)).unwrap(),
-              dispatch(api.endpoints.getStudyConnectedDocs.initiate(id)).unwrap(),
-              dispatch(api.endpoints.getStudyConnectedComments.initiate(id)).unwrap(),
-              dispatch(api.endpoints.getStudyMaturityRadar.initiate(id)).unwrap(),
-            ]);
+          console.log("Fetched study:", study);
 
-          // Merge all the data into the study object
-          dispatch(
-            api.util.updateQueryData("getStudyById", id, (draft) => {
-              draft.connectedInboxItems = inboxItems;
-              draft.connectedStudies = connectedStudies;
-              draft.connectedDocs = connectedDocs;
-              draft.connectedComments = connectedComments;
-              draft.maturityRadar = maturityRadar; // Merging Maturity Radar here
-            }),
-          );
+          try {
+            // Fetch additional related data with Promise.all
+            const [inboxItems, connectedStudies, connectedDocs, connectedComments, maturityRadar] =
+              await Promise.all([
+                dispatch(api.endpoints.getConnectedInboxItems.initiate(id))
+                  .unwrap()
+                  .catch(() => null),
+                dispatch(api.endpoints.getStudyConnectedQueries.initiate(id))
+                  .unwrap()
+                  .catch(() => null),
+                dispatch(api.endpoints.getStudyConnectedDocs.initiate(id))
+                  .unwrap()
+                  .catch(() => null),
+                dispatch(api.endpoints.getStudyConnectedComments.initiate(id))
+                  .unwrap()
+                  .catch(() => null),
+                dispatch(api.endpoints.getStudyMaturityRadar.initiate(id))
+                  .unwrap()
+                  .catch(() => null),
+              ]);
+
+            // Merge all the data into the study object
+            dispatch(
+              api.util.updateQueryData("getStudyById", id, (draft) => {
+                draft.connectedInboxItems = inboxItems ?? [];
+                draft.connectedStudies = connectedStudies ?? [];
+                draft.connectedDocs = connectedDocs ?? [];
+                draft.connectedComments = connectedComments ?? [];
+                draft.maturityRadar = maturityRadar ?? null; // Merging Maturity Radar here
+              }),
+            );
+          } catch (relatedDataError) {
+            console.error("Error fetching related study data:", relatedDataError);
+          }
         } catch (error) {
           console.error("Error in onQueryStarted for getStudyById:", error);
         }

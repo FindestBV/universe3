@@ -116,68 +116,78 @@ export const Dashboard = ({
                 <div className="flex flex-col">
                   {/* Gradient Header */}
                   <div
-                    className={`flex cursor-pointer transition-all duration-150 ease-linear ${isTitleExpanded ? "w-[200%]" : "w-full"} justify-between bg-[linear-gradient(to_bottom_right,black_0%,black_70%,#60a5fa_80%,white_90%,#facc15_100%)] p-4`}
+                    className={`flex transform-gpu cursor-pointer transition-all duration-300 ease-in-out ${
+                      isTitleExpanded ? "w-[200%]" : "w-full"
+                    } justify-between bg-[linear-gradient(to_bottom_right,black_0%,black_70%,#60a5fa_80%,white_90%,#facc15_100%)] p-4`}
                   >
-                    <>
-                      <div className="flex flex-col">
-                        <small className="text-xs font-bold text-white">Project</small>
-                        <p className="text-xs font-bold text-white">
-                          {isProjectDashboard
-                            ? "Your Universe Projects"
-                            : "Cross regeneration to maxim..."}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <Eye
-                          size={20}
-                          className={`cursor-pointer ${isTitleExpanded ? "text-[#FFFF00]" : "text-white"}`}
-                          onClick={triggerExpand}
-                        />
-                        <ChevronsUpDown size={20} className="text-white" />
-                      </div>
-                    </>
+                    <div className="flex flex-col">
+                      <small className="text-xs font-bold text-white">Project</small>
+                      <p className="text-xs font-bold text-white">
+                        {isProjectDashboard
+                          ? "Your Universe Projects"
+                          : "Cross regeneration to maxim..."}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <Eye
+                        size={20}
+                        className={`transform-gpu cursor-pointer transition-colors duration-300 ${
+                          isTitleExpanded ? "text-[#FFFF00]" : "text-white"
+                        }`}
+                        onClick={triggerExpand}
+                      />
+                      <ChevronsUpDown size={20} className="text-white" />
+                    </div>
                   </div>
+
+                  {/* Expandable Content */}
                   <div
-                    className={`bg-white transition-all duration-150 ease-linear ${isTitleExpanded ? "h-auto w-[200%] rounded-br-lg border shadow-md" : "hidden h-0 w-full"}`}
+                    className={`transform-gpu overflow-hidden bg-white transition-all duration-300 ease-in-out ${
+                      isTitleExpanded ? "h-[250px] w-[200%] opacity-100" : "h-0 w-full opacity-0"
+                    } rounded-br-lg border shadow-md`}
                   >
-                    <ul className="border-b border-gray-200">
-                      <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
-                        <span className="text-sm font-semibold text-gray-600">
-                          Alternative to PFTE
-                        </span>
-                        <span className="ml-auto flex gap-2">
-                          <Eye className="rounded p-1 text-gray-600 hover:bg-blue-200" />
-                          <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                        </span>
-                      </li>
-                      <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
-                        <span className="text-sm font-semibold text-gray-600">
-                          Cross regeneration to maximise macromolecules elution for 'Gent
-                          production' ion gas resins
-                        </span>
-                        <span className="ml-auto flex gap-2">
-                          <Eye className="rounded p-1 text-gray-600 hover:bg-blue-200" />
-                          <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                        </span>
-                      </li>
-                      <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
-                        <span className="text-sm font-semibold text-gray-600">Get Weld Soon</span>
-                        <span className="ml-auto flex gap-2">
-                          <Eye className="rounded p-1 text-gray-600 hover:bg-blue-200" />
-                          <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                        </span>
-                      </li>
-                    </ul>
-                    <div className="flex w-full gap-1 border p-2">
-                      <Button
-                        className="border border-slate-300 bg-slate-100 text-black hover:bg-slate-200"
-                        onClick={() => {
-                          navigateWithTransition(`/projects/dashboard`);
-                        }}
-                      >
-                        <ArrowLeft /> Back to the Universe
-                      </Button>
-                      <CreateProjectDialog type="findest-button" />
+                    <div
+                      className={`transition-transform duration-300 ${
+                        isTitleExpanded ? "translate-y-0" : "-translate-y-4"
+                      }`}
+                    >
+                      <ul className="border-b border-gray-200">
+                        <li className="flex w-full items-center gap-2 p-4 transition-colors duration-200 hover:bg-blue-100">
+                          <span className="text-sm font-semibold text-gray-600">
+                            Alternative to PFTE
+                          </span>
+                          <span className="ml-auto flex gap-2">
+                            <Eye className="rounded p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                            <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                          </span>
+                        </li>
+                        <li className="flex w-full items-center gap-2 p-4 transition-colors duration-200 hover:bg-blue-100">
+                          <span className="text-sm font-semibold text-gray-600">
+                            Cross regeneration to maximise macromolecules elution for 'Gent
+                            production' ion gas resins
+                          </span>
+                          <span className="ml-auto flex gap-2">
+                            <Eye className="rounded p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                            <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                          </span>
+                        </li>
+                        <li className="flex w-full items-center gap-2 p-4 transition-colors duration-200 hover:bg-blue-100">
+                          <span className="text-sm font-semibold text-gray-600">Get Weld Soon</span>
+                          <span className="ml-auto flex gap-2">
+                            <Eye className="rounded p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                            <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                          </span>
+                        </li>
+                      </ul>
+                      <div className="flex w-full gap-1 border p-2">
+                        <button
+                          className="flex items-center gap-2 rounded border border-slate-300 bg-slate-100 px-4 py-2 text-black transition-colors duration-200 hover:bg-slate-200"
+                          onClick={() => navigateWithTransition("/projects/dashboard")}
+                        >
+                          <ArrowLeft /> Back to the Universe
+                        </button>
+                        <CreateProjectDialog type="findest-button" />
+                      </div>
                     </div>
                   </div>
                 </div>

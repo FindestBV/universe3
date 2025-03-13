@@ -53,7 +53,7 @@ const MenuItemComponent: React.FC<MenuItemProps> = ({ item, level = 0 }) => {
   );
 };
 
-export const NestedMenu: React.FC = () => {
+export const NestedMenu = () => {
   const menuItems: MenuItem[] = [
     {
       label: "Carbon Capture Overview",

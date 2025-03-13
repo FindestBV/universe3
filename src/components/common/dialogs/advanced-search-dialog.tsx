@@ -27,7 +27,7 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Search } from "lucide-react";
 
-const AdvancedSearchModal: React.FC = () => {
+const AdvancedSearchModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>

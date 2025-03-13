@@ -5,7 +5,7 @@ import { CardContent } from "@/components/ui/card";
 
 import { useEffect, useState } from "react";
 
-export const Sources: React.FC = () => {
+export const Sources = () => {
   const [selectedDocs, setSelectedDocs] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [documentsPerPage, setDocumentsPerPage] = useState(12);

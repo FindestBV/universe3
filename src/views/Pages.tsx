@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 
 import { useGetEntitiesQuery, useGetStudiesQuery } from "../api/documents/documentApi";
 
-export const Pages: React.FC = () => {
+export const Pages = () => {
   const location = useLocation();
   const pageType = location.pathname.split("/").pop() || "entities";
 
