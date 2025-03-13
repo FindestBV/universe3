@@ -368,8 +368,6 @@ export const documentApi = api.injectEndpoints({
           const { data: study } = await queryFulfilled;
           if (!study) throw new Error("Study data not found");
 
-          console.log("Fetched study:", study);
-
           try {
             // Fetch additional related data with Promise.all
             const [inboxItems, connectedStudies, connectedDocs, connectedComments, maturityRadar] =

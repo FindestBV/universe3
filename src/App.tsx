@@ -170,7 +170,7 @@ function AppWrapper() {
   return (
     <ReduxStoreProvider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <BrowserRouter future={{ v7_startTransition: true }}>
           <App />
         </BrowserRouter>
       </PersistGate>
