@@ -686,9 +686,9 @@ export const ProjectOverView = () => {
             >
               <div className="flex w-full flex-col">
                 {/* Header Row */}
-                <div className="flex w-full px-4 py-2 font-semibold">
-                  <div className="flex w-1/4 items-center">Rating</div>
-                  <div className="flex w-3/4 items-center">Page Titles</div>
+                <div className="mb-2 flex w-full px-4 py-2 font-semibold">
+                  <div className="w-auto min-w-[200px]">Rating</div>
+                  <div className="flex-grow">Page Titles</div>
                 </div>
 
                 {/* List of Voting Cards */}
@@ -701,8 +701,6 @@ export const ProjectOverView = () => {
                   <VotingCard star={1} />
                 </div>
               </div>
-
-              {/* <PresetButton title="Other general keyword" description="Either based on general knowledge or the sources linked." className="bg-slate-100" /> */}
             </TabsContent>
             <TabsContent
               value="queries"
