@@ -53,6 +53,8 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[] }> = ({ linkingData
   const [graphData, setGraphData] = useState({ nodes: [], links: [] });
   const [hoveredNode, setHoveredNode] = useState(null); // Stores hovered node for tooltips
 
+  console.log("Linking", linkingData);
+
   useEffect(() => {
     if (!linkingData || linkingData.length === 0) return;
 

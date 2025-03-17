@@ -21,7 +21,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 // Lazy-loaded views (TEMP! Will sort this out with some proper Routing )
 const AdvancedSearch = lazy(() => import("@/views/AdvancedSearch"));
-// const Dashboard = lazy(() => import("@/views/Dashboard"));
+const Dashboard = lazy(() => import("@/views/Dashboard"));
 const Sources = lazy(() => import("@/views/Sources"));
 const Source = lazy(() => import("@/views/Source"));
 const Pages = lazy(() => import("@/views/Pages"));
@@ -68,7 +68,7 @@ type RouteConfig = {
  * Routes are ordered by specificity (more specific routes first)
  */
 const routes: RouteConfig[] = [
-  { path: "/projects/dashboard", component: Projects, title: "Projects" },
+  { path: "/projects/dashboard", component: Dashboard, title: "Projects" },
   { path: "/projects/:id", component: Project, title: "Project Details" },
   { path: "/pages", component: Pages, title: "Pages" },
   { path: "/pages/studies", component: Pages, title: "Studies" },
