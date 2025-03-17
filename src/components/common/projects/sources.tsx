@@ -25,6 +25,7 @@ import { useState } from "react";
 
 import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
 import AskIgorModal from "../dialogs/ask-igor";
+import FilterSheet from "../dialogs/filter-sheet";
 import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
 import ResultsOverview from "./config/results-overview";
@@ -293,7 +294,7 @@ export const ProjectSources = () => {
 
             <div className="project-controls flex items-center gap-4">
               <AdvancedSearchModal />
-              <ListFilter />
+              <FilterSheet />
               <div className="flex items-center gap-2">
                 <TooltipProvider>
                   <Tooltip>
