@@ -69,6 +69,16 @@ import { useState } from "react";
 // import { toast } from "react-hot-toast";
 // import LinkedCounts from "../cards/linked-counts";
 
+interface AskIgorModalProps {
+  isToolbar?: boolean;
+  iconOnly?: boolean;
+  label?: string;
+  preloadedQueries?: Array<{ id: number; question: string }>;
+  connectedQueries?: Array<{ id: number; question: string }>;
+  onRunQuery?: (query: string) => void;
+  onCancelQuery?: (queryId: number) => void;
+}
+
 function PresetButton({
   title,
   description,
@@ -93,7 +103,15 @@ function PresetButton({
   );
 }
 
-const AskIgorModal: React.FC = ({ ...props }: any) => {
+const AskIgorModal: React.FC<AskIgorModalProps> = ({
+  isToolbar = false,
+  iconOnly = false,
+  label,
+  preloadedQueries = [],
+  connectedQueries = [],
+  onRunQuery,
+  onCancelQuery,
+}) => {
   const [question, setQuestion] = useState("What do you want to ask about?");
   const [activeTab, setActiveTab] = useState("report");
   const [isMinimized, setIsMinimized] = useState(false); // Track minimization state
@@ -127,14 +145,14 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
         <DialogTrigger asChild>
           <div>
             <button
-              className={`summonIgorBtn ${props?.isToolbar ? "toolBarIgor" : ""}`}
+              className={`summonIgorBtn px-4 py-2`}
               onClick={() => {
                 setIsMinimized(false);
                 setIsOpen(true);
               }}
             >
               <Zap size={20} className="zppr" />
-              {props?.iconOnly ? null : props?.label ? props.label : "Ask Igor"}
+              {iconOnly ? null : label ? label : "Ask IGOR"}
             </button>
           </div>
         </DialogTrigger>
@@ -217,7 +235,7 @@ const AskIgorModal: React.FC = ({ ...props }: any) => {
                     <TabsList className="flex w-full justify-start gap-2 border-b border-slate-300">
                       <TabsTrigger
                         value="report"
-                        className={`linear p-2 text-sm transition-all duration-150 ${
+                        className={`linear px-4 py-2 text-sm transition-all duration-150 ${
                           activeTab === "report"
                             ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                             : "text-gray-500"

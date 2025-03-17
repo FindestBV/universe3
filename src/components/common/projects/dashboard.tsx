@@ -116,68 +116,78 @@ export const Dashboard = ({
                 <div className="flex flex-col">
                   {/* Gradient Header */}
                   <div
-                    className={`flex transition-all duration-150 ease-linear ${isTitleExpanded ? "w-[200%]" : "w-full"} justify-between bg-[linear-gradient(to_bottom_right,black_0%,black_70%,#60a5fa_80%,white_90%,#facc15_100%)] p-4`}
+                    className={`flex transform-gpu cursor-pointer transition-all duration-300 ease-in-out ${
+                      isTitleExpanded ? "w-[200%]" : "w-full"
+                    } justify-between bg-[linear-gradient(to_bottom_right,black_0%,black_70%,#60a5fa_80%,white_90%,#facc15_100%)] p-4`}
                   >
-                    <>
-                      <div className="flex flex-col">
-                        <small className="text-xs font-bold text-white">Project</small>
-                        <p className="text-xs font-bold text-white">
-                          {isProjectDashboard
-                            ? "Your Universe Projects"
-                            : "Cross regeneration to maxim..."}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <Eye
-                          size={20}
-                          className={`cursor-pointer ${isTitleExpanded ? "text-[#FFFF00]" : "text-white"}`}
-                          onClick={triggerExpand}
-                        />
-                        <ChevronsUpDown size={20} className="text-white" />
-                      </div>
-                    </>
+                    <div className="flex flex-col">
+                      <small className="text-xs font-bold text-white">Project</small>
+                      <p className="text-xs font-bold text-white">
+                        {isProjectDashboard
+                          ? "Your Universe Projects"
+                          : "Cross regeneration to maxim..."}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <Eye
+                        size={20}
+                        className={`transform-gpu cursor-pointer transition-colors duration-300 ${
+                          isTitleExpanded ? "text-[#FFFF00]" : "text-white"
+                        }`}
+                        onClick={triggerExpand}
+                      />
+                      <ChevronsUpDown size={20} className="text-white" />
+                    </div>
                   </div>
+
+                  {/* Expandable Content */}
                   <div
-                    className={`bg-white transition-all duration-150 ease-linear ${isTitleExpanded ? "h-auto w-[200%] rounded-br-lg border shadow-md" : "hidden h-0 w-full"}`}
+                    className={`transform-gpu overflow-hidden bg-white transition-all duration-300 ease-in-out ${
+                      isTitleExpanded ? "h-[250px] w-[200%] opacity-100" : "h-0 w-full opacity-0"
+                    } rounded-br-lg border shadow-md`}
                   >
-                    <ul className="border-b border-gray-200">
-                      <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
-                        <span className="text-sm font-semibold text-gray-600">
-                          Alternative to PFTE
-                        </span>
-                        <span className="ml-auto flex gap-2">
-                          <Eye className="rounded p-1 text-gray-600 hover:bg-blue-200" />
-                          <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                        </span>
-                      </li>
-                      <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
-                        <span className="text-sm font-semibold text-gray-600">
-                          Cross regeneration to maximise macromolecules elution for 'Gent
-                          production' ion gas resins
-                        </span>
-                        <span className="ml-auto flex gap-2">
-                          <Eye className="rounded p-1 text-gray-600 hover:bg-blue-200" />
-                          <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                        </span>
-                      </li>
-                      <li className="flex w-full items-center gap-2 p-4 hover:bg-blue-100">
-                        <span className="text-sm font-semibold text-gray-600">Get Weld Soon</span>
-                        <span className="ml-auto flex gap-2">
-                          <Eye className="rounded p-1 text-gray-600 hover:bg-blue-200" />
-                          <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                        </span>
-                      </li>
-                    </ul>
-                    <div className="flex w-full gap-1 border p-2">
-                      <Button
-                        className="border border-slate-300 bg-slate-100 text-black hover:bg-slate-200"
-                        onClick={() => {
-                          navigateWithTransition(`/projects/dashboard`);
-                        }}
-                      >
-                        <ArrowLeft /> Back to the Universe
-                      </Button>
-                      <CreateProjectDialog type="findest-button" />
+                    <div
+                      className={`transition-transform duration-300 ${
+                        isTitleExpanded ? "translate-y-0" : "-translate-y-4"
+                      }`}
+                    >
+                      <ul className="border-b border-gray-200">
+                        <li className="flex w-full items-center gap-2 p-4 transition-colors duration-200 hover:bg-blue-100">
+                          <span className="text-sm font-semibold text-gray-600">
+                            Alternative to PFTE
+                          </span>
+                          <span className="ml-auto flex gap-2">
+                            <Eye className="rounded p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                            <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                          </span>
+                        </li>
+                        <li className="flex w-full items-center gap-2 p-4 transition-colors duration-200 hover:bg-blue-100">
+                          <span className="text-sm font-semibold text-gray-600">
+                            Cross regeneration to maximise macromolecules elution for 'Gent
+                            production' ion gas resins
+                          </span>
+                          <span className="ml-auto flex gap-2">
+                            <Eye className="rounded p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                            <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                          </span>
+                        </li>
+                        <li className="flex w-full items-center gap-2 p-4 transition-colors duration-200 hover:bg-blue-100">
+                          <span className="text-sm font-semibold text-gray-600">Get Weld Soon</span>
+                          <span className="ml-auto flex gap-2">
+                            <Eye className="rounded p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                            <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                          </span>
+                        </li>
+                      </ul>
+                      <div className="flex w-full gap-1 border p-2">
+                        <button
+                          className="flex items-center gap-2 rounded border border-slate-300 bg-slate-100 px-4 py-2 text-black transition-colors duration-200 hover:bg-slate-200"
+                          onClick={() => navigateWithTransition("/projects/dashboard")}
+                        >
+                          <ArrowLeft /> Back to the Universe
+                        </button>
+                        <CreateProjectDialog type="findest-button" />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -185,45 +195,72 @@ export const Dashboard = ({
                 <div className="flex-1 overflow-y-auto">
                   <ul className="border-b border-gray-200">
                     <li
-                      className={`${currentView === "overview" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
+                      className={`${currentView === "overview" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
                       onClick={() => {
                         setCurrentView("overview");
                       }}
                     >
-                      <Home className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Project overview</span>
+                      <Home className="h-5 w-5 group-hover:text-white" />
+                      <span
+                        className={`text-sm font-medium ${currentView === "overview" ? "text-white" : "text-gray-600"} group-hover:text-white`}
+                      >
+                        Project overview
+                      </span>
                       <span className="ml-auto">
-                        <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                        <ChevronRight
+                          className={`p-1 ${currentView === "overview" ? "text-white" : "text-gray-600"} rounded-sm group-hover:text-white`}
+                        />
                       </span>
                     </li>
                     <li
-                      className={`${currentView === "search" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
+                      className={`${currentView === "search" && "bg-gray-200"} m-4 flex max-w-full items-center gap-2 rounded-full border bg-gray-200 p-2 transition-all duration-150 ease-linear`}
                       onClick={() => setCurrentView("search")}
                     >
-                      <Search className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Project search</span>
-                      <span className="ml-auto">
+                      <Search className="h-5 w-5 text-gray-600" />
+                      <span className="text-sm font-medium text-gray-600">Search</span>
+                      <div className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-blue-300 text-xs font-black text-blue-600">
+                        3
+                      </div>
+
+                      {/* <span className="ml-auto flex items-center gap-2">
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-200 text-xs font-medium text-gray-600">3</span>
                         <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                      </span>
+                      </span> */}
                     </li>
                     <li
-                      className={`${currentView === "pages" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
+                      className={`${currentView === "pages" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
                       onClick={() => setCurrentView("pages")}
                     >
-                      <File className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Project pages</span>
+                      <File className="h-5 w-5 group-hover:text-white" />
+                      <span
+                        className={`text-sm font-medium ${currentView === "pages" ? "text-white" : "text-gray-600"} group-hover:text-white`}
+                      >
+                        Project pages
+                      </span>
                       <span className="ml-auto">
-                        <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                        <Plus
+                          className={`p-1 ${
+                            currentView === "pages" ? "text-white" : "bg-gray-100 text-gray-600"
+                          } rounded-sm group-hover:bg-transparent group-hover:text-white`}
+                        />
                       </span>
                     </li>
                     <li
-                      className={`${currentView === "sources" && "bg-blue-100"} flex w-full items-center gap-2 p-4 hover:bg-blue-100`}
+                      className={`${currentView === "sources" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
                       onClick={() => setCurrentView("sources")}
                     >
-                      <Link className="h-5 w-5" />
-                      <span className="text-sm font-medium text-gray-600">Project sources</span>
+                      <Link className="h-5 w-5 group-hover:text-white" />
+                      <span
+                        className={`text-sm font-medium ${currentView === "sources" ? "text-white" : "text-gray-600"} group-hover:text-white`}
+                      >
+                        Project sources
+                      </span>
                       <span className="ml-auto">
-                        <Plus className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                        <Plus
+                          className={`p-1 ${
+                            currentView === "sources" ? "text-white" : "bg-gray-100 text-gray-600"
+                          } rounded-sm group-hover:bg-transparent group-hover:text-white`}
+                        />
                       </span>
                     </li>
                   </ul>
@@ -248,7 +285,7 @@ export const Dashboard = ({
                           <li key={section.title}>
                             <button
                               onClick={() => toggleSection(section.title)}
-                              className="flex w-full items-center gap-2 rounded-md py-2 text-left text-sm font-medium text-gray-700"
+                              className="flex max-w-full items-center gap-2 rounded-md py-2 text-left text-sm font-medium text-gray-700"
                             >
                               {openSections[section.title] ? (
                                 <ChevronDown className="rounded-sm bg-gray-100 p-1 text-gray-500" />
@@ -256,7 +293,7 @@ export const Dashboard = ({
                                 <ChevronRight className="rounded-sm bg-gray-100 p-1 text-gray-500" />
                               )}
                               {section.title}
-                              <Pin className="p-1 text-gray-500" />
+                              <Pin className="p-1 text-gray-500" fill="#000000" />
                             </button>
                             {openSections[section.title] && (
                               <ul className="ml-4 mt-2 space-y-1 border-l-2 border-gray-300 pl-3">
@@ -280,7 +317,7 @@ export const Dashboard = ({
                 {/* Settings Footer */}
                 <div className="border-t border-gray-200 bg-white p-4">
                   <div className="flex cursor-pointer items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
-                    <Settings className="h-4 w-4" />
+                    <Settings className="h-4 w-4" fill="#000000" />
                     <span>Project settings</span>
                   </div>
                 </div>

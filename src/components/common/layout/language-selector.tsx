@@ -25,7 +25,7 @@ const languages = [
   { code: "gr", name: "Ελληνικά" },
 ];
 
-const LanguageSelector: React.FC = () => {
+const LanguageSelector = () => {
   const { i18n } = useTranslation();
   const dispatch = useAppDispatch();
   const selectedLanguage = useAppSelector((state) => state.language.selectedLanguage);

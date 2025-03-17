@@ -123,7 +123,7 @@ export function AppSidebar({ isOpen: propIsOpen, ...props }: React.ComponentProp
   const sidebarState = contextIsOpen ?? propIsOpen; // ✅ Ensure sidebarState is always defined
 
   const user = useSelector(currentUser); // Get user from Redux
-  console.log(user);
+  // console.log(user);
   return (
     <Sidebar
       collapsible="icon"

@@ -30,10 +30,10 @@ export default function VotingCard({ star }: VotingCardProps) {
   const [showDetails, setShowDetails] = useState(false);
 
   return (
-    <div className="votingCard">
-      <div className="innerCardContainer">
-        <div className="innerCardContent">
-          <div className="innerCardList">
+    <div className="votingCard px-4">
+      <div className="innerCardContainer flex">
+        <div className="w-auto min-w-[180px]">
+          <div className="innerCardList flex">
             {[1, 2, 3, 4, 5].map((starValue) => (
               <button
                 key={starValue}
@@ -48,6 +48,8 @@ export default function VotingCard({ star }: VotingCardProps) {
               </button>
             ))}
           </div>
+        </div>
+        <div className="innerCardContent flex-grow">
           <h2 className="text-sm font-semibold">Tyvek paper (polyethelene based)</h2>
         </div>
         <button onClick={() => setShowDetails((prev) => !prev)} className="innerCardToggleTrigger">
@@ -55,16 +57,16 @@ export default function VotingCard({ star }: VotingCardProps) {
         </button>
       </div>
 
-      {/* Slide-down panel */}
+      {/* Rest of the component remains unchanged */}
       {showDetails && (
         <motion.div
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: "auto", opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.1 }}
-          className="innerCardTogglePanel"
+          className="innerCardTogglePanel transition-all duration-150 ease-in-out"
         >
-          <p className="text-sm">
+          <p className="py-4 text-sm">
             This is some additional detail text. It provides more information about the item.
           </p>
         </motion.div>

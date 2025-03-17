@@ -12,7 +12,7 @@ import SearchBar from "@/components/common/search/searchbar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Plus } from "lucide-react";
 
 import { useState } from "react";
 
@@ -53,6 +53,32 @@ function PresetButton({
 
 export const ProjectSearch = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("external");
+
+  const [tabs, setTabs] = useState([
+    { id: "overview", label: "External document search" },
+    // { id: "internal", label: "Internal search" },
+  ]);
+
+  // Function to add a new tab with a user-defined label
+  const addNewTab = () => {
+    const newLabel = window.prompt("Enter a name for the new tab:", `New Tab ${tabs.length + 1}`);
+    if (!newLabel) return; // Prevent adding empty tabs
+
+    const newId = `tab-${tabs.length + 1}`;
+    setTabs([...tabs, { id: newId, label: newLabel }]);
+    setIsActiveTabActive(newId);
+  };
+
+  // Function to rename an existing tab
+  const renameTab = (id: string) => {
+    const newLabel = window.prompt("Rename this tab:");
+    if (!newLabel) return;
+
+    setTabs((prevTabs) =>
+      prevTabs.map((tab) => (tab.id === id ? { ...tab, label: newLabel } : tab)),
+    );
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -63,7 +89,7 @@ export const ProjectSearch = () => {
       <div className="min-h-full" id="projects-search">
         <div className="mx-auto max-w-full p-8">
           <div className="overviewHeader">
-            <h1 className="mb-2 text-4xl font-bold">Project search</h1>
+            <h1 className="mb-2 text-2xl font-bold">Project search</h1>
             <br />
             <div className="mx-auto max-w-[1024px]">
               <SearchBar />
@@ -80,17 +106,31 @@ export const ProjectSearch = () => {
           </div>
           <div className="mt-16">
             <Tabs defaultValue="overview" className="pb-4" onValueChange={setIsActiveTabActive}>
-              <TabsList className="flex w-full justify-start gap-2 rounded-none border-b border-slate-300 bg-transparent">
-                <TabsTrigger
-                  value="overview"
-                  className={`linear p-2 text-sm transition-all duration-150 ${
-                    activeTabActive === "external"
-                      ? "border-b-2 border-blue-800 bg-blue-50 font-bold"
-                      : "text-black"
-                  }`}
-                >
-                  External document search
-                </TabsTrigger>
+              <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
+                <div className="flex gap-2">
+                  {tabs.map((tab) => (
+                    <TabsTrigger
+                      key={tab.id}
+                      value={tab.id}
+                      className={`flex p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-50 font-bold" : "text-black"}`}
+                      onDoubleClick={() => renameTab(tab.id)}
+                    >
+                      {tab.label}
+                      <div className="-mt-2 ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-blue-300 text-xs font-black text-blue-600">
+                        3
+                      </div>
+                    </TabsTrigger>
+                  ))}
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={addNewTab}
+                    className="flex items-center rounded-md p-2 text-gray-600 hover:bg-gray-200"
+                  >
+                    <Plus className="h-5 w-8" />
+                  </button>
+                  <AskIgorModal isToolbar={true} iconOnly={true} />
+                </div>
               </TabsList>
               <TabsContent value="overview" className="mt-2 space-y-2">
                 <PresetButton

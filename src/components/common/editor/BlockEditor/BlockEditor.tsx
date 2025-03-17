@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { EditorContent } from "@tiptap/react";
 import {
   ChevronDown,
+  Cog,
   Download,
   Eye,
   File,
@@ -253,7 +254,7 @@ export const BlockEditor = ({
                 {/* Settings Footer */}
                 <div className="border-t border-gray-200 bg-white p-4">
                   <div className="flex cursor-pointer items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
-                    <Settings className="h-4 w-4" />
+                    <Cog className="h-4 w-4" />
                     <span>Project settings</span>
                   </div>
                 </div>

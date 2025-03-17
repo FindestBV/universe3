@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import { useGetMyDocumentInboxQuery } from "../api/documents/documentApi";
 
-export const Inbox: React.FC = () => {
+export const Inbox = () => {
   const [selectedDocs, setSelectedDocs] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [documentsPerPage, setDocumentsPerPage] = useState(12);

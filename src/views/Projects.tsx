@@ -8,10 +8,10 @@ import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 // Import TipTap Editor
 import Dashboard from "@/components/common/projects/dashboard";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useLocation, useParams } from "react-router";
 
-export const Projects: React.FC = () => {
+export const Projects = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
 
@@ -24,16 +24,16 @@ export const Projects: React.FC = () => {
     ? useGetStudyByIdQuery(id, { refetchOnMountOrArgChange: false })
     : useGetEntityByIdQuery(id, { refetchOnMountOrArgChange: false });
 
-  const { data, isLoading, isError, error, refetch } = useGetEntitiesQuery(
+  const { data } = useGetEntitiesQuery(
     { page: 1, limit: 10 }, // Adjust page and limit as needed
     { refetchOnMountOrArgChange: true },
   );
 
-  const inboxQuery = fetchedEntity?.connectedInboxItems;
-  const connectedObjects = fetchedEntity?.connectedDocs;
-  const connectedQueries = fetchedEntity?.connectedQueries;
-  const connectedComments = fetchedEntity?.connectedComments;
-  const connectedEntities = fetchedEntity?.entities;
+  const inboxQuery = fetchedEntity?.connectedInboxItems || [];
+  const connectedObjects = useMemo(() => fetchedEntity?.connectedDocs || [], [fetchedEntity]);
+  const connectedQueries = useMemo(() => fetchedEntity?.connectedQueries || [], [fetchedEntity]);
+  const connectedComments = useMemo(() => fetchedEntity?.connectedComments || [], [fetchedEntity]);
+  const connectedEntities = useMemo(() => fetchedEntity?.entities || [], [fetchedEntity]);
 
   if (fetchedEntity) {
     console.log("fetched entity full obj", fetchedEntity);
@@ -82,7 +82,7 @@ export const Projects: React.FC = () => {
                 connectedInbox={inboxQuery}
                 connectedQueries={connectedQueries}
                 connectedComments={connectedComments}
-                connectedEntities={fetchedEntity?.entities}
+                connectedEntities={connectedEntities}
                 connectedStudies={connectedObjects}
               />
             </div>

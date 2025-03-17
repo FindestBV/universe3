@@ -10,7 +10,7 @@
  */
 import { Skeleton } from "@/components/ui/skeleton";
 
-export const DocumentsSkeleton: React.FC = () => {
+export const DocumentsSkeleton = () => {
   return (
     <>
       {/* Document Cards Skeleton */}
