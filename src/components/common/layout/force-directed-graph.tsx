@@ -304,7 +304,7 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[]; id: string }> = ({
             boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.3)",
           }}
         >
-          {hoveredNode.name} {hoveredNode.id}
+          {hoveredNode.name}
         </div>
       )}
       <canvas
