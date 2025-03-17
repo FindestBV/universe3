@@ -3,7 +3,7 @@
  * @description A project overview component with dynamic tab functionality.
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
-import { useGetMyRecentActivityQuery } from "@/api/activity/activityApi";
+import { useGetLinkingQuery, useGetMyRecentActivityQuery } from "@/api/activity/activityApi";
 import ConnectQuery from "@/components/common/dialogs/connect-query";
 import CreateItemModal from "@/components/common/dialogs/create-item-dialog";
 import CreateProjectDialog from "@/components/common/dialogs/create-project-dialog";
@@ -391,7 +391,7 @@ export const ProjectOverView = () => {
   const navigateWithTransition = useNavigateWithTransition();
 
   const { data: activityData, isLoading: activityDataIsLoading } = useGetMyRecentActivityQuery();
-  // const { data: linkingData, isLoading: linkingDataIsLoading } = useGetLinkingQuery();
+  const { data: linkingData } = useGetLinkingQuery();
 
   const isProjectsDashboard = currentPath.includes("/projects/dashboard");
 
@@ -763,7 +763,7 @@ export const ProjectOverView = () => {
                     {/* <h3 className="text-md mb-2 pt-3 font-semibold">Pages graph</h3> */}
 
                     <ForceDirectedGraphView
-                      linkingData={dummyData}
+                      linkingData={linkingData}
                       id="overviewForceDirectedGraph"
                     />
                   </div>
