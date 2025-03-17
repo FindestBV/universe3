@@ -8,7 +8,6 @@ import ConnectQuery from "@/components/common/dialogs/connect-query";
 import CreateItemModal from "@/components/common/dialogs/create-item-dialog";
 import CreateProjectDialog from "@/components/common/dialogs/create-project-dialog";
 import { DevBanner } from "@/components/common/layout/dev-banner";
-import OverviewForceDirected from "@/components/common/layout/overview-force-directed";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,6 +40,7 @@ import { useLocation } from "react-router-dom";
 
 import VotingCard from "../cards/voting-card";
 import AskIgorModal from "../dialogs/ask-igor";
+import ForceDirectedGraphView from "../layout/force-directed-graph";
 import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
 import ResultsOverview from "./config/results-overview";
@@ -76,11 +76,98 @@ const ActivityItem = ({ title }: { title: string }) => (
 );
 
 const dummyData = [
-  { id: "1", name: "Root", lowerLevelNodes: ["2", "3"] },
-  { id: "2", name: "Child A", lowerLevelNodes: ["4", "5"] },
-  { id: "3", name: "Child B", lowerLevelNodes: [] },
-  { id: "4", name: "Leaf A1", lowerLevelNodes: [] },
-  { id: "5", name: "Leaf A2", lowerLevelNodes: [] },
+  {
+    customTypeName: null,
+    dateAdded: "2022-11-07T09:15:31.335927",
+    id: "1",
+    lowerLevelNodes: [
+      {
+        customTypeName: null,
+        dateAdded: "2022-11-07T09:15:31.335927",
+        id: "2",
+        lowerLevelNodes: [{ id: 4 }, { id: 5 }],
+        name: "Child A",
+        objectType: 1,
+        otherUpperLevelNodes: [],
+        type: "Technology",
+      },
+      {
+        customTypeName: null,
+        dateAdded: "2022-11-07T09:15:31.335927",
+        id: "3",
+        lowerLevelNodes: [],
+        name: "Child B",
+        objectType: 1,
+        otherUpperLevelNodes: [],
+        type: "Technology",
+      },
+    ],
+    name: "Root",
+    objectType: 1,
+    otherUpperLevelNodes: [],
+    type: "Technology",
+  },
+  {
+    customTypeName: null,
+    dateAdded: "2022-11-07T09:15:31.335927",
+    id: "2",
+    lowerLevelNodes: [
+      {
+        customTypeName: null,
+        dateAdded: "2022-11-07T09:15:31.335927",
+        id: "4",
+        lowerLevelNodes: [],
+        name: "Leaf A1",
+        objectType: 1,
+        otherUpperLevelNodes: [],
+        type: "Technology",
+      },
+      {
+        customTypeName: null,
+        dateAdded: "2022-11-07T09:15:31.335927",
+        id: "5",
+        lowerLevelNodes: [],
+        name: "Leaf A2",
+        objectType: 1,
+        otherUpperLevelNodes: [],
+        type: "Technology",
+      },
+    ],
+    name: "Child A",
+    objectType: 1,
+    otherUpperLevelNodes: [],
+    type: "Technology",
+  },
+  {
+    customTypeName: null,
+    dateAdded: "2022-11-07T09:15:31.335927",
+    id: "3",
+    lowerLevelNodes: [],
+    name: "Child B",
+    objectType: 1,
+    otherUpperLevelNodes: [],
+    type: "Technology",
+  },
+  {
+    customTypeName: null,
+    dateAdded: "2022-11-07T09:15:31.335927",
+    id: "4",
+    lowerLevelNodes: [],
+    name: "Leaf A1",
+    objectType: 1,
+    otherUpperLevelNodes: [],
+    type: "Technology",
+  },
+  {
+    customTypeName: null,
+    dateAdded: "2022-11-07T09:15:31.335927",
+    id: "5",
+    lowerLevelNodes: [],
+    name: "Leaf A2",
+    objectType: 1,
+    otherUpperLevelNodes: [],
+    type: "Technology",
+  },
 ];
 
 /**
@@ -672,10 +759,13 @@ export const ProjectOverView = () => {
                     </div> */}
                   </div>
 
-                  <div className="w-1/2">
+                  <div className="h-[800px] w-1/2">
                     {/* <h3 className="text-md mb-2 pt-3 font-semibold">Pages graph</h3> */}
 
-                    <OverviewForceDirected linkingData={dummyData} />
+                    <ForceDirectedGraphView
+                      linkingData={dummyData}
+                      id="overviewForceDirectedGraph"
+                    />
                   </div>
                 </div>
               </>
