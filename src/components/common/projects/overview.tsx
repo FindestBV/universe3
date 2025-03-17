@@ -377,7 +377,7 @@ export const ProjectOverView = () => {
                     </div> */}
                   </div>
 
-                  <div className="w-1/2">
+                  <div className="h-[800px] w-1/2">
                     {/* <h3 className="text-md mb-2 pt-3 font-semibold">Pages graph</h3> */}
                     <ForceDirectedGraphView
                       linkingData={dummyData}

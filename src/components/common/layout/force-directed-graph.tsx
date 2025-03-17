@@ -44,9 +44,9 @@
  */
 import { ObjectTypeEnum } from "@/types/types";
 import GlobalGraphWorker from "@/workers/GlobalGraphWorker";
-import { drag as d3Drag, select, Simulation, zoom, zoomIdentity } from "d3";
+import { D3DragEvent, drag, select, zoom, zoomIdentity, zoomTransform } from "d3";
 
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 
 const NODE_RADIUS = 30; // Node size
 
@@ -55,11 +55,71 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[]; id: string }> = ({
   id,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [graphData, setGraphData] = useState({ nodes: [], links: [] });
   const [hoveredNode, setHoveredNode] = useState(null); // Stores hovered node for tooltips
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 }); // Stores mouse coordinates
+  const graphDataRef = useRef({ nodes: [], links: [] });
 
   const forceGraphContainerRef = useRef<HTMLDivElement>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  const draw = useCallback((canvas, ctx, transform, graphData) => {
+    if (!canvas || !ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.translate(transform.x, transform.y);
+    ctx.scale(transform.k, transform.k);
+
+    // Draw Links
+    graphData.links.forEach((link) => {
+      const source = link.source;
+      const target = link.target;
+      ctx.moveTo(source.x, source.y);
+      ctx.lineTo(target.x, target.y);
+    });
+    ctx.stroke();
+
+    // Draw Nodes
+    graphData.nodes.forEach((node) => {
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, NODE_RADIUS, 0, 2 * Math.PI);
+      ctx.fillStyle = "#000000";
+      // ctx.fillStyle = node === hoveredNode ? getObjectTypeColor(node.objectType) : "#000000";
+      ctx.fill();
+    });
+
+    ctx.restore();
+  }, []);
+
+  const drawCanvas = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        const transform =
+          zoomTransform(canvas) ?? zoomIdentity.translate(canvas.width / 2, canvas.height / 2);
+        draw(canvas, ctx, transform, graphDataRef.current);
+      }
+    }
+  }, [draw]);
+
+  const setupCanvas = () => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        setupZoomEvents(canvas, ctx);
+        setupDragEvents(canvas, ctx);
+        setupHoverEvents(canvas);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (isInitialized) {
+      setupCanvas();
+    }
+  }, [isInitialized]);
 
   useEffect(() => {
     if (!linkingData || linkingData.length === 0) return;
@@ -67,7 +127,13 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[]; id: string }> = ({
     const graphWorker = GlobalGraphWorker.getWorker();
 
     const handleMessage = ({ nodes, links }) => {
-      setGraphData({ nodes, links });
+      graphDataRef.current = { nodes, links };
+      if (!isInitialized) {
+        setIsInitialized(true);
+      }
+      if (isInitialized) {
+        drawCanvas();
+      }
     };
 
     GlobalGraphWorker.registerCallback(id, handleMessage);
@@ -90,7 +156,48 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[]; id: string }> = ({
       GlobalGraphWorker.deregisterCallback(id);
       graphWorker.postMessage({ type: "removeGraph", data: { graphId: id } });
     };
-  }, [linkingData, id]);
+  }, [linkingData, id, isInitialized, drawCanvas]);
+
+  const dragsubject = (event) => {
+    if (!canvasRef.current) return null;
+    const transform = zoomTransform(canvasRef.current);
+    const x = transform.invertX(event.x);
+    const y = transform.invertY(event.y);
+    return graphDataRef.current.nodes.find(
+      (node) => Math.hypot(node.x - x, node.y - y) < NODE_RADIUS,
+    );
+  };
+
+  const dragstarted = (event: D3DragEvent<HTMLCanvasElement, any, any>) => {
+    event.sourceEvent.stopPropagation();
+    GlobalGraphWorker.getWorker().postMessage({
+      type: "nodeDragStarted",
+      data: {
+        nodeId: event.subject.id,
+        graphId: id,
+        x: event.subject.x,
+        y: event.subject.y,
+        shouldStart: !event.active,
+      },
+    });
+  };
+
+  const dragged = (event: D3DragEvent<HTMLCanvasElement, any, any>) => {
+    event.sourceEvent.stopPropagation();
+    const node = event.subject;
+    GlobalGraphWorker.getWorker().postMessage({
+      type: "nodeDragged",
+      data: { nodeId: node.id, x: event.x, y: event.y, graphId: id },
+    });
+  };
+
+  const dragended = (event: D3DragEvent<HTMLCanvasElement, any, any>) => {
+    event.sourceEvent.stopPropagation();
+    GlobalGraphWorker.getWorker().postMessage({
+      type: "nodeDragEnded",
+      data: { nodeId: event.subject.id, graphId: id, shouldStart: !event.active },
+    });
+  };
 
   const getObjectTypeColor = (objectType: ObjectTypeEnum): string => {
     switch (objectType) {
@@ -105,153 +212,86 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[]; id: string }> = ({
     }
   };
 
-  const draw = (canvas, ctx, transform, graphData) => {
-    if (!canvas || !ctx) return;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.save();
-    ctx.translate(transform.x, transform.y);
-    ctx.scale(transform.k, transform.k);
-
-    // Ensure Link Lines Are Visible (BLACK)
-    ctx.strokeStyle = "#000"; // Ensure black links
-    ctx.lineWidth = 4;
-    ctx.globalAlpha = 1;
-    ctx.beginPath();
-
-    graphData.links.forEach((link) => {
-      const { source, target } = link; // Now source & target are objects
-      if (!source || !target) return;
-
-      ctx.moveTo(source.x, source.y);
-      ctx.lineTo(target.x, target.y);
+  const setupZoomEvents = (canvas: Element, ctx: CanvasRenderingContext2D) => {
+    let transform = { k: 1, x: 0, y: 0 };
+    const zoomBehavior = zoom().on("zoom", (event) => {
+      transform = event.transform;
+      draw(canvas, ctx, transform, graphDataRef.current);
     });
 
-    ctx.stroke(); // Ensures links are drawn
+    select(canvas).call(zoomBehavior);
 
-    // Draw Nodes
-    graphData.nodes.forEach((node) => {
-      ctx.beginPath();
-      ctx.arc(node.x, node.y, NODE_RADIUS, 0, 2 * Math.PI);
-      ctx.fillStyle = node === hoveredNode ? getObjectTypeColor(node.objectType) : "#000000";
-      ctx.fill();
-      ctx.strokeStyle = "#FFF";
-      ctx.lineWidth = 3;
-      ctx.stroke();
-    });
-
-    ctx.restore();
+    // Initial zoom extent to fit graph
+    const calculatedTransform = calculateFitTransform(
+      graphDataRef.current,
+      canvas.width,
+      canvas.height,
+    );
+    select(canvas).call(zoomBehavior.transform, calculatedTransform);
   };
 
-  // Hover to Show Tooltips (temp - this will likley need significant update )
-  const setupHoverEvents = (canvas, transform, graphData) => {
-    canvas.addEventListener("mousemove", (event) => {
-      const mouseX = (event.offsetX - transform.x) / transform.k;
-      const mouseY = (event.offsetY - transform.y) / transform.k;
-
-      const hovered = graphData.nodes.find(
-        (node) => Math.hypot(node.x - mouseX, node.y - mouseY) < NODE_RADIUS,
+  const setupDragEvents = (canvas: Element, ctx: CanvasRenderingContext2D) => {
+    select(canvas)
+      .call(
+        drag()
+          .subject(dragsubject)
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended),
+      )
+      .call(
+        zoom().on("zoom", () => draw(canvas, ctx, zoomTransform(canvas), graphDataRef.current)),
       );
-      if (!hovered) return;
-
-      setHoveredNode(hovered); // Store hovered node to show tooltip
-
-      const screenX = hovered.x * transform.k + transform.x;
-      const screenY = hovered.y * transform.k + transform.y;
-
-      setMousePosition({ x: screenX, y: screenY });
-    });
-
-    canvas.addEventListener("mouseleave", () => {
-      setHoveredNode(null); // Hide tooltip when leaving canvas
-    });
   };
 
-  // Enable Dragging of Nodes with Smooth Animation
-  const drag = (currSimulation: Simulation<INode, ILink>) => {
-    function dragstarted(event: D3DragEvent<Element, INode, INode>) {
-      if (!event.active) currSimulation.alphaTarget(0.3).restart();
-      event.subject.fx = event.subject.x;
-      event.subject.fy = event.subject.y;
-    }
-
-    function dragged(event: D3DragEvent<Element, INode, INode>) {
-      event.subject.fx = event.x;
-      event.subject.fy = event.y;
-    }
-
-    function dragended(event: D3DragEvent<Element, INode, INode>) {
-      if (!event.active) currSimulation.alphaTarget(0);
-      event.subject.fx = null;
-      event.subject.fy = null;
-    }
-
-    return d3Drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
-  };
-
-  const setupDrag = (canvas, ctx, transform, graphData) => {
-    let draggingNode = null;
-
-    canvas.addEventListener("mousedown", (event) => {
-      const mouseX = (event.offsetX - transform.x) / transform.k;
-      const mouseY = (event.offsetY - transform.y) / transform.k;
-      draggingNode = graphData.nodes.find(
-        (node) => Math.hypot(node.x - mouseX, node.y - mouseY) < NODE_RADIUS,
-      );
-    });
-
+  const setupHoverEvents = (canvas: Element) => {
     canvas.addEventListener("mousemove", (event) => {
-      if (draggingNode) {
-        const mouseX = (event.offsetX - transform.x) / transform.k;
-        const mouseY = (event.offsetY - transform.y) / transform.k;
+      if (!canvasRef.current) return;
+      const transform = zoomTransform(canvasRef.current);
+      const x = transform.invertX(event.offsetX);
+      const y = transform.invertY(event.offsetY);
+      const node = graphDataRef.current.nodes.find(
+        (node) => Math.hypot(node.x - x, node.y - y) < NODE_RADIUS,
+      );
+      if (node) {
+        setHoveredNode(node);
+        const screenX = node.x * transform.k + transform.x;
+        const screenY = node.y * transform.k + transform.y;
 
-        draggingNode.x += (mouseX - draggingNode.x) * 0.2; // ✅ Smooth dragging
-        draggingNode.y += (mouseY - draggingNode.y) * 0.2;
-
-        draw(canvas, ctx, transform, graphData);
+        setMousePosition({ x: screenX, y: screenY });
+      } else {
+        setHoveredNode(null);
+        setMousePosition({ x: 0, y: 0 });
       }
     });
 
-    canvas.addEventListener("mouseup", () => {
-      draggingNode = null;
+    canvas.addEventListener("mouseleave", () => {
+      setHoveredNode(null);
     });
   };
 
-  // Initialize Graph Rendering & Events
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+  const calculateFitTransform = (graphData, canvasWidth: number, canvasHeight: number) => {
+    if (!graphData.nodes.length) return zoomIdentity;
 
-    let transform = { k: 1, x: 0, y: 0 };
+    const nodes = graphData.nodes;
+    const minX = Math.min(...nodes.map((node) => node.x));
+    const maxX = Math.max(...nodes.map((node) => node.x));
+    const minY = Math.min(...nodes.map((node) => node.y));
+    const maxY = Math.max(...nodes.map((node) => node.y));
 
-    // Zoom and Pan Behavior
-    const zoomBehavior = zoom()
-      .scaleExtent([0.1, 2])
-      .on("zoom", (event) => {
-        transform = event.transform;
-        draw(canvas, ctx, transform, graphData);
-      });
+    const graphWidth = maxX - minX;
+    const graphHeight = maxY - minY;
 
-    select(canvas).call(zoomBehavior);
-    // .call(drag(simulation) as (selection: Selection<BaseType | SVGGElement, INode, SVGGElement, undefined>, ...args: unknown[]) => void);
+    // TODO: Find a better way to calculate scale, 1.7 is just a static number that kinda works for now
+    const scale = Math.min(canvasWidth / graphWidth / 1.7, canvasHeight / graphHeight / 1.7);
+    const translateX = (canvasWidth - graphWidth * scale) / 2 - minX * scale;
+    const translateY = (canvasHeight - graphHeight * scale) / 2 - minY * scale;
 
-    // Set Initial Zoom & Centering (Scale 0.1)
-    const initialScale = 0.1; // force it to be zoomed out
-    const initialX = canvas.width / 2;
-    const initialY = canvas.height / 2;
-    transform = zoomIdentity.translate(initialX, initialY).scale(initialScale);
-    select(canvas).call(zoomBehavior.transform, transform);
-
-    // Enable Features
-    setupHoverEvents(canvas, transform, graphData);
-    //setupDrag(canvas, ctx, transform, graphData);
-    draw(canvas, ctx, transform, graphData);
-  }, [graphData]);
+    return zoomIdentity.translate(translateX, translateY).scale(scale);
+  };
 
   return (
-    <div ref={forceGraphContainerRef} className="h-full w-full">
+    <div ref={forceGraphContainerRef} className="h-[800px] w-full">
       {hoveredNode && (
         <div
           style={{
@@ -269,8 +309,8 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[]; id: string }> = ({
       )}
       <canvas
         ref={canvasRef}
-        width={forceGraphContainerRef.current?.clientWidth}
-        height={forceGraphContainerRef.current?.clientHeight}
+        width={forceGraphContainerRef.current?.clientWidth ?? 800}
+        height={forceGraphContainerRef.current?.clientHeight ?? 800}
       />
     </div>
   );

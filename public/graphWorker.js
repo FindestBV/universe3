@@ -12,9 +12,9 @@ self.onmessage = (event) => {
       const { nodes, links } = data;
       const width = 800,
         height = 800;
-      const distance = 160;
-      const strength = -40;
-      const radius = 45;
+      const distance = 100;
+      const strength = -1000;
+      const radius = 30;
       // Initialize node positions if not defined
       nodes.forEach((node) => {
         node.x = node.x ?? Math.random() * width - width / 2;
@@ -31,38 +31,32 @@ self.onmessage = (event) => {
         const MAX_TICKS = 100;
         simulations[graphId].tickCount++;
         if (simulations[graphId].tickCount >= MAX_TICKS) {
-          simulations[graphId].simulation.stop();
+          //  simulations[graphId].simulation.stop();
         }
+
         self.postMessage({ type: "graphData", data: { graphId, nodes, links } });
       };
 
-      // Create or update simulation
+      const forceNode = d3.forceManyBody().strength(strength);
+      const forceLink = d3
+        .forceLink(links)
+        .distance(distance)
+        .id((node) => node.id);
+
       if (!simulations[graphId]) {
         simulations[graphId] = {
           nodes,
           links,
           simulation: d3
             .forceSimulation(nodes)
-            .force(
-              "link",
-              d3
-                .forceLink(links)
-                .id((d) => d.id)
-                .distance(distance),
-            )
-            .force("charge", d3.forceManyBody().strength(strength))
-            .force("center", d3.forceCenter(0, 0))
-            .force("collision", d3.forceCollide(radius))
+            .force("link", forceLink)
+            .force("charge", forceNode)
+            .force("x", d3.forceX())
+            .force("y", d3.forceY())
+            .force("collision", d3.forceCollide().radius(radius))
             .on("tick", tickHandler),
           tickCount: 0,
         };
-      } else {
-        // Update the simulation with the new data
-        const sim = simulations[graphId];
-        sim.simulation.nodes(nodes);
-        sim.simulation.force("link").links(links);
-        sim.simulation.alpha(1).restart();
-        sim.tickCount = 0;
       }
       break;
     }
@@ -72,6 +66,43 @@ self.onmessage = (event) => {
         delete simulations[graphId];
       }
       break;
+    case "nodeDragStarted": {
+      const { nodeId, x, y, shouldStart } = data;
+
+      if (shouldStart) {
+        const sim = simulations[graphId];
+        sim.simulation.alphaTarget(0.3).restart();
+      }
+
+      const node = simulations[graphId].nodes.find((n) => n.id === nodeId);
+      if (node) {
+        node.fx = x;
+        node.fy = y;
+      }
+      break;
+    }
+    case "nodeDragged": {
+      const { nodeId, x, y } = data;
+      const node = simulations[graphId].nodes.find((n) => n.id === nodeId);
+      if (node) {
+        node.fx = x;
+        node.fy = y;
+      }
+      break;
+    }
+    case "nodeDragEnded": {
+      const { nodeId, shouldStart } = data;
+      if (shouldStart) {
+        const sim = simulations[graphId];
+        sim.simulation.alphaTarget(0);
+      }
+      const node = simulations[graphId].nodes.find((n) => n.id === nodeId);
+      if (node) {
+        node.fx = null;
+        node.fy = null;
+      }
+      break;
+    }
     default:
       break;
   }
