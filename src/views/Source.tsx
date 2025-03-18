@@ -151,7 +151,8 @@ export const Source = () => {
               <TabsList className="mb-4 w-full justify-start rounded-none border-b border-[#f1f1f1] bg-transparent">
                 <TabsTrigger value="documentInfo">Document Information</TabsTrigger>
                 <TabsTrigger value="similarDocuments">
-                  Similar Documents ({`${scienceArticles?.length ? scienceArticles.length : 0}`}){" "}
+                  Similar Documents ({`${scienceArticles?.length ? scienceArticles.length : 0}`}
+                  ){" "}
                 </TabsTrigger>
                 <TabsTrigger value="attachments">
                   Attachments ({`${attachedFiles?.length ? attachedFiles.length : 0}`}){" "}
