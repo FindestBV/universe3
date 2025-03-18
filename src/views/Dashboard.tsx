@@ -155,8 +155,8 @@ export const Dashboard = () => {
           ) : (
             // <ForceDirectedGraphView linkingData={linkingData} isDashBoard={true} />
             <>
-              <TreeView data={linkingData} />
-              {/* <TreeViewStatic /> */}
+              {/* <TreeView data={linkingData} /> */}
+              <TreeViewStatic />
             </>
           )}
         </div>

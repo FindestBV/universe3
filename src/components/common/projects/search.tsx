@@ -163,26 +163,38 @@ export const ProjectSearch = () => {
     }
 
     return (
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 gap-2">
         {filteredResults.map((result) => (
           <div
             key={result.id}
-            className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
+            className="flex items-start gap-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
           >
-            <div className="text-sm text-gray-500">{result.type}</div>
-            <h3 className="mb-2 text-lg font-semibold">
-              <a
-                href={result.url}
-                className="text-black hover:text-blue-800 hover:underline"
-                target={result.url.startsWith("http") ? "_blank" : "_self"}
-                rel={result.url.startsWith("http") ? "noopener noreferrer" : undefined}
-              >
-                {result.name}
-              </a>
-            </h3>
-            {result.description && (
-              <p className="line-clamp-2 text-sm text-gray-600">{result.description}</p>
-            )}
+            <button
+              type="button"
+              role="checkbox"
+              aria-checked="false"
+              data-state="unchecked"
+              value="on"
+              className="innerCardCheckbox peer m-1 h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+              id={`card-${result.id}`}
+            ></button>
+
+            <div>
+              <div className="text-sm text-gray-500">{result.type}</div>
+              <h3 className="mb-2 text-lg font-semibold">
+                <a
+                  href={result.url}
+                  className="text-black hover:text-blue-800 hover:underline"
+                  target={result.url.startsWith("http") ? "_blank" : "_self"}
+                  rel={result.url.startsWith("http") ? "noopener noreferrer" : undefined}
+                >
+                  {result.name}
+                </a>
+              </h3>
+              {result.description && (
+                <p className="line-clamp-2 text-sm text-gray-600">{result.description}</p>
+              )}
+            </div>
           </div>
         ))}
       </div>

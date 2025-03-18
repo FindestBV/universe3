@@ -1,3 +1,4 @@
+import { Checkbox } from "@/components/ui/checkbox";
 import { Loader } from "lucide-react";
 
 interface ProjectResult {
@@ -35,6 +36,7 @@ export const ProjectSearchResults = ({ results, isLoading }: ProjectSearchResult
           key={result.id}
           className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
         >
+          <Checkbox id={`card-${result.id}`} />
           <div className="text-sm text-gray-500">{result.type}</div>
           <h3 className="mb-2 text-lg font-semibold">
             <a
