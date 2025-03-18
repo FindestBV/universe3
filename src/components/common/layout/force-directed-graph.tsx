@@ -59,8 +59,56 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[]; id: string }> = ({
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 }); // Stores mouse coordinates
   const graphDataRef = useRef({ nodes: [], links: [] });
 
-  const forceGraphContainerRef = useRef<HTMLDivElement>(null);
-  const [isInitialized, setIsInitialized] = useState(false);
+  useEffect(() => {
+    if (!linkingData || linkingData.length === 0) return;
+
+    // to be offloaded to a global worker.
+    const workerCode = `
+      self.onmessage = (event) => {
+        const { nodes, links } = event.data;
+        importScripts("https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js");
+
+        const width = 800, height = 800;
+
+        nodes.forEach((node) => {
+          node.x = node.x ?? (Math.random() * width - width / 2);
+          node.y = node.y ?? (Math.random() * height - height / 2);
+        });
+
+        links.forEach(link => {
+          link.source = nodes.find(n => n.id === link.source);
+          link.target = nodes.find(n => n.id === link.target);
+        });
+
+        let tickCount = 0, MAX_TICKS = 100;
+
+        const simulation = d3.forceSimulation(nodes)
+          .force("link", d3.forceLink(links).id(d => d.id).distance(160))
+          .force("charge", d3.forceManyBody().strength(-40)) 
+          .force("center", d3.forceCenter(0, 0))
+          .force("collision", d3.forceCollide(45))
+          .on("tick", () => {
+            if (tickCount++ >= MAX_TICKS) simulation.stop();
+            self.postMessage({ nodes, links });
+          });
+
+        self.onmessage = (event) => {
+          if (event.data === "STOP") simulation.stop();
+        };
+      };
+    `;
+
+    // 🔧 Create Web Worker
+    const blob = new Blob([workerCode], { type: "application/javascript" });
+    const worker = new Worker(URL.createObjectURL(blob));
+
+    worker.postMessage({
+      nodes: linkingData,
+      links: linkingData.flatMap((node) =>
+        (node.lowerLevelNodes || []).map((child) => ({ source: node.id, target: child.id })),
+      ),
+    });
+
 
   const draw = useCallback((canvas, ctx, transform, graphData) => {
     if (!canvas || !ctx) return;

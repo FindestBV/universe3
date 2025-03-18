@@ -7,14 +7,16 @@
  *
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
+import { useSearchItemsMutation } from "@/api/search/searchApi";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import SearchBar from "@/components/common/search/searchbar";
 import { Button } from "@/components/ui/button";
+import { useDebounce } from "@/hooks/use-debounce";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { ChevronRight, Plus } from "lucide-react";
+import { ArrowLeft, ChevronLast, ChevronLeft, ChevronRight, Plus, SearchIcon } from "lucide-react";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 /**
  * PresetButton component renders a button with a title and description.
@@ -51,31 +53,129 @@ function PresetButton({
   );
 }
 
+const TABS = ["All", "Entity", "Document", "Query", "Study"];
+
+interface SearchResult {
+  id: string;
+  name: string;
+  type: string;
+  url: string;
+  description?: string;
+}
+
+interface SearchData {
+  [key: string]: Array<{
+    id?: string;
+    name?: string;
+    type?: string;
+    url?: string;
+    description?: string;
+  }>;
+}
+
 export const ProjectSearch = () => {
-  const [activeTabActive, setIsActiveTabActive] = useState<string>("external");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTab, setSelectedTab] = useState(TABS[0]);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [searchItems, { data: searchData, isLoading }] = useSearchItemsMutation();
 
-  const [tabs, setTabs] = useState([
-    { id: "overview", label: "External document search" },
-    // { id: "internal", label: "Internal search" },
-  ]);
+  const debouncedSearch = useDebounce((query: string) => {
+    if (query.trim()) {
+      const queryParams = new URLSearchParams();
+      queryParams.append("keyword", query);
+      searchItems(queryParams.toString());
+      setHasSearched(true);
+    } else {
+      setHasSearched(false);
+    }
+  }, 500);
 
-  // Function to add a new tab with a user-defined label
-  const addNewTab = () => {
-    const newLabel = window.prompt("Enter a name for the new tab:", `New Tab ${tabs.length + 1}`);
-    if (!newLabel) return; // Prevent adding empty tabs
+  const handleSearch = useCallback(
+    (query: string) => {
+      setSearchQuery(query);
+      debouncedSearch(query);
+    },
+    [debouncedSearch],
+  );
 
-    const newId = `tab-${tabs.length + 1}`;
-    setTabs([...tabs, { id: newId, label: newLabel }]);
-    setIsActiveTabActive(newId);
+  const filterResults = (data: SearchData | undefined): SearchResult[] => {
+    if (!data) return [];
+
+    const allResults = Object.keys(data)
+      .filter((key) => Array.isArray(data[key]) && data[key].length > 0)
+      .flatMap((key) =>
+        data[key].map((item) => ({
+          id: item?.id || "",
+          name: item?.name || "Unnamed",
+          type: [
+            "ScienceArticle",
+            "Weblink",
+            "Technology",
+            "Technology Scouting",
+            "UsPatent",
+          ].includes(item?.type || "")
+            ? "Document"
+            : item?.type || "Unknown",
+          url: item?.url || `/projects/${key}/${item?.id}`,
+          description: item?.description,
+        })),
+      )
+      .filter((item) => item.id && item.name);
+
+    if (selectedTab === "All") {
+      return allResults;
+    }
+
+    return allResults.filter((item) => item.type === selectedTab);
   };
 
-  // Function to rename an existing tab
-  const renameTab = (id: string) => {
-    const newLabel = window.prompt("Rename this tab:");
-    if (!newLabel) return;
+  const filteredResults = filterResults(searchData);
 
-    setTabs((prevTabs) =>
-      prevTabs.map((tab) => (tab.id === id ? { ...tab, label: newLabel } : tab)),
+  const renderSearchResults = () => {
+    if (!hasSearched) {
+      return null;
+    }
+
+    if (isLoading) {
+      return (
+        <div className="flex h-64 items-center justify-center">
+          <div className="text-gray-500">Searching...</div>
+        </div>
+      );
+    }
+
+    if (filteredResults.length === 0) {
+      return (
+        <div className="flex h-64 items-center justify-center">
+          <div className="text-gray-500">No results found</div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 gap-4">
+        {filteredResults.map((result) => (
+          <div
+            key={result.id}
+            className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
+          >
+            <div className="text-sm text-gray-500">{result.type}</div>
+            <h3 className="mb-2 text-lg font-semibold">
+              <a
+                href={result.url}
+                className="text-black hover:text-blue-800 hover:underline"
+                target={result.url.startsWith("http") ? "_blank" : "_self"}
+                rel={result.url.startsWith("http") ? "noopener noreferrer" : undefined}
+              >
+                {result.name}
+              </a>
+            </h3>
+            {result.description && (
+              <p className="line-clamp-2 text-sm text-gray-600">{result.description}</p>
+            )}
+          </div>
+        ))}
+      </div>
     );
   };
 
@@ -88,66 +188,61 @@ export const ProjectSearch = () => {
     >
       <div className="min-h-full" id="projects-search">
         <div className="mx-auto max-w-full p-8">
-          <div className="overviewHeader">
-            <h1 className="mb-2 text-2xl font-bold">Project search</h1>
-            <br />
+          <div className="mb-4 flex items-center gap-4">
+            <SearchIcon className="h-6 w-6" />
+            <h1 className="mb-2 text-2xl font-bold">Search in this project</h1>
+          </div>
+          <div className="mb-4">
             <div className="mx-auto max-w-[1024px]">
-              <SearchBar />
-              <div className="flex gap-2 py-2">
+              <SearchBar
+                value={searchQuery}
+                onChange={setSearchQuery}
+                onSearch={handleSearch}
+                isLoading={isLoading}
+              />
+              <div className="mx-auto mt-4 flex w-full items-center justify-center gap-2 py-2">
                 <button
                   type="submit"
                   className="rounded-md bg-black p-2 px-4 text-sm text-white hover:bg-slate-500 focus:outline-none"
                 >
                   Search this project
                 </button>
-                <AskIgorModal label="Search for external papers" />
+                <AskIgorModal label="Chat about this project" />
               </div>
             </div>
           </div>
           <div className="mt-16">
-            <Tabs defaultValue="overview" className="pb-4" onValueChange={setIsActiveTabActive}>
+            {filteredResults && filteredResults.length > 0 ? (
+              <div className="mb-4 flex items-center gap-2">
+                <ArrowLeft />
+                <h3 className="font-black">Results for: {searchQuery}</h3>
+              </div>
+            ) : null}
+            <Tabs defaultValue="All" className="pb-4" onValueChange={setSelectedTab}>
               <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
                 <div className="flex gap-2">
-                  {tabs.map((tab) => (
+                  {TABS.map((tab) => (
                     <TabsTrigger
-                      key={tab.id}
-                      value={tab.id}
-                      className={`flex p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-50 font-bold" : "text-black"}`}
-                      onDoubleClick={() => renameTab(tab.id)}
+                      key={tab}
+                      value={tab}
+                      className={`flex p-2 text-sm transition-all duration-150 ${
+                        selectedTab === tab
+                          ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
+                          : "text-black"
+                      }`}
                     >
-                      {tab.label}
-                      <div className="-mt-2 ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-blue-300 text-xs font-black text-blue-600">
-                        3
-                      </div>
+                      {tab}
+                      {tab === selectedTab && filteredResults.length > 0 && (
+                        <div className="-mt-2 ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-blue-300 text-xs font-black text-blue-600">
+                          {filteredResults.length}
+                        </div>
+                      )}
                     </TabsTrigger>
                   ))}
                 </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={addNewTab}
-                    className="flex items-center rounded-md p-2 text-gray-600 hover:bg-gray-200"
-                  >
-                    <Plus className="h-5 w-8" />
-                  </button>
-                  <AskIgorModal isToolbar={true} iconOnly={true} />
-                </div>
               </TabsList>
-              <TabsContent value="overview" className="mt-2 space-y-2">
-                <PresetButton
-                  title="Other general keyword"
-                  description="Either based on general knowledge or the sources linked."
-                  className="bg-slate-100"
-                />
-                <PresetButton
-                  title="General description"
-                  description="Either based on general knowledge or the sources linked."
-                  className="bg-slate-100"
-                />
-                <PresetButton
-                  title="Other general keyword"
-                  description="Either based on general knowledge or the sources linked."
-                  className="bg-slate-100"
-                />
+              <TabsContent value={selectedTab} className="mt-6">
+                {renderSearchResults()}
               </TabsContent>
             </Tabs>
           </div>

@@ -4,6 +4,9 @@ import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import CreateItemModal from "@/components/common/dialogs/create-item-dialog";
 import SessionDialog from "@/components/common/dialogs/session-dialog";
 import ForceDirectedGraphView from "@/components/common/layout/force-directed-graph";
+import TreeView from "@/components/common/layout/tree-view";
+import TreeView2 from "@/components/common/layout/tree-view-2";
+import TreeViewStatic from "@/components/common/layout/tree-view-static";
 import SearchBar from "@/components/common/search/searchbar";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
@@ -150,9 +153,11 @@ export const Dashboard = () => {
               <p className="ml-2 text-gray-700">Loading Relations Data...</p>
             </div>
           ) : (
-            <div className="h-[800px] w-full">
-              <ForceDirectedGraphView linkingData={linkingData} id="dashboardForceDirectedGraph" />
-            </div>
+            // <ForceDirectedGraphView linkingData={linkingData} isDashBoard={true} />
+            <>
+              <TreeView data={linkingData} />
+              {/* <TreeViewStatic /> */}
+            </>
           )}
         </div>
       </div>

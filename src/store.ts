@@ -6,8 +6,10 @@ import { documentApi } from "@/api/documents/documentApi";
 import documentSlice from "@/api/documents/documentSlice";
 import { projectApi } from "@/api/projects/projectApi";
 import { searchApi } from "@/api/search/searchApi";
+import { treeApi } from "@/api/tree/treeApi";
 import languageReducer from "@/api/utilities/languageSlice";
 import sidebarReducer from "@/api/utilities/sidebarSlice";
+// Import new API slice
 // Configure Store and Persistance
 import { configureStore, Reducer } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
@@ -46,9 +48,9 @@ export const rootReducer = combineReducers({
   language: languageReducer,
   sidebar: sidebarReducer,
   [authApi.reducerPath]: authApi.reducer,
-  [document.reducerPath]: documentApi.reducer,
+  [documentApi.reducerPath]: documentApi.reducer,
+  [treeApi.reducerPath]: treeApi.reducer, // Add tree API reducer
 }) as Reducer;
-
 // Persist the combined reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -67,6 +69,7 @@ export const store = configureStore({
       activityApi.middleware,
       searchApi.middleware,
       projectApi.middleware,
+      treeApi.middleware, // Add tree API middleware
       routerMiddleware,
     ),
 });

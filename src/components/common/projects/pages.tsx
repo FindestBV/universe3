@@ -25,6 +25,7 @@ import { List, ListFilter, Plus, RadarIcon, Star } from "lucide-react";
 import { useState } from "react";
 
 import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
+import FilterSheet from "../dialogs/filter-sheet";
 import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
 import ResultsOverview from "./config/results-overview";
@@ -292,7 +293,7 @@ export const ProjectPages = () => {
 
             <div className="project-controls flex items-center gap-4">
               <AdvancedSearchModal />
-              <ListFilter />
+              <FilterSheet />
               <div className="flex items-center gap-2">
                 <TooltipProvider>
                   <Tooltip>
