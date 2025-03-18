@@ -4,6 +4,7 @@
 // import Comments from "@/components/common/layout/comments";
 // import { TOCSidebar } from "./components/TOCSidebar";
 import { CreateProjectDialog } from "@/components/common/dialogs/create-project-dialog";
+import ProjectFinder from "@/components/common/projects/find";
 import ProjectOverView from "@/components/common/projects/overview";
 import ProjectPages from "@/components/common/projects/pages";
 import ProjectSearch from "@/components/common/projects/search";
@@ -359,6 +360,10 @@ export const Dashboard = ({
               ) : currentView === "pages" ? (
                 <div>
                   <ProjectPages />
+                </div>
+              ) : currentView === "find" ? (
+                <div>
+                  <ProjectFinder />
                 </div>
               ) : (
                 <div>
