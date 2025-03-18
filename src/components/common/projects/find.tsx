@@ -5,7 +5,7 @@
  * @returns {JSX.Element} A project search component
  */
 import { useAdvancedSearchQuery } from "@/api/search/searchApi";
-import AskIgorModal from "@/components/common/dialogs/ask-igor";
+// import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import SearchBar from "@/components/common/search/searchbar";
 import { Button } from "@/components/ui/button";
 import { useDebounce } from "@/hooks/use-debounce";
