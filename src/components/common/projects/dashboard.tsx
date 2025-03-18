@@ -32,6 +32,7 @@ import {
   Plus,
   Search,
   Settings,
+  Telescope,
 } from "lucide-react";
 
 import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -267,7 +268,7 @@ export const Dashboard = ({
                       className={`${currentView === "find" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
                       onClick={() => setCurrentView("find")}
                     >
-                      <Link className="h-5 w-5 group-hover:text-white" />
+                      <Telescope className="h-5 w-5 group-hover:text-white" />
                       <span
                         className={`text-sm font-medium ${currentView === "find" ? "text-white" : "text-gray-600"} group-hover:text-white`}
                       >
