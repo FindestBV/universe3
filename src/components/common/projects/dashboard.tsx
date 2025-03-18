@@ -263,6 +263,24 @@ export const Dashboard = ({
                         />
                       </span>
                     </li>
+                    <li
+                      className={`${currentView === "find" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
+                      onClick={() => setCurrentView("find")}
+                    >
+                      <Link className="h-5 w-5 group-hover:text-white" />
+                      <span
+                        className={`text-sm font-medium ${currentView === "find" ? "text-white" : "text-gray-600"} group-hover:text-white`}
+                      >
+                        Find
+                      </span>
+                      <span className="ml-auto">
+                        <Plus
+                          className={`p-1 ${
+                            currentView === "find" ? "text-white" : "bg-gray-100 text-gray-600"
+                          } rounded-sm group-hover:bg-transparent group-hover:text-white`}
+                        />
+                      </span>
+                    </li>
                   </ul>
 
                   {/* Table of Contents */}

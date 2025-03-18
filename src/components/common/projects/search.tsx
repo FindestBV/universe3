@@ -12,9 +12,18 @@ import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import SearchBar from "@/components/common/search/searchbar";
 import { Button } from "@/components/ui/button";
 import { useDebounce } from "@/hooks/use-debounce";
+import useNavigateWithTransition from "@/hooks/use-navigate-with-transition";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { ArrowLeft, ChevronLast, ChevronLeft, ChevronRight, Plus, SearchIcon } from "lucide-react";
+import {
+  ArrowLeft,
+  ChevronLast,
+  ChevronLeft,
+  ChevronRight,
+  Plus,
+  SearchIcon,
+  Telescope,
+} from "lucide-react";
 
 import { useCallback, useState } from "react";
 
@@ -78,6 +87,7 @@ export const ProjectSearch = () => {
   const [selectedTab, setSelectedTab] = useState(TABS[0]);
   const [hasSearched, setHasSearched] = useState(false);
   const [searchItems, { data: searchData, isLoading }] = useSearchItemsMutation();
+  const navigateWithTransition = useNavigateWithTransition();
 
   const debouncedSearch = useDebounce((query: string) => {
     if (query.trim()) {
@@ -188,9 +198,20 @@ export const ProjectSearch = () => {
     >
       <div className="min-h-full" id="projects-search">
         <div className="mx-auto max-w-full p-8">
-          <div className="mb-4 flex items-center gap-4">
-            <SearchIcon className="h-6 w-6" />
-            <h1 className="mb-2 text-2xl font-bold">Search in this project</h1>
+          <div className="mb-4 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <SearchIcon className="h-6 w-6" />
+              <h1 className="mb-2 text-2xl font-bold">Search in this project</h1>
+            </div>
+            <div className="flex items-center gap-4 text-sm">
+              <h5>Need to find new sources?</h5>
+              <button
+                className="flex items-center gap-2 rounded border border-slate-300 bg-slate-100 px-4 py-2 text-black transition-colors duration-200 hover:bg-slate-200"
+                onClick={() => navigateWithTransition("/projects/dashboard")}
+              >
+                <Telescope /> Find external pappers
+              </button>
+            </div>
           </div>
           <div className="mb-4">
             <div className="mx-auto max-w-[1024px]">

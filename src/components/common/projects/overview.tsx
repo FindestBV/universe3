@@ -560,7 +560,7 @@ export const ProjectOverView = () => {
                   </TabsTrigger>
                 ))}
               </div>
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -594,8 +594,8 @@ export const ProjectOverView = () => {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-                {/* <AskIgorModal iconOnly={true} /> */}
-              </div>
+                {/* <AskIgorModal iconOnly={true} /> 
+              </div> */}
             </TabsList>
 
             <TabsContent value="overview" className="mt-2 space-y-2 transition-all duration-150">
