@@ -48,7 +48,7 @@ export const ProjectFinder = () => {
 
   useEffect(() => {
     loadRecentQueries();
-  }, []);
+  }, [hasSearched]);
 
   const loadRecentQueries = async () => {
     try {
@@ -72,10 +72,15 @@ export const ProjectFinder = () => {
     if (query.trim()) {
       setSearchQuery(query);
       setHasSearched(true);
-      saveSearchQuery(query).catch(console.error);
+      saveSearchQuery(query)
+        .then(() => {
+          loadRecentQueries();
+        })
+        .catch(console.error);
     } else {
       setSearchQuery("");
       setHasSearched(false);
+      loadRecentQueries();
     }
   }, 500);
 
