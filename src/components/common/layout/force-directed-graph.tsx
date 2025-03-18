@@ -48,98 +48,80 @@ import { D3DragEvent, drag, select, zoom, zoomIdentity, zoomTransform } from "d3
 
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 
+interface Node {
+  id: string;
+  x?: number;
+  y?: number;
+  name: string;
+  objectType?: ObjectTypeEnum;
+  lowerLevelNodes?: Node[];
+}
+
+interface Link {
+  source: string | Node;
+  target: string | Node;
+}
+
+interface GraphData {
+  nodes: Node[];
+  links: Link[];
+}
+
+interface WorkerMessage {
+  nodes: Node[];
+  links: Link[];
+}
+
 const NODE_RADIUS = 30; // Node size
 
-export const ForceDirectedGraphView: FC<{ linkingData: any[]; id: string }> = ({
+export const ForceDirectedGraphView: FC<{ linkingData: Node[]; id: string }> = ({
   linkingData,
   id,
-}) => {
+}): JSX.Element => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [hoveredNode, setHoveredNode] = useState(null); // Stores hovered node for tooltips
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 }); // Stores mouse coordinates
-  const graphDataRef = useRef({ nodes: [], links: [] });
+  const forceGraphContainerRef = useRef<HTMLDivElement | null>(null);
+  const [hoveredNode, setHoveredNode] = useState<Node | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const graphDataRef = useRef<GraphData>({ nodes: [], links: [] });
 
-  useEffect(() => {
-    if (!linkingData || linkingData.length === 0) return;
+  const draw = useCallback(
+    (
+      canvas: HTMLCanvasElement,
+      ctx: CanvasRenderingContext2D,
+      transform: { k: number; x: number; y: number },
+      graphData: GraphData,
+    ): void => {
+      if (!canvas || !ctx) return;
 
-    // to be offloaded to a global worker.
-    const workerCode = `
-      self.onmessage = (event) => {
-        const { nodes, links } = event.data;
-        importScripts("https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.translate(transform.x, transform.y);
+      ctx.scale(transform.k, transform.k);
 
-        const width = 800, height = 800;
+      // Draw Links
+      graphData.links.forEach((link) => {
+        const source = link.source as Node;
+        const target = link.target as Node;
+        ctx.moveTo(source.x ?? 0, source.y ?? 0);
+        ctx.lineTo(target.x ?? 0, target.y ?? 0);
+      });
+      ctx.stroke();
 
-        nodes.forEach((node) => {
-          node.x = node.x ?? (Math.random() * width - width / 2);
-          node.y = node.y ?? (Math.random() * height - height / 2);
-        });
+      // Draw Nodes
+      graphData.nodes.forEach((node) => {
+        ctx.beginPath();
+        ctx.arc(node.x ?? 0, node.y ?? 0, NODE_RADIUS, 0, 2 * Math.PI);
+        ctx.fillStyle = "#000000";
+        ctx.fill();
+      });
 
-        links.forEach(link => {
-          link.source = nodes.find(n => n.id === link.source);
-          link.target = nodes.find(n => n.id === link.target);
-        });
+      ctx.restore();
+    },
+    [],
+  );
 
-        let tickCount = 0, MAX_TICKS = 100;
-
-        const simulation = d3.forceSimulation(nodes)
-          .force("link", d3.forceLink(links).id(d => d.id).distance(160))
-          .force("charge", d3.forceManyBody().strength(-40)) 
-          .force("center", d3.forceCenter(0, 0))
-          .force("collision", d3.forceCollide(45))
-          .on("tick", () => {
-            if (tickCount++ >= MAX_TICKS) simulation.stop();
-            self.postMessage({ nodes, links });
-          });
-
-        self.onmessage = (event) => {
-          if (event.data === "STOP") simulation.stop();
-        };
-      };
-    `;
-
-    // 🔧 Create Web Worker
-    const blob = new Blob([workerCode], { type: "application/javascript" });
-    const worker = new Worker(URL.createObjectURL(blob));
-
-    worker.postMessage({
-      nodes: linkingData,
-      links: linkingData.flatMap((node) =>
-        (node.lowerLevelNodes || []).map((child) => ({ source: node.id, target: child.id })),
-      ),
-    });
-
-
-  const draw = useCallback((canvas, ctx, transform, graphData) => {
-    if (!canvas || !ctx) return;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.save();
-    ctx.translate(transform.x, transform.y);
-    ctx.scale(transform.k, transform.k);
-
-    // Draw Links
-    graphData.links.forEach((link) => {
-      const source = link.source;
-      const target = link.target;
-      ctx.moveTo(source.x, source.y);
-      ctx.lineTo(target.x, target.y);
-    });
-    ctx.stroke();
-
-    // Draw Nodes
-    graphData.nodes.forEach((node) => {
-      ctx.beginPath();
-      ctx.arc(node.x, node.y, NODE_RADIUS, 0, 2 * Math.PI);
-      ctx.fillStyle = "#000000";
-      // ctx.fillStyle = node === hoveredNode ? getObjectTypeColor(node.objectType) : "#000000";
-      ctx.fill();
-    });
-
-    ctx.restore();
-  }, []);
-
-  const drawCanvas = useCallback(() => {
+  const drawCanvas = useCallback((): void => {
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext("2d");
@@ -151,7 +133,142 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[]; id: string }> = ({
     }
   }, [draw]);
 
-  const setupCanvas = () => {
+  const dragstarted = useCallback(
+    (event: D3DragEvent<HTMLCanvasElement, unknown, Node>): void => {
+      event.sourceEvent.stopPropagation();
+      GlobalGraphWorker.getWorker().postMessage({
+        type: "nodeDragStarted",
+        data: {
+          nodeId: event.subject.id,
+          graphId: id,
+          x: event.subject.x,
+          y: event.subject.y,
+          shouldStart: !event.active,
+        },
+      });
+    },
+    [id],
+  );
+
+  const dragged = useCallback(
+    (event: D3DragEvent<HTMLCanvasElement, unknown, Node>): void => {
+      event.sourceEvent.stopPropagation();
+      GlobalGraphWorker.getWorker().postMessage({
+        type: "nodeDragged",
+        data: { nodeId: event.subject.id, x: event.x, y: event.y, graphId: id },
+      });
+    },
+    [id],
+  );
+
+  const dragended = useCallback(
+    (event: D3DragEvent<HTMLCanvasElement, unknown, Node>): void => {
+      event.sourceEvent.stopPropagation();
+      GlobalGraphWorker.getWorker().postMessage({
+        type: "nodeDragEnded",
+        data: { nodeId: event.subject.id, graphId: id, shouldStart: !event.active },
+      });
+    },
+    [id],
+  );
+
+  const dragsubject = useCallback((event: MouseEvent): Node | null => {
+    if (!canvasRef.current) return null;
+    const transform = zoomTransform(canvasRef.current);
+    const x = transform.invertX(event.x);
+    const y = transform.invertY(event.y);
+    return (
+      graphDataRef.current.nodes.find(
+        (node) => Math.hypot((node.x ?? 0) - x, (node.y ?? 0) - y) < NODE_RADIUS,
+      ) ?? null
+    );
+  }, []);
+
+  const calculateFitTransform = useCallback(
+    (graphData: GraphData, canvasWidth: number, canvasHeight: number) => {
+      if (!graphData.nodes.length) return zoomIdentity;
+
+      const nodes = graphData.nodes;
+      const minX = Math.min(...nodes.map((node) => node.x ?? 0));
+      const maxX = Math.max(...nodes.map((node) => node.x ?? 0));
+      const minY = Math.min(...nodes.map((node) => node.y ?? 0));
+      const maxY = Math.max(...nodes.map((node) => node.y ?? 0));
+
+      const graphWidth = maxX - minX;
+      const graphHeight = maxY - minY;
+
+      const scale = Math.min(canvasWidth / graphWidth / 1.7, canvasHeight / graphHeight / 1.7);
+      const translateX = (canvasWidth - graphWidth * scale) / 2 - minX * scale;
+      const translateY = (canvasHeight - graphHeight * scale) / 2 - minY * scale;
+
+      return zoomIdentity.translate(translateX, translateY).scale(scale);
+    },
+    [],
+  );
+
+  const setupZoomEvents = useCallback(
+    (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): void => {
+      const zoomBehavior = zoom<HTMLCanvasElement, unknown>().on("zoom", (event) => {
+        draw(canvas, ctx, event.transform, graphDataRef.current);
+      });
+
+      select<HTMLCanvasElement, unknown>(canvas).call(zoomBehavior);
+
+      const calculatedTransform = calculateFitTransform(
+        graphDataRef.current,
+        canvas.width,
+        canvas.height,
+      );
+      select<HTMLCanvasElement, unknown>(canvas).call(zoomBehavior.transform, calculatedTransform);
+    },
+    [draw, calculateFitTransform],
+  );
+
+  const setupDragEvents = useCallback(
+    (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): void => {
+      select<HTMLCanvasElement, unknown>(canvas)
+        .call(
+          drag<HTMLCanvasElement, unknown>()
+            .subject(dragsubject)
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended),
+        )
+        .call(
+          zoom<HTMLCanvasElement, unknown>().on("zoom", () =>
+            draw(canvas, ctx, zoomTransform(canvas) ?? zoomIdentity, graphDataRef.current),
+          ),
+        );
+    },
+    [draw, dragsubject, dragstarted, dragged, dragended],
+  );
+
+  const setupHoverEvents = useCallback((canvas: HTMLCanvasElement): void => {
+    canvas.addEventListener("mousemove", (event: MouseEvent) => {
+      if (!canvasRef.current) return;
+      const transform = zoomTransform(canvasRef.current);
+      const x = transform.invertX(event.offsetX);
+      const y = transform.invertY(event.offsetY);
+      const node = graphDataRef.current.nodes.find(
+        (node) => Math.hypot((node.x ?? 0) - x, (node.y ?? 0) - y) < NODE_RADIUS,
+      );
+      if (node) {
+        setHoveredNode(node);
+        const screenX = (node.x ?? 0) * transform.k + transform.x;
+        const screenY = (node.y ?? 0) * transform.k + transform.y;
+        setMousePosition({ x: screenX, y: screenY });
+      } else {
+        setHoveredNode(null);
+        setMousePosition({ x: 0, y: 0 });
+      }
+    });
+
+    canvas.addEventListener("mouseleave", () => {
+      setHoveredNode(null);
+    });
+  }, []);
+
+  const setupCanvas = useCallback((): void => {
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext("2d");
@@ -161,20 +278,20 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[]; id: string }> = ({
         setupHoverEvents(canvas);
       }
     }
-  };
+  }, [setupZoomEvents, setupDragEvents, setupHoverEvents]);
 
   useEffect(() => {
     if (isInitialized) {
       setupCanvas();
     }
-  }, [isInitialized]);
+  }, [isInitialized, setupCanvas]);
 
   useEffect(() => {
     if (!linkingData || linkingData.length === 0) return;
 
     const graphWorker = GlobalGraphWorker.getWorker();
 
-    const handleMessage = ({ nodes, links }) => {
+    const handleMessage = ({ nodes, links }: WorkerMessage) => {
       graphDataRef.current = { nodes, links };
       if (!isInitialized) {
         setIsInitialized(true);
@@ -205,138 +322,6 @@ export const ForceDirectedGraphView: FC<{ linkingData: any[]; id: string }> = ({
       graphWorker.postMessage({ type: "removeGraph", data: { graphId: id } });
     };
   }, [linkingData, id, isInitialized, drawCanvas]);
-
-  const dragsubject = (event) => {
-    if (!canvasRef.current) return null;
-    const transform = zoomTransform(canvasRef.current);
-    const x = transform.invertX(event.x);
-    const y = transform.invertY(event.y);
-    return graphDataRef.current.nodes.find(
-      (node) => Math.hypot(node.x - x, node.y - y) < NODE_RADIUS,
-    );
-  };
-
-  const dragstarted = (event: D3DragEvent<HTMLCanvasElement, any, any>) => {
-    event.sourceEvent.stopPropagation();
-    GlobalGraphWorker.getWorker().postMessage({
-      type: "nodeDragStarted",
-      data: {
-        nodeId: event.subject.id,
-        graphId: id,
-        x: event.subject.x,
-        y: event.subject.y,
-        shouldStart: !event.active,
-      },
-    });
-  };
-
-  const dragged = (event: D3DragEvent<HTMLCanvasElement, any, any>) => {
-    event.sourceEvent.stopPropagation();
-    const node = event.subject;
-    GlobalGraphWorker.getWorker().postMessage({
-      type: "nodeDragged",
-      data: { nodeId: node.id, x: event.x, y: event.y, graphId: id },
-    });
-  };
-
-  const dragended = (event: D3DragEvent<HTMLCanvasElement, any, any>) => {
-    event.sourceEvent.stopPropagation();
-    GlobalGraphWorker.getWorker().postMessage({
-      type: "nodeDragEnded",
-      data: { nodeId: event.subject.id, graphId: id, shouldStart: !event.active },
-    });
-  };
-
-  const getObjectTypeColor = (objectType: ObjectTypeEnum): string => {
-    switch (objectType) {
-      case ObjectTypeEnum.Entity:
-        return "#00ADEF";
-      case ObjectTypeEnum.Study:
-        return "#5856D6";
-      case ObjectTypeEnum.Query:
-        return "#A30076";
-      default:
-        return "#00ADEF";
-    }
-  };
-
-  const setupZoomEvents = (canvas: Element, ctx: CanvasRenderingContext2D) => {
-    let transform = { k: 1, x: 0, y: 0 };
-    const zoomBehavior = zoom().on("zoom", (event) => {
-      transform = event.transform;
-      draw(canvas, ctx, transform, graphDataRef.current);
-    });
-
-    select(canvas).call(zoomBehavior);
-
-    // Initial zoom extent to fit graph
-    const calculatedTransform = calculateFitTransform(
-      graphDataRef.current,
-      canvas.width,
-      canvas.height,
-    );
-    select(canvas).call(zoomBehavior.transform, calculatedTransform);
-  };
-
-  const setupDragEvents = (canvas: Element, ctx: CanvasRenderingContext2D) => {
-    select(canvas)
-      .call(
-        drag()
-          .subject(dragsubject)
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended),
-      )
-      .call(
-        zoom().on("zoom", () => draw(canvas, ctx, zoomTransform(canvas), graphDataRef.current)),
-      );
-  };
-
-  const setupHoverEvents = (canvas: Element) => {
-    canvas.addEventListener("mousemove", (event) => {
-      if (!canvasRef.current) return;
-      const transform = zoomTransform(canvasRef.current);
-      const x = transform.invertX(event.offsetX);
-      const y = transform.invertY(event.offsetY);
-      const node = graphDataRef.current.nodes.find(
-        (node) => Math.hypot(node.x - x, node.y - y) < NODE_RADIUS,
-      );
-      if (node) {
-        setHoveredNode(node);
-        const screenX = node.x * transform.k + transform.x;
-        const screenY = node.y * transform.k + transform.y;
-
-        setMousePosition({ x: screenX, y: screenY });
-      } else {
-        setHoveredNode(null);
-        setMousePosition({ x: 0, y: 0 });
-      }
-    });
-
-    canvas.addEventListener("mouseleave", () => {
-      setHoveredNode(null);
-    });
-  };
-
-  const calculateFitTransform = (graphData, canvasWidth: number, canvasHeight: number) => {
-    if (!graphData.nodes.length) return zoomIdentity;
-
-    const nodes = graphData.nodes;
-    const minX = Math.min(...nodes.map((node) => node.x));
-    const maxX = Math.max(...nodes.map((node) => node.x));
-    const minY = Math.min(...nodes.map((node) => node.y));
-    const maxY = Math.max(...nodes.map((node) => node.y));
-
-    const graphWidth = maxX - minX;
-    const graphHeight = maxY - minY;
-
-    // TODO: Find a better way to calculate scale, 1.7 is just a static number that kinda works for now
-    const scale = Math.min(canvasWidth / graphWidth / 1.7, canvasHeight / graphHeight / 1.7);
-    const translateX = (canvasWidth - graphWidth * scale) / 2 - minX * scale;
-    const translateY = (canvasHeight - graphHeight * scale) / 2 - minY * scale;
-
-    return zoomIdentity.translate(translateX, translateY).scale(scale);
-  };
 
   return (
     <div ref={forceGraphContainerRef} className="h-[800px] w-full">
