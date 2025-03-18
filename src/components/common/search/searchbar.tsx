@@ -46,13 +46,13 @@ export const SearchBar = ({ value, onChange, onSearch, isLoading }: SearchBarPro
               type="text"
               value={value}
               onChange={handleChange}
-              className="flex w-full rounded-full border border-slate-200 py-2 pl-10 text-black"
-              placeholder={t("searchPlaceholder")}
+              className="flex w-full rounded-full border border-slate-200 py-2 pl-4 text-black"
+              placeholder="Search for pages, documents and queries in this project"
               aria-label="Search input"
             />
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-500">
+            {/* <div className="absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-500">
               <Search size={20} />
-            </div>
+            </div> */}
             {value && (
               <button
                 type="button"

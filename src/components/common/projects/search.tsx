@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useDebounce } from "@/hooks/use-debounce";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { ChevronRight, Plus } from "lucide-react";
+import { ArrowLeft, ChevronLast, ChevronLeft, ChevronRight, Plus, SearchIcon } from "lucide-react";
 
 import { useCallback, useState } from "react";
 
@@ -188,9 +188,11 @@ export const ProjectSearch = () => {
     >
       <div className="min-h-full" id="projects-search">
         <div className="mx-auto max-w-full p-8">
-          <div className="overviewHeader">
-            <h1 className="mb-2 text-2xl font-bold">Project search</h1>
-            <br />
+          <div className="mb-4 flex items-center gap-4">
+            <SearchIcon className="h-6 w-6" />
+            <h1 className="mb-2 text-2xl font-bold">Search in this project</h1>
+          </div>
+          <div className="mb-4">
             <div className="mx-auto max-w-[1024px]">
               <SearchBar
                 value={searchQuery}
@@ -198,7 +200,7 @@ export const ProjectSearch = () => {
                 onSearch={handleSearch}
                 isLoading={isLoading}
               />
-              <div className="mx-auto flex w-full items-center justify-center gap-2 py-2">
+              <div className="mx-auto mt-4 flex w-full items-center justify-center gap-2 py-2">
                 <button
                   type="submit"
                   className="rounded-md bg-black p-2 px-4 text-sm text-white hover:bg-slate-500 focus:outline-none"
@@ -210,6 +212,12 @@ export const ProjectSearch = () => {
             </div>
           </div>
           <div className="mt-16">
+            {filteredResults && filteredResults.length > 0 ? (
+              <div className="mb-4 flex items-center gap-2">
+                <ArrowLeft />
+                <h3 className="font-black">Results for: {searchQuery}</h3>
+              </div>
+            ) : null}
             <Tabs defaultValue="All" className="pb-4" onValueChange={setSelectedTab}>
               <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
                 <div className="flex gap-2">
@@ -219,7 +227,7 @@ export const ProjectSearch = () => {
                       value={tab}
                       className={`flex p-2 text-sm transition-all duration-150 ${
                         selectedTab === tab
-                          ? "border-b-2 border-blue-800 bg-blue-50 font-bold"
+                          ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
                           : "text-black"
                       }`}
                     >
