@@ -1,8 +1,3 @@
-// import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
-// import ConnectQuery from "@/components/common/dialogs/connect-query";
-// import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
-// import Comments from "@/components/common/layout/comments";
-// import { TOCSidebar } from "./components/TOCSidebar";
 import { useGetStudyByIdQuery } from "@/api/documents/documentApi";
 import { CreateProjectDialog } from "@/components/common/dialogs/create-project-dialog";
 import ProjectFinder from "@/components/common/projects/find";
@@ -10,16 +5,8 @@ import ProjectOverView from "@/components/common/projects/overview";
 import ProjectPages from "@/components/common/projects/pages";
 import ProjectSearch from "@/components/common/projects/search";
 import ProjectSources from "@/components/common/projects/sources";
-// import { Button } from "@/components/ui/button";
-// import { SearchForm } from "@/components/common/sidebar/search-form";
-// import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
-// import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
-// import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
-// import { useDashboard } from "@/hooks/use-block-editor";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
-// import { initialContent } from "@/lib/data/initialContent";
 import { RootState } from "@/store";
-// import { EditorContent } from "@tiptap/react";
 import {
   ArrowLeft,
   ChevronDown,
@@ -37,7 +24,7 @@ import {
   Telescope,
 } from "lucide-react";
 
-import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 
@@ -234,11 +221,6 @@ export const Dashboard = ({
                       <div className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-blue-300 text-xs font-black text-blue-600">
                         3
                       </div>
-
-                      {/* <span className="ml-auto flex items-center gap-2">
-                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-200 text-xs font-medium text-gray-600">3</span>
-                        <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
-                      </span> */}
                     </li>
                     <li
                       className={`${currentView === "pages" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
