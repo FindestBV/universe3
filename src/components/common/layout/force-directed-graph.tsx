@@ -291,6 +291,8 @@ export const ForceDirectedGraphView: FC<{ linkingData: Node[]; id: string }> = (
 
     const graphWorker = GlobalGraphWorker.getWorker();
 
+    console.log("i am the graph worker", graphWorker);
+
     const handleMessage = ({ nodes, links }: WorkerMessage) => {
       graphDataRef.current = { nodes, links };
       if (!isInitialized) {
