@@ -254,7 +254,7 @@ export const ForceDirectedGraphView: FC<{ linkingData: Node[]; id: string }> = (
       );
       if (node) {
         setHoveredNode(node);
-        const screenX = (node.x ?? 0) * transform.k + transform.x;
+        const screenX = canvasRef.current.clientWidth - 10;
         const screenY = (node.y ?? 0) * transform.k + transform.y;
         setMousePosition({ x: screenX, y: screenY });
       } else {
