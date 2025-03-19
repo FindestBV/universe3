@@ -3,13 +3,14 @@
 // import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
 // import Comments from "@/components/common/layout/comments";
 // import { TOCSidebar } from "./components/TOCSidebar";
+import { useGetStudyByIdQuery } from "@/api/documents/documentApi";
 import { CreateProjectDialog } from "@/components/common/dialogs/create-project-dialog";
 import ProjectFinder from "@/components/common/projects/find";
 import ProjectOverView from "@/components/common/projects/overview";
 import ProjectPages from "@/components/common/projects/pages";
 import ProjectSearch from "@/components/common/projects/search";
 import ProjectSources from "@/components/common/projects/sources";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 // import { SearchForm } from "@/components/common/sidebar/search-form";
 // import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 // import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
@@ -66,6 +67,7 @@ export const Dashboard = ({
   connectedStudies?: string;
   connectedEntities?: string;
 }) => {
+  // const { id } = useParams<{ id: string }>();
   const menuContainerRef = useRef(null);
   const [isTitleExpanded, setIsTitleExpanded] = useState<boolean>(false);
   const navigateWithTransition = useNavigateWithTransition();
@@ -73,6 +75,7 @@ export const Dashboard = ({
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
   const [currentView, setCurrentView] = useState<string>("overview");
+  const { data: pageData } = useGetStudyByIdQuery(id);
 
   const location = useLocation();
   const currentPath = location.pathname;
@@ -125,9 +128,7 @@ export const Dashboard = ({
                     <div className="flex flex-col">
                       <small className="text-xs font-bold text-white">Project</small>
                       <p className="text-xs font-bold text-white">
-                        {isProjectDashboard
-                          ? "Your Universe Projects"
-                          : "Cross regeneration to maxim..."}
+                        {isProjectDashboard ? "Your Universe Projects" : pageData?.title}
                       </p>
                     </div>
                     <div className="flex items-center gap-4">
@@ -209,9 +210,19 @@ export const Dashboard = ({
                         Project overview
                       </span>
                       <span className="ml-auto">
-                        <ChevronRight
-                          className={`p-1 ${currentView === "overview" ? "text-white" : "text-gray-600"} rounded-sm group-hover:text-white`}
-                        />
+                        {currentView === "overview" ? (
+                          <ChevronRight
+                            className={`rounded-sm p-1 text-white group-hover:text-white`}
+                          />
+                        ) : (
+                          <Plus
+                            className={`p-1 ${
+                              currentView === "overview"
+                                ? "text-white"
+                                : "bg-gray-100 text-gray-600"
+                            } rounded-sm group-hover:bg-transparent group-hover:text-white`}
+                          />
+                        )}
                       </span>
                     </li>
                     <li
@@ -240,11 +251,17 @@ export const Dashboard = ({
                         Project pages
                       </span>
                       <span className="ml-auto">
-                        <Plus
-                          className={`p-1 ${
-                            currentView === "pages" ? "text-white" : "bg-gray-100 text-gray-600"
-                          } rounded-sm group-hover:bg-transparent group-hover:text-white`}
-                        />
+                        {currentView === "pages" ? (
+                          <ChevronRight
+                            className={`rounded-sm p-1 text-white group-hover:text-white`}
+                          />
+                        ) : (
+                          <Plus
+                            className={`p-1 ${
+                              currentView === "pages" ? "text-white" : "bg-gray-100 text-gray-600"
+                            } rounded-sm group-hover:bg-transparent group-hover:text-white`}
+                          />
+                        )}
                       </span>
                     </li>
                     <li
@@ -258,11 +275,17 @@ export const Dashboard = ({
                         Project sources
                       </span>
                       <span className="ml-auto">
-                        <Plus
-                          className={`p-1 ${
-                            currentView === "sources" ? "text-white" : "bg-gray-100 text-gray-600"
-                          } rounded-sm group-hover:bg-transparent group-hover:text-white`}
-                        />
+                        {currentView === "sources" ? (
+                          <ChevronRight
+                            className={`rounded-sm p-1 text-white group-hover:text-white`}
+                          />
+                        ) : (
+                          <Plus
+                            className={`p-1 ${
+                              currentView === "sources" ? "text-white" : "bg-gray-100 text-gray-600"
+                            } rounded-sm group-hover:bg-transparent group-hover:text-white`}
+                          />
+                        )}
                       </span>
                     </li>
                     <li
@@ -276,11 +299,17 @@ export const Dashboard = ({
                         Find
                       </span>
                       <span className="ml-auto">
-                        <Plus
-                          className={`p-1 ${
-                            currentView === "find" ? "text-white" : "bg-gray-100 text-gray-600"
-                          } rounded-sm group-hover:bg-transparent group-hover:text-white`}
-                        />
+                        {currentView === "find" ? (
+                          <ChevronRight
+                            className={`rounded-sm p-1 text-white group-hover:text-white`}
+                          />
+                        ) : (
+                          <Plus
+                            className={`p-1 ${
+                              currentView === "find" ? "text-white" : "bg-gray-100 text-gray-600"
+                            } rounded-sm group-hover:bg-transparent group-hover:text-white`}
+                          />
+                        )}
                       </span>
                     </li>
                   </ul>

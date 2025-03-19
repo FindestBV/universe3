@@ -251,7 +251,7 @@ export const MaturityRadarComponent: React.FC<MaturityRadarProps> = ({
 
   const MemoizedContent = useMemo(
     () => (
-      <div className="maturity-radar-container relative w-auto max-w-full overflow-y-scroll">
+      <div className="maturity-radar-container max-w-3/4 relative mx-auto w-auto overflow-y-scroll">
         <h3>Maturity Radar v2</h3>
         <div className="flex flex-col items-center">
           {shouldRenderGraph && (

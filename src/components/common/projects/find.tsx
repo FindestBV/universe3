@@ -191,7 +191,7 @@ export const ProjectFinder = () => {
           <div className="mb-4 flex items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <SearchIcon className="h-6 w-6" />
-              <h1 className="mb-2 text-2xl font-bold">Advanced Search [TEST!!! DO NOT USE]</h1>
+              <h1 className="mb-2 text-2xl font-bold">Advanced Search [DEMO ONLY]</h1>
             </div>
             <div className="flex items-center gap-4 text-sm">
               <h5>Need to find new sources?</h5>

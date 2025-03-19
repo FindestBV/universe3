@@ -31,13 +31,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
 import {
   ChevronRight,
+  Hand,
   List,
   ListFilter,
   Loader,
   Plus,
   RadarIcon,
   Search,
+  Smile,
   Star,
+  Telescope,
+  Waves,
 } from "lucide-react";
 
 import { useCallback, useState } from "react";
@@ -549,13 +553,6 @@ export const ProjectOverView = () => {
           >
             <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
               <div className="flex gap-2">
-                {/* <TabsTrigger
-                  key={"search"}
-                  value={"search"}
-                  className={`px-4 py-2 text-sm ${activeTabActive === "search" ? "border-b-2 border-blue-800 bg-blue-100 font-bold" : "text-black"}`}
-                >
-                  <Search size={18} />
-                </TabsTrigger> */}
                 {tabs.map((tab) => (
                   <TabsTrigger
                     key={tab.id}
@@ -567,42 +564,6 @@ export const ProjectOverView = () => {
                   </TabsTrigger>
                 ))}
               </div>
-              {/* <div className="flex items-center gap-2">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button
-                        className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
-                        id="addNewTabButton"
-                      >
-                        <Plus className="h-5 w-8" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent className="w-72 p-0" align="end">
-                      <div className="flex flex-col rounded-md border border-slate-200 bg-white shadow-md">
-                        <div className="px-4 py-2 text-sm font-bold text-slate-700">
-                          Add new tab with
-                        </div>
-                        <div className="flex flex-col p-1">
-                          {tabTypeOptions.map((option) => (
-                            <button
-                              key={option.id}
-                              className="flex items-center gap-2 rounded-md px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-100"
-                              onClick={() => openTabConfigDialog(option)}
-                            >
-                              <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black">
-                                {option.icon}
-                              </span>
-                              <span>{option.label}</span>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                {/* <AskIgorModal iconOnly={true} /> 
-              </div> */}
             </TabsList>
 
             <TabsContent value="overview" className="mt-2 space-y-2 transition-all duration-150">
@@ -659,8 +620,15 @@ export const ProjectOverView = () => {
                           enhance the elution of macromolecules during the production process of
                           specialized ion exchange resins, specifically fro 'Gent production'...`}
                         </p>
-
-                        <AskIgorModal />
+                        <div className="flex gap-2">
+                          <AskIgorModal />
+                          <button
+                            className="flex items-center gap-2 rounded border border-slate-300 bg-slate-100 px-4 py-1 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
+                            onClick={() => navigateWithTransition("/projects/dashboard")}
+                          >
+                            <Hand className="h-4 w-4" /> Easy Flows
+                          </button>
+                        </div>
                       </>
                     ) : (
                       <>
