@@ -2,6 +2,7 @@
 import ConnectQuery from "@/components/common/dialogs/connect-query";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
 import Comments from "@/components/common/layout/comments";
+import ProviderFlow from "@/components/common/layout/flows/ProviderFlow";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
@@ -276,6 +277,9 @@ export const BlockEditor = ({
               </div>
 
               {/* Begin Main */}
+
+              <ProviderFlow />
+
               <div className="mx-2 flex flex-col pl-24 pt-10">
                 <div className="mx-auto mb-6 w-full py-8">
                   <div className="mb-4 flex items-center gap-2">
