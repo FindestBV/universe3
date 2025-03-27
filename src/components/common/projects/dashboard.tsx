@@ -279,12 +279,12 @@ export const Dashboard = ({
                       </span>
                     </div>
                     <div
-                      className={`${currentView === "sources" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
+                      className={`${currentView === "sources" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-gray-200 hover:text-gray-500`}
                       onClick={() => setCurrentView("sources")}
                     >
                       <Link className="h-5 w-5 group-hover:text-white" />
                       <span
-                        className={`text-sm font-medium ${currentView === "sources" ? "text-white" : "text-gray-600"} group-hover:text-white`}
+                        className={`text-sm font-medium ${currentView === "sources" ? "text-white" : "text-gray-600"} group-hover:text-gray-600`}
                       >
                         Project sources
                       </span>
@@ -295,7 +295,7 @@ export const Dashboard = ({
                               <TooltipTrigger>
                                 <a href="/pages/studies/08dd3f81-c24e-44e5-89ba-107467de54d9">
                                   <Plus
-                                    className={`rounded-sm bg-blue-500 p-1 text-white group-hover:text-white`}
+                                    className={`rounded-sm p-1 text-white hover:bg-blue-500 group-hover:bg-blue-500`}
                                   />
                                 </a>
                               </TooltipTrigger>
@@ -314,7 +314,7 @@ export const Dashboard = ({
                                       currentView === "sources"
                                         ? "text-white"
                                         : "bg-gray-100 text-gray-600"
-                                    } rounded-sm group-hover:bg-blue-500 group-hover:text-white`}
+                                    } rounded-sm bg-gray-100 p-1 group-hover:text-blue-500 group-active:text-blue-500`}
                                   />
                                 </a>
                               </TooltipTrigger>

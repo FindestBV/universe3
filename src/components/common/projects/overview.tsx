@@ -751,12 +751,16 @@ export const ProjectOverView = () => {
             >
               <div className="flex w-full flex-col">
                 {/* Header Row */}
-                <div className="mb-2 flex w-full px-4 py-2 font-semibold">
-                  <div className="w-auto min-w-[200px]">Rating</div>
-                  <div className="flex-grow">Page Titles</div>
+                <div className="flex w-full justify-between p-2 font-semibold">
+                  <div className="flex items-center">
+                    <div className="w-auto min-w-[200px]">Rating</div>
+                    <div className="flex-grow">Page Titles</div>
+                  </div>
+                  <AskIgorModal iconOnly />
                 </div>
 
                 {/* List of Voting Cards */}
+
                 <div className="flex w-full flex-col gap-2 py-2">
                   <VotingCard star={4} />
                   <VotingCard star={4} />
