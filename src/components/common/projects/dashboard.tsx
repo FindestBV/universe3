@@ -3,6 +3,7 @@ import { CreateProjectDialog } from "@/components/common/dialogs/create-project-
 import ProjectFinder from "@/components/common/projects/find";
 import ProjectOverView from "@/components/common/projects/overview";
 import ProjectPages from "@/components/common/projects/pages";
+import ProjectSettings from "@/components/common/projects/project-settings";
 import ProjectSearch from "@/components/common/projects/search";
 import ProjectSources from "@/components/common/projects/sources";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
@@ -196,7 +197,7 @@ export const Dashboard = ({
                       >
                         Project overview
                       </span>
-                      <span className="ml-auto">
+                      {/* <span className="ml-auto">
                         {currentView === "overview" ? (
                           <ChevronRight
                             className={`rounded-sm p-1 text-white group-hover:text-white`}
@@ -210,9 +211,9 @@ export const Dashboard = ({
                             } rounded-sm group-hover:bg-transparent group-hover:text-white`}
                           />
                         )}
-                      </span>
+                      </span> */}
                     </li>
-                    <li
+                    {/* <li
                       className={`${currentView === "search" && "bg-gray-200"} m-4 flex max-w-full items-center gap-2 rounded-full border bg-gray-200 p-2 transition-all duration-150 ease-linear`}
                       onClick={() => setCurrentView("search")}
                     >
@@ -221,7 +222,7 @@ export const Dashboard = ({
                       <div className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-blue-300 text-xs font-black text-blue-600">
                         3
                       </div>
-                    </li>
+                    </li> */}
                     <li
                       className={`${currentView === "pages" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
                       onClick={() => setCurrentView("pages")}
@@ -345,13 +346,31 @@ export const Dashboard = ({
                   </div>
                 </div>
 
-                {/* Settings Footer */}
-                <div className="border-t border-gray-200 bg-white p-4">
-                  <div className="flex cursor-pointer items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
-                    <Settings className="h-4 w-4" fill="#000000" />
-                    <span>Project settings</span>
-                  </div>
+                <div
+                  className={`${currentView === "settings" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
+                  onClick={() => setCurrentView("settings")}
+                >
+                  <Settings className="h-5 w-5 group-hover:text-white" />
+                  <span
+                    className={`text-sm font-medium ${currentView === "settings" ? "text-white" : "text-gray-600"} group-hover:text-white`}
+                  >
+                    Project settings
+                  </span>
+                  {/* <span className="ml-auto">
+                        {currentView === "settings" ? (
+                          <ChevronRight
+                            className={`rounded-sm p-1 text-white group-hover:text-white`}
+                          />
+                        ) : (
+                          <Plus
+                            className={`p-1 ${
+                              currentView === "settings" ? "text-white" : "bg-gray-100 text-gray-600"
+                            } rounded-sm group-hover:bg-transparent group-hover:text-white`}
+                          />
+                        )}
+                      </span> */}
                 </div>
+                {/* Settings Footer */}
               </div>
             </div>
           </div>
@@ -364,17 +383,21 @@ export const Dashboard = ({
                 <div>
                   <ProjectOverView />
                 </div>
-              ) : currentView === "search" ? (
-                <div>
-                  <ProjectSearch />
-                </div>
-              ) : currentView === "pages" ? (
+              ) : // ) : currentView === "search" ? (
+              //   <div>
+              //     <ProjectSearch />
+              //   </div>
+              currentView === "pages" ? (
                 <div>
                   <ProjectPages />
                 </div>
               ) : currentView === "find" ? (
                 <div>
-                  <ProjectFinder />
+                  <ProjectSearch />
+                </div>
+              ) : currentView === "settings" ? (
+                <div>
+                  <ProjectSettings />
                 </div>
               ) : (
                 <div>

@@ -46,7 +46,7 @@ export const TableOfContents = memo(({ editor, onItemClick }: TableOfContentsPro
   return (
     <>
       {tocItems.length > 0 ? (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-3">
           {tocItems.map((item) => (
             <a
               key={item.id}
