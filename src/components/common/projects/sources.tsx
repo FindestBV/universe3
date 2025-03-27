@@ -328,7 +328,7 @@ export const ProjectSources = () => {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <AskIgorModal />
+              <AskIgorModal iconOnly />
             </div>
           </div>
           <div className="mt-0">
@@ -339,7 +339,7 @@ export const ProjectSources = () => {
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className={`p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-200 font-bold" : "text-black"}`}
+                      className={`p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-100 font-bold" : "text-black"}`}
                       onDoubleClick={() => renameTab(tab.id)}
                     >
                       {tab.label}
