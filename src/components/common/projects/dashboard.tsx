@@ -260,18 +260,18 @@ export const Dashboard = ({
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger>
-                                <Plus
-                                  className={`p-1 ${
-                                    currentView === "pages"
-                                      ? "text-white"
-                                      : "bg-gray-100 text-gray-600"
-                                  } rounded-sm group-hover:bg-blue-500 group-hover:text-white`}
-                                />
+                                <a href="/projects/create-page">
+                                  <Plus
+                                    className={`p-1 ${
+                                      currentView === "pages"
+                                        ? "text-white"
+                                        : "bg-gray-100 text-gray-600"
+                                    } rounded-sm group-hover:bg-blue-500 group-hover:text-white`}
+                                  />
+                                </a>
                               </TooltipTrigger>
                               <TooltipContent side="right">
-                                <a href="/projects/create-page">
-                                  <p className="text-xs">Create page</p>
-                                </a>
+                                <p className="text-xs">Create page</p>
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
@@ -293,14 +293,14 @@ export const Dashboard = ({
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger>
-                                <Plus
-                                  className={`rounded-sm bg-blue-500 p-1 text-white group-hover:text-white`}
-                                />
+                                <a href="/pages/studies/08dd3f81-c24e-44e5-89ba-107467de54d9">
+                                  <Plus
+                                    className={`rounded-sm bg-blue-500 p-1 text-white group-hover:text-white`}
+                                  />
+                                </a>
                               </TooltipTrigger>
                               <TooltipContent side="right">
-                                <a href="/pages/studies/08dd3f81-c24e-44e5-89ba-107467de54d9">
-                                  <p className="text-xs">Create source</p>
-                                </a>
+                                <p className="text-xs">Create source</p>
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
