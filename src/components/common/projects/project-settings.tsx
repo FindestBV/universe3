@@ -326,13 +326,14 @@ export const ProjectSettings = () => {
                             type="text"
                             // value={inputValue}
                             // onChange={handleInputChange}
+                            placeholder="Enter the name of the project here..."
                             className="bg-[#fcfafc]"
                           />
                           <h3 className="text-sm font-bold">Short description (optional)</h3>
 
                           <Textarea
                             // onChange={(e) => setQuestion(e.target.value)}
-                            placeholder="Type your question here..."
+                            placeholder="Type your description here..."
                             className="min-h-[120px] resize-none bg-white pr-12 focus:outline-none focus-visible:ring-offset-0"
                           />
                           <button
