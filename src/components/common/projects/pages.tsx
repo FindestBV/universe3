@@ -301,7 +301,7 @@ export const ProjectPages = () => {
     >
       <div className="flex min-h-full" id="projects-pages">
         <div
-          className={`${isSideBarToggled ? "w-3/4" : "w-full"} h-full p-8 transition-all duration-200 ease-in-out`}
+          className={`${isSideBarToggled ? "w-3/4" : "w-full"} h-full p-8 transition-all duration-150 ease-in-out`}
         >
           <div className="overviewHeader flex justify-between">
             <h1 className="mb-2 text-2xl font-bold">Pages</h1>
@@ -380,7 +380,7 @@ export const ProjectPages = () => {
                     {tab.id === "all" && (
                       <div className="w-full">
                         <div className="flex flex-col">
-                          {[1, 2, 3, 4, 5].map((_, index) => (
+                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_, index) => (
                             <div key={index} className="itemCard">
                               <div className="innerCardMain bg-white">
                                 <button
@@ -714,7 +714,7 @@ export const ProjectPages = () => {
           </div>
         </div>
         <div
-          className={`${isSideBarToggled ? "right-0 top-4 flex h-screen w-1/4 flex-col justify-between p-4" : "hidden w-0 p-0"} transition-all duration-200 ease-in-out`}
+          className={`${isSideBarToggled ? "right-0 flex w-1/4 flex-col justify-between p-4" : "hidden w-0 p-0"} top-4 h-screen transition-all duration-150 ease-in-out`}
         >
           <FilterOptions />
         </div>
