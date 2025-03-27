@@ -96,7 +96,7 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
     <div>
       <DialogHeader className="pb-4">
         <DialogTitle className="flex items-center gap-2 text-lg">
-          <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 text-blue-700">
+          <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-200 text-blue-700">
             {selectedTabType.icon}
           </span>
           <span>Configure {selectedTabType.label}</span>
@@ -338,7 +338,7 @@ export const ProjectPages = () => {
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className={`px-4 py-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-50 font-bold" : "text-black"}`}
+                      className={`px-4 py-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-200 font-bold" : "text-black"}`}
                       onDoubleClick={() => renameTab(tab.id)}
                     >
                       {tab.label}
