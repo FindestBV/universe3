@@ -354,7 +354,7 @@ export const BlockEditor = ({
                                       currentView === "pages"
                                         ? "text-white"
                                         : "bg-gray-100 text-gray-600"
-                                    } rounded-sm hover:bg-blue-500 group-hover:bg-white`}
+                                    } rounded-sm group-hover:bg-blue-500 group-hover:text-white`}
                                   />
                                 </a>
                               </TooltipTrigger>
@@ -402,7 +402,7 @@ export const BlockEditor = ({
                                       currentView === "sources"
                                         ? "text-white"
                                         : "bg-gray-100 text-gray-600"
-                                    } rounded-sm hover:bg-blue-500 group-hover:bg-white`}
+                                    } rounded-sm group-hover:bg-blue-500 group-hover:text-white`}
                                   />
                                 </a>
                               </TooltipTrigger>

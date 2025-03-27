@@ -8,6 +8,7 @@
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -20,12 +21,23 @@ import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { List, ListFilter, Plus, RadarIcon, Star } from "lucide-react";
+import {
+  Filter,
+  Link2Icon,
+  List,
+  ListFilter,
+  MessageCircle,
+  Plus,
+  RadarIcon,
+  Star,
+} from "lucide-react";
 
 import { useState } from "react";
 
 import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
 import FilterSheet from "../dialogs/filter-sheet";
+import ReferencesSidebar from "../editor/BlockEditor/components/ReferencesSidebar";
+import FilterOptions from "../layout/filter-options";
 import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
 import ResultsOverview from "./config/results-overview";
@@ -175,6 +187,7 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
 
 export const ProjectPages = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
+  const [isSideBarToggled, setIsSideBarToggled] = useState(false);
 
   const [tabs, setTabs] = useState([
     { id: "all", label: "All Page Types" },
@@ -286,14 +299,16 @@ export const ProjectPages = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
-      <div className="min-h-full" id="projects-pages">
-        <div className="mx-auto w-full p-8">
+      <div className="flex min-h-full" id="projects-pages">
+        <div
+          className={`${isSideBarToggled ? "w-3/4" : "w-full"} h-full p-8 transition-all duration-200 ease-in-out`}
+        >
           <div className="overviewHeader flex justify-between">
             <h1 className="mb-2 text-2xl font-bold">Pages</h1>
 
             <div className="project-controls flex items-center gap-4">
               <AdvancedSearchModal />
-              <FilterSheet />
+
               <div className="flex items-center gap-2">
                 <TooltipProvider>
                   <Tooltip>
@@ -327,9 +342,16 @@ export const ProjectPages = () => {
                   </Tooltip>
                 </TooltipProvider>
               </div>
+              <Button onClick={() => setIsSideBarToggled((prevState) => !prevState)}>
+                <Filter
+                  className={`${isSideBarToggled ? "fill-black" : "bg-white text-black"} h-8 w-4`}
+                />
+              </Button>
+
               <AskIgorModal iconOnly />
             </div>
           </div>
+
           <div className="mt-0">
             <Tabs defaultValue="all" className="pb-4" onValueChange={setIsActiveTabActive}>
               <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
@@ -690,6 +712,11 @@ export const ProjectPages = () => {
               </div>
             </Tabs>
           </div>
+        </div>
+        <div
+          className={`${isSideBarToggled ? "right-0 top-4 flex h-screen w-1/4 flex-col justify-between p-4" : "hidden w-0 p-0"} transition-all duration-200 ease-in-out`}
+        >
+          <FilterOptions />
         </div>
       </div>
 

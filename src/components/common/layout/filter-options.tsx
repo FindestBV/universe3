@@ -1,7 +1,8 @@
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { Globe, Pin } from "lucide-react";
 
 import { useState } from "react";
@@ -29,14 +30,15 @@ export const FilterOptions = () => {
         <h2 className="text-blank py-4 font-bold">Show connections</h2>
         <TabsList className="flex justify-center space-x-4">
           <TabsTrigger value="project" className="flex gap-2">
-            <Pin className={`size-5 text-white`} />
+            <Pin className={`size-5 text-gray-600`} />
             <span> Project Only</span>
           </TabsTrigger>
           <TabsTrigger value="universe" className="flex gap-2">
-            <Globe className={`size-5 text-white`} />
+            <Globe className={`size-5 text-gray-600`} />
             <span> Universe</span>
           </TabsTrigger>
         </TabsList>
+
         <TabsContent value="project">
           <Card>
             <CardContent className="flex flex-col gap-12 py-4">
@@ -80,6 +82,14 @@ export const FilterOptions = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      <button
+        type="submit"
+        className="max-w-[200px] rounded-md bg-black p-2 text-sm text-white hover:bg-slate-500 focus:outline-none"
+        // onClick={() => setIsDialogOpen(false)}
+      >
+        Save Changes
+      </button>
     </div>
   );
 };
