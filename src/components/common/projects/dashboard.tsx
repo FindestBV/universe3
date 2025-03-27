@@ -1,11 +1,11 @@
 import { useGetStudyByIdQuery } from "@/api/documents/documentApi";
 import { CreateProjectDialog } from "@/components/common/dialogs/create-project-dialog";
-import ProjectFinder from "@/components/common/projects/find";
 import ProjectOverView from "@/components/common/projects/overview";
 import ProjectPages from "@/components/common/projects/pages";
 import ProjectSettings from "@/components/common/projects/project-settings";
 import ProjectSearch from "@/components/common/projects/search";
 import ProjectSources from "@/components/common/projects/sources";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { RootState } from "@/store";
 import {
@@ -21,6 +21,7 @@ import {
   Pin,
   Plus,
   Search,
+  SearchIcon,
   Settings,
   Telescope,
 } from "lucide-react";
@@ -184,35 +185,41 @@ export const Dashboard = ({
                 </div>
                 {/* Navigation Links */}
                 <div className="flex-1 overflow-y-auto">
-                  <ul className="border-b border-gray-200">
-                    <li
-                      className={`${currentView === "overview" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
-                      onClick={() => {
-                        setCurrentView("overview");
-                      }}
-                    >
-                      <Home className="h-5 w-5 group-hover:text-white" />
-                      <span
-                        className={`text-sm font-medium ${currentView === "overview" ? "text-white" : "text-gray-600"} group-hover:text-white`}
+                  <nav className="border-b border-gray-200">
+                    <div className="flex justify-between">
+                      <div
+                        className={`${currentView === "overview" && "bg-black text-white"} group m-2 flex w-full items-center justify-between gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
+                        onClick={() => {
+                          setCurrentView("overview");
+                        }}
                       >
-                        Project overview
-                      </span>
-                      {/* <span className="ml-auto">
-                        {currentView === "overview" ? (
-                          <ChevronRight
-                            className={`rounded-sm p-1 text-white group-hover:text-white`}
-                          />
-                        ) : (
-                          <Plus
-                            className={`p-1 ${
-                              currentView === "overview"
-                                ? "text-white"
-                                : "bg-gray-100 text-gray-600"
-                            } rounded-sm group-hover:bg-transparent group-hover:text-white`}
-                          />
-                        )}
-                      </span> */}
-                    </li>
+                        <div className="flex w-3/4 gap-2">
+                          <Home className="h-5 w-5 group-hover:text-white" />
+                          <span
+                            className={`text-sm font-medium ${currentView === "overview" ? "text-white" : "text-gray-600"} group-hover:text-white`}
+                          >
+                            Project overview
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex w-1/4 items-center gap-2">
+                        <span className="ml-2 p-1">
+                          {currentView === "overview" ? (
+                            <SearchIcon
+                              className={`h-6 w-6 rounded-sm p-1 group-hover:text-white`}
+                            />
+                          ) : (
+                            <SearchIcon
+                              className={`p-1 ${
+                                currentView === "overview"
+                                  ? "text-gray-100"
+                                  : "font-bold text-gray-600"
+                              } rounded-sm group-hover:bg-blue-500 group-hover:text-white`}
+                            />
+                          )}
+                        </span>
+                      </div>
+                    </div>
                     {/* <li
                       className={`${currentView === "search" && "bg-gray-200"} m-4 flex max-w-full items-center gap-2 rounded-full border bg-gray-200 p-2 transition-all duration-150 ease-linear`}
                       onClick={() => setCurrentView("search")}
@@ -223,7 +230,7 @@ export const Dashboard = ({
                         3
                       </div>
                     </li> */}
-                    <li
+                    <div
                       className={`${currentView === "pages" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
                       onClick={() => setCurrentView("pages")}
                     >
@@ -233,21 +240,45 @@ export const Dashboard = ({
                       >
                         Project pages
                       </span>
-                      <span className="ml-auto">
+                      <span className="ml-auto flex self-center">
                         {currentView === "pages" ? (
-                          <ChevronRight
-                            className={`rounded-sm p-1 text-white group-hover:text-white`}
-                          />
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <Plus
+                                  className={`rounded-sm bg-blue-500 p-1 text-white group-hover:text-white`}
+                                />
+                              </TooltipTrigger>
+                              <TooltipContent side="right">
+                                <a href="/pages/studies/08dd3f81-c24e-44e5-89ba-107467de54d9">
+                                  <p className="text-xs">Create page</p>
+                                </a>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                         ) : (
-                          <Plus
-                            className={`p-1 ${
-                              currentView === "pages" ? "text-white" : "bg-gray-100 text-gray-600"
-                            } rounded-sm group-hover:bg-transparent group-hover:text-white`}
-                          />
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <Plus
+                                  className={`p-1 ${
+                                    currentView === "pages"
+                                      ? "text-white"
+                                      : "bg-gray-100 text-gray-600"
+                                  } rounded-sm group-hover:bg-blue-500 group-hover:text-white`}
+                                />
+                              </TooltipTrigger>
+                              <TooltipContent side="right">
+                                <a href="/projects/create-page">
+                                  <p className="text-xs">Create page</p>
+                                </a>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                         )}
                       </span>
-                    </li>
-                    <li
+                    </div>
+                    <div
                       className={`${currentView === "sources" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
                       onClick={() => setCurrentView("sources")}
                     >
@@ -257,21 +288,45 @@ export const Dashboard = ({
                       >
                         Project sources
                       </span>
-                      <span className="ml-auto">
+                      <span className="ml-auto flex self-center">
                         {currentView === "sources" ? (
-                          <ChevronRight
-                            className={`rounded-sm p-1 text-white group-hover:text-white`}
-                          />
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <Plus
+                                  className={`rounded-sm bg-blue-500 p-1 text-white group-hover:text-white`}
+                                />
+                              </TooltipTrigger>
+                              <TooltipContent side="right">
+                                <a href="/pages/studies/08dd3f81-c24e-44e5-89ba-107467de54d9">
+                                  <p className="text-xs">Create source</p>
+                                </a>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                         ) : (
-                          <Plus
-                            className={`p-1 ${
-                              currentView === "sources" ? "text-white" : "bg-gray-100 text-gray-600"
-                            } rounded-sm group-hover:bg-transparent group-hover:text-white`}
-                          />
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <Plus
+                                  className={`p-1 ${
+                                    currentView === "sources"
+                                      ? "text-white"
+                                      : "bg-gray-100 text-gray-600"
+                                  } rounded-sm group-hover:bg-blue-500 group-hover:text-white`}
+                                />
+                              </TooltipTrigger>
+                              <TooltipContent side="right">
+                                <a href="/pages/studies/08dd3f81-c24e-44e5-89ba-107467de54d9">
+                                  <p className="text-xs">Create source</p>
+                                </a>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                         )}
                       </span>
-                    </li>
-                    <li
+                    </div>
+                    <div
                       className={`${currentView === "find" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
                       onClick={() => setCurrentView("find")}
                     >
@@ -283,19 +338,19 @@ export const Dashboard = ({
                       </span>
                       <span className="ml-auto">
                         {currentView === "find" ? (
-                          <ChevronRight
-                            className={`rounded-sm p-1 text-white group-hover:text-white`}
+                          <Plus
+                            className={`rounded-sm bg-blue-500 p-1 text-white group-hover:text-white`}
                           />
                         ) : (
                           <Plus
                             className={`p-1 ${
                               currentView === "find" ? "text-white" : "bg-gray-100 text-gray-600"
-                            } rounded-sm group-hover:bg-transparent group-hover:text-white`}
+                            } rounded-sm group-hover:bg-blue-500 group-hover:text-white`}
                           />
                         )}
                       </span>
-                    </li>
-                  </ul>
+                    </div>
+                  </nav>
 
                   {/* Table of Contents */}
                   <div className="p-4">
