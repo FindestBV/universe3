@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
@@ -317,138 +318,29 @@ export const ProjectSettings = () => {
                     className="mt-2 space-y-2 transition-all duration-150"
                   >
                     {tab.id === "general" && (
-                      <div className="w-full">
-                        <div className="flex flex-col">
-                          {/* {[1, 2, 3, 4, 5].map((_, index) => (
-                            <div key={index} className="itemCard">
-                              <div className="innerCardMain bg-white">
-                                <button
-                                  type="button"
-                                  role="checkbox"
-                                  aria-checked="false"
-                                  data-state="unchecked"
-                                  value="on"
-                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                                  id={`card-${index}`}
-                                ></button>
-                                <div className="innerCardContent">
-                                  <div className="innerCardContent__Detail">
-                                    <div className="flex flex-col">
-                                      <h3 className="text-md overflow-hidden text-ellipsis py-0 font-bold text-black">
-                                        Radiomics and Machine Learning in Medical Imaging
-                                      </h3>
-                                      <div>
-                                        <p className="!important text-xs"></p>
-                                      </div>
-                                    </div>
-                                    <div className="innerCardContent__Links">
-                                      <ul className="linkedCounts flex flex-wrap gap-2">
-                                        <li
-                                          className="linkedCounts__item documentCount"
-                                          data-state="closed"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="lucide lucide-book-open-check"
-                                          >
-                                            <path d="M12 21V7"></path>
-                                            <path d="m16 12 2 2 4-4"></path>
-                                            <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
-                                          </svg>
-                                          5
-                                        </li>
-                                        <li
-                                          className="linkedCounts__item studyCount"
-                                          data-state="closed"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="lucide lucide-book-open-check"
-                                          >
-                                            <path d="M12 21V7"></path>
-                                            <path d="m16 12 2 2 4-4"></path>
-                                            <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
-                                          </svg>
-                                          1
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                  <div className="flex flex-row items-start gap-2">
-                                    <div className="flex flex-row items-center gap-4">
-                                      <div className="time">Feb 12</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="relative flex h-auto w-[25px]">
-                                <div className="links">
-                                  <div className="linkToItem">
-                                    <a
-                                      href="#"
-                                      className="linkedStudy"
-                                      type="button"
-                                      aria-haspopup="dialog"
-                                      aria-expanded="false"
-                                      data-state="closed"
-                                    >
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="lucide lucide-link"
-                                      >
-                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                                      </svg>
-                                    </a>
-                                  </div>
-                                  <a href="#" className="trashCan">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="14"
-                                      height="14"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      strokeWidth="2"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      className="lucide lucide-trash2"
-                                    >
-                                      <path d="M3 6h18"></path>
-                                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                                      <line x1="10" x2="10" y1="11" y2="17"></line>
-                                      <line x1="14" x2="14" y1="11" y2="17"></line>
-                                    </svg>
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          ))} */}
+                      <div className="w-1/2">
+                        <div className="flex flex-col gap-3">
+                          <h3 className="text-sm font-bold">Name of the project</h3>
+                          <Input
+                            type="text"
+                            // value={inputValue}
+                            // onChange={handleInputChange}
+                            className="bg-[#fcfafc]"
+                          />
+                          <h3 className="text-sm font-bold">Short description (optional)</h3>
+
+                          <Textarea
+                            // onChange={(e) => setQuestion(e.target.value)}
+                            placeholder="Type your question here..."
+                            className="min-h-[120px] resize-none bg-white pr-12 focus:outline-none focus-visible:ring-offset-0"
+                          />
+                          <button
+                            type="submit"
+                            className="max-w-[150px] rounded-md bg-black p-2 text-sm text-white hover:bg-slate-500 focus:outline-none"
+                            // onClick={() => setIsDialogOpen(false)}
+                          >
+                            Save changes
+                          </button>
                         </div>
                       </div>
                     )}
