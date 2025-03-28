@@ -1,3 +1,5 @@
+import { File, Link2Icon, MessageCircle } from "lucide-react";
+
 import React from "react";
 
 import { TableOfContents } from "./TableOfContents";
@@ -27,8 +29,9 @@ export const ReferencesSidebar: React.FC<{
       </div>
 
       <div className="mt-auto border-t border-neutral-200">
-        <ul className="py-4">
-          <li className="text-sm">
+        <ul className="flex flex-col gap-3 py-4">
+          <li className="flex items-center gap-2 text-sm">
+            <Link2Icon size={20} />
             <a
               className="cursor-pointer hover:text-slate-400"
               onClick={() => scrollToSection("#linkedDocuments")}
@@ -36,7 +39,8 @@ export const ReferencesSidebar: React.FC<{
               Linked documents
             </a>
           </li>
-          <li className="text-sm">
+          <li className="flex items-center gap-2 text-sm">
+            <File size={20} />
             <a
               className="cursor-pointer hover:text-slate-400"
               onClick={() => scrollToSection("#connectedQueries")}
@@ -44,20 +48,13 @@ export const ReferencesSidebar: React.FC<{
               Connected queries
             </a>
           </li>
-          <li className="text-sm">
+          <li className="flex items-center gap-2 text-sm">
+            <MessageCircle size={20} />
             <a
               className="cursor-pointer hover:text-slate-400"
               onClick={() => scrollToSection("#connectedComments")}
             >
               Page comments
-            </a>
-          </li>
-          <li className="text-sm">
-            <a
-              className="cursor-pointer hover:text-slate-400"
-              onClick={() => scrollToSection("#mainEditorStart")}
-            >
-              Back to Top
             </a>
           </li>
         </ul>
