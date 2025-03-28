@@ -302,7 +302,7 @@ export const Dashboard = ({
                               </a>
                             </TooltipTrigger>
                             <TooltipContent side="right" className={`bg-black text-white`}>
-                              <p className="text-xs">Create page</p>
+                              <p className="text-xs">Create source</p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -345,7 +345,7 @@ export const Dashboard = ({
                               </a>
                             </TooltipTrigger>
                             <TooltipContent side="right" className={`bg-black text-white`}>
-                              <p className="text-xs">Create page</p>
+                              <p className="text-xs">Find projects</p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>

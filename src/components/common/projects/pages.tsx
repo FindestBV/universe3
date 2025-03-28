@@ -714,7 +714,7 @@ export const ProjectPages = () => {
           </div>
         </div>
         <div
-          className={`${isSideBarToggled ? "right-0 flex w-1/4 flex-col justify-between p-4" : "hidden w-0 p-0"} top-4 h-screen bg-gray-200 transition-all duration-150 ease-in-out`}
+          className={`${isSideBarToggled ? "right-0 flex min-h-screen w-1/4 flex-col justify-between p-4" : "hidden w-0 p-0"} top-4 bg-gray-200 transition-all duration-150 ease-in-out`}
         >
           <FilterOptions />
         </div>
