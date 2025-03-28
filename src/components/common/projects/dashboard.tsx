@@ -54,7 +54,6 @@ export const Dashboard = ({
   connectedStudies?: string;
   connectedEntities?: string;
 }) => {
-  // const { id } = useParams<{ id: string }>();
   const menuContainerRef = useRef(null);
   const [isTitleExpanded, setIsTitleExpanded] = useState<boolean>(false);
   const navigateWithTransition = useNavigateWithTransition();
@@ -62,7 +61,13 @@ export const Dashboard = ({
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
   const [currentView, setCurrentView] = useState<string>("overview");
-  const { data: pageData } = useGetStudyByIdQuery(id);
+  const { data: pageData } = useGetStudyByIdQuery(id || "", { skip: !id });
+
+  const project = useSelector((state: RootState) => state.project);
+
+  console.log("project structure", project.currentProject?.projectStructure);
+
+  console.log("project", project);
 
   const location = useLocation();
   const currentPath = location.pathname;
@@ -78,23 +83,7 @@ export const Dashboard = ({
 
   const triggerExpand = () => {
     setIsTitleExpanded(!isTitleExpanded);
-    // console.log(isTitleExpanded ? "expanded" : "normal");
   };
-
-  const projectStructure = [
-    {
-      title: "Description",
-      references: ["Reference 1", "Reference 2"],
-    },
-    {
-      title: "Images",
-      references: ["Image 1", "Image 2", "Image 3"],
-    },
-    {
-      title: "Suppliers",
-      references: ["Supplier A", "Supplier B"],
-    },
-  ];
 
   useEffect(() => {}, [currentView]);
 
@@ -115,7 +104,9 @@ export const Dashboard = ({
                     <div className="flex flex-col">
                       <small className="text-xs font-bold text-white">Project</small>
                       <p className="text-xs font-bold text-white">
-                        {isProjectDashboard ? "Your Universe Projects" : pageData?.title}
+                        {isProjectDashboard
+                          ? "Your Universe Projects"
+                          : project.currentProject?.name}
                       </p>
                     </div>
                     <div className="flex items-center gap-4">
@@ -296,7 +287,7 @@ export const Dashboard = ({
                     </li>
                   </ul>
 
-                  {/* Table of Contents */}
+                  {/* Project Structure Section */}
                   <div className="p-4">
                     <div className="flex items-center justify-between">
                       <h3 className="mb-4 transform-none text-xs font-bold tracking-tight">
@@ -309,38 +300,9 @@ export const Dashboard = ({
                         </span>
                       </div>
                     </div>
-                    <NestedMenu />
+                    <NestedMenu projectStructure={project.currentProject?.projectStructure} />
                     <nav className="space-y-2">
-                      <ul className="refs">
-                        {projectStructure.map((section) => (
-                          <li key={section.title}>
-                            <button
-                              onClick={() => toggleSection(section.title)}
-                              className="flex max-w-full items-center gap-2 rounded-md py-2 text-left text-sm font-medium text-gray-700"
-                            >
-                              {openSections[section.title] ? (
-                                <ChevronDown className="rounded-sm bg-gray-100 p-1 text-gray-500" />
-                              ) : (
-                                <ChevronRight className="rounded-sm bg-gray-100 p-1 text-gray-500" />
-                              )}
-                              {section.title}
-                              <Pin className="p-1 text-gray-500" fill="#000000" />
-                            </button>
-                            {openSections[section.title] && (
-                              <ul className="ml-4 mt-2 space-y-1 border-l-2 border-gray-300 pl-3">
-                                {section.references.map((ref, index) => (
-                                  <li
-                                    key={index}
-                                    className="text-sm text-gray-500 hover:text-gray-800"
-                                  >
-                                    {ref}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
+                      <ul className="refs" />
                     </nav>
                   </div>
                 </div>
@@ -370,7 +332,7 @@ export const Dashboard = ({
                 </div>
               ) : currentView === "pages" ? (
                 <div>
-                  <ProjectPages />
+                  <ProjectPages projectId={id || ""} />
                 </div>
               ) : currentView === "find" ? (
                 <div>

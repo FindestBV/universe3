@@ -3,16 +3,34 @@ import {
   useGetEntityByIdQuery,
   useGetStudyByIdQuery,
 } from "@/api/documents/documentApi";
+import { useGetProjectOverviewQuery } from "@/api/projects/projectApi";
+import { setCurrentProject, setTabs } from "@/api/projects/projectSlice";
 import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 // Import TipTap Editor
 import { Dashboard } from "@/components/common/projects/dashboard";
+import { useAppDispatch } from "@/store";
+import type { Entity, Study } from "@/types/types";
 
 import { useEffect } from "react";
 import { useLocation, useParams } from "react-router";
 
+interface ConnectedData {
+  connectedInboxItems?: string;
+  connectedDocs?: string;
+  connectedQueries?: string;
+  connectedComments?: string;
+  entities?: string[];
+  description?: string;
+  title?: string;
+}
+
+type ExtendedEntity = Entity & ConnectedData;
+type ExtendedStudy = Study & ConnectedData;
+
 export const Project = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
+  const dispatch = useAppDispatch();
 
   let parsedDescription: any = null;
 
@@ -20,25 +38,36 @@ export const Project = () => {
   const isProjectsPage = location.pathname.includes("projects");
 
   const { data: fetchedEntity, isLoading: fetchedEntityIsLoading } = isProjectsPage
-    ? useGetStudyByIdQuery(id, { refetchOnMountOrArgChange: false })
-    : useGetEntityByIdQuery(id, { refetchOnMountOrArgChange: false });
+    ? useGetStudyByIdQuery(id || "", { skip: !id })
+    : useGetEntityByIdQuery(id || "", { skip: !id });
 
-  const { data, isLoading, isError, error, refetch } = useGetEntitiesQuery(
-    { page: 1, limit: 10 }, // Adjust page and limit as needed
-    { refetchOnMountOrArgChange: true },
-  );
+  const { data: projectsData } = useGetProjectOverviewQuery(id || "", {
+    skip: !id,
+  });
 
-  const inboxQuery = fetchedEntity?.connectedInboxItems;
-  const connectedObjects = fetchedEntity?.connectedDocs;
-  const connectedQueries = fetchedEntity?.connectedQueries;
-  const connectedComments = fetchedEntity?.connectedComments;
-  const connectedEntities = fetchedEntity?.entities;
+  // Update Redux store when project data changes
+  useEffect(() => {
+    if (projectsData) {
+      // Update current project
+      dispatch(setCurrentProject(projectsData));
 
-  if (fetchedEntity) {
-    // console.log("fetched entity full obj", fetchedEntity);
+      // Update tabs if available
+      if (projectsData.tabs) {
+        dispatch(setTabs(projectsData.tabs));
+      }
+    }
+  }, [projectsData, dispatch]);
+
+  const extendedEntity = fetchedEntity as ExtendedEntity | ExtendedStudy;
+  const inboxQuery = extendedEntity?.connectedInboxItems || "";
+  const connectedObjects = extendedEntity?.connectedDocs || "";
+  const connectedQueries = extendedEntity?.connectedQueries || "";
+  const connectedComments = extendedEntity?.connectedComments || "";
+  const connectedEntities = (extendedEntity?.entities || []).join(",");
+
+  if (extendedEntity) {
     try {
-      parsedDescription = JSON.parse(fetchedEntity.description);
-      // console.log("Parsed description:", parsedDescription.content);
+      parsedDescription = JSON.parse(extendedEntity.description || "{}");
     } catch (error) {
       console.error("Failed to parse description:", error);
     }
@@ -58,14 +87,14 @@ export const Project = () => {
             <div className="w-full flex-col">
               <Dashboard
                 type={"study"}
-                id={fetchedEntity?.id}
-                title={fetchedEntity?.title}
+                id={id}
+                title={extendedEntity?.title || ""}
                 content={parsedDescription}
                 connectedObjects={connectedObjects}
                 connectedInbox={inboxQuery}
                 connectedQueries={connectedQueries}
                 connectedComments={connectedComments}
-                connectedEntities={fetchedEntity?.entities}
+                connectedEntities={connectedEntities}
                 connectedStudies={connectedObjects}
               />
             </div>

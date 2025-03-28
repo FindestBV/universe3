@@ -242,3 +242,174 @@ export interface MaturityLevel {
 }
 
 export type DialogType = "requirements" | "maturity" | "results";
+
+export interface ProjectOverview {
+  id: string;
+  name: string;
+  owner: User;
+  createdBy: User;
+  tabs: Tab[];
+  recentPages: RecentPage[];
+  projectStructure: GraphNode[];
+}
+
+export interface User {
+  id: string;
+  email: string;
+}
+
+export interface Tab {
+  id: string;
+  name: string;
+  content: string;
+  type: string;
+  order: number;
+  isDefault: boolean;
+  tabComponent: TabComponent;
+}
+
+export interface TabComponent {
+  objectId: string;
+  type: string;
+  content: string;
+}
+
+export interface RecentPage {
+  id: string;
+  title: string;
+  changeDate: string; // ISO formatted date string
+}
+
+export interface GraphNode {
+  id: string;
+  name: string;
+  type: string;
+  customTypeName: string;
+  objectType: number;
+  dateAdded: string; // ISO formatted date string
+  otherUpperLevelNodes: GraphNode[];
+  lowerLevelNodes: GraphNode[];
+}
+
+export interface BaseListResponse<T> {
+  pageItemCount: number;
+  isLastPage: boolean;
+  totalItemCount: number;
+  items: T[];
+}
+
+export interface Project {
+  id: string;
+  name: string;
+  visibility: string;
+}
+
+// Specific interface for the saved document list item
+export interface SavedDocumentListItem {
+  id: string;
+  title: string;
+  url: string;
+  savedDocumentType: number;
+  objectType: number;
+  linkedObjectCounts: LinkedObjectCounts;
+  connectedObjects: ConnectedObject[];
+  createdByUsername: string;
+  dateAdded: string; // ISO formatted date string
+}
+
+export interface LinkedObjectCounts {
+  documentCount: number;
+  entityCount: number;
+  studyCount: number;
+  projectCount: number;
+  highlightCount: number;
+  imageCount: number;
+  fileCount: number;
+  commentCount: number;
+}
+
+export interface CreateProjectRequest {
+  name: string;
+  description: string;
+  type: string;
+}
+
+export interface UpdateProjectRequest {
+  name: string;
+  description: string;
+  type: string;
+}
+
+export interface AddSavedSourceRequest {
+  sourceId: string;
+  type: string;
+}
+
+export interface ProjectListResponse extends BaseListResponse<Project> {}
+
+export interface ProjectPagesListResponse extends BaseListResponse<Project> {}
+
+export interface Page {
+  id: string;
+  title: string;
+  customTypeName: string;
+  dateAdded: string;
+  images: PageImage[];
+  highlights: Highlight[];
+  savedDocuments: SavedDocument[];
+  linkedCounts: LinkedCounts;
+  totalDocumentsCount: number;
+  createdByUserId: string;
+  createdByUsername: string;
+  createdOnDate: string;
+  linkedFiles: LinkedFile[];
+  isConnected: boolean;
+  galaxyId: string;
+  referencedBy: Reference[];
+  isLocked: boolean;
+}
+
+export interface PageListItem {
+  id: string;
+  title: string;
+  type: string;
+  customTypeName: string;
+  dateAdded: string;
+  linkedCounts: LinkedCounts;
+  createdByUsername: string;
+  isConnected: boolean;
+}
+
+// Image used on the Page level (includes fileName)
+export interface PageImage {
+  id: string;
+  fileName: string;
+  path: string;
+  caption: string;
+  dateAdded: string;
+}
+
+export interface LinkedCounts {
+  documentCount: number;
+  entityCount: number;
+  studyCount: number;
+  projectCount: number;
+  highlightCount: number;
+  imageCount: number;
+  fileCount: number;
+  commentCount: number;
+}
+
+export interface LinkedFile {
+  id: string;
+  title: string;
+  fileExtension: string;
+  url: string;
+  text: string;
+}
+
+export interface Reference {
+  id: string;
+  type: number;
+  title: string;
+}

@@ -7,6 +7,8 @@
  *
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
+import { useGetProjectPagesQuery } from "@/api/projects/projectApi";
+import { setError, setLoading, setPages } from "@/api/projects/projectSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import {
   Dialog,
@@ -18,11 +20,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useAppDispatch, useAppSelector } from "@/store";
+import type { PageListItem } from "@/types/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { List, ListFilter, Plus, RadarIcon, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, List, ListFilter, Plus, RadarIcon, Star } from "lucide-react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
 import FilterSheet from "../dialogs/filter-sheet";
@@ -173,18 +177,82 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
   );
 };
 
-export const ProjectPages = () => {
+export type ProjectPagesProps = {
+  projectId: string;
+};
+
+export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
+  console.log("ProjectPages");
+  const dispatch = useAppDispatch();
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  console.log("projectId", projectId);
+
+  const {
+    data: pagesData,
+    isLoading,
+    error,
+  } = useGetProjectPagesQuery(
+    {
+      projectId: projectId || "",
+      skip: (currentPage - 1) * itemsPerPage,
+      limit: itemsPerPage,
+    },
+    { skip: !projectId },
+  );
+
+  // Update store when data changes
+  useEffect(() => {
+    if (pagesData?.items) {
+      dispatch(setPages(pagesData.items));
+    }
+  }, [pagesData, dispatch]);
+
+  // Update loading state
+  useEffect(() => {
+    dispatch(setLoading(isLoading));
+  }, [isLoading, dispatch]);
+
+  // Update error state
+  useEffect(() => {
+    if (error) {
+      dispatch(setError(error.toString()));
+    } else {
+      dispatch(setError(null));
+    }
+  }, [error, dispatch]);
 
   const [tabs, setTabs] = useState([
     { id: "all", label: "All Page Types" },
-    { id: "studies", label: "Studies" },
-    { id: "entities", label: "Entities" },
+    { id: "STUDY", label: "Studies" },
+    { id: "ENTITY", label: "Entities" },
   ]);
 
   // State for the configuration dialog
   const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
   const [selectedTabType, setSelectedTabType] = useState<TabTypeConfig | null>(null);
+
+  // Helper function to format date
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    return `${months[date.getMonth()]} ${date.getDate()}`;
+  };
 
   // Function to open the configuration dialog for a specific tab type
   const openTabConfigDialog = (tabType: TabTypeConfig) => {
@@ -279,6 +347,69 @@ export const ProjectPages = () => {
     );
   };
 
+  // Add this helper function near the top of the file, after imports
+  const filterPagesByType = (pages: PageListItem[] | undefined, type: string | null) => {
+    if (!pages || !type || type === "all") return pages;
+    return pages.filter((page) => page.type.toUpperCase() === type.toUpperCase());
+  };
+
+  // Pagination handlers
+  const handleNextPage = () => {
+    if (pagesData && !pagesData.isLastPage) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+  // Pagination component
+  const Pagination = () => {
+    if (!pagesData || pagesData.totalItemCount === 0) return null;
+
+    const totalPages = Math.ceil(pagesData.totalItemCount / itemsPerPage);
+    const startItem = (currentPage - 1) * itemsPerPage + 1;
+    const endItem = Math.min(currentPage * itemsPerPage, pagesData.totalItemCount);
+
+    return (
+      <div className="mt-4 flex items-center justify-end gap-4 px-4">
+        <span className="text-sm text-gray-600">
+          {startItem}-{endItem} of {pagesData.totalItemCount} items
+        </span>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+            className={`rounded-md p-2 ${
+              currentPage === 1
+                ? "cursor-not-allowed text-gray-400"
+                : "text-gray-700 hover:bg-gray-100"
+            }`}
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <span className="text-sm font-medium">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={handleNextPage}
+            disabled={pagesData.isLastPage}
+            className={`rounded-md p-2 ${
+              pagesData.isLastPage
+                ? "cursor-not-allowed text-gray-400"
+                : "text-gray-700 hover:bg-gray-100"
+            }`}
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -289,7 +420,7 @@ export const ProjectPages = () => {
       <div className="min-h-full" id="projects-pages">
         <div className="mx-auto w-full p-8">
           <div className="overviewHeader flex justify-between">
-            <h1 className="mb-2 text-2xl font-bold">Pages</h1>
+            <h1 className="mb-2 text-2xl font-bold">Pages11</h1>
 
             <div className="project-controls flex items-center gap-4">
               <AdvancedSearchModal />
@@ -355,336 +486,152 @@ export const ProjectPages = () => {
                     value={tab.id}
                     className="mt-2 space-y-2 transition-all duration-150"
                   >
-                    {tab.id === "all" && (
-                      <div className="w-full">
-                        <div className="flex flex-col">
-                          {[1, 2, 3, 4, 5].map((_, index) => (
-                            <div key={index} className="itemCard">
-                              <div className="innerCardMain bg-white">
-                                <button
-                                  type="button"
-                                  role="checkbox"
-                                  aria-checked="false"
-                                  data-state="unchecked"
-                                  value="on"
-                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                                  id={`card-${index}`}
-                                ></button>
-                                <div className="innerCardContent">
-                                  <div className="innerCardContent__Detail">
-                                    <div className="flex flex-col">
-                                      <h3 className="text-md overflow-hidden text-ellipsis py-0 font-bold text-black">
-                                        Radiomics and Machine Learning in Medical Imaging
-                                      </h3>
-                                      <div>
-                                        <p className="!important text-xs"></p>
-                                      </div>
-                                    </div>
-                                    <div className="innerCardContent__Links">
-                                      <ul className="linkedCounts flex flex-wrap gap-2">
-                                        <li
-                                          className="linkedCounts__item documentCount"
-                                          data-state="closed"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="lucide lucide-book-open-check"
-                                          >
-                                            <path d="M12 21V7"></path>
-                                            <path d="m16 12 2 2 4-4"></path>
-                                            <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
-                                          </svg>
-                                          5
-                                        </li>
-                                        <li
-                                          className="linkedCounts__item studyCount"
-                                          data-state="closed"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="lucide lucide-book-open-check"
-                                          >
-                                            <path d="M12 21V7"></path>
-                                            <path d="m16 12 2 2 4-4"></path>
-                                            <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
-                                          </svg>
-                                          1
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                  <div className="flex flex-row items-start gap-2">
-                                    <div className="flex flex-row items-center gap-4">
-                                      <div className="time">Feb 12</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="relative flex h-auto w-[25px]">
-                                <div className="links">
-                                  <div className="linkToItem">
-                                    <a
-                                      href="#"
-                                      className="linkedStudy"
+                    <div className="w-full">
+                      <div className="flex flex-col">
+                        {isLoading ? (
+                          <div>Loading...</div>
+                        ) : (
+                          <>
+                            {filterPagesByType(pagesData?.items, tab.id)?.map(
+                              (page: PageListItem) => (
+                                <div key={page.id} className="itemCard">
+                                  <div className="innerCardMain bg-white">
+                                    <button
                                       type="button"
-                                      aria-haspopup="dialog"
-                                      aria-expanded="false"
-                                      data-state="closed"
-                                    >
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="lucide lucide-link"
-                                      >
-                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                                      </svg>
-                                    </a>
-                                  </div>
-                                  <a href="#" className="trashCan">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="14"
-                                      height="14"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      strokeWidth="2"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      className="lucide lucide-trash2"
-                                    >
-                                      <path d="M3 6h18"></path>
-                                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                                      <line x1="10" x2="10" y1="11" y2="17"></line>
-                                      <line x1="14" x2="14" y1="11" y2="17"></line>
-                                    </svg>
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Content for studies tab */}
-                    {tab.id === "studies" && (
-                      <div className="w-full">
-                        <div className="flex flex-col">
-                          {[1, 2, 3].map((_, index) => (
-                            <div key={index} className="itemCard">
-                              <div className="innerCardMain bg-white">
-                                <button
-                                  type="button"
-                                  role="checkbox"
-                                  aria-checked="false"
-                                  data-state="unchecked"
-                                  value="on"
-                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                                  id={`studies-card-${index}`}
-                                ></button>
-                                <div className="innerCardContent">
-                                  <div className="innerCardContent__Detail">
-                                    <div className="flex flex-col">
-                                      <h3 className="text-md overflow-hidden text-ellipsis py-0 font-bold text-black">
-                                        Clinical Study {index + 1}
-                                      </h3>
-                                      <div>
-                                        <p className="text-xs text-gray-600">
-                                          Research study on medical imaging applications
-                                        </p>
+                                      role="checkbox"
+                                      aria-checked="false"
+                                      data-state="unchecked"
+                                      value="on"
+                                      className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                      id={`card-${page.id}`}
+                                    />
+                                    <div className="innerCardContent">
+                                      <div className="innerCardContent__Detail">
+                                        <div className="flex flex-col">
+                                          <h3 className="text-md overflow-hidden text-ellipsis py-0 font-bold text-black">
+                                            {page.title}
+                                          </h3>
+                                        </div>
+                                        <div className="innerCardContent__Links">
+                                          <ul className="linkedCounts flex flex-wrap gap-2">
+                                            {page.linkedCounts && (
+                                              <>
+                                                <li
+                                                  className="linkedCounts__item documentCount"
+                                                  data-state="closed"
+                                                >
+                                                  <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="16"
+                                                    height="16"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    className="lucide lucide-book-open-check"
+                                                  >
+                                                    <path d="M12 21V7" />
+                                                    <path d="m16 12 2 2 4-4" />
+                                                    <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3" />
+                                                  </svg>
+                                                  {page.linkedCounts.documentCount}
+                                                </li>
+                                                <li
+                                                  className="linkedCounts__item studyCount"
+                                                  data-state="closed"
+                                                >
+                                                  <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="16"
+                                                    height="16"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    className="lucide lucide-book-open-check"
+                                                  >
+                                                    <path d="M12 21V7" />
+                                                    <path d="m16 12 2 2 4-4" />
+                                                    <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3" />
+                                                  </svg>
+                                                  {page.linkedCounts.studyCount}
+                                                </li>
+                                                {page.linkedCounts.entityCount > 0 && (
+                                                  <li
+                                                    className="linkedCounts__item entityCount"
+                                                    data-state="closed"
+                                                  >
+                                                    <svg
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      width="16"
+                                                      height="16"
+                                                      viewBox="0 0 24 24"
+                                                      fill="none"
+                                                      stroke="currentColor"
+                                                      strokeWidth="2"
+                                                      strokeLinecap="round"
+                                                      strokeLinejoin="round"
+                                                      className="lucide lucide-box"
+                                                    >
+                                                      <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+                                                      <path d="m3.3 7 8.7 5 8.7-5" />
+                                                      <path d="M12 22V12" />
+                                                    </svg>
+                                                    {page.linkedCounts.entityCount}
+                                                  </li>
+                                                )}
+                                              </>
+                                            )}
+                                          </ul>
+                                        </div>
+                                      </div>
+                                      <div className="flex flex-row items-start gap-2">
+                                        <div className="flex flex-row items-center gap-4">
+                                          <div className="time">{formatDate(page.dateAdded)}</div>
+                                          <div className="text-xs text-gray-500">
+                                            by {page.createdByUsername}
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
-                                    <div className="innerCardContent__Links">
-                                      <ul className="linkedCounts flex flex-wrap gap-2">
-                                        <li
-                                          className="linkedCounts__item documentCount"
-                                          data-state="closed"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="lucide lucide-book-open-check"
-                                          >
-                                            <path d="M12 21V7"></path>
-                                            <path d="m16 12 2 2 4-4"></path>
-                                            <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
-                                          </svg>
-                                          3
-                                        </li>
-                                      </ul>
-                                    </div>
                                   </div>
-                                  <div className="flex flex-row items-start gap-2">
-                                    <div className="flex flex-row items-center gap-4">
-                                      <div className="time">Mar 15</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="relative flex h-auto w-[25px]">
-                                <div className="links">
-                                  <div className="linkToItem">
-                                    <a href="#" className="linkedStudy">
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="lucide lucide-link"
-                                      >
-                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                                      </svg>
-                                    </a>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Content for entities tab */}
-                    {tab.id === "entities" && (
-                      <div className="w-full">
-                        <div className="flex flex-col">
-                          {[1, 2, 3, 4].map((_, index) => (
-                            <div key={index} className="itemCard">
-                              <div className="innerCardMain bg-white">
-                                <button
-                                  type="button"
-                                  role="checkbox"
-                                  aria-checked="false"
-                                  data-state="unchecked"
-                                  value="on"
-                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                                  id={`entities-card-${index}`}
-                                ></button>
-                                <div className="innerCardContent">
-                                  <div className="innerCardContent__Detail">
-                                    <div className="flex flex-col">
-                                      <h3 className="text-md overflow-hidden text-ellipsis py-0 font-bold text-black">
-                                        Entity {index + 1}
-                                      </h3>
-                                      <div>
-                                        <p className="text-xs text-gray-600">
-                                          Project entity with associated metadata
-                                        </p>
+                                  {page.isConnected && (
+                                    <div className="relative flex h-auto w-[25px]">
+                                      <div className="links">
+                                        <div className="linkToItem">
+                                          <a href="#" className="linkedStudy">
+                                            <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              width="14"
+                                              height="14"
+                                              viewBox="0 0 24 24"
+                                              fill="none"
+                                              stroke="currentColor"
+                                              strokeWidth="2"
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                              className="lucide lucide-link"
+                                            >
+                                              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                                              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                                            </svg>
+                                          </a>
+                                        </div>
                                       </div>
                                     </div>
-                                    <div className="innerCardContent__Links">
-                                      <ul className="linkedCounts flex flex-wrap gap-2">
-                                        <li
-                                          className="linkedCounts__item documentCount"
-                                          data-state="closed"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="lucide lucide-book-open-check"
-                                          >
-                                            <path d="M12 21V7"></path>
-                                            <path d="m16 12 2 2 4-4"></path>
-                                            <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
-                                          </svg>
-                                          2
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                  <div className="flex flex-row items-start gap-2">
-                                    <div className="flex flex-row items-center gap-4">
-                                      <div className="time">Apr 1</div>
-                                    </div>
-                                  </div>
+                                  )}
                                 </div>
-                              </div>
-                              <div className="relative flex h-auto w-[25px]">
-                                <div className="links">
-                                  <div className="linkToItem">
-                                    <a href="#" className="linkedStudy">
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="lucide lucide-link"
-                                      >
-                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                                      </svg>
-                                    </a>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
+                              ),
+                            )}
+                            <Pagination />
+                          </>
+                        )}
                       </div>
-                    )}
-
-                    {/* Content for dynamically added tabs */}
-                    {!["all", "studies", "entities"].includes(tab.id) && (
-                      <div className="w-full">
-                        <div className="overviewHeader py-4">
-                          <h1 className="mb-2 text-4xl font-bold">{tab.label}</h1>
-                          <p className="mb-4 text-sm">
-                            Content for {tab.label} will be displayed here.
-                          </p>
-                        </div>
-                      </div>
-                    )}
+                    </div>
                   </TabsContent>
                 ))}
               </div>
@@ -692,11 +639,7 @@ export const ProjectPages = () => {
           </div>
         </div>
       </div>
-
-      {/* Render the configuration dialog */}
-      <TabConfigurationDialog />
     </motion.div>
   );
 };
-
 export default ProjectPages;

@@ -1,182 +1,340 @@
 // Prepare for ProjectsAPI
 // src/features/projectsApi.ts
-import type { SavedDocumentResponse } from "@/types/types";
+import type {
+  AddSavedSourceRequest,
+  BaseListResponse,
+  CreateProjectRequest,
+  Page,
+  PageListItem,
+  Project,
+  ProjectListResponse,
+  ProjectOverview,
+  SavedDocumentResponse,
+  UpdateProjectRequest,
+} from "@/types/types";
 
 import { api } from "../api";
 
 export const projectApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    // Fetch all projects
-    getProjects: builder.query<SavedDocumentResponse, { page: number; limit: number }>({
-      query: ({ page, limit }) => ({
-        url: "/v1/projects",
-        params: { page, limit },
-      }),
-      providesTags: ["SavedDocument"],
-    }),
-
-    // Single project's pages
-    getProjectPages: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}/pages`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
-    }),
-
-    // Single project's saved sources
-    getProjectSavedSources: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}/saved-sources`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
-    }),
-
-    // Single project's overview
-    getProjectOverview: builder.query<SavedDocumentResponse, string>({
+    // Get project overview
+    getProjectOverview: builder.query<ProjectOverview, string>({
       query: (id) => `/v1/projects/${id}/overview`,
       providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
     }),
 
-    // Single project's structure
-    getProjectStructure: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}/structure`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+    // List all projects
+    getProjects: builder.query<ProjectListResponse, { skip?: number; limit?: number }>({
+      query: ({ skip = 0, limit = 10 }) => ({
+        url: "/v1/projects",
+        params: { skip, limit },
+      }),
+      providesTags: ["SavedDocument"],
     }),
 
-    // Single project's tabs
-    getProjectTabs: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}/tabs`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
-    }),
-
-    // Get specific tab inside a project
-    getProjectTabById: builder.query<SavedDocumentResponse, { projectId: string; tabId: string }>({
-      query: ({ projectId, tabId }) => `/v1/projects/${projectId}/tabs/${tabId}`,
-      providesTags: (result, error, { tabId }) => [{ type: "SavedDocument", id: tabId }],
-    }),
-
-    // Single project's statistics
-    getProjectStatistics: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}/statistics`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
-    }),
-
-    // Single project's notifications
-    getProjectNotifications: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}/notifications`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
-    }),
-
-    // Update tab order in a project
-    updateProjectTabOrder: builder.mutation<void, { projectId: string; newOrder: number[] }>({
-      query: ({ projectId, newOrder }) => ({
-        url: `/v1/projects/${projectId}/tabs/order`,
+    // Create project
+    createProject: builder.mutation<Project, CreateProjectRequest>({
+      query: (body) => ({
+        url: "/v1/projects",
         method: "PUT",
-        body: { newOrder },
+        body,
       }),
-      invalidatesTags: [{ type: "SavedDocument" }],
+      invalidatesTags: ["SavedDocument"],
     }),
 
-    // Fetch a single project by ID
-    getProjectById: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
+    // Delete project
+    deleteProject: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/v1/projects/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["SavedDocument"],
     }),
 
-    // Project's maturity radar data
-    getProjectMaturityRadar: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/projects/${id}/maturity-radar`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
-      // Add async updates support
-      async onCacheEntryAdded(id, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
-        // Create a WebSocket connection when the cache entry is added
-        const ws = new WebSocket(
-          `${import.meta.env.VITE_REACT_APP_WS_BASE_URL}/maturity-radar/${id}`,
-        );
-
-        try {
-          // Wait for the initial query to resolve before proceeding
-          await cacheDataLoaded;
-
-          // Set up event listener for the WebSocket
-          const listener = (event: MessageEvent) => {
-            const data = JSON.parse(event.data);
-
-            // Update the cached data when we receive a message
-            updateCachedData((draft) => {
-              // Assuming the data structure matches what we need
-              // Modify the draft based on the received data
-              Object.assign(draft, data);
-            });
-          };
-
-          ws.addEventListener("message", listener);
-        } catch {
-          // No-op in case `cacheEntryRemoved` resolves before `cacheDataLoaded`,
-          // in which case `cacheDataLoaded` will throw
-        }
-
-        // When the cache entry is removed, clean up the WebSocket
-        await cacheEntryRemoved;
-        ws.close();
-      },
+    // Update project
+    updateProject: builder.mutation<Project, { id: string; body: UpdateProjectRequest }>({
+      query: ({ id, body }) => ({
+        url: `/v1/projects/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "SavedDocument", id }],
     }),
 
-    // Results overview table
-    getResultsOverviewTable: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/v1/results-overview-tables/${id}`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
-    }),
-
-    // Add Maturity Radar data to pages
-    addMaturityRadarToPages: builder.mutation<void, { projectId: string; pageId: string }>({
-      query: ({ projectId, pageId }) => ({
-        url: `/v1/maturity-radar/${projectId}/pages/${pageId}`,
+    // Add saved source to project
+    addSavedSource: builder.mutation<void, { projectId: string; body: AddSavedSourceRequest }>({
+      query: ({ projectId, body }) => ({
+        url: `/v1/projects/${projectId}/saved-sources`,
         method: "POST",
+        body,
       }),
-      invalidatesTags: [{ type: "SavedDocument" }],
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
     }),
 
-    // Remove page from a project
-    deleteProjectPage: builder.mutation<void, { projectId: string; pageId: string }>({
+    // Remove saved sources from project
+    removeSavedSources: builder.mutation<void, string>({
+      query: (projectId) => ({
+        url: `/v1/projects/${projectId}/saved-sources`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, projectId) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    // Get saved sources of project
+    getProjectSavedSources: builder.query<
+      SavedDocumentResponse,
+      { projectId: string; skip?: number; limit?: number }
+    >({
+      query: ({ projectId, skip = 0, limit = 10 }) => ({
+        url: `/v1/projects/${projectId}/saved-sources`,
+        params: { skip, limit },
+      }),
+      providesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    // Add saved sources to project in bulk
+    addSavedSourcesBulk: builder.mutation<
+      void,
+      { projectId: string; body: AddSavedSourceRequest[] }
+    >({
+      query: ({ projectId, body }) => ({
+        url: `/v1/projects/${projectId}/saved-sources/bulk`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    // Remove saved source from project
+    removeSavedSource: builder.mutation<void, { projectId: string; sourceId: string }>({
+      query: ({ projectId, sourceId }) => ({
+        url: `/v1/projects/${projectId}/saved-sources/${sourceId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    // Add page to project
+    addPage: builder.mutation<void, { projectId: string; body: any }>({
+      query: ({ projectId, body }) => ({
+        url: `/v1/projects/${projectId}/pages`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    // Remove pages from project
+    removePages: builder.mutation<void, string>({
+      query: (projectId) => ({
+        url: `/v1/projects/${projectId}/pages`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, projectId) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    // Get pages of project
+    getProjectPages: builder.query<
+      BaseListResponse<PageListItem>,
+      { projectId: string; skip?: number; limit?: number }
+    >({
+      query: ({ projectId, skip = 0, limit = 10 }) => ({
+        url: `/v1/projects/${projectId}/pages`,
+        params: { skip, limit },
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.items.map(({ id }) => ({ type: "SavedDocument" as const, id })),
+              { type: "SavedDocument", id: "LIST" },
+            ]
+          : [{ type: "SavedDocument", id: "LIST" }],
+    }),
+
+    // Add pages to project in bulk
+    addPagesBulk: builder.mutation<void, { projectId: string; body: any[] }>({
+      query: ({ projectId, body }) => ({
+        url: `/v1/projects/${projectId}/pages/bulk`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    // Remove page from project
+    removePage: builder.mutation<void, { projectId: string; pageId: string }>({
       query: ({ projectId, pageId }) => ({
         url: `/v1/projects/${projectId}/pages/${pageId}`,
         method: "DELETE",
       }),
-      invalidatesTags: [{ type: "SavedDocument" }],
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
     }),
 
-    // Fetch maturity radar by ID
-    getMaturityRadar: builder.query<SavedDocumentResponse, string>({
-      query: (id) => `/maturity-radar/4/${id}`,
-      providesTags: (result, error, id) => [{ type: "SavedDocument", id }],
-    }),
-
-    // Create a Maturity Radar entry
-    createMaturityRadar: builder.mutation<SavedDocumentResponse, { id: string }>({
-      query: ({ id }) => ({
-        url: `/v1/maturity-radar`,
+    // Create tab
+    createTab: builder.mutation<void, { projectId: string; body: any }>({
+      query: ({ projectId, body }) => ({
+        url: `/v1/projects/${projectId}/tabs`,
         method: "POST",
-        body: { id },
+        body,
       }),
-      invalidatesTags: [{ type: "SavedDocument" }],
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    // Update tab
+    updateTab: builder.mutation<void, { projectId: string; tabId: string; body: any }>({
+      query: ({ projectId, tabId, body }) => ({
+        url: `/v1/projects/${projectId}/tabs/${tabId}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    // Update order of tabs
+    updateTabOrder: builder.mutation<void, { projectId: string; body: any }>({
+      query: ({ projectId, body }) => ({
+        url: `/v1/projects/${projectId}/tabs/update-order`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    // Follow project
+    followProject: builder.mutation<void, string>({
+      query: (projectId) => ({
+        url: `/v1/projects/${projectId}/follow`,
+        method: "POST",
+      }),
+      invalidatesTags: (result, error, projectId) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    // Unfollow project
+    unfollowProject: builder.mutation<void, string>({
+      query: (projectId) => ({
+        url: `/v1/projects/${projectId}/follow`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, projectId) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    // Change ownership of project
+    changeProjectOwnership: builder.mutation<void, { projectId: string; body: any }>({
+      query: ({ projectId, body }) => ({
+        url: `/v1/projects/${projectId}/change-ownership`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    // Get maturity radar for a project
+    getMaturityRadar: builder.query<SavedDocumentResponse, string>({
+      query: (projectId) => ({
+        url: `/v1/projects/${projectId}/maturity-radar`,
+        method: "GET",
+      }),
+      transformResponse: (response) => {
+        // Mock response structure that matches SavedDocumentResponse
+        return {
+          documents: [
+            {
+              id: "mock-radar-id",
+              title: "Project Maturity Radar",
+              linkedCounts: {
+                comments: 0,
+                documents: 0,
+                queries: 0,
+                inboxItems: 0,
+              },
+              url: `/projects/maturity-radar/mock-radar-id`,
+              type: "maturity-radar",
+              dateAdded: new Date().toISOString(),
+              maturityRadarData: {
+                categories: [
+                  { name: "Technology", score: 0.8 },
+                  { name: "Market", score: 0.6 },
+                  { name: "Business", score: 0.7 },
+                  { name: "Organization", score: 0.5 },
+                ],
+                overallScore: 0.65,
+                lastUpdated: new Date().toISOString(),
+              },
+            },
+          ],
+          total: 1,
+          severity: 0,
+        };
+      },
+      providesTags: (result, error, projectId) => [{ type: "SavedDocument", id: projectId }],
+    }),
+
+    // Create maturity radar for a project
+    createMaturityRadar: builder.mutation<SavedDocumentResponse, string>({
+      query: (projectId) => ({
+        url: `/v1/projects/${projectId}/maturity-radar`,
+        method: "POST",
+      }),
+      transformResponse: (response, meta, projectId) => {
+        // Mock response structure that matches SavedDocumentResponse
+        return {
+          documents: [
+            {
+              id: "new-radar-" + projectId,
+              title: "New Project Maturity Radar",
+              linkedCounts: {
+                comments: 0,
+                documents: 0,
+                queries: 0,
+                inboxItems: 0,
+              },
+              url: `/projects/maturity-radar/new-radar-${projectId}`,
+              type: "maturity-radar",
+              dateAdded: new Date().toISOString(),
+              maturityRadarData: {
+                categories: [
+                  { name: "Technology", score: 0.3 },
+                  { name: "Market", score: 0.2 },
+                  { name: "Business", score: 0.4 },
+                  { name: "Organization", score: 0.1 },
+                ],
+                overallScore: 0.25,
+                lastUpdated: new Date().toISOString(),
+              },
+            },
+          ],
+          total: 1,
+          severity: 0,
+        };
+      },
+      invalidatesTags: (result, error, projectId) => [{ type: "SavedDocument", id: projectId }],
     }),
   }),
   overrideExisting: true,
 });
 
 export const {
-  useGetProjectsQuery,
-  useGetProjectPagesQuery,
-  useGetProjectSavedSourcesQuery,
   useGetProjectOverviewQuery,
-  useGetProjectStructureQuery,
-  useGetProjectTabsQuery,
-  useGetProjectTabByIdQuery,
-  useGetProjectStatisticsQuery,
-  useGetProjectNotificationsQuery,
-  useUpdateProjectTabOrderMutation,
-  useGetProjectByIdQuery,
-  useGetProjectMaturityRadarQuery,
-  useGetResultsOverviewTableQuery,
+  useGetProjectsQuery,
+  useCreateProjectMutation,
+  useDeleteProjectMutation,
+  useUpdateProjectMutation,
+  useAddSavedSourceMutation,
+  useRemoveSavedSourcesMutation,
+  useGetProjectSavedSourcesQuery,
+  useAddSavedSourcesBulkMutation,
+  useRemoveSavedSourceMutation,
+  useAddPageMutation,
+  useRemovePagesMutation,
+  useGetProjectPagesQuery,
+  useAddPagesBulkMutation,
+  useRemovePageMutation,
+  useCreateTabMutation,
+  useUpdateTabMutation,
+  useUpdateTabOrderMutation,
+  useFollowProjectMutation,
+  useUnfollowProjectMutation,
+  useChangeProjectOwnershipMutation,
   useGetMaturityRadarQuery,
   useCreateMaturityRadarMutation,
-  useAddMaturityRadarToPagesMutation,
-  useDeleteProjectPageMutation,
 } = projectApi;

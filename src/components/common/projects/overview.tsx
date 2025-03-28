@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 // import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
+import { useAppSelector } from "@/store";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
 import {
@@ -388,10 +389,20 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
 
 export const ProjectOverView = () => {
   const { id } = useParams<{ id: string }>();
+
+  // Get project data from Redux store
+  const {
+    currentProject,
+    pages,
+    tabs: storeTabs,
+    activeTabId,
+    isLoading,
+    error,
+  } = useAppSelector((state) => state.project);
+
   const [tabs, setTabs] = useState([
     { id: "overview", label: "Overview" },
     { id: "technologies", label: "Technologies" },
-    // { id: "queries", label: "Queries" },
   ]);
 
   const [activeTabActive, setIsActiveTabActive] = useState<string>("overview");
@@ -402,10 +413,9 @@ export const ProjectOverView = () => {
 
   const { data: activityData, isLoading: activityDataIsLoading } = useGetMyRecentActivityQuery();
   const { data: linkingData } = useGetLinkingQuery();
-  const { data: pageData } = useGetStudyByIdQuery(id);
 
   const isProjectsDashboard = currentPath.includes("/projects/dashboard");
-  console.log("any pageData?", pageData);
+
   // State for the configuration dialog
   const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
   const [selectedTabType, setSelectedTabType] = useState<TabTypeConfig | null>(null);
@@ -572,7 +582,7 @@ export const ProjectOverView = () => {
                   <div className="w-1/2">
                     <div className="overviewHeader py-4">
                       <h1 className="mb-4 max-w-2xl text-4xl font-bold">
-                        {isProjectsDashboard ? "Your Universe Projects" : pageData?.title}
+                        {isProjectsDashboard ? "Your Universe Projects" : currentProject?.name}
                       </h1>
 
                       {!isProjectsDashboard && (
@@ -614,9 +624,8 @@ export const ProjectOverView = () => {
                     {!isProjectsDashboard ? (
                       <>
                         <p className="text-md mb-4">
-                          {pageData?.description
-                            ? pageData.title
-                            : `Cross regeneration is a sophisticated technique employed to <br />
+                          {currentProject?.tabs[0].content ||
+                            `Cross regeneration is a sophisticated technique employed to <br />
                           enhance the elution of macromolecules during the production process of
                           specialized ion exchange resins, specifically fro 'Gent production'...`}
                         </p>
@@ -738,7 +747,7 @@ export const ProjectOverView = () => {
                     <h3 className="text-md mb-2 pt-3 font-semibold">Pages graph</h3>
 
                     <ForceDirectedGraphView
-                      linkingData={linkingData}
+                      linkingData={linkingData?.items || []}
                       id="overviewForceDirectedGraph"
                     />
                   </div>
@@ -813,7 +822,11 @@ export const ProjectOverView = () => {
                 description="Either based on general knowledge or the sources linked."
                 className="bg-slate-100"
               />
-              <ConnectQuery className="mt-2" />
+              <ConnectQuery
+                attachToItem={(id: string) => {}}
+                parentId={id || ""}
+                parentTitle={currentProject?.name || ""}
+              />
             </TabsContent>
           </Tabs>
         </div>

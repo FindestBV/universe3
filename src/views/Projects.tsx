@@ -3,6 +3,7 @@ import {
   useGetEntityByIdQuery,
   useGetStudyByIdQuery,
 } from "@/api/documents/documentApi";
+import { useGetProjectsQuery } from "@/api/projects/projectApi";
 import SessionDialog from "@/components/common/dialogs/session-dialog";
 import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 // Import TipTap Editor
@@ -24,8 +25,13 @@ export const Projects = () => {
     ? useGetStudyByIdQuery(id, { refetchOnMountOrArgChange: false })
     : useGetEntityByIdQuery(id, { refetchOnMountOrArgChange: false });
 
-  const { data } = useGetEntitiesQuery(
-    { page: 1, limit: 10 }, // Adjust page and limit as needed
+  // const { data } = useGetEntitiesQuery(
+  //   { page: 1, limit: 10 }, // Adjust page and limit as needed
+  //   { refetchOnMountOrArgChange: true },
+  // );
+
+  const { data: projectsData } = useGetProjectsQuery(
+    { skip: 0, limit: 10 },
     { refetchOnMountOrArgChange: true },
   );
 
