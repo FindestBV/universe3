@@ -370,7 +370,7 @@ export const ProjectSources = () => {
                     {tab.id === "all" && (
                       <div className="w-full">
                         <div className="flex flex-col">
-                          {[1, 2, 3, 4, 5, 6].map((_, index) => (
+                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_, index) => (
                             <div key={index} className="itemCard">
                               <div className="innerCardMain bg-white">
                                 <button
@@ -588,7 +588,7 @@ export const ProjectSources = () => {
           </div>
         </div>
         <div
-          className={`${isSideBarToggled ? "right-0 flex w-1/4 flex-col justify-between p-4" : "hidden w-0 p-0"} top-4 h-screen bg-gray-200 transition-all duration-150 ease-in-out`}
+          className={`${isSideBarToggled ? "right-0 flex min-h-screen w-1/4 flex-col justify-between p-4" : "hidden w-0 p-0"} top-4 bg-gray-200 transition-all duration-150 ease-in-out`}
         >
           <FilterOptions />
         </div>

@@ -26,7 +26,7 @@ export const FilterOptions = () => {
   };
 
   return (
-    <div className="mx-auto h-screen w-full max-w-md">
+    <div className="max-w-m fixed mx-auto h-screen w-full">
       <div className="mb-6 mt-6 flex gap-4">
         <FilterIcon className="fill-black" /> <h2 className="text-sm font-bold">Filter options </h2>
       </div>
