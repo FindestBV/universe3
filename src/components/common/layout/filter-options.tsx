@@ -1,9 +1,10 @@
-import { Button } from "@/components/ui/button";
+import ProjectsUniverseSwitch from "@/components/common/utilities/projects-universe-switch";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+// import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { Globe, Pin } from "lucide-react";
+import { FilterIcon, Globe, Pin } from "lucide-react";
 
 import { useState } from "react";
 
@@ -26,16 +27,34 @@ export const FilterOptions = () => {
 
   return (
     <div className="mx-auto w-full max-w-md">
+      <div className="mb-6 mt-6 flex gap-4">
+        <FilterIcon className="fill-black" /> <h2 className="text-sm font-bold">Filter options </h2>
+      </div>
+
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
         <h2 className="text-blank py-4 font-bold">Show connections</h2>
-        <TabsList className="flex justify-center space-x-4">
-          <TabsTrigger value="project" className="flex gap-2">
-            <Pin className={`size-5 text-gray-600`} />
-            <span> Project Only</span>
+        <TabsList className="flex w-full justify-center">
+          <TabsTrigger
+            value="project"
+            className={`flex w-full items-center gap-2 rounded-l-sm border px-2 py-1 text-sm transition-all duration-150 ease-linear ${
+              selectedTab === "project"
+                ? "border-[#000] bg-[#000] text-white"
+                : "border-gray-300 bg-white text-gray-700"
+            }`}
+          >
+            <Pin className={`h-4 w-4`} />
+            <p className="text-sm">Project Only</p>
           </TabsTrigger>
-          <TabsTrigger value="universe" className="flex gap-2">
-            <Globe className={`size-5 text-gray-600`} />
-            <span> Universe</span>
+          <TabsTrigger
+            value="universe"
+            className={`mx-auto flex w-full items-center gap-2 rounded-r-sm border px-2 py-1 text-sm transition-all duration-150 ease-linear ${
+              selectedTab === "universe"
+                ? "border-[#000] bg-[#000] text-white"
+                : "border-gray-300 bg-white text-gray-700"
+            }`}
+          >
+            <Globe className={`h-4 w-4`} />
+            <p className="text-sm">Universe</p>
           </TabsTrigger>
         </TabsList>
 
@@ -44,7 +63,7 @@ export const FilterOptions = () => {
             <CardContent className="flex flex-col gap-12 py-4">
               {filters.map(({ category, options }) => (
                 <div key={category} className="flex flex-col gap-4">
-                  <h4 className="mb-2 text-lg font-semibold">{category}</h4>
+                  <h4 className="mb-2 text-lg font-semibold">{category} - Project</h4>
                   {options.map((option) => (
                     <div key={option} className="flex items-center gap-2">
                       <Checkbox
@@ -65,7 +84,7 @@ export const FilterOptions = () => {
             <CardContent className="flex flex-col gap-12 py-4">
               {filters.map(({ category, options }) => (
                 <div key={category} className="flex flex-col gap-4">
-                  <h4 className="mb-2 text-lg font-semibold">{category}</h4>
+                  <h4 className="mb-2 text-lg font-semibold">{category} - Universe</h4>
                   {options.map((option) => (
                     <div key={option} className="flex items-center gap-2">
                       <Checkbox
