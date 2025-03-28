@@ -31,9 +31,9 @@ export const FilterOptions = () => {
         <FilterIcon className="fill-black" /> <h2 className="text-sm font-bold">Filter options </h2>
       </div>
 
-      <Tabs value={selectedTab} onValueChange={setSelectedTab}>
+      <div>
         <h2 className="text-blank py-4 font-bold">Show connections</h2>
-        <TabsList className="flex w-full justify-center">
+        {/* <TabsList className="flex w-full justify-center">
           <TabsTrigger
             value="project"
             className={`flex w-full items-center gap-2 rounded-l-sm border px-2 py-1 text-sm transition-all duration-150 ease-linear ${
@@ -56,9 +56,9 @@ export const FilterOptions = () => {
             <Globe className={`h-4 w-4`} />
             <p className="text-sm">Universe</p>
           </TabsTrigger>
-        </TabsList>
+        </TabsList> */}
 
-        <TabsContent value="project">
+        <div>
           <Card>
             <CardContent className="flex flex-col gap-12 py-4">
               {filters.map(({ category, options }) => (
@@ -78,29 +78,8 @@ export const FilterOptions = () => {
               ))}
             </CardContent>
           </Card>
-        </TabsContent>
-        <TabsContent value="universe">
-          <Card>
-            <CardContent className="flex flex-col gap-12 py-4">
-              {filters.map(({ category, options }) => (
-                <div key={category} className="flex flex-col gap-4">
-                  <h4 className="mb-2 text-lg font-semibold">{category} - Universe</h4>
-                  {options.map((option) => (
-                    <div key={option} className="flex items-center gap-2">
-                      <Checkbox
-                        id={`${category}-${option}`}
-                        checked={selectedFilters[category]?.[option] || false}
-                        onCheckedChange={() => handleFilterChange(category, option)}
-                      />
-                      <Label htmlFor={`${category}-${option}`}>{option}</Label>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+        </div>
+      </div>
 
       <button
         type="submit"

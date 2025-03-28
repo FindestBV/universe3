@@ -17,6 +17,7 @@ import {
   File,
   Home,
   Link,
+  Link2,
   Network,
   Pin,
   Plus,
@@ -64,12 +65,14 @@ export const Dashboard = ({
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
   const [currentView, setCurrentView] = useState<string>("overview");
+  // const [isActive, setIsActive] = useState<string>("");
   const { data: pageData } = useGetStudyByIdQuery(id);
 
   const location = useLocation();
   const currentPath = location.pathname;
 
   const isProjectDashboard = currentPath.includes("dashboard");
+  const isActive = currentView;
 
   const toggleSection = (sectionTitle: string) => {
     setOpenSections((prev) => ({
@@ -80,7 +83,6 @@ export const Dashboard = ({
 
   const triggerExpand = () => {
     setIsTitleExpanded(!isTitleExpanded);
-    // console.log(isTitleExpanded ? "expanded" : "normal");
   };
 
   const projectStructure = [
@@ -220,115 +222,133 @@ export const Dashboard = ({
                         </span>
                       </div>
                     </div>
-                    {/* <li
-                      className={`${currentView === "search" && "bg-gray-200"} m-4 flex max-w-full items-center gap-2 rounded-full border bg-gray-200 p-2 transition-all duration-150 ease-linear`}
-                      onClick={() => setCurrentView("search")}
-                    >
-                      <Search className="h-5 w-5 text-gray-600" />
-                      <span className="text-sm font-medium text-gray-600">Search</span>
-                      <div className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-blue-300 text-xs font-black text-blue-600">
-                        3
-                      </div>
-                    </li> */}
+
                     <div
-                      className={`${currentView === "pages" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
+                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-1 transition-all duration-150 ease-linear ${
+                        currentView === "pages" ? "bg-black" : "bg-white hover:bg-gray-100"
+                      }`}
                       onClick={() => setCurrentView("pages")}
                     >
-                      <File className="h-5 w-5 group-hover:text-white" />
+                      <File
+                        className={`h-5 w-5 ${
+                          currentView === "pages"
+                            ? "text-white"
+                            : "text-gray-600 group-hover:text-gray-600"
+                        }`}
+                      />
                       <span
-                        className={`text-sm font-medium ${currentView === "pages" ? "text-white" : "text-gray-600"} group-hover:text-white`}
+                        className={`text-sm font-medium ${
+                          currentView === "pages"
+                            ? "text-white"
+                            : "text-gray-600 group-hover:text-gray-600"
+                        }`}
                       >
                         Project pages
                       </span>
                       <span className="ml-auto flex self-center">
-                        {currentView === "pages" ? (
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <a
+                                href="/pages/studies/08dd3f81-c24e-44e5-89ba-107467de54d9"
+                                className="py-1"
+                              >
                                 <Plus
-                                  className={`rounded-sm bg-blue-500 p-1 text-white group-hover:text-white`}
+                                  className={`rounded-sm p-1 ${currentView === "pages" ? "text-white hover:bg-blue-500" : "group-hover:bg-gray-200 group-hover:text-blue-500"}`}
                                 />
-                              </TooltipTrigger>
-                              <TooltipContent side="right">
-                                <a href="/pages/studies/08dd3f81-c24e-44e5-89ba-107467de54d9">
-                                  <p className="text-xs">Create page</p>
-                                </a>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        ) : (
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <a href="/projects/create-page">
-                                  <Plus
-                                    className={`p-1 ${
-                                      currentView === "pages"
-                                        ? "text-white"
-                                        : "bg-gray-100 text-gray-600"
-                                    } rounded-sm hover:bg-blue-500 group-hover:bg-white`}
-                                  />
-                                </a>
-                              </TooltipTrigger>
-                              <TooltipContent side="right">
-                                <p className="text-xs">Create page</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        )}
+                              </a>
+                            </TooltipTrigger>
+                            <TooltipContent side="right" className={`bg-black text-white`}>
+                              <p className="text-xs">Create page</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </span>
                     </div>
+
                     <div
-                      className={`${currentView === "sources" && "text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-gray-200 hover:text-gray-500 active:bg-black`}
+                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-1 transition-all duration-150 ease-linear ${
+                        currentView === "sources" ? "bg-black" : "bg-white hover:bg-gray-100"
+                      }`}
                       onClick={() => setCurrentView("sources")}
                     >
-                      <Link className="h-5 w-5 group-hover:text-gray-600" />
+                      <Link
+                        className={`h-5 w-5 ${
+                          currentView === "sources"
+                            ? "text-white"
+                            : "text-gray-600 group-hover:text-gray-600"
+                        }`}
+                      />
                       <span
-                        className={`text-sm font-medium ${currentView === "sources" ? "text-white" : "text-gray-600"} group-hover:text-gray-600`}
+                        className={`text-sm font-medium ${
+                          currentView === "sources"
+                            ? "text-white"
+                            : "text-gray-600 group-hover:text-gray-600"
+                        }`}
                       >
                         Project sources
                       </span>
                       <span className="ml-auto flex self-center">
-                        {currentView === "sources" ? (
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <a href="/pages/studies/08dd3f81-c24e-44e5-89ba-107467de54d9">
-                                  <Plus
-                                    className={`rounded-sm bg-gray-100 p-1 text-white hover:bg-blue-500 active:bg-blue-500`}
-                                  />
-                                </a>
-                              </TooltipTrigger>
-                              <TooltipContent side="right">
-                                <p className="text-xs">Create source</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        ) : null}
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <a
+                                href="/pages/studies/08dd3f81-c24e-44e5-89ba-107467de54d9"
+                                className="py-1"
+                              >
+                                <Plus
+                                  className={`rounded-sm p-1 ${currentView === "sources" ? "text-white hover:bg-blue-500" : "group-hover:bg-gray-200 group-hover:text-blue-500"}`}
+                                />
+                              </a>
+                            </TooltipTrigger>
+                            <TooltipContent side="right" className={`bg-black text-white`}>
+                              <p className="text-xs">Create page</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </span>
                     </div>
+
                     <div
-                      className={`${currentView === "find" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
+                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-1 transition-all duration-150 ease-linear ${
+                        currentView === "find" ? "bg-black" : "bg-white hover:bg-gray-100"
+                      }`}
                       onClick={() => setCurrentView("find")}
                     >
-                      <Telescope className="h-5 w-5 group-hover:text-white" />
+                      <Telescope
+                        className={`h-5 w-5 ${
+                          currentView === "find"
+                            ? "text-white"
+                            : "text-gray-600 group-hover:text-gray-600"
+                        }`}
+                      />
                       <span
-                        className={`text-sm font-medium ${currentView === "find" ? "text-white" : "text-gray-600"} group-hover:text-white`}
+                        className={`text-sm font-medium ${
+                          currentView === "find"
+                            ? "text-white"
+                            : "text-gray-600 group-hover:text-gray-600"
+                        }`}
                       >
                         Find
                       </span>
-                      <span className="ml-auto">
-                        {currentView === "find" ? (
-                          <Plus
-                            className={`rounded-sm bg-blue-500 p-1 text-white group-hover:text-white`}
-                          />
-                        ) : (
-                          <Plus
-                            className={`p-1 ${
-                              currentView === "find" ? "text-white" : "bg-gray-100 text-gray-600"
-                            } rounded-sm group-hover:bg-blue-500 group-hover:text-white`}
-                          />
-                        )}
+                      <span className="ml-auto flex self-center">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <a
+                                href="/pages/studies/08dd3f81-c24e-44e5-89ba-107467de54d9"
+                                className="py-1"
+                              >
+                                <Plus
+                                  className={`rounded-sm p-1 ${currentView === "find" ? "text-white hover:bg-blue-500" : "group-hover:bg-gray-200 group-hover:text-blue-500"}`}
+                                />
+                              </a>
+                            </TooltipTrigger>
+                            <TooltipContent side="right" className={`bg-black text-white`}>
+                              <p className="text-xs">Create page</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </span>
                     </div>
                   </nav>
@@ -392,21 +412,7 @@ export const Dashboard = ({
                   >
                     Project settings
                   </span>
-                  {/* <span className="ml-auto">
-                        {currentView === "settings" ? (
-                          <ChevronRight
-                            className={`rounded-sm p-1 text-white group-hover:text-white`}
-                          />
-                        ) : (
-                          <Plus
-                            className={`p-1 ${
-                              currentView === "settings" ? "text-white" : "bg-gray-100 text-gray-600"
-                            } rounded-sm group-hover:bg-transparent group-hover:text-white`}
-                          />
-                        )}
-                      </span> */}
                 </div>
-                {/* Settings Footer */}
               </div>
             </div>
           </div>

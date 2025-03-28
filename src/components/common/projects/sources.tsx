@@ -7,6 +7,7 @@
  *
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -19,13 +20,14 @@ import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { Filter, List, ListFilter, Plus, RadarIcon, Search, Star } from "lucide-react";
+import { Filter, List, ListFilter, Plus, RadarIcon, Star } from "lucide-react";
 
 import { useState } from "react";
 
 import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
 import AskIgorModal from "../dialogs/ask-igor";
-import FilterSheet from "../dialogs/filter-sheet";
+import FilterOptions from "../layout/filter-options";
+// import FilterSheet from "../dialogs/filter-sheet";
 import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
 import ResultsOverview from "./config/results-overview";
@@ -175,6 +177,7 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
 
 export const ProjectSources = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
+  const [isSideBarToggled, setIsSideBarToggled] = useState(false);
 
   const [tabs, setTabs] = useState([
     { id: "all", label: "All Source Types" },
@@ -287,14 +290,16 @@ export const ProjectSources = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
-      <div className="min-h-full" id="project-sources">
-        <div className="mx-auto max-w-full p-8">
+      <div className="flex min-h-full" id="project-sources">
+        <div
+          className={`${isSideBarToggled ? "w-3/4" : "w-full"} h-full p-8 transition-all duration-150 ease-in-out`}
+        >
           <div className="overviewHeader flex justify-between">
             <h1 className="mb-2 text-2xl font-bold">Sources</h1>
 
             <div className="project-controls flex items-center gap-4">
               <AdvancedSearchModal />
-              <FilterSheet />
+
               <div className="flex items-center gap-2">
                 <TooltipProvider>
                   <Tooltip>
@@ -328,6 +333,12 @@ export const ProjectSources = () => {
                   </Tooltip>
                 </TooltipProvider>
               </div>
+              <Button onClick={() => setIsSideBarToggled((prevState) => !prevState)}>
+                <Filter
+                  className={`${isSideBarToggled ? "fill-black" : "bg-white text-black"} h-8 w-4`}
+                />
+              </Button>
+
               <AskIgorModal iconOnly />
             </div>
           </div>
@@ -575,6 +586,11 @@ export const ProjectSources = () => {
               </div>
             </Tabs>
           </div>
+        </div>
+        <div
+          className={`${isSideBarToggled ? "right-0 flex w-1/4 flex-col justify-between p-4" : "hidden w-0 p-0"} top-4 h-screen bg-gray-200 transition-all duration-150 ease-in-out`}
+        >
+          <FilterOptions />
         </div>
       </div>
 

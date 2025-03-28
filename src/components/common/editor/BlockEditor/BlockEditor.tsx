@@ -308,16 +308,7 @@ export const BlockEditor = ({
                         </span>
                       </div>
                     </div>
-                    {/* <li
-                      className={`${currentView === "search" && "bg-gray-200"} m-4 flex max-w-full items-center gap-2 rounded-full border bg-gray-200 p-2 transition-all duration-150 ease-linear`}
-                      onClick={() => setCurrentView("search")}
-                    >
-                      <Search className="h-5 w-5 text-gray-600" />
-                      <span className="text-sm font-medium text-gray-600">Search</span>
-                      <div className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-blue-300 text-xs font-black text-blue-600">
-                        3
-                      </div>
-                    </li> */}
+
                     <div
                       className={`${currentView === "pages" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
                       onClick={() => setCurrentView("pages")}
@@ -329,41 +320,24 @@ export const BlockEditor = ({
                         Project pages
                       </span>
                       <span className="ml-auto flex self-center">
-                        {currentView === "pages" ? (
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <a href="/projects/create-page">
                                 <Plus
-                                  className={`rounded-sm bg-blue-500 p-1 text-white group-hover:text-white`}
+                                  className={`p-1 ${
+                                    currentView === "pages"
+                                      ? "text-white"
+                                      : "bg-gray-100 text-gray-600"
+                                  } rounded-sm group-hover:bg-blue-500 group-hover:text-white`}
                                 />
-                              </TooltipTrigger>
-                              <TooltipContent side="right">
-                                <a href="/pages/studies/08dd3f81-c24e-44e5-89ba-107467de54d9">
-                                  <p className="text-xs">Create page</p>
-                                </a>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        ) : (
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <a href="/projects/create-page">
-                                  <Plus
-                                    className={`p-1 ${
-                                      currentView === "pages"
-                                        ? "text-white"
-                                        : "bg-gray-100 text-gray-600"
-                                    } rounded-sm group-hover:bg-blue-500 group-hover:text-white`}
-                                  />
-                                </a>
-                              </TooltipTrigger>
-                              <TooltipContent side="right">
-                                <p className="text-xs">Create page</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        )}
+                              </a>
+                            </TooltipTrigger>
+                            <TooltipContent side="right">
+                              <p className="text-xs">Create page</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </span>
                     </div>
                     <div
