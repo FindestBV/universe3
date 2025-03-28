@@ -33,37 +33,13 @@ export const FilterOptions = () => {
 
       <div>
         <h2 className="text-blank py-4 font-bold">Show connections</h2>
-        {/* <TabsList className="flex w-full justify-center">
-          <TabsTrigger
-            value="project"
-            className={`flex w-full items-center gap-2 rounded-l-sm border px-2 py-1 text-sm transition-all duration-150 ease-linear ${
-              selectedTab === "project"
-                ? "border-[#000] bg-[#000] text-white"
-                : "border-gray-300 bg-white text-gray-700"
-            }`}
-          >
-            <Pin className={`h-4 w-4`} />
-            <p className="text-sm">Project Only</p>
-          </TabsTrigger>
-          <TabsTrigger
-            value="universe"
-            className={`mx-auto flex w-full items-center gap-2 rounded-r-sm border px-2 py-1 text-sm transition-all duration-150 ease-linear ${
-              selectedTab === "universe"
-                ? "border-[#000] bg-[#000] text-white"
-                : "border-gray-300 bg-white text-gray-700"
-            }`}
-          >
-            <Globe className={`h-4 w-4`} />
-            <p className="text-sm">Universe</p>
-          </TabsTrigger>
-        </TabsList> */}
 
         <div>
           <Card>
             <CardContent className="flex flex-col gap-12 py-4">
               {filters.map(({ category, options }) => (
                 <div key={category} className="flex flex-col gap-4">
-                  <h4 className="mb-2 text-lg font-semibold">{category} - Project</h4>
+                  <h4 className="mb-2 text-lg font-semibold">{category}</h4>
                   {options.map((option) => (
                     <div key={option} className="flex items-center gap-2">
                       <Checkbox
@@ -84,7 +60,6 @@ export const FilterOptions = () => {
       <button
         type="submit"
         className="max-w-[200px] rounded-md bg-black p-2 text-sm text-white hover:bg-slate-500 focus:outline-none"
-        // onClick={() => setIsDialogOpen(false)}
       >
         Save Changes
       </button>
