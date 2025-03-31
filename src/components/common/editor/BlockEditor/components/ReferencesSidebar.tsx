@@ -1,7 +1,9 @@
+import ShareObject from "@/components/common/dialogs/share-object";
 import { Button } from "@/components/ui/button";
 import {
   EllipsisVertical,
   File,
+  FileQuestion,
   Forward,
   Link2Icon,
   MessageCircle,
@@ -16,7 +18,9 @@ import { TableOfContents } from "./TableOfContents";
 
 export const ReferencesSidebar: React.FC<{
   editor?: string;
-}> = ({ editor }) => {
+  parentId?: number;
+}> = ({ editor, parentId }) => {
+  console.log("parent id", parentId);
   const scrollToSection = (sectionId: string) => {
     const tabSectionPattern = /^#?([^#]+)#(.+)$/;
 
@@ -54,9 +58,7 @@ export const ReferencesSidebar: React.FC<{
           <Pin className="fill-blue-600" />
         </Button>
 
-        <button className="flex items-center gap-2 rounded border border-slate-300 bg-slate-100 px-2 text-sm text-black transition-colors duration-200 hover:bg-slate-200">
-          <Forward /> Share
-        </button>
+        <ShareObject parentId={parentId} />
         <Button className={`rounded-sm border border-slate-200 bg-slate-100 px-3`}>
           <EllipsisVertical />
         </Button>
@@ -127,7 +129,7 @@ export const ReferencesSidebar: React.FC<{
             </a>
           </li>
           <li className="flex items-center gap-2 text-sm">
-            <File size={20} />
+            <FileQuestion size={20} />
             <a
               className="cursor-pointer hover:text-slate-400"
               onClick={() => scrollToSection("#linkedDocuments#connectedQueries")}

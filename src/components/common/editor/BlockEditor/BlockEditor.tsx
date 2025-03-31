@@ -711,7 +711,7 @@ export const BlockEditor = ({
               </Tabs>
             </div>
             <div className={`referenceSidebar h-full px-4`}>
-              <ReferencesSidebar editor={editor} />
+              <ReferencesSidebar editor={editor} parentId={id} />
             </div>
           </div>
         </div>
