@@ -193,6 +193,28 @@ export const BlockEditor = ({
     // console.log("currentView", currentView);
   }, [currentView]);
 
+  useEffect(() => {
+    const handleScrollToTab = (e: CustomEvent) => {
+      const { tabId, sectionId } = e.detail;
+
+      setActiveTab(tabId);
+
+      // Delay scroll slightly to allow DOM update
+      setTimeout(() => {
+        const el = document.querySelector(`#${sectionId}`);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100); // You can tweak this
+    };
+
+    window.addEventListener("scrollToTabSection", handleScrollToTab as EventListener);
+
+    return () => {
+      window.removeEventListener("scrollToTabSection", handleScrollToTab as EventListener);
+    };
+  }, []);
+
   if (!editor) {
     return <p>Loading editor...</p>;
   }
@@ -577,7 +599,12 @@ export const BlockEditor = ({
               <TableColumnMenu editor={editor} containerRef={menuContainerRef} />
               <ImageBlockMenu editor={editor} containerRef={menuContainerRef} />
 
-              <Tabs defaultValue="all" className="mt-10 px-28" onValueChange={setActiveTab}>
+              <Tabs
+                defaultValue="all"
+                className="mt-10 px-28"
+                onValueChange={setActiveTab}
+                id="linkedDocuments"
+              >
                 <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
                   <div className="flex gap-2">
                     {tabs.map((tab) => (
@@ -618,7 +645,7 @@ export const BlockEditor = ({
                       )}
 
                       {tab.id === "connectedQueries" && (
-                        <div className="w-full">
+                        <div className="w-full" id="connectedQueries">
                           {connectedQueries &&
                             (connectedQueries[0]?.connectedObjects &&
                             connectedQueries[0].connectedObjects.length > 0 ? (
@@ -674,7 +701,7 @@ export const BlockEditor = ({
                       )}
 
                       {tab.id === "comments" && (
-                        <div className="w-full">
+                        <div className="w-full" id="connectedComments">
                           <Comments connectedComments={connectedComments} />
                         </div>
                       )}

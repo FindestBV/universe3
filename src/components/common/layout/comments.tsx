@@ -124,7 +124,7 @@ export const Comments = ({ connectedComments }: any) => {
   return (
     <>
       <div className="comments-list">
-        <div className="flex w-full flex-col gap-6 rounded-sm border border-[#f1f1f1] p-4">
+        <div className="flex w-full flex-col gap-6 rounded-sm p-4">
           {connectedComments?.comments?.length > 0 ? (
             connectedComments.comments.map((comment: any) => (
               <div key={comment.id} className="group flex w-full flex-col">
