@@ -123,7 +123,6 @@ export const Comments = ({ connectedComments }: any) => {
 
   return (
     <>
-      <h3 className="my-4 flex-1 text-3xl font-black text-black">Comments</h3>
       <div className="comments-list">
         <div className="flex w-full flex-col gap-6 rounded-sm border border-[#f1f1f1] p-4">
           {connectedComments?.comments?.length > 0 ? (

@@ -2,6 +2,7 @@
 import ConnectQuery from "@/components/common/dialogs/connect-query";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
 import Comments from "@/components/common/layout/comments";
+import { Checkbox } from "@/components/ui/checkbox";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
@@ -9,8 +10,8 @@ import { useBlockEditor } from "@/hooks/use-block-editor";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { initialContent } from "@/lib/data/initialContent";
 import { RootState } from "@/store";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { EditorContent } from "@tiptap/react";
 import {
   ArrowLeft,
@@ -79,7 +80,14 @@ export const BlockEditor = ({
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
   const navigateWithTransition = useNavigateWithTransition();
 
-  console.log("block editor type", type);
+  const [tabs, setTabs] = useState([
+    { id: "connectedSources", label: "Connected sources" },
+    { id: "connectedQueries", label: "Connected queries" },
+    { id: "connectedPages", label: "Connected pages" },
+    { id: "comments", label: "Comments" },
+  ]);
+
+  // console.log("block editor type", type);
 
   const parsedContent = useMemo(() => {
     try {
@@ -143,7 +151,7 @@ export const BlockEditor = ({
   const isLocked = useSelector((state: RootState) => state.document.isLocked);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
   const [currentView, setCurrentView] = useState<View>("overview");
-  const [activeTab, setActiveTab] = useState("home");
+  const [activeTab, setActiveTab] = useState("connectedSources");
 
   const toggleSection = (sectionTitle: string) => {
     setOpenSections((prev) => ({
@@ -549,7 +557,7 @@ export const BlockEditor = ({
                 </div>
 
                 {/* Author Info */}
-                {/* <div className="mb-8 flex items-center gap-3">
+                <div className="mb-8 flex items-center gap-3">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600 text-white">
                     S
                   </div>
@@ -557,8 +565,9 @@ export const BlockEditor = ({
                     <div>Created by sander.vanderwoude@findest.eu</div>
                     <div className="mr-32 text-gray-500">26 June 2024</div>
                   </div>
-                </div> */}
+                </div>
               </div>
+
               <EditorContent key={editor?.view?.id || "editor"} editor={editor} className="" />
               <ContentItemMenu editor={editor} />
               <LinkMenu editor={editor} containerRef={menuContainerRef} />
@@ -567,67 +576,112 @@ export const BlockEditor = ({
               <TableRowMenu editor={editor} containerRef={menuContainerRef} />
               <TableColumnMenu editor={editor} containerRef={menuContainerRef} />
               <ImageBlockMenu editor={editor} containerRef={menuContainerRef} />
-              <div className="editorContentContainer" id="linkedDocuments">
-                <h3 className="itemTitle flex items-center gap-4">
-                  Linked documents <Download size={16} />
-                </h3>
 
-                {connectedObjects?.documents && connectedObjects.documents.length > 0
-                  ? connectedObjects.documents.map(
-                      (doc: { title: Key | null | undefined; id: string }) => (
-                        <div key={doc.title}>
-                          <SimilarDocumentModal
-                            title={doc.title}
-                            id={doc.id}
-                            type="linkedObjects"
-                          />
-                        </div>
-                      ),
-                    )
-                  : "no connected objects"}
-              </div>
-              <div className="editorContentContainer" id="connectedQueries">
-                <h3 className="itemTitle">Connected Queries</h3>
-                <p className="iconText">Connections:</p>
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {connectedQueries &&
-                    (connectedQueries[0]?.connectedObjects &&
-                    connectedQueries[0].connectedObjects.length > 0 ? (
-                      connectedQueries[0].connectedObjects.map(
-                        (obj: {
-                          id: Key | null | undefined;
-                          name: string;
-                          mainContents: unknown;
-                          searchInformation: unknown;
-                        }) => (
-                          <SimilarDocumentModal
-                            key={obj.id}
-                            id={obj.id}
-                            title={obj.name}
-                            mainContents={obj.mainContents}
-                            searchInformation={obj.searchInformation}
-                            type="entity"
-                          />
-                        ),
-                      )
-                    ) : (
-                      <div className="flex flex-row-reverse items-center gap-4">
-                        <Button variant="outline">ADD QUERY</Button>
-                        <ConnectQuery
-                          attachToItem={function (id: string): void {
-                            throw new Error("Function not implemented.");
-                          }}
-                          parentId={""}
-                          parentTitle={""}
-                        />
-                        <p className="text-gray-500">No connected objects</p>
-                      </div>
+              <Tabs defaultValue="all" className="mt-10 px-28" onValueChange={setActiveTab}>
+                <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
+                  <div className="flex gap-2">
+                    {tabs.map((tab) => (
+                      <TabsTrigger
+                        key={tab.id}
+                        value={tab.id}
+                        className={`p-2 text-sm transition-all duration-150 ${activeTab === tab.id ? "border-b-2 border-blue-800 bg-blue-100 font-bold" : "text-black"}`}
+                        // onDoubleClick={() => renameTab(tab.id)}
+                      >
+                        {tab.label}
+                      </TabsTrigger>
                     ))}
+                  </div>
+                </TabsList>
+                <div className="mt-4">
+                  {tabs.map((tab) => (
+                    <TabsContent
+                      key={tab.id}
+                      value={tab.id}
+                      className="mt-2 space-y-2 transition-all duration-150"
+                    >
+                      {tab.id === "connectedSources" && (
+                        <div className="w-full">
+                          {connectedObjects?.documents && connectedObjects.documents.length > 0
+                            ? connectedObjects.documents.map(
+                                (doc: { title: Key | null | undefined; id: string }) => (
+                                  <div key={doc.title}>
+                                    <SimilarDocumentModal
+                                      title={doc.title}
+                                      id={doc.id}
+                                      type="linkedObjects"
+                                    />
+                                  </div>
+                                ),
+                              )
+                            : "no connected objects"}
+                        </div>
+                      )}
+
+                      {tab.id === "connectedQueries" && (
+                        <div className="w-full">
+                          {connectedQueries &&
+                            (connectedQueries[0]?.connectedObjects &&
+                            connectedQueries[0].connectedObjects.length > 0 ? (
+                              connectedQueries[0].connectedObjects.map(
+                                (obj: {
+                                  id: Key | null | undefined;
+                                  name: string;
+                                  mainContents: unknown;
+                                  searchInformation: unknown;
+                                }) => (
+                                  <SimilarDocumentModal
+                                    key={obj.id}
+                                    id={obj.id}
+                                    title={obj.name}
+                                    mainContents={obj.mainContents}
+                                    searchInformation={obj.searchInformation}
+                                    type="entity"
+                                  />
+                                ),
+                              )
+                            ) : (
+                              <div className="flex flex-row-reverse items-center gap-4">
+                                <Button variant="outline">ADD QUERY</Button>
+                                <ConnectQuery
+                                  attachToItem={function (id: string): void {
+                                    throw new Error("Function not implemented.");
+                                  }}
+                                  parentId={""}
+                                  parentTitle={""}
+                                />
+                                <p className="text-gray-500">No connected objects</p>
+                              </div>
+                            ))}
+                        </div>
+                      )}
+
+                      {tab.id === "connectedPages" && (
+                        <div className="w-full">
+                          {connectedObjects?.documents && connectedObjects.documents.length > 0
+                            ? connectedObjects.documents.map(
+                                (doc: { title: Key | null | undefined; id: string }) => (
+                                  <div key={doc.title}>
+                                    <SimilarDocumentModal
+                                      title={doc.title}
+                                      id={doc.id}
+                                      type="linkedObjects"
+                                    />
+                                  </div>
+                                ),
+                              )
+                            : "no connected objects"}
+                        </div>
+                      )}
+
+                      {tab.id === "comments" && (
+                        <div className="w-full">
+                          <Comments connectedComments={connectedComments} />
+                        </div>
+                      )}
+                    </TabsContent>
+                  ))}
                 </div>
-              </div>
-              <div className="editorContentContainer" id="connectedComments">
-                <Comments connectedComments={connectedComments} />
-              </div>
+              </Tabs>
             </div>
             <div className={`referenceSidebar h-full px-4`}>
               <ReferencesSidebar editor={editor} />
