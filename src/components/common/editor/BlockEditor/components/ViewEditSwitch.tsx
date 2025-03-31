@@ -1,6 +1,6 @@
 import { setEditingState } from "@/api/documents/documentSlice";
 import { RootState } from "@/store";
-import { Eye, FilePenLine, Pen } from "lucide-react";
+import { Eye, Pen } from "lucide-react";
 
 import { useState } from "react";
 // Replace with the actual imports if different

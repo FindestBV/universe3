@@ -1,15 +1,20 @@
 import ShareObject from "@/components/common/dialogs/share-object";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   EllipsisVertical,
   File,
   FileQuestion,
   Forward,
+  Info,
   Link2Icon,
+  Lock,
   MessageCircle,
   Pin,
   Share,
   Star,
+  Trash,
 } from "lucide-react";
 
 import React, { useState } from "react";
@@ -54,14 +59,53 @@ export const ReferencesSidebar: React.FC<{
   return (
     <div className="fixed top-4 flex h-full flex-col p-4">
       <div className="mb-8 flex gap-2">
-        <Button className={`rounded-sm border border-blue-500 bg-blue-100 px-3`}>
+        <Button className={`rounded-sm border border-blue-500 bg-blue-100 px-2 py-1`}>
           <Pin className="fill-blue-600" />
         </Button>
 
         <ShareObject parentId={parentId} />
-        <Button className={`rounded-sm border border-slate-200 bg-slate-100 px-3`}>
-          <EllipsisVertical />
-        </Button>
+
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button className={`rounded-sm border border-slate-200 bg-slate-100 px-3`}>
+                <EllipsisVertical />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent className="w-72 bg-white" align="end">
+              <div className="m-2 flex flex-col gap-3 rounded-md bg-white text-black">
+                <div className="flex items-center gap-2 font-bold">
+                  <Info size={10} /> Page info
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <Avatar>
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                  <div className="flex w-full flex-col justify-between">
+                    <small className="text-xs">Created by sander.vanderwoude@findest.eu</small>
+                    <small className="text-xs text-gray-500">26 June 2024</small>
+                  </div>
+                </div>
+                <div className="group flex items-center gap-1">
+                  <div className="flex w-full cursor-pointer items-center justify-start gap-4 rounded-sm py-2 group-hover:bg-black group-hover:text-white">
+                    <Lock className="ml-2 group-hover:text-white" size={16} />
+                    <small className="text-xs group-hover:text-white">Lock page</small>
+                  </div>
+                </div>
+                <div className="group flex items-center gap-1">
+                  <div className="flex w-full cursor-pointer items-center justify-start gap-4 rounded-sm py-2 group-hover:bg-red-500 group-hover:text-white">
+                    <Trash className="ml-2 stroke-red-500 group-hover:stroke-white" size={16} />
+                    <small className="text-xs text-red-500 group-hover:text-white">
+                      Delete page
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
 
       <div className="mb-8 flex flex-col gap-2">

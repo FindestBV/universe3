@@ -472,12 +472,13 @@ export const BlockEditor = ({
 
                   {/* Table of Contents */}
                   <div className="p-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="mb-4 transform-none text-xs font-bold tracking-tight">
+                    <div className="mb-4 flex items-center justify-between">
+                      <h3 className="transform-none text-xs font-bold tracking-tight">
                         Project structure
                       </h3>
                       <div>
                         <span className="ml-auto flex items-center gap-2">
+                          <Pin className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
                           <Network className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
                           <Plus className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
                         </span>
@@ -490,7 +491,7 @@ export const BlockEditor = ({
                           <li key={section.title}>
                             <button
                               onClick={() => toggleSection(section.title)}
-                              className="flex max-w-full items-center gap-2 rounded-md py-2 text-left text-sm font-medium text-gray-700"
+                              className="flex max-w-full items-center gap-2 rounded-sm bg-slate-200 py-2 text-left text-sm font-medium text-gray-700"
                             >
                               {openSections[section.title] ? (
                                 <ChevronDown className="rounded-sm bg-gray-100 p-1 text-gray-500" />
@@ -561,7 +562,7 @@ export const BlockEditor = ({
                       ? title
                       : "CN109368873A - 一种风电互补海水淡化系统 <br /> - Google Patents."}
                   </h1>
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <div className="flex items-center gap-2 text-sm text-gray-500 max-sm:flex-col max-sm:items-start">
                     <button
                       className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-1 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
                       onClick={() => navigateWithTransition("/projects/dashboard")}

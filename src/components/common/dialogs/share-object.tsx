@@ -58,8 +58,8 @@ export const ShareObject: React.FC<{
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button className="flex items-center gap-2 rounded border border-slate-300 bg-slate-100 px-2 text-sm text-black transition-colors duration-200 hover:bg-slate-200">
-          <Forward size={16} />
-          SHARE
+          <Forward size={16} className="font-black" />
+          {/* Share */}
         </Button>
       </DialogTrigger>
       <DialogContent className="h-auto max-w-3xl overflow-auto rounded-lg bg-white p-6 shadow-lg">
@@ -85,11 +85,11 @@ export const ShareObject: React.FC<{
         </Label>
         <Textarea
           id="optionalMessage"
-          placeholder="Type your question here..."
+          placeholder="Type your message here..."
           className="min-h-[120px] resize-none border border-slate-200 bg-white pr-12"
         />
 
-        <Button className="w-1/4 bg-slate-200">Add viewer</Button>
+        <Button className="w-1/4 bg-slate-200 p-2">Add viewer</Button>
 
         <Separator />
 

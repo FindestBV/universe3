@@ -416,10 +416,9 @@ export const ProjectSettings = () => {
                                       </div>
                                     </div>
                                   </div>
-                                  <div className="flex flex-row items-start gap-2">
-                                    <div className="flex flex-row items-center gap-4">
-                                      <div className="time">Feb 12, 12:04</div>
-                                    </div>
+
+                                  <div className="flex flex-row items-center gap-4">
+                                    <div className="time">Feb 12, 12:04</div>
                                   </div>
                                 </div>
                               </div>
