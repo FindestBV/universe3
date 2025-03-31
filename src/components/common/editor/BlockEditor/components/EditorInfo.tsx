@@ -179,7 +179,7 @@ export const EditorInfo = memo(({ id, editor }: EditorInfoProps) => {
   return (
     <div className="flex w-full items-center justify-between">
       <div className="mr-4 flex flex-row items-center justify-center gap-2 text-right dark:border-neutral-200">
-        <>{!isLocked && <ViewEditSwitch id={id} />}</>
+        <ViewEditSwitch id={id} />
         {isEditing && !isLocked ? (
           <>
             <AskIgorModal isToolbar={true} iconOnly />

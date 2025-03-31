@@ -5,24 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { RootState } from "@/store";
-import {
-  EllipsisVertical,
-  File,
-  FileQuestion,
-  Forward,
-  Info,
-  Link2Icon,
-  Lock,
-  LockOpen,
-  MessageCircle,
-  Pin,
-  Share,
-  Star,
-  Trash,
-} from "lucide-react";
+import { EllipsisVertical, Info, Lock, LockOpen, Pin, Star, Trash } from "lucide-react";
 
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { TableOfContents } from "./TableOfContents";
 
@@ -30,41 +16,41 @@ export const ReferencesSidebar: React.FC<{
   editor?: string;
   parentId?: number;
 }> = ({ editor, parentId }) => {
-  console.log("parent id", parentId);
-  const scrollToSection = (sectionId: string) => {
-    const tabSectionPattern = /^#?([^#]+)#(.+)$/;
+  // const scrollToSection = (sectionId: string) => {
+  //   const tabSectionPattern = /^#?([^#]+)#(.+)$/;
 
-    const match = sectionId.match(tabSectionPattern);
+  //   const match = sectionId.match(tabSectionPattern);
 
-    if (match) {
-      const [, tabId, elementId] = match;
+  //   if (match) {
+  //     const [, tabId, elementId] = match;
 
-      // Dispatch global event
-      window.dispatchEvent(
-        new CustomEvent("scrollToTabSection", {
-          detail: {
-            tabId,
-            sectionId: elementId,
-          },
-        }),
-      );
-    } else {
-      // Normal scrolling if no tab specified
-      const sectionElement = document.querySelector(sectionId);
-      if (sectionElement) {
-        sectionElement.scrollIntoView({ behavior: "smooth" });
-      } else {
-        console.error("Section not found:", sectionId);
-      }
-    }
-  };
+  //     // Dispatch global event
+  //     window.dispatchEvent(
+  //       new CustomEvent("scrollToTabSection", {
+  //         detail: {
+  //           tabId,
+  //           sectionId: elementId,
+  //         },
+  //       }),
+  //     );
+  //   } else {
+  //     // Normal scrolling if no tab specified
+  //     const sectionElement = document.querySelector(sectionId);
+  //     if (sectionElement) {
+  //       sectionElement.scrollIntoView({ behavior: "smooth" });
+  //     } else {
+  //       console.error("Section not found:", sectionId);
+  //     }
+  //   }
+  // };
 
   const [rating, setRating] = useState(2);
   const isLocked = useSelector((state: RootState) => state.document.isLocked);
+  const dispatch = useDispatch();
 
   const lockPage = (parentId: number) => {
     console.log(`clicked to lock ${parentId}`, isLocked);
-    setLockPage(parentId);
+    dispatch(setLockPage({ isLocked: !isLocked, documentId: parentId }));
   };
 
   console.log("lock page", isLocked);
@@ -114,7 +100,7 @@ export const ReferencesSidebar: React.FC<{
                     </div>
                   ) : (
                     <div
-                      className="flex w-full cursor-pointer items-center justify-start gap-4 rounded-sm py-2 group-hover:bg-black group-hover:text-white"
+                      className="flex w-full cursor-pointer items-center justify-start gap-4 rounded-sm bg-black py-2 text-white"
                       onClick={() => lockPage(parentId)}
                     >
                       <LockOpen className="ml-2 group-hover:text-white" size={16} />
