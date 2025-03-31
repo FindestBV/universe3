@@ -7,6 +7,7 @@
  *
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -19,13 +20,14 @@ import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { Filter, List, ListFilter, Plus, RadarIcon, Search, Star } from "lucide-react";
+import { Filter, List, ListFilter, Plus, RadarIcon, Star } from "lucide-react";
 
 import { useState } from "react";
 
 import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
 import AskIgorModal from "../dialogs/ask-igor";
-import FilterSheet from "../dialogs/filter-sheet";
+import FilterOptions from "../layout/filter-options";
+// import FilterSheet from "../dialogs/filter-sheet";
 import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
 import ResultsOverview from "./config/results-overview";
@@ -175,6 +177,7 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
 
 export const ProjectSources = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
+  const [isSideBarToggled, setIsSideBarToggled] = useState(false);
 
   const [tabs, setTabs] = useState([
     { id: "all", label: "All Source Types" },
@@ -287,23 +290,26 @@ export const ProjectSources = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
-      <div className="min-h-full" id="project-sources">
-        <div className="mx-auto max-w-full p-8">
+      <div className="flex min-h-full" id="project-sources">
+        <div
+          className={`${isSideBarToggled ? "w-3/4" : "w-full"} h-full p-8 transition-all duration-150 ease-in-out`}
+        >
           <div className="overviewHeader flex justify-between">
             <h1 className="mb-2 text-2xl font-bold">Sources</h1>
 
             <div className="project-controls flex items-center gap-4">
               <AdvancedSearchModal />
-              <FilterSheet />
+
               <div className="flex items-center gap-2">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <button
-                        className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
+                        className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 p-2 text-sm text-black transition-colors duration-200 hover:bg-black hover:text-white"
+                        // className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
                         id="addNewTabButton"
                       >
-                        <Plus className="h-5 w-5" />
+                        <Plus className="h-5 w-5" /> Add source
                       </button>
                     </TooltipTrigger>
                     <TooltipContent className="w-72 p-0" align="end">
@@ -328,7 +334,13 @@ export const ProjectSources = () => {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <AskIgorModal />
+              <Button onClick={() => setIsSideBarToggled((prevState) => !prevState)}>
+                <Filter
+                  className={`${isSideBarToggled ? "fill-black" : "bg-white text-black"} h-8 w-4`}
+                />
+              </Button>
+
+              <AskIgorModal iconOnly />
             </div>
           </div>
           <div className="mt-0">
@@ -339,7 +351,7 @@ export const ProjectSources = () => {
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className={`p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-50 font-bold" : "text-black"}`}
+                      className={`p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-100 font-bold" : "text-black"}`}
                       onDoubleClick={() => renameTab(tab.id)}
                     >
                       {tab.label}
@@ -359,7 +371,7 @@ export const ProjectSources = () => {
                     {tab.id === "all" && (
                       <div className="w-full">
                         <div className="flex flex-col">
-                          {[1, 2, 3, 4, 5, 6].map((_, index) => (
+                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_, index) => (
                             <div key={index} className="itemCard">
                               <div className="innerCardMain bg-white">
                                 <button
@@ -374,7 +386,7 @@ export const ProjectSources = () => {
                                 <div className="innerCardContent">
                                   <div className="innerCardContent__Detail">
                                     <div className="flex flex-col">
-                                      <h3 className="overflow-hidden text-ellipsis py-0 text-lg font-bold text-black">
+                                      <h3 className="overflow-hidden text-ellipsis py-0 text-sm font-bold text-black">
                                         Radiomics and Machine Learning in Medical Imaging
                                       </h3>
                                       <div>
@@ -437,7 +449,7 @@ export const ProjectSources = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="relative flex h-auto w-[25px]">
+                              {/* <div className="relative flex h-auto w-[25px]">
                                 <div className="links">
                                   <div className="linkToItem">
                                     <a
@@ -486,7 +498,7 @@ export const ProjectSources = () => {
                                     </svg>
                                   </a>
                                 </div>
-                              </div>
+                              </div> */}
                             </div>
                           ))}
                         </div>
@@ -512,7 +524,7 @@ export const ProjectSources = () => {
                                 <div className="innerCardContent">
                                   <div className="innerCardContent__Detail">
                                     <div className="flex flex-col">
-                                      <h3 className="overflow-hidden text-ellipsis py-0 text-lg font-bold text-black">
+                                      <h3 className="overflow-hidden text-ellipsis py-0 text-sm font-bold text-black">
                                         {tab.label} Item {index + 1}
                                       </h3>
                                       <div>
@@ -575,6 +587,11 @@ export const ProjectSources = () => {
               </div>
             </Tabs>
           </div>
+        </div>
+        <div
+          className={`${isSideBarToggled ? "right-0 flex min-h-screen w-1/4 flex-col justify-between p-4" : "hidden w-0 p-0"} bg-slate-150 top-4 transition-all duration-150 ease-in-out`}
+        >
+          <FilterOptions />
         </div>
       </div>
 

@@ -8,6 +8,7 @@
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -20,12 +21,23 @@ import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { List, ListFilter, Plus, RadarIcon, Star } from "lucide-react";
+import {
+  Filter,
+  Link2Icon,
+  List,
+  ListFilter,
+  MessageCircle,
+  Plus,
+  RadarIcon,
+  Star,
+} from "lucide-react";
 
 import { useState } from "react";
 
 import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
 import FilterSheet from "../dialogs/filter-sheet";
+import ReferencesSidebar from "../editor/BlockEditor/components/ReferencesSidebar";
+import FilterOptions from "../layout/filter-options";
 import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
 import ResultsOverview from "./config/results-overview";
@@ -95,7 +107,7 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
   return (
     <div>
       <DialogHeader className="pb-4">
-        <DialogTitle className="flex items-center gap-2 text-lg">
+        <DialogTitle className="flex items-center gap-2 text-sm">
           <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 text-blue-700">
             {selectedTabType.icon}
           </span>
@@ -175,6 +187,7 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
 
 export const ProjectPages = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
+  const [isSideBarToggled, setIsSideBarToggled] = useState(false);
 
   const [tabs, setTabs] = useState([
     { id: "all", label: "All Page Types" },
@@ -286,23 +299,25 @@ export const ProjectPages = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
-      <div className="min-h-full" id="projects-pages">
-        <div className="mx-auto w-full p-8">
+      <div className="flex min-h-full" id="projects-pages">
+        <div
+          className={`${isSideBarToggled ? "w-3/4" : "w-full"} h-full p-8 transition-all duration-150 ease-in-out`}
+        >
           <div className="overviewHeader flex justify-between">
             <h1 className="mb-2 text-2xl font-bold">Pages</h1>
 
-            <div className="project-controls flex items-center gap-4">
+            <div className="project-controls flex items-center gap-2">
               <AdvancedSearchModal />
-              <FilterSheet />
               <div className="flex items-center gap-2">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <button
-                        className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
+                        className="flex items-center gap-1 rounded bg-slate-200 p-2 text-sm text-black transition-colors duration-150 hover:border-black hover:bg-black hover:text-white"
+                        // className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
                         id="addNewTabButton"
                       >
-                        <Plus className="h-5 w-5" />
+                        <Plus className="h-4 w-4" /> Add page
                       </button>
                     </TooltipTrigger>
                     <TooltipContent className="w-72 p-0" align="end">
@@ -312,7 +327,7 @@ export const ProjectPages = () => {
                           {tabTypeOptions.map((option) => (
                             <button
                               key={option.id}
-                              className="flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-slate-100"
+                              className="flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-black hover:text-white"
                               onClick={() => openTabConfigDialog(option)}
                             >
                               <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black">
@@ -327,9 +342,19 @@ export const ProjectPages = () => {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <AskIgorModal />
+              <Button
+                onClick={() => setIsSideBarToggled((prevState) => !prevState)}
+                className="bg-slate-200"
+              >
+                <Filter
+                  className={`${isSideBarToggled ? "fill-black" : "text-black hover:bg-gray-200 hover:text-white"} h-6 w-4`}
+                />
+              </Button>
+
+              <AskIgorModal iconOnly />
             </div>
           </div>
+
           <div className="mt-0">
             <Tabs defaultValue="all" className="pb-4" onValueChange={setIsActiveTabActive}>
               <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
@@ -338,7 +363,7 @@ export const ProjectPages = () => {
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className={`px-4 py-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-50 font-bold" : "text-black"}`}
+                      className={`px-4 py-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-100 font-bold" : "text-black"}`}
                       onDoubleClick={() => renameTab(tab.id)}
                     >
                       {tab.label}
@@ -358,7 +383,7 @@ export const ProjectPages = () => {
                     {tab.id === "all" && (
                       <div className="w-full">
                         <div className="flex flex-col">
-                          {[1, 2, 3, 4, 5].map((_, index) => (
+                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_, index) => (
                             <div key={index} className="itemCard">
                               <div className="innerCardMain bg-white">
                                 <button
@@ -373,7 +398,7 @@ export const ProjectPages = () => {
                                 <div className="innerCardContent">
                                   <div className="innerCardContent__Detail">
                                     <div className="flex flex-col">
-                                      <h3 className="text-md overflow-hidden text-ellipsis py-0 font-bold text-black">
+                                      <h3 className="text-md overflow-hidden text-ellipsis py-0 text-sm font-bold text-black">
                                         Radiomics and Machine Learning in Medical Imaging
                                       </h3>
                                       <div>
@@ -436,7 +461,7 @@ export const ProjectPages = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="relative flex h-auto w-[25px]">
+                              {/* <div className="relative flex h-auto w-[25px]">
                                 <div className="links">
                                   <div className="linkToItem">
                                     <a
@@ -485,7 +510,7 @@ export const ProjectPages = () => {
                                     </svg>
                                   </a>
                                 </div>
-                              </div>
+                              </div> */}
                             </div>
                           ))}
                         </div>
@@ -551,29 +576,6 @@ export const ProjectPages = () => {
                                     <div className="flex flex-row items-center gap-4">
                                       <div className="time">Mar 15</div>
                                     </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="relative flex h-auto w-[25px]">
-                                <div className="links">
-                                  <div className="linkToItem">
-                                    <a href="#" className="linkedStudy">
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="lucide lucide-link"
-                                      >
-                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                                      </svg>
-                                    </a>
                                   </div>
                                 </div>
                               </div>
@@ -645,29 +647,6 @@ export const ProjectPages = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="relative flex h-auto w-[25px]">
-                                <div className="links">
-                                  <div className="linkToItem">
-                                    <a href="#" className="linkedStudy">
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="lucide lucide-link"
-                                      >
-                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                                      </svg>
-                                    </a>
-                                  </div>
-                                </div>
-                              </div>
                             </div>
                           ))}
                         </div>
@@ -690,6 +669,11 @@ export const ProjectPages = () => {
               </div>
             </Tabs>
           </div>
+        </div>
+        <div
+          className={`${isSideBarToggled ? "right-0 flex min-h-screen w-1/4 flex-col justify-between p-4" : "hidden w-0 p-0"} bg-slate-150 top-4 transition-all duration-150 ease-in-out`}
+        >
+          <FilterOptions />
         </div>
       </div>
 

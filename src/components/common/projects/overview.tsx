@@ -43,6 +43,7 @@ import {
   Telescope,
   Waves,
 } from "lucide-react";
+import { useFeature } from "use-feature";
 
 import { useCallback, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
@@ -80,7 +81,7 @@ const ActivityItem = ({ title }: { title: string }) => (
     <div className="flex flex-col">
       <h3 className="text-sm font-semibold">{title}</h3>
     </div>
-    <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+    <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-100" />
   </div>
 );
 
@@ -178,6 +179,18 @@ const dummyData = [
     type: "Technology",
   },
 ];
+
+export const Flag = () => {
+  const flag = import.meta.env.VITE_POWER_USER_ONLY_FLAG;
+  const mast = import.meta.env.VITE_MY_FEATURE;
+  // console.log('mast', mast);
+  const showFeature = useFeature(flag, mast); // either pass a boolean as a second value or set an environment variable `MY_FEATURE=true`
+
+  console.log("flag", flag);
+  return showFeature ? (
+    <div className="h-auto w-full bg-blue-100 px-8 py-2 font-bold">{flag}</div>
+  ) : null;
+};
 
 /**
  * PresetButton component renders a button with a title and description.
@@ -405,7 +418,7 @@ export const ProjectOverView = () => {
   const { data: pageData } = useGetStudyByIdQuery(id);
 
   const isProjectsDashboard = currentPath.includes("/projects/dashboard");
-  console.log("any pageData?", pageData);
+  // console.log("any pageData?", pageData);
   // State for the configuration dialog
   const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
   const [selectedTabType, setSelectedTabType] = useState<TabTypeConfig | null>(null);
@@ -545,6 +558,8 @@ export const ProjectOverView = () => {
     >
       <div className="projects-overview min-h-full w-full" id="projects-overview">
         {isProjectsDashboard && <DevBanner />}
+        {/* 
+        <Flag /> */}
         <div className="mx-auto w-full p-8">
           <Tabs
             defaultValue="overview"
@@ -751,12 +766,16 @@ export const ProjectOverView = () => {
             >
               <div className="flex w-full flex-col">
                 {/* Header Row */}
-                <div className="mb-2 flex w-full px-4 py-2 font-semibold">
-                  <div className="w-auto min-w-[200px]">Rating</div>
-                  <div className="flex-grow">Page Titles</div>
+                <div className="flex w-full justify-between p-2 font-semibold">
+                  <div className="flex items-center">
+                    <div className="w-auto min-w-[200px]">Rating</div>
+                    <div className="flex-grow">Page Titles</div>
+                  </div>
+                  <AskIgorModal iconOnly />
                 </div>
 
                 {/* List of Voting Cards */}
+
                 <div className="flex w-full flex-col gap-2 py-2">
                   <VotingCard star={4} />
                   <VotingCard star={4} />

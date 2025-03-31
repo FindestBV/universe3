@@ -27,6 +27,8 @@ import {
   List,
   Paperclip,
   Pilcrow,
+  RotateCcw,
+  RotateCw,
   SquarePlus,
   Subscript,
   Superscript,
@@ -122,6 +124,21 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
     },
   ];
 
+  const backForwardOptions = [
+    {
+      label: "Paragraph",
+      command: () => editor.chain().focus().setParagraph().run(),
+      isActive: editor.isActive("paragraph"),
+      icon: <RotateCcw size={16} />,
+    },
+    {
+      label: "Heading 1",
+      command: () => editor.chain().focus().setHeading({ level: 1 }).run(),
+      isActive: editor.isActive("heading", { level: 1 }),
+      icon: <RotateCw size={16} />,
+    },
+  ];
+
   const headingOptions = [
     {
       label: "Paragraph",
@@ -166,114 +183,81 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
 
   return (
     <div className="flex w-full items-center justify-between">
-      <div className="mr-4 flex flex-row items-center justify-center gap-2 border-r border-neutral-200 pr-4 text-right dark:border-neutral-200">
+      <div className="mr-4 flex flex-row items-center justify-center gap-2 text-right dark:border-neutral-200">
+        <>{!isLocked && <ViewEditSwitch id={id} />}</>
         {isEditing && !isLocked ? (
           <>
-            <AskIgorModal isToolbar={true} />
-            <DropdownMenu onOpenChange={(open) => setIsDropdownOpen(open)}>
-              <DropdownMenuTrigger asChild>
-                <Button className="h-9 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400">
-                  <Pilcrow size={16} /> Paragraph
-                  {isDropdownOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="z-10 w-40 border border-gray-200 bg-white p-1 shadow-md">
-                {headingOptions.map((option, index) => (
-                  <DropdownMenuItem
+            <AskIgorModal isToolbar={true} iconOnly />
+            <div className="flex items-center justify-between">
+              <DropdownMenu onOpenChange={(open) => setIsDropdownOpen(open)} className="ml-4">
+                <DropdownMenuTrigger asChild>
+                  <Button className="h-9 rounded border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400">
+                    <Pilcrow size={16} /> Paragraph
+                    {isDropdownOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="z-10 w-40 border border-gray-200 bg-white p-1 shadow-md">
+                  {headingOptions.map((option, index) => (
+                    <DropdownMenuItem
+                      key={index}
+                      onClick={option.command}
+                      className={`cursor-pointer rounded p-2 text-left text-sm ${
+                        option.isActive ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
+                      }`}
+                    >
+                      {option.label}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <span className="mx-4 h-6 border-l border-gray-300"></span>
+              <div className="flex items-center space-x-2">
+                {buttons.map((btn, index) => (
+                  <button
                     key={index}
-                    onClick={option.command}
-                    className={`cursor-pointer rounded p-2 text-left text-sm ${
-                      option.isActive ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
+                    onClick={btn.command}
+                    className={`rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400 ${
+                      btn.isActive && "bg-blue-100 text-blue-700"
                     }`}
+                    aria-label={btn.label}
                   >
-                    {option.label}
-                  </DropdownMenuItem>
+                    {btn.icon}
+                  </button>
                 ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <span className="h-6 border-l border-gray-300"></span>
-            <div className="flex items-center space-x-2">
-              {buttons.map((btn, index) => (
-                <button
-                  key={index}
-                  onClick={btn.command}
-                  className={`rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400 ${
-                    btn.isActive && "bg-blue-100 text-blue-700"
-                  }`}
-                  aria-label={btn.label}
-                >
-                  {btn.icon}
-                </button>
-              ))}
+              </div>
+              <span className="mx-4 h-6 border-l border-gray-300"></span>
+              <div className="flex items-center space-x-2">
+                {formattingButtons.map((btn, index) => (
+                  <button
+                    key={index}
+                    onClick={btn.command}
+                    className={`rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400 ${
+                      btn.isActive && "bg-blue-100 text-blue-700"
+                    }`}
+                    aria-label={btn.label}
+                  >
+                    {btn.icon}
+                  </button>
+                ))}
+              </div>
+              <span className="mx-4 h-6 border-l border-gray-300"></span>
+              <div className="flex items-center gap-1">
+                {backForwardOptions.map((btn, index) => (
+                  <button
+                    key={index}
+                    onClick={btn.command}
+                    className={`rounded border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-blue-400 ${
+                      btn.isActive && "bg-blue-100 text-blue-700"
+                    }`}
+                    aria-label={btn.label}
+                  >
+                    {btn.icon}
+                  </button>
+                ))}
+              </div>
             </div>
           </>
         ) : null}
-      </div>
-      <div className="mr-2 flex items-center gap-2">
-        {!isLocked ? (
-          <>
-            <ViewEditSwitch id={id} />
-
-            <span className="h-6 border-l border-gray-300"></span>
-            {/* <button
-              className={`flex items-center gap-2 rounded border border-gray-300 transition-all duration-150 ease-in-out ${isPinned ? "bg-[#4C0723] text-white" : "bg-white text-gray-700"} px-2 py-1 hover:bg-[#4C0723] hover:text-white`}
-              aria-label="Pin"
-              onClick={() => togglePin()}
-            >
-              <Pin size={16} />
-              PIN
-            </button>
-            <ShareObject parentId={""} parentTitle={""} />
-            <span className="h-6 border-l border-gray-300"></span> */}
-          </>
-        ) : null}
-
-        {/* <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="rotated" className="h-8 w-8 bg-transparent p-0">
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-50 border border-gray-200 bg-white p-4 shadow-md"
-            side="bottom"
-            align="end"
-          >
-            <DropdownMenuItem className="mb-1 flex items-center gap-3">
-              <Link size={16} />
-              Create Link
-            </DropdownMenuItem>
-
-            <DropdownMenuItem className="mb-1 flex items-center gap-3">
-              <Download size={16} /> Export as DOCX
-            </DropdownMenuItem>
-            <DropdownMenuItem className="mb-1 flex items-center gap-3">
-              <Download size={16} />
-              Export as PDF
-            </DropdownMenuItem>
-            <DropdownMenuItem className="mb-1 flex items-center gap-3">
-              <Network size={16} />
-              Open in Tree View
-            </DropdownMenuItem>
-            <DropdownMenuItem className="mb-1 flex items-center gap-3">
-              <List size={16} />
-              Open in List View
-            </DropdownMenuItem>
-
-            {isEditing && (
-              <>
-                <Separator className="my-2" />
-                <DropdownMenuItem className="flex items-center gap-3 text-red-700">
-                  <Trash size={16} className="text-red-700" />
-                  DELETE
-                </DropdownMenuItem>
-              </>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu> */}
-        <LockPageConfirm isLocked={isLocked} id={id} />
-
-        <UserAvatar username="Ronan" />
       </div>
     </div>
   );
