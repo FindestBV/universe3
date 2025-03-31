@@ -1,10 +1,10 @@
 import { setLockPage } from "@/api/documents/documentSlice";
-import LockPageConfirm from "@/components/common/dialogs/lock-page-confirm";
 import ShareObject from "@/components/common/dialogs/share-object";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { RootState } from "@/store";
 import {
   EllipsisVertical,
   File,
@@ -13,6 +13,7 @@ import {
   Info,
   Link2Icon,
   Lock,
+  LockOpen,
   MessageCircle,
   Pin,
   Share,
@@ -21,6 +22,7 @@ import {
 } from "lucide-react";
 
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 import { TableOfContents } from "./TableOfContents";
 
@@ -58,6 +60,14 @@ export const ReferencesSidebar: React.FC<{
   };
 
   const [rating, setRating] = useState(2);
+  const isLocked = useSelector((state: RootState) => state.document.isLocked);
+
+  const lockPage = (parentId: number) => {
+    console.log(`clicked to lock ${parentId}`, isLocked);
+    setLockPage(parentId);
+  };
+
+  console.log("lock page", isLocked);
 
   return (
     <div className="fixed top-4 flex h-full flex-col p-4">
@@ -94,10 +104,23 @@ export const ReferencesSidebar: React.FC<{
                   </div>
                 </div>
                 <div className="group flex items-center gap-1">
-                  <div className="flex w-full cursor-pointer items-center justify-start gap-4 rounded-sm py-2 group-hover:bg-black group-hover:text-white">
-                    <Lock className="ml-2 group-hover:text-white" size={16} />
-                    <small className="text-xs group-hover:text-white">Lock page</small>
-                  </div>
+                  {!isLocked ? (
+                    <div
+                      className="flex w-full cursor-pointer items-center justify-start gap-4 rounded-sm py-2 group-hover:bg-black group-hover:text-white"
+                      onClick={() => lockPage(parentId)}
+                    >
+                      <Lock className="ml-2 group-hover:text-white" size={16} />
+                      <small className="text-xs group-hover:text-white">Lock page</small>
+                    </div>
+                  ) : (
+                    <div
+                      className="flex w-full cursor-pointer items-center justify-start gap-4 rounded-sm py-2 group-hover:bg-black group-hover:text-white"
+                      onClick={() => lockPage(parentId)}
+                    >
+                      <LockOpen className="ml-2 group-hover:text-white" size={16} />
+                      <small className="text-xs group-hover:text-white">Unlock page</small>
+                    </div>
+                  )}
                 </div>
                 <div className="group flex items-center gap-1">
                   <div className="flex w-full cursor-pointer items-center justify-start gap-4 rounded-sm py-2 group-hover:bg-red-500 group-hover:text-white">
