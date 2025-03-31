@@ -42,7 +42,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { Download, File, Forward, Plus } from "lucide-react";
+import { Download, File, Forward, Plus, X } from "lucide-react";
 
 import { useState } from "react";
 
@@ -77,6 +77,15 @@ export const ShareObject: React.FC<{
           />
           <div className="rounded-sm border border-slate-200 p-1.5">
             <Plus className="p-1" size={24} />
+          </div>
+        </div>
+
+        <div className="flex flex-col items-start gap-2">
+          <div className="flex items-center gap-2 rounded-sm bg-blue-200 p-1 text-xs">
+            sander.vanderwoude@findest.eu <X size={10} />
+          </div>
+          <div className="flex items-center gap-2 rounded-sm bg-blue-200 p-1 text-xs">
+            roel.boekel@findest.eu <X size={10} />
           </div>
         </div>
 
