@@ -12,11 +12,11 @@
     }
 
     .summonIgorBtn{
-        @apply flex items-center gap-1 rounded-md bg-[#fff000] p-2 font-bold text-[#000000] transition-all ease-linear hover:bg-[#F9F9F9] hover:text-black;
+        @apply flex items-center text-sm gap-1 rounded-md bg-[#fff000] py-1 px-2  font-bold text-[#000000] transition-all ease-linear hover:bg-[#F9F9F9] hover:text-black;
         font-size: 14px; 
 
         &.toolBarIgor{
-            padding: 0.5rem 1.5rem;
+            padding: 0.25rem;
         }
     }
 

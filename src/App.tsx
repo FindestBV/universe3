@@ -19,6 +19,8 @@ import {
 } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
+import DevBanner from "./components/common/layout/dev-banner";
+
 // Lazy-loaded views (TEMP! Will sort this out with some proper Routing )
 const AdvancedSearch = lazy(() => import("@/views/AdvancedSearch"));
 const Dashboard = lazy(() => import("@/views/Dashboard"));
@@ -26,7 +28,7 @@ const Sources = lazy(() => import("@/views/Sources"));
 const Source = lazy(() => import("@/views/Source"));
 const Pages = lazy(() => import("@/views/Pages"));
 const Page = lazy(() => import("@/views/Page"));
-const Projects = lazy(() => import("@/views/Projects"));
+// const Projects = lazy(() => import("@/views/Projects"));
 const Project = lazy(() => import("@/views/Project"));
 const NotFoundPage = lazy(() => import("@/views/NotFound"));
 const Inbox = lazy(() => import("@/views/Inbox"));

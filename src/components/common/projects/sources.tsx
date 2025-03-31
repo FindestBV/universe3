@@ -305,10 +305,11 @@ export const ProjectSources = () => {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <button
-                        className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
+                        className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 p-2 text-sm text-black transition-colors duration-200 hover:bg-black hover:text-white"
+                        // className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
                         id="addNewTabButton"
                       >
-                        <Plus className="h-5 w-5" />
+                        <Plus className="h-5 w-5" /> Add source
                       </button>
                     </TooltipTrigger>
                     <TooltipContent className="w-72 p-0" align="end">

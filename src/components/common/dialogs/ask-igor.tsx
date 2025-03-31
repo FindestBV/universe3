@@ -151,7 +151,7 @@ const AskIgorModal: React.FC<AskIgorModalProps> = ({
                 setIsOpen(true);
               }}
             >
-              <Zap size={20} className="zppr" />
+              <Zap size={18} className="zppr" />
               {iconOnly ? null : label ? label : "Ask IGOR"}
             </button>
           </div>

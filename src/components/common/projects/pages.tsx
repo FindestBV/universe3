@@ -314,10 +314,11 @@ export const ProjectPages = () => {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <button
-                        className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
+                        className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 p-2 text-sm text-black transition-colors duration-200 hover:bg-black hover:text-white"
+                        // className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
                         id="addNewTabButton"
                       >
-                        <Plus className="h-5 w-5" />
+                        <Plus className="h-5 w-5" /> Add page
                       </button>
                     </TooltipTrigger>
                     <TooltipContent className="w-72 p-0" align="end">
@@ -327,7 +328,7 @@ export const ProjectPages = () => {
                           {tabTypeOptions.map((option) => (
                             <button
                               key={option.id}
-                              className="flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-slate-100"
+                              className="flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-black hover:text-white"
                               onClick={() => openTabConfigDialog(option)}
                             >
                               <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black">
@@ -342,9 +343,12 @@ export const ProjectPages = () => {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <Button onClick={() => setIsSideBarToggled((prevState) => !prevState)}>
+              <Button
+                onClick={() => setIsSideBarToggled((prevState) => !prevState)}
+                className="border border-gray-300 bg-gray-100"
+              >
                 <Filter
-                  className={`${isSideBarToggled ? "fill-black" : "bg-white text-black"} h-8 w-4`}
+                  className={`${isSideBarToggled ? "fill-black" : "text-black hover:bg-black hover:text-white"} h-6 w-4`}
                 />
               </Button>
 

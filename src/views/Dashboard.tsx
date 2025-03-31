@@ -11,10 +11,17 @@ import SearchBar from "@/components/common/search/searchbar";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { ChevronRight, Loader, Plus } from "lucide-react";
+import { useFeature } from "use-feature";
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+
+const Example = () => {
+  const showFeature = useFeature("MY_FEATURE"); // either pass a boolean as a second value or set an environment variable `MY_FEATURE=true`
+
+  return showFeature ? <p>THIS IS THE FEATURE</p> : null;
+};
 
 export const Dashboard = () => {
   const { t } = useTranslation();
@@ -37,6 +44,7 @@ export const Dashboard = () => {
     <div className="mainDashboard">
       {/* LEFT COLUMN (Scrollable) */}
       <div className="leftColumn">
+        <Example />
         <SearchBar />
         <SessionDialog />
         <div className="mb-4 py-4">

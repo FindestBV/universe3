@@ -1,6 +1,6 @@
 import { setEditingState } from "@/api/documents/documentSlice";
 import { RootState } from "@/store";
-import { Eye, FilePenLine } from "lucide-react";
+import { Eye, FilePenLine, Pen } from "lucide-react";
 
 import { useState } from "react";
 // Replace with the actual imports if different
@@ -42,25 +42,21 @@ const ViewEditSwitch = ({ id }) => {
         className={`flex items-center gap-2 rounded-l-sm border px-2 py-1 transition-all duration-150 ease-linear ${
           isEditMode
             ? "border-gray-300 bg-white text-gray-700"
-            : "border-[#FFF000] bg-[#FFF000] text-black"
+            : "border-black bg-[#000000] text-white"
         }`}
         aria-label="Switch to View Mode"
       >
         <Eye size={16} />
-        VIEW
       </button>
 
       <button
         onClick={handleEditStart}
         className={`flex items-center gap-2 rounded-r-sm border px-2 py-1 transition-all duration-150 ease-linear ${
-          isEditMode
-            ? "border-[#84A7E2] bg-[#84A7E2] text-white"
-            : "border-gray-300 bg-white text-gray-700"
+          isEditMode ? "border-black bg-black text-white" : "border-gray-300 bg-white text-gray-700"
         }`}
         aria-label="Switch to Edit Mode"
       >
-        <FilePenLine size={16} />
-        EDIT
+        <Pen size={16} />
       </button>
     </div>
   );
