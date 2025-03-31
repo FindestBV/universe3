@@ -20,8 +20,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { useAppDispatch, useAppSelector } from "@/store";
 import type { PageListItem } from "@/types/types";
+import {
+  faBook,
+  faCube,
+  faFile,
+  faFileLines,
+  faHighlighter,
+  faPaperclip,
+} from "@fortawesome/pro-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, List, ListFilter, Plus, RadarIcon, Star } from "lucide-react";
@@ -184,6 +194,7 @@ export type ProjectPagesProps = {
 export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
   console.log("ProjectPages");
   const dispatch = useAppDispatch();
+  const navigateWithTransition = useNavigateWithTransition();
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -410,6 +421,14 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
     );
   };
 
+  const handleNavigateToPage = (page: PageListItem) => {
+    const route =
+      page.type.toLowerCase() === "entity"
+        ? `/pages/entities/${page.id}`
+        : `/pages/studies/${page.id}`;
+    navigateWithTransition(route);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -494,7 +513,11 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
                           <>
                             {filterPagesByType(pagesData?.items, tab.id)?.map(
                               (page: PageListItem) => (
-                                <div key={page.id} className="itemCard">
+                                <div
+                                  key={page.id}
+                                  className="itemCard cursor-pointer"
+                                  onClick={() => handleNavigateToPage(page)}
+                                >
                                   <div className="innerCardMain bg-white">
                                     <button
                                       type="button"
@@ -516,71 +539,39 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
                                           <ul className="linkedCounts flex flex-wrap gap-2">
                                             {page.linkedCounts && (
                                               <>
-                                                <li
-                                                  className="linkedCounts__item documentCount"
-                                                  data-state="closed"
-                                                >
-                                                  <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    className="lucide lucide-book-open-check"
+                                                {page.linkedCounts.documentCount > 0 && (
+                                                  <li
+                                                    className="linkedCounts__item documentCount"
+                                                    data-state="closed"
                                                   >
-                                                    <path d="M12 21V7" />
-                                                    <path d="m16 12 2 2 4-4" />
-                                                    <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3" />
-                                                  </svg>
-                                                  {page.linkedCounts.documentCount}
-                                                </li>
-                                                <li
-                                                  className="linkedCounts__item studyCount"
-                                                  data-state="closed"
-                                                >
-                                                  <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    className="lucide lucide-book-open-check"
+                                                    <FontAwesomeIcon
+                                                      icon={faFile}
+                                                      className="h-4 w-4"
+                                                    />
+                                                    {page.linkedCounts.documentCount}
+                                                  </li>
+                                                )}
+                                                {page.linkedCounts.studyCount > 0 && (
+                                                  <li
+                                                    className="linkedCounts__item studyCount"
+                                                    data-state="closed"
                                                   >
-                                                    <path d="M12 21V7" />
-                                                    <path d="m16 12 2 2 4-4" />
-                                                    <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3" />
-                                                  </svg>
-                                                  {page.linkedCounts.studyCount}
-                                                </li>
+                                                    <FontAwesomeIcon
+                                                      icon={faBook}
+                                                      className="h-4 w-4"
+                                                    />
+                                                    {page.linkedCounts.studyCount}
+                                                  </li>
+                                                )}
                                                 {page.linkedCounts.entityCount > 0 && (
                                                   <li
                                                     className="linkedCounts__item entityCount"
                                                     data-state="closed"
                                                   >
-                                                    <svg
-                                                      xmlns="http://www.w3.org/2000/svg"
-                                                      width="16"
-                                                      height="16"
-                                                      viewBox="0 0 24 24"
-                                                      fill="none"
-                                                      stroke="currentColor"
-                                                      strokeWidth="2"
-                                                      strokeLinecap="round"
-                                                      strokeLinejoin="round"
-                                                      className="lucide lucide-box"
-                                                    >
-                                                      <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
-                                                      <path d="m3.3 7 8.7 5 8.7-5" />
-                                                      <path d="M12 22V12" />
-                                                    </svg>
+                                                    <FontAwesomeIcon
+                                                      icon={faCube}
+                                                      className="h-4 w-4"
+                                                    />
                                                     {page.linkedCounts.entityCount}
                                                   </li>
                                                 )}

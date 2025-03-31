@@ -76,19 +76,17 @@ export interface DocumentListResponseListQueryParams {
 
 // Define interfaces for the API response
 export interface SavedDocument {
-  linkedCounts: { [key: string]: number };
+  linkedObjectCounts: { [key: string]: number };
   id: string;
   title: string;
   url: string;
   type: string;
   dateAdded: string;
-  entities?: [];
-  // Add other fields as needed
 }
 
 export interface SavedDocumentResponse {
   [x: string]: any;
-  documents: SavedDocument[];
+  items: SavedDocumentListItem[];
   total: number;
 }
 
@@ -412,4 +410,23 @@ export interface Reference {
   id: string;
   type: number;
   title: string;
+}
+
+export interface RecentProjectSource {
+  id: string;
+  title: string;
+  url: string;
+  savedDocumentType: number;
+  objectType: number;
+}
+
+export interface RecentProjectPage {
+  id: string;
+  title: string;
+  type: string;
+}
+
+export interface RecentProjectActivities {
+  recentSavedSources: RecentProjectSource[];
+  recentPages: RecentProjectPage[];
 }

@@ -7,6 +7,7 @@
  *
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
+import { useGetProjectSavedSourcesQuery } from "@/api/projects/projectApi";
 import {
   Dialog,
   DialogContent,
@@ -17,11 +18,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { RootState } from "@/store";
+import { SavedDocumentListItem } from "@/types/types";
+import {
+  faBook,
+  faCube,
+  faFile,
+  faFileLines,
+  faFolder,
+  faHighlighter,
+  faImage,
+  faPaperclip,
+} from "@fortawesome/pro-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
 import { Filter, List, ListFilter, Plus, RadarIcon, Search, Star } from "lucide-react";
 
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
 import AskIgorModal from "../dialogs/ask-igor";
@@ -173,15 +188,44 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
   );
 };
 
+// Add SavedDocumentType enum
+export enum SavedDocumentTypeEnum {
+  ScienceArticle = 1,
+  UsPatent = 2,
+  MagPatent = 3,
+  Weblink = 4,
+}
+
+export interface TabDefinition {
+  id: string;
+  label: string;
+  type?: SavedDocumentTypeEnum;
+}
+
+const defaultTabs: TabDefinition[] = [
+  { id: "all", label: "All Sources" },
+  { id: "science", label: "Science Articles", type: SavedDocumentTypeEnum.ScienceArticle },
+  { id: "us-patents", label: "US Patents", type: SavedDocumentTypeEnum.UsPatent },
+  { id: "mag-patents", label: "MAG Patents", type: SavedDocumentTypeEnum.MagPatent },
+  { id: "weblinks", label: "Web Links", type: SavedDocumentTypeEnum.Weblink },
+];
+
 export const ProjectSources = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
+  const currentProject = useSelector((state: RootState) => state.project.currentProject);
+  const [tabs, setTabs] = useState<TabDefinition[]>(defaultTabs);
 
-  const [tabs, setTabs] = useState([
-    { id: "all", label: "All Source Types" },
-    { id: "science", label: "Science" },
-    { id: "patents", label: "Patents" },
-    { id: "websites", label: "Websites" },
-  ]);
+  // Fetch saved sources with pagination
+  const { data: savedSources, isLoading } = useGetProjectSavedSourcesQuery(
+    {
+      projectId: currentProject?.id || "",
+      skip: 0,
+      limit: 10,
+    },
+    {
+      skip: !currentProject?.id,
+    },
+  );
 
   // State for the configuration dialog
   const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
@@ -356,220 +400,175 @@ export const ProjectSources = () => {
                     value={tab.id}
                     className="mt-2 space-y-2 transition-all duration-150"
                   >
-                    {tab.id === "all" && (
-                      <div className="w-full">
-                        <div className="flex flex-col">
-                          {[1, 2, 3, 4, 5, 6].map((_, index) => (
-                            <div key={index} className="itemCard">
-                              <div className="innerCardMain bg-white">
-                                <button
-                                  type="button"
-                                  role="checkbox"
-                                  aria-checked="false"
-                                  data-state="unchecked"
-                                  value="on"
-                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                                  id={`card-${index}`}
-                                ></button>
-                                <div className="innerCardContent">
-                                  <div className="innerCardContent__Detail">
-                                    <div className="flex flex-col">
-                                      <h3 className="overflow-hidden text-ellipsis py-0 text-lg font-bold text-black">
-                                        Radiomics and Machine Learning in Medical Imaging
-                                      </h3>
-                                      <div>
-                                        <p className="!important text-xs"></p>
+                    <div className="w-full">
+                      <div className="flex flex-col">
+                        {isLoading ? (
+                          // Loading state
+                          <div className="flex items-center justify-center py-8">
+                            <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900"></div>
+                          </div>
+                        ) : savedSources?.items.length ? (
+                          // Render saved sources filtered by type
+                          savedSources.items
+                            .filter((source: SavedDocumentListItem) => {
+                              if (tab.id === "all") return true;
+                              return (
+                                tab.type !== undefined && source.savedDocumentType === tab.type
+                              );
+                            })
+                            .map((source: SavedDocumentListItem, index: number) => (
+                              <div key={source.id} className="itemCard">
+                                <div className="innerCardMain bg-white">
+                                  <button
+                                    type="button"
+                                    role="checkbox"
+                                    aria-checked="false"
+                                    data-state="unchecked"
+                                    value="on"
+                                    className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                    id={`card-${index}`}
+                                  ></button>
+                                  <div className="innerCardContent">
+                                    <div className="innerCardContent__Detail">
+                                      <div className="flex flex-col">
+                                        <h3 className="overflow-hidden text-ellipsis py-0 text-lg font-bold text-black">
+                                          {source.title}
+                                        </h3>
+                                      </div>
+                                      <div className="innerCardContent__Links">
+                                        <ul className="linkedCounts flex flex-wrap gap-2">
+                                          {source.linkedObjectCounts && (
+                                            <>
+                                              {source.linkedObjectCounts.documentCount > 0 && (
+                                                <li
+                                                  className="linkedCounts__item documentCount"
+                                                  data-state="closed"
+                                                >
+                                                  <FontAwesomeIcon
+                                                    icon={faFile}
+                                                    className="h-4 w-4"
+                                                  />
+                                                  {source.linkedObjectCounts.documentCount}
+                                                </li>
+                                              )}
+
+                                              {source.linkedObjectCounts.entityCount > 0 && (
+                                                <li
+                                                  className="linkedCounts__item entityCount"
+                                                  data-state="closed"
+                                                >
+                                                  <FontAwesomeIcon
+                                                    icon={faCube}
+                                                    className="h-4 w-4"
+                                                  />
+                                                  {source.linkedObjectCounts.entityCount}
+                                                </li>
+                                              )}
+
+                                              {source.linkedObjectCounts.studyCount > 0 && (
+                                                <li
+                                                  className="linkedCounts__item studyCount"
+                                                  data-state="closed"
+                                                >
+                                                  <FontAwesomeIcon
+                                                    icon={faBook}
+                                                    className="h-4 w-4"
+                                                  />
+                                                  {source.linkedObjectCounts.studyCount}
+                                                </li>
+                                              )}
+
+                                              {source.linkedObjectCounts.projectCount > 0 && (
+                                                <li
+                                                  className="linkedCounts__item projectCount"
+                                                  data-state="closed"
+                                                >
+                                                  <FontAwesomeIcon
+                                                    icon={faFolder}
+                                                    className="h-4 w-4"
+                                                  />
+                                                  {source.linkedObjectCounts.projectCount}
+                                                </li>
+                                              )}
+
+                                              {source.linkedObjectCounts.highlightCount > 0 && (
+                                                <li
+                                                  className="linkedCounts__item highlightCount"
+                                                  data-state="closed"
+                                                >
+                                                  <FontAwesomeIcon
+                                                    icon={faHighlighter}
+                                                    className="h-4 w-4"
+                                                  />
+                                                  {source.linkedObjectCounts.highlightCount}
+                                                </li>
+                                              )}
+
+                                              {source.linkedObjectCounts.imageCount > 0 && (
+                                                <li
+                                                  className="linkedCounts__item imageCount"
+                                                  data-state="closed"
+                                                >
+                                                  <FontAwesomeIcon
+                                                    icon={faImage}
+                                                    className="h-4 w-4"
+                                                  />
+                                                  {source.linkedObjectCounts.imageCount}
+                                                </li>
+                                              )}
+
+                                              {source.linkedObjectCounts.fileCount > 0 && (
+                                                <li
+                                                  className="linkedCounts__item fileCount"
+                                                  data-state="closed"
+                                                >
+                                                  <FontAwesomeIcon
+                                                    icon={faPaperclip}
+                                                    className="h-4 w-4"
+                                                  />
+                                                  {source.linkedObjectCounts.fileCount}
+                                                </li>
+                                              )}
+
+                                              {source.linkedObjectCounts.commentCount > 0 && (
+                                                <li
+                                                  className="linkedCounts__item commentCount"
+                                                  data-state="closed"
+                                                >
+                                                  <FontAwesomeIcon
+                                                    icon={faFileLines}
+                                                    className="h-4 w-4"
+                                                  />
+                                                  {source.linkedObjectCounts.commentCount}
+                                                </li>
+                                              )}
+                                            </>
+                                          )}
+                                        </ul>
                                       </div>
                                     </div>
-                                    <div className="innerCardContent__Links">
-                                      <ul className="linkedCounts flex flex-wrap gap-2">
-                                        <li
-                                          className="linkedCounts__item documentCount"
-                                          data-state="closed"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="lucide lucide-book-open-check"
-                                          >
-                                            <path d="M12 21V7"></path>
-                                            <path d="m16 12 2 2 4-4"></path>
-                                            <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
-                                          </svg>
-                                          5
-                                        </li>
-                                        <li
-                                          className="linkedCounts__item studyCount"
-                                          data-state="closed"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="lucide lucide-book-open-check"
-                                          >
-                                            <path d="M12 21V7"></path>
-                                            <path d="m16 12 2 2 4-4"></path>
-                                            <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
-                                          </svg>
-                                          1
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                  <div className="flex flex-row items-start gap-2">
-                                    <div className="flex flex-row items-center gap-4">
-                                      <div className="time">Feb 12</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="relative flex h-auto w-[25px]">
-                                <div className="links">
-                                  <div className="linkToItem">
-                                    <a
-                                      href="#"
-                                      className="linkedStudy"
-                                      type="button"
-                                      aria-haspopup="dialog"
-                                      aria-expanded="false"
-                                      data-state="closed"
-                                    >
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="lucide lucide-link"
-                                      >
-                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                                      </svg>
-                                    </a>
-                                  </div>
-                                  <a href="#" className="trashCan">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="14"
-                                      height="14"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      strokeWidth="2"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      className="lucide lucide-trash2"
-                                    >
-                                      <path d="M3 6h18"></path>
-                                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                                      <line x1="10" x2="10" y1="11" y2="17"></line>
-                                      <line x1="14" x2="14" y1="11" y2="17"></line>
-                                    </svg>
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Content for default source type tabs */}
-                    {["science", "patents", "websites"].includes(tab.id) && (
-                      <div className="w-full">
-                        <div className="flex flex-col">
-                          {[1, 2, 3, 4, 5, 6].map((_, index) => (
-                            <div key={index} className="itemCard">
-                              <div className="innerCardMain bg-white">
-                                <button
-                                  type="button"
-                                  role="checkbox"
-                                  aria-checked="false"
-                                  data-state="unchecked"
-                                  value="on"
-                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                                  id={`card-${tab.id}-${index}`}
-                                ></button>
-                                <div className="innerCardContent">
-                                  <div className="innerCardContent__Detail">
-                                    <div className="flex flex-col">
-                                      <h3 className="overflow-hidden text-ellipsis py-0 text-lg font-bold text-black">
-                                        {tab.label} Item {index + 1}
-                                      </h3>
-                                      <div>
-                                        <p className="!important text-xs"></p>
+                                    <div className="flex flex-row items-start gap-2">
+                                      <div className="flex flex-row items-center gap-4">
+                                        <div className="time">
+                                          {new Date(source.dateAdded).toLocaleDateString("en-US", {
+                                            month: "short",
+                                            day: "numeric",
+                                          })}
+                                        </div>
                                       </div>
                                     </div>
-                                    <div className="innerCardContent__Links">
-                                      <ul className="linkedCounts flex flex-wrap gap-2">
-                                        <li
-                                          className="linkedCounts__item documentCount"
-                                          data-state="closed"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="lucide lucide-book-open-check"
-                                          >
-                                            <path d="M12 21V7"></path>
-                                            <path d="m16 12 2 2 4-4"></path>
-                                            <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
-                                          </svg>
-                                          5
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                  <div className="flex flex-row items-start gap-2">
-                                    <div className="flex flex-row items-center gap-4">
-                                      <div className="time">Feb 12</div>
-                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
-                        </div>
+                            ))
+                        ) : (
+                          // No sources found
+                          <div className="flex items-center justify-center py-8 text-gray-500">
+                            No sources found
+                          </div>
+                        )}
                       </div>
-                    )}
-
-                    {/* Content for dynamically added tabs */}
-                    {!["all", "science", "patents", "websites"].includes(tab.id) && (
-                      <div className="w-full">
-                        <div className="overviewHeader py-4">
-                          <h1 className="mb-2 text-4xl font-bold">{tab.label}</h1>
-                          <p className="mb-4 text-sm">
-                            Content for {tab.label} will be displayed here.
-                          </p>
-                        </div>
-                      </div>
-                    )}
+                    </div>
                   </TabsContent>
                 ))}
               </div>

@@ -3,11 +3,17 @@ import {
   useGetEntityByIdQuery,
   useGetStudyByIdQuery,
 } from "@/api/documents/documentApi";
-import { useGetProjectsQuery } from "@/api/projects/projectApi";
+import {
+  useGetProjectRecentActivitiesQuery,
+  useGetProjectsQuery,
+  useGetRecentProjectsQuery,
+} from "@/api/projects/projectApi";
 import SessionDialog from "@/components/common/dialogs/session-dialog";
 import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 // Import TipTap Editor
 import Dashboard from "@/components/common/projects/dashboard";
+import { useAppDispatch } from "@/store";
+import { setRecentActivities, setRecentProjects } from "@/store/slices/projectSlice";
 
 import { useEffect, useMemo } from "react";
 import { useLocation, useParams } from "react-router";
@@ -15,6 +21,7 @@ import { useLocation, useParams } from "react-router";
 export const Projects = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
+  const dispatch = useAppDispatch();
 
   let parsedDescription: any = null;
 
@@ -34,6 +41,19 @@ export const Projects = () => {
     { skip: 0, limit: 10 },
     { refetchOnMountOrArgChange: true },
   );
+
+  const { data: recentProjects } = useGetRecentProjectsQuery(undefined, {
+    onSuccess: (data) => {
+      dispatch(setRecentProjects(data));
+    },
+  });
+
+  const { data: recentActivities } = useGetProjectRecentActivitiesQuery(id, {
+    skip: !id,
+    onSuccess: (data) => {
+      dispatch(setRecentActivities(data));
+    },
+  });
 
   const inboxQuery = fetchedEntity?.connectedInboxItems || [];
   const connectedObjects = useMemo(() => fetchedEntity?.connectedDocs || [], [fetchedEntity]);

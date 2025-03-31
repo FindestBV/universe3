@@ -9,6 +9,8 @@ import type {
   Project,
   ProjectListResponse,
   ProjectOverview,
+  RecentProjectActivities,
+  SavedDocumentListItem,
   SavedDocumentResponse,
   UpdateProjectRequest,
 } from "@/types/types";
@@ -30,6 +32,24 @@ export const projectApi = api.injectEndpoints({
         params: { skip, limit },
       }),
       providesTags: ["SavedDocument"],
+    }),
+
+    // Get recent projects
+    getRecentProjects: builder.query<Project[], void>({
+      query: () => ({
+        url: "/v1/projects/recent",
+        method: "GET",
+      }),
+      providesTags: ["SavedDocument"],
+    }),
+
+    // Get recent activities of a project
+    getProjectRecentActivities: builder.query<RecentProjectActivities, string>({
+      query: (projectId) => ({
+        url: `/v1/projects/${projectId}/recent-activities`,
+        method: "GET",
+      }),
+      providesTags: (result, error, projectId) => [{ type: "SavedDocument", id: projectId }],
     }),
 
     // Create project
@@ -82,7 +102,7 @@ export const projectApi = api.injectEndpoints({
 
     // Get saved sources of project
     getProjectSavedSources: builder.query<
-      SavedDocumentResponse,
+      BaseListResponse<SavedDocumentListItem>,
       { projectId: string; skip?: number; limit?: number }
     >({
       query: ({ projectId, skip = 0, limit = 10 }) => ({
@@ -199,6 +219,20 @@ export const projectApi = api.injectEndpoints({
       }),
       invalidatesTags: (result, error, { projectId }) => [{ type: "SavedDocument", id: projectId }],
     }),
+
+    // Update tab content
+    updateTabContent: builder.mutation<void, { projectId: string; tabId: string; content: string }>(
+      {
+        query: ({ projectId, tabId, content }) => ({
+          url: `/v1/projects/${projectId}/tabs/${tabId}/update-content`,
+          method: "POST",
+          body: { content },
+        }),
+        invalidatesTags: (result, error, { projectId }) => [
+          { type: "SavedDocument", id: projectId },
+        ],
+      },
+    ),
 
     // Follow project
     followProject: builder.mutation<void, string>({
@@ -332,9 +366,12 @@ export const {
   useCreateTabMutation,
   useUpdateTabMutation,
   useUpdateTabOrderMutation,
+  useUpdateTabContentMutation,
   useFollowProjectMutation,
   useUnfollowProjectMutation,
   useChangeProjectOwnershipMutation,
   useGetMaturityRadarQuery,
   useCreateMaturityRadarMutation,
+  useGetRecentProjectsQuery,
+  useGetProjectRecentActivitiesQuery,
 } = projectApi;

@@ -24,16 +24,17 @@
  *
  * @dependencies
  * - **ShadCN UI Components**: Dialog, DialogTrigger, DialogContent, DialogTitle.
- * - **Redux Toolkit Query**: Fetches recent activity using `useGetMyRecentActivityQuery()`.
+ * - **Redux Toolkit Query**: Fetches recent activity using `useGetRecentProjectsQuery()`.
  * - **Lucide Icons**: ChevronRight, Loader.
  * - **React Hooks**: `useState`, `useEffect` for managing dialog state.
  * - **Custom Hooks**: `useNavigateWithTransition` for smooth navigation.
  *
  * @returns {JSX.Element} The rendered SessionDialog component.
  */
-import { useGetMyRecentActivityQuery } from "@/api/activity/activityApi";
+import { useGetRecentProjectsQuery } from "@/api/projects/projectApi";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
+import { use } from "i18next";
 import { ChevronRight, Loader } from "lucide-react";
 
 import { useEffect, useState } from "react";
@@ -42,11 +43,12 @@ import { CreateProjectDialog } from "./create-project-dialog";
 
 export const SessionDialog = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const { data: activityData, isLoading: activityDataIsLoading } = useGetMyRecentActivityQuery();
+  const { data: recentProjects, isLoading: projectsLoading } = useGetRecentProjectsQuery();
   const navigateWithTransition = useNavigateWithTransition();
 
-  const handleNavigateToEntities = (type: string, id: string) => {
-    navigateWithTransition(`/projects/${id}`, { state: { id } });
+  const handleNavigateToProject = (projectId: string) => {
+    navigateWithTransition(`/projects/${projectId}`);
+    setIsDialogOpen(false);
   };
 
   useEffect(() => {
@@ -66,7 +68,7 @@ export const SessionDialog = () => {
           <DialogHeader>
             <DialogTitle>Good morning!</DialogTitle>
             <div id="dialog-description" className="sr-only">
-              Please enter your session details
+              Please select a project to focus on
             </div>
           </DialogHeader>
 
@@ -76,24 +78,31 @@ export const SessionDialog = () => {
             <h3 className="title">Recent projects</h3>
 
             <div className="projects_container">
-              {activityDataIsLoading ? (
+              {projectsLoading ? (
                 <div className="activity_loader">
                   <Loader className="animate-spin text-gray-600" />
-                  <p className="loadingText">Loading Activity Data...</p>
+                  <p className="loadingText">Loading Recent Projects...</p>
                 </div>
               ) : (
-                activityData?.slice(0, 3).map((activity: any) => (
+                recentProjects?.map((project) => (
                   <div
-                    key={activity.id}
-                    className="activity_list bg-slate-200"
-                    onClick={() => handleNavigateToEntities(activity.type, activity.id)}
+                    key={project.id}
+                    className="activity_list cursor-pointer bg-slate-200 hover:bg-slate-300"
+                    onClick={() => handleNavigateToProject(project.id)}
                   >
                     <div className="item">
                       <h3 className="text-sm font-semibold">
-                        {activity.name.length > 80
-                          ? `${activity.name.slice(0, 80)}...`
-                          : activity.name}
+                        {project.name && project.name.length > 80
+                          ? `${project.name.slice(0, 80)}...`
+                          : project.name}
                       </h3>
+                      {project.description && (
+                        <p className="text-xs text-gray-600">
+                          {project.description.length > 100
+                            ? `${project.description.slice(0, 100)}...`
+                            : project.description}
+                        </p>
+                      )}
                     </div>
                     <ChevronRight className="icon" />
                   </div>

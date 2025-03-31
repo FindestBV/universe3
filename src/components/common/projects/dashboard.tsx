@@ -7,10 +7,11 @@ import ProjectSettings from "@/components/common/projects/project-settings";
 import ProjectSearch from "@/components/common/projects/search";
 import ProjectSources from "@/components/common/projects/sources";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
-import { RootState } from "@/store";
+import { useAppSelector } from "@/store";
+import type { RootState } from "@/store";
+import type { Project } from "@/types/types";
 import {
   ArrowLeft,
-  ChevronDown,
   ChevronRight,
   ChevronsUpDown,
   Eye,
@@ -18,57 +19,29 @@ import {
   Home,
   Link,
   Network,
-  Pin,
   Plus,
-  Search,
   Settings,
   Telescope,
 } from "lucide-react";
 
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
+import { useLocation, useParams } from "react-router-dom";
 
 import NestedMenu from "../editor/BlockEditor/components/NestedMenu";
 
-export const Dashboard = ({
-  type,
-  id,
-  content,
-  title,
-  connectedDocs,
-  connectedInbox,
-  connectedObjects,
-  connectedQueries,
-  connectedComments,
-  connectedEntities,
-}: {
-  type?: string;
-  id?: string;
-  content?: string;
-  title?: string;
-  connectedDocs?: string;
-  connectedInbox?: string;
-  connectedObjects?: string;
-  connectedQueries?: string;
-  connectedComments?: string;
-  connectedStudies?: string;
-  connectedEntities?: string;
-}) => {
+export const Dashboard = () => {
+  const { id } = useParams<{ id: string }>();
   const menuContainerRef = useRef(null);
   const [isTitleExpanded, setIsTitleExpanded] = useState<boolean>(false);
   const navigateWithTransition = useNavigateWithTransition();
 
+  const project = useAppSelector((state: RootState) => state.project);
+  const { recentProjects } = useAppSelector((state: RootState) => state.project);
+
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
   const [currentView, setCurrentView] = useState<string>("overview");
-  const { data: pageData } = useGetStudyByIdQuery(id || "", { skip: !id });
-
-  const project = useSelector((state: RootState) => state.project);
-
-  console.log("project structure", project.currentProject?.projectStructure);
-
-  console.log("project", project);
 
   const location = useLocation();
   const currentPath = location.pathname;
@@ -125,62 +98,58 @@ export const Dashboard = ({
                   {/* Expandable Content */}
                   <div
                     className={`transform-gpu overflow-hidden bg-white transition-all duration-300 ease-in-out ${
-                      isTitleExpanded ? "h-[250px] w-[200%] opacity-100" : "h-0 w-full opacity-0"
+                      isTitleExpanded
+                        ? "h-auto max-h-[19rem] w-[200%] opacity-100"
+                        : "h-0 w-full opacity-0"
                     } rounded-br-lg border shadow-md`}
                   >
                     <div
-                      className={`transition-transform duration-300 ${
+                      className={`flex h-full flex-col justify-between transition-transform duration-300 ${
                         isTitleExpanded ? "translate-y-0" : "-translate-y-4"
                       }`}
                     >
-                      <ul className="border-b border-gray-200">
-                        <li className="flex w-full items-center gap-2 p-4 transition-colors duration-200 hover:bg-blue-100">
-                          <span className="text-sm font-semibold text-gray-600">
-                            Alternative to PFTE
-                          </span>
-                          <span className="ml-auto flex gap-2">
-                            <Eye className="rounded p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
-                            <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
-                          </span>
-                        </li>
-                        <li className="flex w-full items-center gap-2 p-4 transition-colors duration-200 hover:bg-blue-100">
-                          <span className="text-sm font-semibold text-gray-600">
-                            Cross regeneration to maximise macromolecules elution for 'Gent
-                            production' ion gas resins
-                          </span>
-                          <span className="ml-auto flex gap-2">
-                            <Eye className="rounded p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
-                            <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
-                          </span>
-                        </li>
-                        <li className="flex w-full items-center gap-2 p-4 transition-colors duration-200 hover:bg-blue-100">
-                          <span className="text-sm font-semibold text-gray-600">Get Weld Soon</span>
-                          <span className="ml-auto flex gap-2">
-                            <Eye className="rounded p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
-                            <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
-                          </span>
-                        </li>
-                      </ul>
-                      <div className="flex w-full gap-1 border p-2">
+                      {/* Recent Projects List */}
+                      {recentProjects?.length > 0 && (
+                        <ul className="flex-1 overflow-y-auto border-b border-gray-200">
+                          {recentProjects
+                            .filter((project: Project) => project.id !== id) // Exclude current project
+                            .slice(0, 3) // Show maximum 3 items
+                            .map((project: Project) => (
+                              <li
+                                key={project.id}
+                                onClick={() => navigateWithTransition(`/projects/${project.id}`)}
+                                className="flex h-16 w-full cursor-pointer items-center gap-2 p-4 transition-colors duration-200 hover:bg-blue-100"
+                              >
+                                <span className="truncate text-sm font-semibold text-gray-600">
+                                  {project.name}
+                                </span>
+                                <span className="ml-auto flex shrink-0 gap-2">
+                                  <Eye className="rounded p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                                  <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                                </span>
+                              </li>
+                            ))}
+                        </ul>
+                      )}
+                      <div className="flex w-full gap-1 border-t p-2">
                         <button
-                          className="flex items-center gap-2 rounded border border-slate-300 bg-slate-100 px-4 py-2 text-black transition-colors duration-200 hover:bg-slate-200"
+                          className="flex items-center gap-2 rounded-sm px-2 py-1 text-sm text-gray-600 hover:bg-gray-100"
                           onClick={() => navigateWithTransition("/projects/dashboard")}
                         >
-                          <ArrowLeft /> Back to the Universe
+                          <ArrowLeft className="h-4 w-4" /> Back to the Universe
                         </button>
                         <CreateProjectDialog type="findest-button" />
                       </div>
                     </div>
                   </div>
                 </div>
+
                 {/* Navigation Links */}
                 <div className="flex-1 overflow-y-auto">
                   <ul className="border-b border-gray-200">
                     <li
                       className={`${currentView === "overview" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
-                      onClick={() => {
-                        setCurrentView("overview");
-                      }}
+                      onClick={() => setCurrentView("overview")}
                     >
                       <Home className="h-5 w-5 group-hover:text-white" />
                       <span
@@ -188,32 +157,7 @@ export const Dashboard = ({
                       >
                         Project overview
                       </span>
-                      {/* <span className="ml-auto">
-                        {currentView === "overview" ? (
-                          <ChevronRight
-                            className={`rounded-sm p-1 text-white group-hover:text-white`}
-                          />
-                        ) : (
-                          <Plus
-                            className={`p-1 ${
-                              currentView === "overview"
-                                ? "text-white"
-                                : "bg-gray-100 text-gray-600"
-                            } rounded-sm group-hover:bg-transparent group-hover:text-white`}
-                          />
-                        )}
-                      </span> */}
                     </li>
-                    {/* <li
-                      className={`${currentView === "search" && "bg-gray-200"} m-4 flex max-w-full items-center gap-2 rounded-full border bg-gray-200 p-2 transition-all duration-150 ease-linear`}
-                      onClick={() => setCurrentView("search")}
-                    >
-                      <Search className="h-5 w-5 text-gray-600" />
-                      <span className="text-sm font-medium text-gray-600">Search</span>
-                      <div className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-blue-300 text-xs font-black text-blue-600">
-                        3
-                      </div>
-                    </li> */}
                     <li
                       className={`${currentView === "pages" && "bg-black text-white"} group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear hover:bg-black`}
                       onClick={() => setCurrentView("pages")}
@@ -318,21 +262,7 @@ export const Dashboard = ({
                   >
                     Project settings
                   </span>
-                  {/* <span className="ml-auto">
-                        {currentView === "settings" ? (
-                          <ChevronRight
-                            className={`rounded-sm p-1 text-white group-hover:text-white`}
-                          />
-                        ) : (
-                          <Plus
-                            className={`p-1 ${
-                              currentView === "settings" ? "text-white" : "bg-gray-100 text-gray-600"
-                            } rounded-sm group-hover:bg-transparent group-hover:text-white`}
-                          />
-                        )}
-                      </span> */}
                 </div>
-                {/* Settings Footer */}
               </div>
             </div>
           </div>
@@ -345,11 +275,7 @@ export const Dashboard = ({
                 <div>
                   <ProjectOverView />
                 </div>
-              ) : // ) : currentView === "search" ? (
-              //   <div>
-              //     <ProjectSearch />
-              //   </div>
-              currentView === "pages" ? (
+              ) : currentView === "pages" ? (
                 <div>
                   <ProjectPages projectId={id || ""} />
                 </div>

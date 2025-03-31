@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@fortawesome/pro-regular-svg-icons':
+        specifier: ^6.7.2
+        version: 6.7.2
+      '@fortawesome/pro-solid-svg-icons':
+        specifier: ^6.7.2
+        version: 6.7.2
       '@hocuspocus/provider':
         specifier: ^2.15.2
         version: 2.15.2(y-protocols@1.0.6(yjs@13.6.24))(yjs@13.6.24)
@@ -781,6 +787,18 @@ packages:
 
   '@floating-ui/utils@0.2.9':
     resolution: {integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==}
+
+  '@fortawesome/fontawesome-common-types@6.7.2':
+    resolution: {integrity: sha512-Zs+YeHUC5fkt7Mg1l6XTniei3k4bwG/yo3iFUtZWd/pMx9g3fdvkSK9E0FOC+++phXOka78uJcYb8JaFkW52Xg==, tarball: https://npm.fontawesome.com/@fortawesome/fontawesome-common-types/-/6.7.2/fontawesome-common-types-6.7.2.tgz}
+    engines: {node: '>=6'}
+
+  '@fortawesome/pro-regular-svg-icons@6.7.2':
+    resolution: {integrity: sha512-cJolK4K/s56mHAqOyno24SmjviHqSqG9ZfckBKCpWjJlgDexi61EfET5wWbmmEot6/BqasFjw9S6tudFQUL/PQ==, tarball: https://npm.fontawesome.com/@fortawesome/pro-regular-svg-icons/-/6.7.2/pro-regular-svg-icons-6.7.2.tgz}
+    engines: {node: '>=6'}
+
+  '@fortawesome/pro-solid-svg-icons@6.7.2':
+    resolution: {integrity: sha512-SY2aP8d7uBlg1rNYznA9w9SVnnQhu3x/C7CCKQYcOGOC1YtPPHgIJhxKGbSzm6RkeJs1HVEfAkORX3J0XB5K9Q==, tarball: https://npm.fontawesome.com/@fortawesome/pro-solid-svg-icons/-/6.7.2/pro-solid-svg-icons-6.7.2.tgz}
+    engines: {node: '>=6'}
 
   '@gilbarbara/deep-equal@0.1.2':
     resolution: {integrity: sha512-jk+qzItoEb0D0xSSmrKDDzf9sheQj/BAPxlgNxgmOaA3mxpUa6ndJLYGZKsJnIVEQSD8zcTbyILz7I0HcnBCRA==}
@@ -4501,6 +4519,16 @@ snapshots:
       react-dom: 19.0.0(react@19.0.0)
 
   '@floating-ui/utils@0.2.9': {}
+
+  '@fortawesome/fontawesome-common-types@6.7.2': {}
+
+  '@fortawesome/pro-regular-svg-icons@6.7.2':
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 6.7.2
+
+  '@fortawesome/pro-solid-svg-icons@6.7.2':
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 6.7.2
 
   '@gilbarbara/deep-equal@0.1.2': {}
 

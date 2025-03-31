@@ -1,16 +1,12 @@
-import type { PageListItem, Project, ProjectOverview, Tab } from "@/types/types";
+import type {
+  LinkedCounts,
+  PageListItem,
+  Project,
+  ProjectOverview,
+  RecentProjectActivities,
+  Tab,
+} from "@/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-// Simplified page interface for store
-interface StorePage {
-  id: string;
-  title: string;
-  customTypeName: string;
-  dateAdded: string;
-  linkedCounts: LinkedCounts;
-  createdByUsername: string;
-  isConnected: boolean;
-}
 
 interface ProjectState {
   // Current project state
@@ -29,6 +25,10 @@ interface ProjectState {
 
   // Project content
   pages: PageListItem[];
+
+  // Recent activities and projects
+  recentActivities: RecentProjectActivities | null;
+  recentProjects: Project[];
 
   // Loading states
   isLoading: boolean;
@@ -64,6 +64,9 @@ const initialState: ProjectState = {
   activeTabId: null,
 
   pages: [],
+
+  recentActivities: null,
+  recentProjects: [],
 
   isLoading: false,
   error: null,
@@ -167,6 +170,20 @@ const projectSlice = createSlice({
       state.tabs = orderedTabs;
     },
 
+    // Update tab content
+    updateTabContent: (state, action: PayloadAction<{ tabId: string; content: string }>) => {
+      const tab = state.tabs.find((tab) => tab.id === action.payload.tabId);
+      if (tab) {
+        tab.content = action.payload.content;
+      }
+      if (state.currentProject?.tabs) {
+        const currentTab = state.currentProject.tabs.find((tab) => tab.id === action.payload.tabId);
+        if (currentTab) {
+          currentTab.content = action.payload.content;
+        }
+      }
+    },
+
     // Content management
     setPages: (state, action: PayloadAction<PageListItem[]>) => {
       state.pages = action.payload;
@@ -207,6 +224,15 @@ const projectSlice = createSlice({
       state.filters = initialState.filters;
       state.searchTerm = "";
     },
+
+    // Recent activities and projects
+    setRecentActivities: (state, action: PayloadAction<RecentProjectActivities>) => {
+      state.recentActivities = action.payload;
+    },
+
+    setRecentProjects: (state, action: PayloadAction<Project[]>) => {
+      state.recentProjects = action.payload;
+    },
   },
 });
 
@@ -225,6 +251,7 @@ export const {
   addTab,
   removeTab,
   updateTabOrder,
+  updateTabContent,
   setPages,
   setLoading,
   setError,
@@ -233,6 +260,8 @@ export const {
   setSearchTerm,
   setFilters,
   resetFilters,
+  setRecentActivities,
+  setRecentProjects,
 } = projectSlice.actions;
 
 export default projectSlice.reducer;
