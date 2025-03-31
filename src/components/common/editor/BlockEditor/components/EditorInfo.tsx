@@ -1,11 +1,7 @@
-import { setLockPage } from "@/api/documents/documentSlice";
+// import { setLockPage } from "@/api/documents/documentSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
-import LockPageConfirm from "@/components/common/dialogs/lock-page-confirm";
-import MinimizableDialog from "@/components/common/dialogs/minimizable-dialog";
-import ShareObject from "@/components/common/dialogs/share-object";
-import UserAvatar from "@/components/common/utilities/user-avatar";
+// import LockPageConfirm from "@/components/common/dialogs/lock-page-confirm";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { RootState } from "@/store";
 import { WebSocketStatus } from "@hocuspocus/provider";
 import {
@@ -18,13 +14,11 @@ import {
   Bold,
   ChevronDown,
   ChevronUp,
-  Download,
   Grid2x2,
   HighlighterIcon,
   ImagePlus,
   Italic,
   Link,
-  List,
   Paperclip,
   Pilcrow,
   RotateCcw,
@@ -34,7 +28,7 @@ import {
   Superscript,
 } from "lucide-react";
 
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { EditorUser } from "../types";
@@ -46,14 +40,15 @@ export type EditorInfoProps = {
   collabState: WebSocketStatus;
   users: EditorUser[];
   id?: string;
+  editor: string;
 };
 
-export const EditorInfo = memo(({ id }: EditorInfoProps) => {
+export const EditorInfo = memo(({ id, editor }: EditorInfoProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isPinned, setIsPinned] = useState<boolean>(false);
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
   const isLocked = useSelector((state: RootState) => state.document.isLocked);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   if (!editor) return null;
 

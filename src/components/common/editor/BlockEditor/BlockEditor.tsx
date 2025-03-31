@@ -602,7 +602,7 @@ export const BlockEditor = ({
 
               <Tabs
                 defaultValue="all"
-                className="mt-10 px-28"
+                className="mb-12 mt-10 px-28"
                 onValueChange={setActiveTab}
                 id="linkedDocuments"
               >

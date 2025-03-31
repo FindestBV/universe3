@@ -33,6 +33,7 @@ export const EditorHeader = ({ editor, collabState, users, documentId }: EditorH
   return (
     <div className="editorHeader">
       <EditorInfo
+        editor={editor}
         characters={characters}
         words={words}
         collabState={collabState}

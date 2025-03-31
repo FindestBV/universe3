@@ -1,6 +1,9 @@
+import { setLockPage } from "@/api/documents/documentSlice";
+import LockPageConfirm from "@/components/common/dialogs/lock-page-confirm";
 import ShareObject from "@/components/common/dialogs/share-object";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   EllipsisVertical,
@@ -68,7 +71,9 @@ export const ReferencesSidebar: React.FC<{
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button className={`rounded-sm border border-slate-200 bg-slate-100 px-3`}>
+              <Button
+                className={`rounded-sm border border-slate-200 bg-slate-100 px-3 hover:bg-black hover:text-white`}
+              >
                 <EllipsisVertical />
               </Button>
             </TooltipTrigger>
@@ -77,7 +82,7 @@ export const ReferencesSidebar: React.FC<{
                 <div className="flex items-center gap-2 font-bold">
                   <Info size={10} /> Page info
                 </div>
-
+                <Separator />
                 <div className="flex items-center gap-1">
                   <Avatar>
                     <AvatarImage src="https://github.com/shadcn.png" />
@@ -161,7 +166,7 @@ export const ReferencesSidebar: React.FC<{
         <TableOfContents editor={editor} />
       </div>
 
-      <div className="mt-auto border-t border-neutral-200">
+      {/* <div className="mt-auto border-t border-neutral-200">
         <ul className="flex flex-col gap-3 py-4">
           <li className="flex items-center gap-2 text-sm">
             <Link2Icon size={20} />
@@ -200,7 +205,7 @@ export const ReferencesSidebar: React.FC<{
             </a>
           </li>
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 };
