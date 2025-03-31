@@ -8,6 +8,7 @@
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -374,15 +375,10 @@ export const ProjectSources = () => {
                           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_, index) => (
                             <div key={index} className="itemCard">
                               <div className="innerCardMain bg-white">
-                                <button
-                                  type="button"
-                                  role="checkbox"
-                                  aria-checked="false"
-                                  data-state="unchecked"
-                                  value="on"
-                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                <Checkbox
                                   id={`card-${index}`}
-                                ></button>
+                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                />
                                 <div className="innerCardContent">
                                   <div className="innerCardContent__Detail">
                                     <div className="flex flex-col">
@@ -512,15 +508,10 @@ export const ProjectSources = () => {
                           {[1, 2, 3, 4, 5, 6].map((_, index) => (
                             <div key={index} className="itemCard">
                               <div className="innerCardMain bg-white">
-                                <button
-                                  type="button"
-                                  role="checkbox"
-                                  aria-checked="false"
-                                  data-state="unchecked"
-                                  value="on"
-                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                <Checkbox
                                   id={`card-${tab.id}-${index}`}
-                                ></button>
+                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                />
                                 <div className="innerCardContent">
                                   <div className="innerCardContent__Detail">
                                     <div className="flex flex-col">

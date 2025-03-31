@@ -28,6 +28,7 @@ import {
   SearchIcon,
   Settings,
   Telescope,
+  Zap,
 } from "lucide-react";
 import { Tooltip } from "recharts";
 
@@ -498,21 +499,7 @@ export const BlockEditor = ({
                   >
                     Project settings
                   </span>
-                  {/* <span className="ml-auto">
-                        {currentView === "settings" ? (
-                          <ChevronRight
-                            className={`rounded-sm p-1 text-white group-hover:text-white`}
-                          />
-                        ) : (
-                          <Plus
-                            className={`p-1 ${
-                              currentView === "settings" ? "text-white" : "bg-gray-100 text-gray-600"
-                            } rounded-sm group-hover:bg-transparent group-hover:text-white`}
-                          />
-                        )}
-                      </span> */}
                 </div>
-                {/* Settings Footer */}
               </div>
             </div>
           </div>
@@ -533,25 +520,36 @@ export const BlockEditor = ({
               {/* Begin Main */}
               <div className="mx-2 flex flex-col pl-24 pt-10">
                 <div className="mx-auto mb-6 w-full py-8">
-                  <div className="mb-4 flex items-center gap-2">
+                  {/* <div className="mb-4 flex items-center gap-2">
                     <div className="flex items-center gap-2 rounded-md bg-blue-100 px-3 py-1 text-sm font-medium text-slate-600">
                       TECHNOLOGY
                       <ChevronDown />
                     </div>
-                  </div>
-                  <h1 className="mb-2 text-4xl font-bold">
+                  </div> */}
+                  <h1 className="mb-8 text-4xl font-bold">
                     {title
                       ? title
                       : "CN109368873A - 一种风电互补海水淡化系统 <br /> - Google Patents."}
                   </h1>
                   <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <Eye className="h-4 w-4" />
-                    <span>2 TIMES CITED BY</span>
+                    <button
+                      className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-1 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
+                      onClick={() => navigateWithTransition("/projects/dashboard")}
+                    >
+                      <Link className="p-1" /> Link sources
+                    </button>
+                    <button
+                      className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-1 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
+                      onClick={() => navigateWithTransition("/projects/dashboard")}
+                    >
+                      <Zap className="fill-black p-1" /> Write introduction based on general
+                      knowledge
+                    </button>
                   </div>
                 </div>
 
                 {/* Author Info */}
-                <div className="mb-8 flex items-center gap-3">
+                {/* <div className="mb-8 flex items-center gap-3">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600 text-white">
                     S
                   </div>
@@ -559,7 +557,7 @@ export const BlockEditor = ({
                     <div>Created by sander.vanderwoude@findest.eu</div>
                     <div className="mr-32 text-gray-500">26 June 2024</div>
                   </div>
-                </div>
+                </div> */}
               </div>
               <EditorContent key={editor?.view?.id || "editor"} editor={editor} className="" />
               <ContentItemMenu editor={editor} />

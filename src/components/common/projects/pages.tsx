@@ -9,6 +9,7 @@
  */
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -188,6 +189,7 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
 export const ProjectPages = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
   const [isSideBarToggled, setIsSideBarToggled] = useState(false);
+  const [selectedDocs, setSelectedDocs] = useState<Set<string>>(new Set());
 
   const [tabs, setTabs] = useState([
     { id: "all", label: "All Page Types" },
@@ -232,6 +234,18 @@ export const ProjectPages = () => {
     setTabs((prevTabs) =>
       prevTabs.map((tab) => (tab.id === id ? { ...tab, label: newLabel } : tab)),
     );
+  };
+
+  // Checkbox Selects
+
+  const handleSelectDoc = (id: string, checked: boolean) => {
+    const newSelected = new Set(selectedDocs);
+    if (checked) {
+      newSelected.add(id);
+    } else {
+      newSelected.delete(id);
+    }
+    setSelectedDocs(newSelected);
   };
 
   // Configuration Dialog Component
@@ -386,15 +400,11 @@ export const ProjectPages = () => {
                           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_, index) => (
                             <div key={index} className="itemCard">
                               <div className="innerCardMain bg-white">
-                                <button
-                                  type="button"
-                                  role="checkbox"
-                                  aria-checked="false"
-                                  data-state="unchecked"
-                                  value="on"
-                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                <Checkbox
                                   id={`card-${index}`}
-                                ></button>
+                                  // onCheckedChange={(checked) => handleSelectDoc(checked as boolean)}
+                                  className="innerCardCheckbox"
+                                />
                                 <div className="innerCardContent">
                                   <div className="innerCardContent__Detail">
                                     <div className="flex flex-col">
@@ -461,56 +471,6 @@ export const ProjectPages = () => {
                                   </div>
                                 </div>
                               </div>
-                              {/* <div className="relative flex h-auto w-[25px]">
-                                <div className="links">
-                                  <div className="linkToItem">
-                                    <a
-                                      href="#"
-                                      className="linkedStudy"
-                                      type="button"
-                                      aria-haspopup="dialog"
-                                      aria-expanded="false"
-                                      data-state="closed"
-                                    >
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="lucide lucide-link"
-                                      >
-                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                                      </svg>
-                                    </a>
-                                  </div>
-                                  <a href="#" className="trashCan">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="14"
-                                      height="14"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      strokeWidth="2"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      className="lucide lucide-trash2"
-                                    >
-                                      <path d="M3 6h18"></path>
-                                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                                      <line x1="10" x2="10" y1="11" y2="17"></line>
-                                      <line x1="14" x2="14" y1="11" y2="17"></line>
-                                    </svg>
-                                  </a>
-                                </div>
-                              </div> */}
                             </div>
                           ))}
                         </div>
@@ -524,23 +484,18 @@ export const ProjectPages = () => {
                           {[1, 2, 3].map((_, index) => (
                             <div key={index} className="itemCard">
                               <div className="innerCardMain bg-white">
-                                <button
-                                  type="button"
-                                  role="checkbox"
-                                  aria-checked="false"
-                                  data-state="unchecked"
-                                  value="on"
-                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                <Checkbox
                                   id={`studies-card-${index}`}
-                                ></button>
+                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                />
                                 <div className="innerCardContent">
                                   <div className="innerCardContent__Detail">
                                     <div className="flex flex-col">
-                                      <h3 className="text-md overflow-hidden text-ellipsis py-0 font-bold text-black">
+                                      <h3 className="overflow-hidden text-ellipsis py-0 text-sm font-bold text-black">
                                         Clinical Study {index + 1}
                                       </h3>
                                       <div>
-                                        <p className="text-xs text-gray-600">
+                                        <p className="text-sm text-gray-600">
                                           Research study on medical imaging applications
                                         </p>
                                       </div>
@@ -592,19 +547,14 @@ export const ProjectPages = () => {
                           {[1, 2, 3, 4].map((_, index) => (
                             <div key={index} className="itemCard">
                               <div className="innerCardMain bg-white">
-                                <button
-                                  type="button"
-                                  role="checkbox"
-                                  aria-checked="false"
-                                  data-state="unchecked"
-                                  value="on"
-                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                <Checkbox
                                   id={`entities-card-${index}`}
-                                ></button>
+                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                />
                                 <div className="innerCardContent">
                                   <div className="innerCardContent__Detail">
                                     <div className="flex flex-col">
-                                      <h3 className="text-md overflow-hidden text-ellipsis py-0 font-bold text-black">
+                                      <h3 className="overflow-hidden text-ellipsis py-0 text-sm font-bold text-black">
                                         Entity {index + 1}
                                       </h3>
                                       <div>
