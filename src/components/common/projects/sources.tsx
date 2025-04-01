@@ -297,7 +297,6 @@ export const ProjectSources = () => {
         >
           <div className="overviewHeader flex justify-between">
             <h1 className="mb-2 text-2xl font-bold">Sources</h1>
-
             <div className="project-controls flex items-center gap-2">
               <AdvancedSearchModal />
               <div className="flex items-center gap-2">
@@ -306,7 +305,6 @@ export const ProjectSources = () => {
                     <TooltipTrigger asChild>
                       <button
                         className="flex items-center gap-1 rounded bg-slate-200 p-2 text-sm text-black transition-colors duration-150 hover:border-black hover:bg-black hover:text-white"
-                        // className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
                         id="addNewTabButton"
                       >
                         <Plus className="h-4 w-4" /> Add Source
