@@ -28,7 +28,6 @@ import { useState } from "react";
 import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
 import AskIgorModal from "../dialogs/ask-igor";
 import FilterOptions from "../layout/filter-options";
-// import FilterSheet from "../dialogs/filter-sheet";
 import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
 import ResultsOverview from "./config/results-overview";
@@ -178,6 +177,7 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
 
 export const ProjectSources = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
+  const [filterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [isSideBarToggled, setIsSideBarToggled] = useState(false);
 
   const [tabs, setTabs] = useState([
@@ -298,19 +298,18 @@ export const ProjectSources = () => {
           <div className="overviewHeader flex justify-between">
             <h1 className="mb-2 text-2xl font-bold">Sources</h1>
 
-            <div className="project-controls flex items-center gap-4">
+            <div className="project-controls flex items-center gap-2">
               <AdvancedSearchModal />
-
               <div className="flex items-center gap-2">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <button
-                        className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 p-2 text-sm text-black transition-colors duration-200 hover:bg-black hover:text-white"
+                        className="flex items-center gap-1 rounded bg-slate-200 p-2 text-sm text-black transition-colors duration-150 hover:border-black hover:bg-black hover:text-white"
                         // className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
                         id="addNewTabButton"
                       >
-                        <Plus className="h-5 w-5" /> Add source
+                        <Plus className="h-4 w-4" /> Add Source
                       </button>
                     </TooltipTrigger>
                     <TooltipContent className="w-72 p-0" align="end">
@@ -338,9 +337,15 @@ export const ProjectSources = () => {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <Button onClick={() => setIsSideBarToggled((prevState) => !prevState)}>
+              <Button
+                onClick={() => {
+                  setIsSideBarToggled((prevState) => !prevState);
+                  setIsFilterOpen((prevState) => !prevState);
+                }}
+                className={`group ${filterOpen ? "bg-black" : "bg-slate-200"} hover:bg-black`}
+              >
                 <Filter
-                  className={`${isSideBarToggled ? "fill-black" : "bg-white text-black"} h-8 w-4`}
+                  className={`text-${filterOpen ? "white" : "black"} h-4 w-4 group-hover:stroke-white ${isSideBarToggled && "fill-black"}`}
                 />
               </Button>
 

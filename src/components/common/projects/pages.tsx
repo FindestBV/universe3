@@ -22,22 +22,11 @@ import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import {
-  Filter,
-  Link2Icon,
-  List,
-  ListFilter,
-  MessageCircle,
-  Plus,
-  RadarIcon,
-  Star,
-} from "lucide-react";
+import { Filter, List, ListFilter, Plus, RadarIcon, Star } from "lucide-react";
 
 import { useState } from "react";
 
 import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
-import FilterSheet from "../dialogs/filter-sheet";
-import ReferencesSidebar from "../editor/BlockEditor/components/ReferencesSidebar";
 import FilterOptions from "../layout/filter-options";
 import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
@@ -188,7 +177,8 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
 
 export const ProjectPages = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
-  const [isSideBarToggled, setIsSideBarToggled] = useState(false);
+  const [isSideBarToggled, setIsSideBarToggled] = useState<boolean>(false);
+  const [filterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedDocs, setSelectedDocs] = useState<Set<string>>(new Set());
 
   const [tabs, setTabs] = useState([
@@ -360,11 +350,14 @@ export const ProjectPages = () => {
                 </TooltipProvider>
               </div>
               <Button
-                onClick={() => setIsSideBarToggled((prevState) => !prevState)}
-                className="bg-slate-200"
+                onClick={() => {
+                  setIsSideBarToggled((prevState) => !prevState);
+                  setIsFilterOpen((prevState) => !prevState);
+                }}
+                className={`group ${filterOpen ? "bg-black" : "bg-slate-200"} hover:bg-black`}
               >
                 <Filter
-                  className={`${isSideBarToggled ? "fill-black" : "text-black hover:bg-gray-200 hover:text-white"} h-6 w-4`}
+                  className={`text-${filterOpen ? "white" : "black"} h-4 w-4 group-hover:stroke-white ${isSideBarToggled && "fill-black"}`}
                 />
               </Button>
 
