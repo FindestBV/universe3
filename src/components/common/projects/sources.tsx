@@ -320,10 +320,13 @@ export const ProjectSources = () => {
                           {tabTypeOptions.map((option) => (
                             <button
                               key={option.id}
-                              className="flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-slate-100"
-                              onClick={() => openTabConfigDialog(option)}
+                              className="group flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-black hover:text-white"
+                              onClick={() => {
+                                setSelectedTabType(option); // Set the selected tab type
+                                setIsConfigDialogOpen(true); // Open the configuration dialog
+                              }}
                             >
-                              <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black group-hover:text-white">
                                 {option.icon}
                               </span>
                               <span>{option.label}</span>

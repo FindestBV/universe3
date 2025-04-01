@@ -11,13 +11,7 @@ import CreateProjectDialog from "@/components/common/dialogs/create-project-dial
 import { DevBanner } from "@/components/common/layout/dev-banner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 // import MaturityRadar from "./config/maturity-radar";
 // import RequirementsTable from "./config/requirements-table";
@@ -248,62 +242,55 @@ interface TabConfigFormProps {
   onCancel: () => void;
 }
 
-const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormProps) => {
-  // Local state for form data, isolated from parent component
-  const [formData, setFormData] = useState<Record<string, string>>({});
+type FormData = {
+  tabName: string;
+  technologyDescription: string;
+};
 
-  // Handle input changes
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormProps) => {
+  const [formData, setFormData] = useState<FormData>({
+    tabName: "",
+    technologyDescription: "",
+  });
+
+  const handleInputChange = (field: keyof FormData, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Handle form submission
   const handleSubmit = () => {
     onSubmit(formData);
   };
 
   return (
-    <div>
-      <DialogHeader className="pb-4">
-        <DialogTitle className="flex items-center gap-2 text-lg">
-          <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 text-blue-700">
-            {selectedTabType.icon}
-          </span>
-          <span>Configure {selectedTabType.id}</span>
-        </DialogTitle>
-      </DialogHeader>
-
-      <DialogContent className="rounded-md bg-white p-4 shadow-md">
-        <div className="grid gap-4 py-4">
+    <div className="flex flex-col rounded-lg bg-white p-6">
+      <div className="mb-6 flex items-center gap-4">
+        <h2 className="text-lg font-semibold">Configure {selectedTabType.label}</h2>
+      </div>
+      <div className="grid gap-4 py-4">
+        <div className="flex items-center gap-4">
+          <Input
+            id="tabName"
+            placeholder="Enter a name for this tab"
+            className="col-span-3 w-full rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm"
+            value={formData.tabName || ""}
+            onChange={(e) => handleInputChange("tabName", e.target.value)}
+          />
+        </div>
+        {/* Additional fields based on selected tab type */}
+        {selectedTabType.id === "technologies" && (
           <div className="flex items-center gap-4">
             <Input
-              id="tabName"
-              placeholder="Enter a name for this tab"
+              id="technologyDescription"
+              placeholder="Enter a description for the technology"
               className="col-span-3 w-full rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm"
-              value={formData.tabName || ""}
-              onChange={(e) => handleInputChange("tabName", e.target.value)}
+              value={formData.technologyDescription || ""}
+              onChange={(e) => handleInputChange("technologyDescription", e.target.value)}
             />
           </div>
-          {/* Additional fields based on selected tab type */}
-          {selectedTabType.id === "technologies" && (
-            <div className="flex items-center gap-4">
-              <Input
-                id="technologyDescription"
-                placeholder="Enter a description for the technology"
-                className="col-span-3 w-full rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm"
-                value={formData.technologyDescription || ""}
-                onChange={(e) => handleInputChange("technologyDescription", e.target.value)}
-              />
-            </div>
-          )}
-          {/* Add more fields for other tab types as needed */}
-        </div>
-      </DialogContent>
-
-      <DialogFooter className="flex justify-end gap-2 border-t border-slate-200 pt-4">
+        )}
+        {/* Add more fields for other tab types as needed */}
+      </div>
+      <div className="flex justify-end gap-2 border-t border-slate-200 pt-4">
         <Button
           variant="outline"
           onClick={onCancel}
@@ -317,7 +304,7 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
         >
           Create Tab
         </Button>
-      </DialogFooter>
+      </div>
     </div>
   );
 };
@@ -393,7 +380,6 @@ export const ProjectOverView = () => {
   );
 
   // Configuration Dialog Component
-  // Configuration Dialog Component
   const TabConfigurationDialog = () => {
     if (!selectedTabType) return null;
 
@@ -440,7 +426,7 @@ export const ProjectOverView = () => {
     // For other tab types, render the regular TabConfigForm
     return (
       <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
-        <DialogContent className="flex min-h-[60vh] flex-col border-0 bg-transparent p-0 shadow-none sm:max-w-[500px]">
+        <DialogContent className="bg-white sm:max-w-[500px]">
           <TabConfigForm
             selectedTabType={selectedTabType}
             onSubmit={handleConfigSubmit}
@@ -503,13 +489,13 @@ export const ProjectOverView = () => {
                           {tabTypeOptions.map((option) => (
                             <button
                               key={option.id}
-                              className="flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-black hover:text-white"
+                              className="group flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-black hover:text-white"
                               onClick={() => {
                                 setSelectedTabType(option); // Set the selected tab type
                                 setIsConfigDialogOpen(true); // Open the configuration dialog
                               }}
                             >
-                              <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black group-hover:text-white">
                                 {option.icon}
                               </span>
                               <span>{option.label}</span>
