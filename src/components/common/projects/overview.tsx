@@ -35,6 +35,9 @@ import { useLocation, useParams } from "react-router-dom";
 import VotingCard from "../cards/voting-card";
 import AskIgorModal from "../dialogs/ask-igor";
 import ForceDirectedGraphView from "../layout/force-directed-graph";
+import MaturityRadar from "./config/maturity-radar";
+import RequirementsTable from "./config/requirements-table";
+import ResultsOverview from "./config/results-overview";
 
 // Define the props type for AskIgorModal
 declare module "../dialogs/ask-igor" {
@@ -269,27 +272,36 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
           <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 text-blue-700">
             {selectedTabType.icon}
           </span>
-          <span>Configure Tab</span>
+          <span>Configure {selectedTabType.id}</span>
         </DialogTitle>
-        {/* <DialogDescription className="text-sm text-slate-500">
-          {selectedTabType.description}
-        </DialogDescription> */}
       </DialogHeader>
 
-      <div className="grid gap-4 py-4">
-        <div className="flex items-center gap-4">
-          {/* <Label htmlFor="tabName" className="text-right text-sm font-medium text-slate-700">
-            Tab Name
-          </Label> */}
-          <Input
-            id="tabName"
-            placeholder="Enter a name for this tab"
-            className="col-span-3 w-full rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm"
-            value={formData.tabName || ""}
-            onChange={(e) => handleInputChange("tabName", e.target.value)}
-          />
+      <DialogContent className="rounded-md bg-white p-4 shadow-md">
+        <div className="grid gap-4 py-4">
+          <div className="flex items-center gap-4">
+            <Input
+              id="tabName"
+              placeholder="Enter a name for this tab"
+              className="col-span-3 w-full rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm"
+              value={formData.tabName || ""}
+              onChange={(e) => handleInputChange("tabName", e.target.value)}
+            />
+          </div>
+          {/* Additional fields based on selected tab type */}
+          {selectedTabType.id === "technologies" && (
+            <div className="flex items-center gap-4">
+              <Input
+                id="technologyDescription"
+                placeholder="Enter a description for the technology"
+                className="col-span-3 w-full rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm"
+                value={formData.technologyDescription || ""}
+                onChange={(e) => handleInputChange("technologyDescription", e.target.value)}
+              />
+            </div>
+          )}
+          {/* Add more fields for other tab types as needed */}
         </div>
-      </div>
+      </DialogContent>
 
       <DialogFooter className="flex justify-end gap-2 border-t border-slate-200 pt-4">
         <Button
@@ -342,32 +354,12 @@ export const ProjectOverView = () => {
     setTabs([...tabs, { id: newId, label: newLabel }]);
     setIsActiveTabActive(newId);
 
-    // Here you would send the configuration data to the backend
-    // Example: sendConfigToBackend(newId, selectedTabType.id, formData);
-
     setIsConfigDialogOpen(false);
   };
 
   // Function to handle dialog cancellation
   const handleDialogCancel = () => {
     setIsConfigDialogOpen(false);
-  };
-
-  // Function to open the configuration dialog for creating a new tab
-  const openCreateTabDialog = () => {
-    console.log("tab dialog created");
-    setSelectedTabType(tabTypeOptions[0]); // Set a default tab type or modify as needed
-    setIsConfigDialogOpen(true);
-  };
-
-  // Function to rename an existing tab
-  const renameTab = (id: string) => {
-    const newLabel = window.prompt("Rename this tab:");
-    if (!newLabel) return;
-
-    setTabs((prevTabs) =>
-      prevTabs.map((tab) => (tab.id === id ? { ...tab, label: newLabel } : tab)),
-    );
   };
 
   // Function to navigate to entities with view transitions - optimized with useCallback
@@ -401,13 +393,54 @@ export const ProjectOverView = () => {
   );
 
   // Configuration Dialog Component
+  // Configuration Dialog Component
   const TabConfigurationDialog = () => {
     if (!selectedTabType) return null;
+
+    // If the selected type is "requirements", render the RequirementsTable component
+    if (selectedTabType.id === "requirements") {
+      return (
+        <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
+          <DialogContent className="flex h-screen max-h-full w-screen max-w-full flex-col border-0 bg-transparent p-0 shadow-none">
+            <RequirementsTable
+              isOpen={isConfigDialogOpen}
+              onClose={() => setIsConfigDialogOpen(false)}
+            />
+          </DialogContent>
+        </Dialog>
+      );
+    }
+
+    if (selectedTabType.id === "maturity") {
+      return (
+        <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
+          <DialogContent className="flex h-screen max-h-full w-screen max-w-full flex-col border-0 bg-transparent p-0 shadow-none">
+            <MaturityRadar
+              isOpen={isConfigDialogOpen}
+              onClose={() => setIsConfigDialogOpen(false)}
+            />
+          </DialogContent>
+        </Dialog>
+      );
+    }
+
+    if (selectedTabType.id === "results") {
+      return (
+        <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
+          <DialogContent className="flex h-screen max-h-full w-screen max-w-full flex-col border-0 bg-transparent p-0 shadow-none">
+            <ResultsOverview
+              isOpen={isConfigDialogOpen}
+              onClose={() => setIsConfigDialogOpen(false)}
+            />
+          </DialogContent>
+        </Dialog>
+      );
+    }
 
     // For other tab types, render the regular TabConfigForm
     return (
       <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
-        <DialogContent className="flex flex-col border-0 bg-white p-0 p-6 shadow-none sm:max-w-[500px]">
+        <DialogContent className="flex min-h-[60vh] flex-col border-0 bg-transparent p-0 shadow-none sm:max-w-[500px]">
           <TabConfigForm
             selectedTabType={selectedTabType}
             onSubmit={handleConfigSubmit}
@@ -452,16 +485,38 @@ export const ProjectOverView = () => {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="group">
-                        <Plus
-                          size={24}
-                          className="rounded-sm p-1 text-slate-400 group-hover:bg-blue-200 group-hover:text-blue-500"
-                          onClick={openCreateTabDialog} // Trigger the dialog to create a new tab
-                        />
-                      </div>
+                      <button
+                        className="flex items-center gap-1 rounded bg-slate-200 p-2 text-sm text-black transition-colors duration-150 hover:border-black hover:bg-black hover:text-white"
+                        id="addNewTabButton"
+                        onClick={() => {
+                          setSelectedTabType(tabTypeOptions[0]); // Set a default tab type or modify as needed
+                          setIsConfigDialogOpen(true); // Open the configuration dialog
+                        }}
+                      >
+                        <Plus className="h-4 w-4" />
+                      </button>
                     </TooltipTrigger>
-                    <TooltipContent side="bottom" className={`rounded-md bg-black p-2 text-white`}>
-                      <p className="text-xs">Add tab</p>
+                    <TooltipContent className="w-72 p-0" align="end">
+                      <div className="flex flex-col rounded-md border border-slate-200 bg-white shadow-md">
+                        <div className="p-2 text-sm font-bold text-slate-700">Add new tab with</div>
+                        <div className="flex flex-col p-1">
+                          {tabTypeOptions.map((option) => (
+                            <button
+                              key={option.id}
+                              className="flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-black hover:text-white"
+                              onClick={() => {
+                                setSelectedTabType(option); // Set the selected tab type
+                                setIsConfigDialogOpen(true); // Open the configuration dialog
+                              }}
+                            >
+                              <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black">
+                                {option.icon}
+                              </span>
+                              <span>{option.label}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -653,7 +708,7 @@ export const ProjectOverView = () => {
             >
               <div className="flex w-full flex-col">
                 {/* Header Row */}
-                <div className="flex w-full justify-between p-2 font-semibold">
+                <div className="flex w-full justify-between py-2 font-semibold">
                   <div className="flex items-center">
                     <div className="w-auto min-w-[200px]">Rating</div>
                     <div className="flex-grow">Page Titles</div>
