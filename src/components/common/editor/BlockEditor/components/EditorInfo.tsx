@@ -21,11 +21,13 @@ import {
   Link,
   Paperclip,
   Pilcrow,
+  Redo2,
   RotateCcw,
   RotateCw,
   SquarePlus,
   Subscript,
   Superscript,
+  Undo2,
 } from "lucide-react";
 
 import { memo, useState } from "react";
@@ -121,16 +123,16 @@ export const EditorInfo = memo(({ id, editor }: EditorInfoProps) => {
 
   const backForwardOptions = [
     {
-      label: "Paragraph",
-      command: () => editor.chain().focus().setParagraph().run(),
-      isActive: editor.isActive("paragraph"),
-      icon: <RotateCcw size={16} />,
+      label: "Undo",
+      command: () => editor.chain().focus().undo().run(),
+      isActive: false, // Undo doesn't need an "active" state
+      icon: <Undo2 size={16} />,
     },
     {
-      label: "Heading 1",
-      command: () => editor.chain().focus().setHeading({ level: 1 }).run(),
-      isActive: editor.isActive("heading", { level: 1 }),
-      icon: <RotateCw size={16} />,
+      label: "Redo",
+      command: () => editor.chain().focus().redo().run(),
+      isActive: false, // Same for Redo
+      icon: <Redo2 size={16} />,
     },
   ];
 
@@ -180,7 +182,7 @@ export const EditorInfo = memo(({ id, editor }: EditorInfoProps) => {
     <div className="flex w-full items-center justify-between">
       <div className="mr-4 flex flex-row items-center justify-center gap-2 text-right dark:border-neutral-200">
         <ViewEditSwitch id={id} />
-
+        {/* <AskIgorModal isToolbar={true} iconOnly /> */}
         {isEditing && !isLocked ? (
           <>
             <AskIgorModal isToolbar={true} iconOnly />

@@ -11,6 +11,7 @@ import { TiptapCollabProvider, WebSocketStatus } from "@hocuspocus/provider";
 import type { Editor } from "@tiptap/core";
 import { Mark } from "@tiptap/core";
 import Blockquote from "@tiptap/extension-blockquote";
+import History from "@tiptap/extension-history";
 import { useEditor, useEditorState } from "@tiptap/react";
 import type { Doc as YDoc } from "yjs";
 
@@ -166,6 +167,10 @@ export const useBlockEditor = ({
         CustomImage,
         Rating,
         MaturityRadar,
+        History.configure({
+          depth: 100,
+          newGroupDelay: 500,
+        }),
       ],
       editorProps: {
         attributes: {
