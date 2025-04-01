@@ -3,6 +3,7 @@ import ConnectQuery from "@/components/common/dialogs/connect-query";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
 import Comments from "@/components/common/layout/comments";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
@@ -11,14 +12,12 @@ import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition"
 import { initialContent } from "@/lib/data/initialContent";
 import { RootState } from "@/store";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { EditorContent } from "@tiptap/react";
 import {
   ArrowLeft,
   ChevronDown,
   ChevronRight,
   ChevronsUpDown,
-  Download,
   Eye,
   File,
   Home,
@@ -31,7 +30,6 @@ import {
   Telescope,
   Zap,
 } from "lucide-react";
-import { Tooltip } from "recharts";
 
 // import * as YProsemirror from "../../../../../../node_modules/y-prosemirror";
 
@@ -148,9 +146,9 @@ export const BlockEditor = ({
   });
 
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
-  const isLocked = useSelector((state: RootState) => state.document.isLocked);
+  // const isLocked = useSelector((state: RootState) => state.document.isLocked);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
-  const [currentView, setCurrentView] = useState<View>("overview");
+  const [currentView, setCurrentView] = useState("overview");
   const [activeTab, setActiveTab] = useState("connectedSources");
 
   const toggleSection = (sectionTitle: string) => {
@@ -190,7 +188,7 @@ export const BlockEditor = ({
   }, [isEditing, saveContent]);
 
   useEffect(() => {
-    // console.log("currentView", currentView);
+    console.log("currentView", currentView);
   }, [currentView]);
 
   useEffect(() => {
@@ -341,7 +339,7 @@ export const BlockEditor = ({
                     </div>
 
                     <div
-                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-1 transition-all duration-150 ease-linear ${
+                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear ${
                         currentView === "pages" ? "bg-black" : "bg-white hover:bg-gray-100"
                       }`}
                       onClick={() => setCurrentView("pages")}
@@ -384,7 +382,7 @@ export const BlockEditor = ({
                     </div>
 
                     <div
-                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-1 transition-all duration-150 ease-linear ${
+                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear ${
                         currentView === "sources" ? "bg-black" : "bg-white hover:bg-gray-100"
                       }`}
                       onClick={() => setCurrentView("sources")}
@@ -427,7 +425,7 @@ export const BlockEditor = ({
                     </div>
 
                     <div
-                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-1 transition-all duration-150 ease-linear ${
+                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear ${
                         currentView === "find" ? "bg-black" : "bg-white hover:bg-gray-100"
                       }`}
                       onClick={() => setCurrentView("find")}
