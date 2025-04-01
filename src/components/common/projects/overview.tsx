@@ -4,11 +4,7 @@
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
 import { useGetLinkingQuery, useGetMyRecentActivityQuery } from "@/api/activity/activityApi";
-import {
-  useGetEntitiesQuery,
-  useGetEntityByIdQuery,
-  useGetStudyByIdQuery,
-} from "@/api/documents/documentApi";
+import { useGetStudyByIdQuery } from "@/api/documents/documentApi";
 import ConnectQuery from "@/components/common/dialogs/connect-query";
 import CreateItemModal from "@/components/common/dialogs/create-item-dialog";
 import CreateProjectDialog from "@/components/common/dialogs/create-project-dialog";
@@ -25,6 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 // import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
@@ -416,18 +413,9 @@ export const ProjectOverView = () => {
   const { data: activityData, isLoading: activityDataIsLoading } = useGetMyRecentActivityQuery();
   const { data: linkingData } = useGetLinkingQuery();
   const { data: pageData } = useGetStudyByIdQuery(id);
-
   const isProjectsDashboard = currentPath.includes("/projects/dashboard");
-  // console.log("any pageData?", pageData);
-  // State for the configuration dialog
   const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
   const [selectedTabType, setSelectedTabType] = useState<TabTypeConfig | null>(null);
-
-  // Function to open the configuration dialog for a specific tab type
-  const openTabConfigDialog = (tabType: TabTypeConfig) => {
-    setSelectedTabType(tabType);
-    setIsConfigDialogOpen(true);
-  };
 
   // Function to handle configuration form submission
   const handleConfigSubmit = (formData: Record<string, string>) => {
@@ -578,6 +566,23 @@ export const ProjectOverView = () => {
                     {tab.label}
                   </TabsTrigger>
                 ))}
+              </div>
+              <div className="addTabTrigger hover:bg-blue-100 active:bg-black">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="group">
+                        <Plus
+                          size={24}
+                          className="rounded-sm p-1 text-slate-400 group-hover:bg-blue-200 group-hover:text-blue-500"
+                        />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" className={`bg-black text-white`}>
+                      <p className="text-xs">Add tab</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
             </TabsList>
 
