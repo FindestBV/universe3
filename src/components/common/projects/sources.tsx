@@ -8,6 +8,7 @@
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -27,7 +28,6 @@ import { useState } from "react";
 import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
 import AskIgorModal from "../dialogs/ask-igor";
 import FilterOptions from "../layout/filter-options";
-// import FilterSheet from "../dialogs/filter-sheet";
 import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
 import ResultsOverview from "./config/results-overview";
@@ -177,6 +177,7 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
 
 export const ProjectSources = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
+  const [filterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [isSideBarToggled, setIsSideBarToggled] = useState(false);
 
   const [tabs, setTabs] = useState([
@@ -296,20 +297,17 @@ export const ProjectSources = () => {
         >
           <div className="overviewHeader flex justify-between">
             <h1 className="mb-2 text-2xl font-bold">Sources</h1>
-
-            <div className="project-controls flex items-center gap-4">
+            <div className="project-controls flex items-center gap-2">
               <AdvancedSearchModal />
-
               <div className="flex items-center gap-2">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <button
-                        className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 p-2 text-sm text-black transition-colors duration-200 hover:bg-black hover:text-white"
-                        // className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
+                        className="flex items-center gap-1 rounded bg-slate-200 p-2 text-sm text-black transition-colors duration-150 hover:border-black hover:bg-black hover:text-white"
                         id="addNewTabButton"
                       >
-                        <Plus className="h-5 w-5" /> Add source
+                        <Plus className="h-4 w-4" /> Add Source
                       </button>
                     </TooltipTrigger>
                     <TooltipContent className="w-72 p-0" align="end">
@@ -319,10 +317,13 @@ export const ProjectSources = () => {
                           {tabTypeOptions.map((option) => (
                             <button
                               key={option.id}
-                              className="flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-slate-100"
-                              onClick={() => openTabConfigDialog(option)}
+                              className="group flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-black hover:text-white"
+                              onClick={() => {
+                                setSelectedTabType(option); // Set the selected tab type
+                                setIsConfigDialogOpen(true); // Open the configuration dialog
+                              }}
                             >
-                              <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black group-hover:text-white">
                                 {option.icon}
                               </span>
                               <span>{option.label}</span>
@@ -334,9 +335,15 @@ export const ProjectSources = () => {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <Button onClick={() => setIsSideBarToggled((prevState) => !prevState)}>
+              <Button
+                onClick={() => {
+                  setIsSideBarToggled((prevState) => !prevState);
+                  setIsFilterOpen((prevState) => !prevState);
+                }}
+                className={`group ${filterOpen ? "bg-black" : "bg-slate-200"} hover:bg-black`}
+              >
                 <Filter
-                  className={`${isSideBarToggled ? "fill-black" : "bg-white text-black"} h-8 w-4`}
+                  className={`text-${filterOpen ? "white" : "black"} h-4 w-4 group-hover:stroke-white ${isSideBarToggled && "fill-black"}`}
                 />
               </Button>
 
@@ -374,15 +381,10 @@ export const ProjectSources = () => {
                           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_, index) => (
                             <div key={index} className="itemCard">
                               <div className="innerCardMain bg-white">
-                                <button
-                                  type="button"
-                                  role="checkbox"
-                                  aria-checked="false"
-                                  data-state="unchecked"
-                                  value="on"
-                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                <Checkbox
                                   id={`card-${index}`}
-                                ></button>
+                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                />
                                 <div className="innerCardContent">
                                   <div className="innerCardContent__Detail">
                                     <div className="flex flex-col">
@@ -512,15 +514,10 @@ export const ProjectSources = () => {
                           {[1, 2, 3, 4, 5, 6].map((_, index) => (
                             <div key={index} className="itemCard">
                               <div className="innerCardMain bg-white">
-                                <button
-                                  type="button"
-                                  role="checkbox"
-                                  aria-checked="false"
-                                  data-state="unchecked"
-                                  value="on"
-                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                <Checkbox
                                   id={`card-${tab.id}-${index}`}
-                                ></button>
+                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                />
                                 <div className="innerCardContent">
                                   <div className="innerCardContent__Detail">
                                     <div className="flex flex-col">

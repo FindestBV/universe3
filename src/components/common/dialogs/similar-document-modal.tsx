@@ -136,12 +136,6 @@ export const SimilarDocumentModal: React.FC<SimilarDocumentModalProps> = ({
             </div>
             <div className="relative flex h-auto w-[25px]">{/* Hoverable Actions */}</div>
           </div>
-          <div className="links">
-            <AddLinkToItem attachToItem={linkItemToOther} parentId={id} parentTitle={title} />
-            <a href="#" className="trashCan">
-              <Trash2 size={14} />
-            </a>
-          </div>
         </div>
       </>
     );

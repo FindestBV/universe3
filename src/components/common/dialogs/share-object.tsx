@@ -37,9 +37,12 @@
 import AddUsersForm from "@/components/common/forms/add-users";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { Users } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Download, File, Forward, Plus, X } from "lucide-react";
 
 import { useState } from "react";
 
@@ -54,32 +57,62 @@ export const ShareObject: React.FC<{
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <Users size={16} />
-          SHARE
+        <Button className="flex items-center gap-2 rounded border border-slate-300 bg-slate-100 p-3 text-sm text-black transition-colors duration-200 hover:bg-slate-200">
+          <Forward size={18} className="font-black" />
+          {/* Share */}
         </Button>
       </DialogTrigger>
       <DialogContent className="h-auto max-w-3xl overflow-auto rounded-lg bg-white p-6 shadow-lg">
         {/* Modal Header */}
-        <h2 className="mb-2 text-lg font-bold">Share</h2>
+        <h2 className="mb-2 text-lg font-bold">Share Page</h2>
 
-        {/* Current Item Title */}
-        <AddUsersForm />
-
-        {/* Select Relationship */}
-        <div className="mb-2">
-          <h2 className="mb-4 text-lg font-bold">Settings</h2>
-
-          <div className="mb-2 flex items-center space-x-2">
-            <Switch id="share-this-object" defaultChecked />
-            <Label htmlFor="share-this-object">Share this object</Label>
+        <Label htmlFor="optionalMessage" className="font-bold">
+          Invite viewers by adding their email address
+        </Label>
+        <div className="flex items-center gap-2">
+          <Input
+            type="text"
+            className="border border-slate-200 bg-white focus-visible:ring-0 focus-visible:ring-offset-0"
+            placeholder="viewer@email.com"
+          />
+          <div className="rounded-sm border border-slate-200 p-1.5">
+            <Plus className="p-1" size={24} />
           </div>
-          <div className="flex items-center space-x-2">
-            <Switch id="share-objects-linked-to-this-object" />
-            <Label htmlFor="share-objects-linked-to-this-object">
-              Share objects linked to this object
-            </Label>
+        </div>
+
+        <div className="flex flex-col items-start gap-2">
+          <div className="flex items-center gap-2 rounded-sm bg-blue-200 p-1 text-xs">
+            sander.vanderwoude@findest.eu <X size={10} />
           </div>
+          <div className="flex items-center gap-2 rounded-sm bg-blue-200 p-1 text-xs">
+            roel.boekel@findest.eu <X size={10} />
+          </div>
+        </div>
+
+        <Label htmlFor="optionalMessage" className="font-bold">
+          Message (optional)
+        </Label>
+        <Textarea
+          id="optionalMessage"
+          placeholder="Type your message here..."
+          className="min-h-[120px] resize-none border border-slate-200 bg-white pr-12 focus-visible:ring-0 focus-visible:ring-offset-0"
+        />
+
+        <Button className="w-1/4 bg-slate-200 p-2">Add viewer</Button>
+
+        <Separator />
+
+        <h3 className="mb-2 text-sm font-bold">Other share options</h3>
+        <div className="flex flex-col gap-2">
+          <Button className="flex w-1/6 items-center justify-start gap-2 rounded bg-slate-100 px-2 text-sm text-black transition-colors duration-200 hover:bg-slate-200">
+            <File size={16} />
+            Copy URL
+          </Button>
+
+          <Button className="flex w-1/3 items-center justify-start gap-2 rounded bg-slate-100 px-2 text-sm text-black transition-colors duration-200 hover:bg-slate-200">
+            <Download size={16} />
+            Export page to Word/PDF
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

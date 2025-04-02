@@ -2,6 +2,8 @@
 import ConnectQuery from "@/components/common/dialogs/connect-query";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
 import Comments from "@/components/common/layout/comments";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/extensions/Table/menus";
@@ -9,15 +11,13 @@ import { useBlockEditor } from "@/hooks/use-block-editor";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { initialContent } from "@/lib/data/initialContent";
 import { RootState } from "@/store";
-import { TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { EditorContent } from "@tiptap/react";
 import {
   ArrowLeft,
   ChevronDown,
   ChevronRight,
   ChevronsUpDown,
-  Download,
   Eye,
   File,
   Home,
@@ -28,8 +28,8 @@ import {
   SearchIcon,
   Settings,
   Telescope,
+  Zap,
 } from "lucide-react";
-import { Tooltip } from "recharts";
 
 // import * as YProsemirror from "../../../../../../node_modules/y-prosemirror";
 
@@ -78,7 +78,14 @@ export const BlockEditor = ({
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
   const navigateWithTransition = useNavigateWithTransition();
 
-  console.log("block editor type", type);
+  const [tabs, setTabs] = useState([
+    { id: "connectedSources", label: "Connected sources" },
+    { id: "connectedQueries", label: "Connected queries" },
+    { id: "connectedPages", label: "Connected pages" },
+    { id: "comments", label: "Comments" },
+  ]);
+
+  // console.log("block editor type", type);
 
   const parsedContent = useMemo(() => {
     try {
@@ -139,10 +146,10 @@ export const BlockEditor = ({
   });
 
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
-  const isLocked = useSelector((state: RootState) => state.document.isLocked);
+  // const isLocked = useSelector((state: RootState) => state.document.isLocked);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
-  const [currentView, setCurrentView] = useState<View>("overview");
-  const [activeTab, setActiveTab] = useState("home");
+  const [currentView, setCurrentView] = useState("overview");
+  const [activeTab, setActiveTab] = useState("connectedSources");
 
   const toggleSection = (sectionTitle: string) => {
     setOpenSections((prev) => ({
@@ -181,8 +188,30 @@ export const BlockEditor = ({
   }, [isEditing, saveContent]);
 
   useEffect(() => {
-    // console.log("currentView", currentView);
+    console.log("currentView", currentView);
   }, [currentView]);
+
+  useEffect(() => {
+    const handleScrollToTab = (e: CustomEvent) => {
+      const { tabId, sectionId } = e.detail;
+
+      setActiveTab(tabId);
+
+      // Delay scroll slightly to allow DOM update
+      setTimeout(() => {
+        const el = document.querySelector(`#${sectionId}`);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100); // You can tweak this
+    };
+
+    window.addEventListener("scrollToTabSection", handleScrollToTab as EventListener);
+
+    return () => {
+      window.removeEventListener("scrollToTabSection", handleScrollToTab as EventListener);
+    };
+  }, []);
 
   if (!editor) {
     return <p>Loading editor...</p>;
@@ -310,7 +339,7 @@ export const BlockEditor = ({
                     </div>
 
                     <div
-                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-1 transition-all duration-150 ease-linear ${
+                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear ${
                         currentView === "pages" ? "bg-black" : "bg-white hover:bg-gray-100"
                       }`}
                       onClick={() => setCurrentView("pages")}
@@ -353,7 +382,7 @@ export const BlockEditor = ({
                     </div>
 
                     <div
-                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-1 transition-all duration-150 ease-linear ${
+                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear ${
                         currentView === "sources" ? "bg-black" : "bg-white hover:bg-gray-100"
                       }`}
                       onClick={() => setCurrentView("sources")}
@@ -396,7 +425,7 @@ export const BlockEditor = ({
                     </div>
 
                     <div
-                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-1 transition-all duration-150 ease-linear ${
+                      className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-2 transition-all duration-150 ease-linear ${
                         currentView === "find" ? "bg-black" : "bg-white hover:bg-gray-100"
                       }`}
                       onClick={() => setCurrentView("find")}
@@ -441,12 +470,13 @@ export const BlockEditor = ({
 
                   {/* Table of Contents */}
                   <div className="p-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="mb-4 transform-none text-xs font-bold tracking-tight">
+                    <div className="mb-4 flex items-center justify-between">
+                      <h3 className="transform-none text-xs font-bold tracking-tight">
                         Project structure
                       </h3>
                       <div>
                         <span className="ml-auto flex items-center gap-2">
+                          <Pin className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
                           <Network className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
                           <Plus className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
                         </span>
@@ -459,7 +489,7 @@ export const BlockEditor = ({
                           <li key={section.title}>
                             <button
                               onClick={() => toggleSection(section.title)}
-                              className="flex max-w-full items-center gap-2 rounded-md py-2 text-left text-sm font-medium text-gray-700"
+                              className="flex max-w-full items-center gap-2 rounded-sm bg-slate-200 py-2 text-left text-sm font-medium text-gray-700"
                             >
                               {openSections[section.title] ? (
                                 <ChevronDown className="rounded-sm bg-gray-100 p-1 text-gray-500" />
@@ -498,21 +528,7 @@ export const BlockEditor = ({
                   >
                     Project settings
                   </span>
-                  {/* <span className="ml-auto">
-                        {currentView === "settings" ? (
-                          <ChevronRight
-                            className={`rounded-sm p-1 text-white group-hover:text-white`}
-                          />
-                        ) : (
-                          <Plus
-                            className={`p-1 ${
-                              currentView === "settings" ? "text-white" : "bg-gray-100 text-gray-600"
-                            } rounded-sm group-hover:bg-transparent group-hover:text-white`}
-                          />
-                        )}
-                      </span> */}
                 </div>
-                {/* Settings Footer */}
               </div>
             </div>
           </div>
@@ -533,20 +549,31 @@ export const BlockEditor = ({
               {/* Begin Main */}
               <div className="mx-2 flex flex-col pl-24 pt-10">
                 <div className="mx-auto mb-6 w-full py-8">
-                  <div className="mb-4 flex items-center gap-2">
+                  {/* <div className="mb-4 flex items-center gap-2">
                     <div className="flex items-center gap-2 rounded-md bg-blue-100 px-3 py-1 text-sm font-medium text-slate-600">
                       TECHNOLOGY
                       <ChevronDown />
                     </div>
-                  </div>
-                  <h1 className="mb-2 text-4xl font-bold">
+                  </div> */}
+                  <h1 className="mb-8 text-4xl font-bold">
                     {title
                       ? title
                       : "CN109368873A - 一种风电互补海水淡化系统 <br /> - Google Patents."}
                   </h1>
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <Eye className="h-4 w-4" />
-                    <span>2 TIMES CITED BY</span>
+                  <div className="flex items-center gap-2 text-sm text-gray-500 max-sm:flex-col max-sm:items-start">
+                    <button
+                      className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-1 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
+                      onClick={() => navigateWithTransition("/projects/dashboard")}
+                    >
+                      <Link className="p-1" /> Link sources
+                    </button>
+                    <button
+                      className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-1 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
+                      onClick={() => navigateWithTransition("/projects/dashboard")}
+                    >
+                      <Zap className="fill-black p-1" /> Write introduction based on general
+                      knowledge
+                    </button>
                   </div>
                 </div>
 
@@ -561,6 +588,7 @@ export const BlockEditor = ({
                   </div>
                 </div>
               </div>
+
               <EditorContent key={editor?.view?.id || "editor"} editor={editor} className="" />
               <ContentItemMenu editor={editor} />
               <LinkMenu editor={editor} containerRef={menuContainerRef} />
@@ -569,70 +597,120 @@ export const BlockEditor = ({
               <TableRowMenu editor={editor} containerRef={menuContainerRef} />
               <TableColumnMenu editor={editor} containerRef={menuContainerRef} />
               <ImageBlockMenu editor={editor} containerRef={menuContainerRef} />
-              <div className="editorContentContainer" id="linkedDocuments">
-                <h3 className="itemTitle flex items-center gap-4">
-                  Linked documents <Download size={16} />
-                </h3>
 
-                {connectedObjects?.documents && connectedObjects.documents.length > 0
-                  ? connectedObjects.documents.map(
-                      (doc: { title: Key | null | undefined; id: string }) => (
-                        <div key={doc.title}>
-                          <SimilarDocumentModal
-                            title={doc.title}
-                            id={doc.id}
-                            type="linkedObjects"
-                          />
-                        </div>
-                      ),
-                    )
-                  : "no connected objects"}
-              </div>
-              <div className="editorContentContainer" id="connectedQueries">
-                <h3 className="itemTitle">Connected Queries</h3>
-                <p className="iconText">Connections:</p>
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {connectedQueries &&
-                    (connectedQueries[0]?.connectedObjects &&
-                    connectedQueries[0].connectedObjects.length > 0 ? (
-                      connectedQueries[0].connectedObjects.map(
-                        (obj: {
-                          id: Key | null | undefined;
-                          name: string;
-                          mainContents: unknown;
-                          searchInformation: unknown;
-                        }) => (
-                          <SimilarDocumentModal
-                            key={obj.id}
-                            id={obj.id}
-                            title={obj.name}
-                            mainContents={obj.mainContents}
-                            searchInformation={obj.searchInformation}
-                            type="entity"
-                          />
-                        ),
-                      )
-                    ) : (
-                      <div className="flex flex-row-reverse items-center gap-4">
-                        <Button variant="outline">ADD QUERY</Button>
-                        <ConnectQuery
-                          attachToItem={function (id: string): void {
-                            throw new Error("Function not implemented.");
-                          }}
-                          parentId={""}
-                          parentTitle={""}
-                        />
-                        <p className="text-gray-500">No connected objects</p>
-                      </div>
+              <Tabs
+                defaultValue="all"
+                className="mb-12 mt-10 px-28"
+                onValueChange={setActiveTab}
+                id="linkedDocuments"
+              >
+                <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
+                  <div className="flex gap-2">
+                    {tabs.map((tab) => (
+                      <TabsTrigger
+                        key={tab.id}
+                        value={tab.id}
+                        className={`p-2 text-sm transition-all duration-150 ${activeTab === tab.id ? "border-b-2 border-blue-800 bg-blue-100 font-bold" : "text-black"}`}
+                        // onDoubleClick={() => renameTab(tab.id)}
+                      >
+                        {tab.label}
+                      </TabsTrigger>
                     ))}
+                  </div>
+                </TabsList>
+                <div className="mt-4">
+                  {tabs.map((tab) => (
+                    <TabsContent
+                      key={tab.id}
+                      value={tab.id}
+                      className="mt-2 space-y-2 transition-all duration-150"
+                    >
+                      {tab.id === "connectedSources" && (
+                        <div className="w-full">
+                          {connectedObjects?.documents && connectedObjects.documents.length > 0
+                            ? connectedObjects.documents.map(
+                                (doc: { title: Key | null | undefined; id: string }) => (
+                                  <div key={doc.title}>
+                                    <SimilarDocumentModal
+                                      title={doc.title}
+                                      id={doc.id}
+                                      type="linkedObjects"
+                                    />
+                                  </div>
+                                ),
+                              )
+                            : "no connected objects"}
+                        </div>
+                      )}
+
+                      {tab.id === "connectedQueries" && (
+                        <div className="w-full" id="connectedQueries">
+                          {connectedQueries &&
+                            (connectedQueries[0]?.connectedObjects &&
+                            connectedQueries[0].connectedObjects.length > 0 ? (
+                              connectedQueries[0].connectedObjects.map(
+                                (obj: {
+                                  id: Key | null | undefined;
+                                  name: string;
+                                  mainContents: unknown;
+                                  searchInformation: unknown;
+                                }) => (
+                                  <SimilarDocumentModal
+                                    key={obj.id}
+                                    id={obj.id}
+                                    title={obj.name}
+                                    mainContents={obj.mainContents}
+                                    searchInformation={obj.searchInformation}
+                                    type="entity"
+                                  />
+                                ),
+                              )
+                            ) : (
+                              <div className="flex flex-row-reverse items-center gap-4">
+                                <Button variant="outline">ADD QUERY</Button>
+                                <ConnectQuery
+                                  attachToItem={function (id: string): void {
+                                    throw new Error("Function not implemented.");
+                                  }}
+                                  parentId={""}
+                                  parentTitle={""}
+                                />
+                                <p className="text-gray-500">No connected objects</p>
+                              </div>
+                            ))}
+                        </div>
+                      )}
+
+                      {tab.id === "connectedPages" && (
+                        <div className="w-full">
+                          {connectedObjects?.documents && connectedObjects.documents.length > 0
+                            ? connectedObjects.documents.map(
+                                (doc: { title: Key | null | undefined; id: string }) => (
+                                  <div key={doc.title}>
+                                    <SimilarDocumentModal
+                                      title={doc.title}
+                                      id={doc.id}
+                                      type="linkedObjects"
+                                    />
+                                  </div>
+                                ),
+                              )
+                            : "no connected objects"}
+                        </div>
+                      )}
+
+                      {tab.id === "comments" && (
+                        <div className="w-full" id="connectedComments">
+                          <Comments connectedComments={connectedComments} />
+                        </div>
+                      )}
+                    </TabsContent>
+                  ))}
                 </div>
-              </div>
-              <div className="editorContentContainer" id="connectedComments">
-                <Comments connectedComments={connectedComments} />
-              </div>
+              </Tabs>
             </div>
             <div className={`referenceSidebar h-full px-4`}>
-              <ReferencesSidebar editor={editor} />
+              <ReferencesSidebar editor={editor} parentId={id} />
             </div>
           </div>
         </div>

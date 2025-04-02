@@ -26,9 +26,9 @@ interface VotingCardProps {
 }
 
 export default function VotingCard({ star }: VotingCardProps) {
-  const [rating, setRating] = useState(star);
+  const [rating, setRating] = useState(star || 0);
   const [showDetails, setShowDetails] = useState(false);
-
+  // console.log('stars', star);
   return (
     <div className="votingCard px-4">
       <div className="innerCardContainer flex">

@@ -1,11 +1,7 @@
-import { setLockPage } from "@/api/documents/documentSlice";
+// import { setLockPage } from "@/api/documents/documentSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
-import LockPageConfirm from "@/components/common/dialogs/lock-page-confirm";
-import MinimizableDialog from "@/components/common/dialogs/minimizable-dialog";
-import ShareObject from "@/components/common/dialogs/share-object";
-import UserAvatar from "@/components/common/utilities/user-avatar";
+// import LockPageConfirm from "@/components/common/dialogs/lock-page-confirm";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { RootState } from "@/store";
 import { WebSocketStatus } from "@hocuspocus/provider";
 import {
@@ -18,23 +14,23 @@ import {
   Bold,
   ChevronDown,
   ChevronUp,
-  Download,
   Grid2x2,
   HighlighterIcon,
   ImagePlus,
   Italic,
   Link,
-  List,
   Paperclip,
   Pilcrow,
+  Redo2,
   RotateCcw,
   RotateCw,
   SquarePlus,
   Subscript,
   Superscript,
+  Undo2,
 } from "lucide-react";
 
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { EditorUser } from "../types";
@@ -46,14 +42,15 @@ export type EditorInfoProps = {
   collabState: WebSocketStatus;
   users: EditorUser[];
   id?: string;
+  editor: string;
 };
 
-export const EditorInfo = memo(({ id }: EditorInfoProps) => {
+export const EditorInfo = memo(({ id, editor }: EditorInfoProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isPinned, setIsPinned] = useState<boolean>(false);
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
   const isLocked = useSelector((state: RootState) => state.document.isLocked);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   if (!editor) return null;
 
@@ -126,16 +123,16 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
 
   const backForwardOptions = [
     {
-      label: "Paragraph",
-      command: () => editor.chain().focus().setParagraph().run(),
-      isActive: editor.isActive("paragraph"),
-      icon: <RotateCcw size={16} />,
+      label: "Undo",
+      command: () => editor.chain().focus().undo().run(),
+      isActive: false, // Undo doesn't need an "active" state
+      icon: <Undo2 size={16} />,
     },
     {
-      label: "Heading 1",
-      command: () => editor.chain().focus().setHeading({ level: 1 }).run(),
-      isActive: editor.isActive("heading", { level: 1 }),
-      icon: <RotateCw size={16} />,
+      label: "Redo",
+      command: () => editor.chain().focus().redo().run(),
+      isActive: false, // Same for Redo
+      icon: <Redo2 size={16} />,
     },
   ];
 
@@ -184,7 +181,8 @@ export const EditorInfo = memo(({ id }: EditorInfoProps) => {
   return (
     <div className="flex w-full items-center justify-between">
       <div className="mr-4 flex flex-row items-center justify-center gap-2 text-right dark:border-neutral-200">
-        <>{!isLocked && <ViewEditSwitch id={id} />}</>
+        <ViewEditSwitch id={id} />
+        {/* <AskIgorModal isToolbar={true} iconOnly /> */}
         {isEditing && !isLocked ? (
           <>
             <AskIgorModal isToolbar={true} iconOnly />

@@ -14,7 +14,6 @@ import { useLocation, useParams } from "react-router";
 export const Project = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
-
   let parsedDescription: any = null;
 
   // ✅ Determine whether to fetch "studies" or "entities" based on the URL
