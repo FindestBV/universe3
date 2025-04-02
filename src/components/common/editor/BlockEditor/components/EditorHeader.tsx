@@ -32,18 +32,14 @@ export const EditorHeader = ({ editor, collabState, users, documentId }: EditorH
 
   return (
     <div className="editorHeader">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <EditorInfo
-            characters={characters}
-            words={words}
-            collabState={collabState}
-            users={users}
-            id={documentId}
-            editor={editor}
-          />
-        </div>
-      </div>
+      <EditorInfo
+        editor={editor}
+        characters={characters}
+        words={words}
+        collabState={collabState}
+        users={users}
+        id={documentId}
+      />
     </div>
   );
 };

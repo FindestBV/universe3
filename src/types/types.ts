@@ -290,7 +290,7 @@ export interface GraphNode {
 }
 
 export interface BaseListResponse<T> {
-  pageItemCount: number;
+  pageCount: number;
   isLastPage: boolean;
   totalItemCount: number;
   items: T[];

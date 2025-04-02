@@ -11,6 +11,7 @@ import { useGetProjectPagesQuery } from "@/api/projects/projectApi";
 import { setError, setLoading, setPages } from "@/api/projects/projectSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -24,33 +25,14 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { useAppDispatch, useAppSelector } from "@/store";
 import type { PageListItem } from "@/types/types";
-import {
-  faBook,
-  faCube,
-  faFile,
-  faFileLines,
-  faHighlighter,
-  faPaperclip,
-} from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Filter,
-  List,
-  ListFilter,
-  Plus,
-  RadarIcon,
-  Star,
-} from "lucide-react";
+import { Filter, List, ListFilter, Plus, RadarIcon, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { useEffect, useState } from "react";
 
 import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
-import FilterSheet from "../dialogs/filter-sheet";
-import ReferencesSidebar from "../editor/BlockEditor/components/ReferencesSidebar";
 import FilterOptions from "../layout/filter-options";
 import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
@@ -204,63 +186,37 @@ export type ProjectPagesProps = {
 };
 
 export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
-  console.log("ProjectPages");
   const dispatch = useAppDispatch();
-  const navigateWithTransition = useNavigateWithTransition();
-  const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
-  const [isSideBarToggled, setIsSideBarToggled] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
-  const itemsPerPage = 100;
+  const itemsPerPage = 20;
 
-  console.log("projectId", projectId);
+  const { data: pagesData, isLoading } = useGetProjectPagesQuery({
+    projectId,
+    skip: (currentPage - 1) * itemsPerPage,
+    limit: itemsPerPage,
+  });
 
-  const {
-    data: pagesData,
-    isLoading,
-    error,
-  } = useGetProjectPagesQuery(
-    {
-      projectId: projectId || "",
-      skip: (currentPage - 1) * itemsPerPage,
-      limit: itemsPerPage,
-    },
-    { skip: !projectId },
-  );
-
-  // Debug logs for API call
-  useEffect(() => {
-    console.log("API call status:", {
-      projectId,
-      hasData: !!pagesData,
-      isLoading,
-      error,
-      currentPage,
-      itemsPerPage,
-    });
-  }, [pagesData, isLoading, error, projectId, currentPage, itemsPerPage]);
-
-  // Update store when data changes
+  // Update Redux store when data changes
   useEffect(() => {
     if (pagesData?.items) {
-      console.log("Updating store with items:", pagesData.items.length);
       dispatch(setPages(pagesData.items));
+      dispatch(setLoading(false));
     }
   }, [pagesData, dispatch]);
 
-  // Update loading state
+  // Handle error state
   useEffect(() => {
-    dispatch(setLoading(isLoading));
+    if (isLoading) {
+      dispatch(setLoading(true));
+    }
   }, [isLoading, dispatch]);
 
-  // Update error state
-  useEffect(() => {
-    if (error) {
-      dispatch(setError(error.toString()));
-    } else {
-      dispatch(setError(null));
-    }
-  }, [error, dispatch]);
+  const navigateWithTransition = useNavigateWithTransition();
+  const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
+  const [isSideBarToggled, setIsSideBarToggled] = useState<boolean>(false);
+  const [filterOpen, setIsFilterOpen] = useState<boolean>(false);
+  const [selectedDocs, setSelectedDocs] = useState<Set<string>>(new Set());
 
   const [tabs, setTabs] = useState([
     { id: "all", label: "All Page Types" },
@@ -325,6 +281,43 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
     setTabs((prevTabs) =>
       prevTabs.map((tab) => (tab.id === id ? { ...tab, label: newLabel } : tab)),
     );
+  };
+
+  // Checkbox Selects
+
+  const handleSelectDoc = (id: string, checked: boolean) => {
+    const newSelected = new Set(selectedDocs);
+    if (checked) {
+      newSelected.add(id);
+    } else {
+      newSelected.delete(id);
+    }
+    setSelectedDocs(newSelected);
+  };
+
+  const handleSelectItem = (id: string, event: React.ChangeEvent<HTMLInputElement> | boolean) => {
+    if (typeof event === "boolean") {
+      setSelectedItems((prev) => {
+        const newSet = new Set(prev);
+        if (event) {
+          newSet.add(id);
+        } else {
+          newSet.delete(id);
+        }
+        return newSet;
+      });
+    } else {
+      event.stopPropagation(); // Prevent navigation when clicking checkbox
+      setSelectedItems((prev) => {
+        const newSet = new Set(prev);
+        if (newSet.has(id)) {
+          newSet.delete(id);
+        } else {
+          newSet.add(id);
+        }
+        return newSet;
+      });
+    }
   };
 
   // Configuration Dialog Component
@@ -404,7 +397,7 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
     }
   };
 
-  // Add select all handler
+  // Add a handler for select all
   const handleSelectAll = () => {
     if (pagesData?.items) {
       if (selectedItems.size === pagesData.items.length) {
@@ -417,78 +410,58 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
     }
   };
 
-  // Add individual item selection handler
-  const handleSelectItem = (
-    id: string,
-    event: React.MouseEvent | React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    event.stopPropagation(); // Prevent navigation when clicking checkbox
-    setSelectedItems((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(id)) {
-        newSet.delete(id);
-      } else {
-        newSet.add(id);
-      }
-      return newSet;
-    });
-  };
-
-  // Update the Pagination component
-  const Pagination = () => {
-    console.log("Pagination render:", { pagesData, isLoading, currentPage, itemsPerPage });
-
-    // Show loading state
-    if (isLoading) {
+  // Inside the ProjectPages component
+  const renderPagination = () => {
+    if (!pagesData?.items || pagesData.items.length === 0) {
       return null;
     }
 
-    // Don't render if no data
-    if (!pagesData?.items || pagesData.totalItemCount === 0) {
-      console.log("No data to render pagination");
-      return null;
-    }
-
-    const totalItems = pagesData.totalItemCount;
-    const startItem = (currentPage - 1) * itemsPerPage + 1;
+    const pageNumber = currentPage;
 
     return (
-      <div className="mb-4 flex items-center justify-between border-b border-gray-200 pb-4">
+      <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={pagesData.items && selectedItems.size === pagesData.items.length}
-            onChange={handleSelectAll}
-            className="h-4 w-4 rounded-sm border border-gray-300"
+          <Checkbox
+            id="select-all"
+            checked={selectedItems.size > 0}
+            className="ml-4 h-4 w-4"
+            onCheckedChange={handleSelectAll}
           />
-          <span className="text-sm text-gray-600">Select all</span>
+          <Label htmlFor="select-all" className="text-md">
+            Select all
+          </Label>
         </div>
+
         <div className="flex items-center gap-4">
-          <span className="text-sm text-gray-600">
-            {startItem} out of {totalItems}
-          </span>
-          <div className="flex items-center gap-2">
+          <div className="text-sm text-slate-600">
+            {itemsPerPage * (currentPage - 1) + 1} -{" "}
+            {Math.min(itemsPerPage * currentPage, pagesData.totalItemCount)} of{" "}
+            {pagesData.totalItemCount}
+          </div>
+          <div className="flex items-center gap-1">
             <button
               onClick={handlePrevPage}
               disabled={currentPage === 1}
               className={`rounded-md p-1 ${
                 currentPage === 1
-                  ? "cursor-not-allowed text-gray-400"
-                  : "text-gray-700 hover:bg-gray-100"
+                  ? "cursor-not-allowed text-slate-300"
+                  : "text-slate-700 hover:bg-slate-100"
               }`}
+              aria-label="Previous page"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-5 w-5" />
             </button>
             <button
               onClick={handleNextPage}
               disabled={pagesData.isLastPage}
               className={`rounded-md p-1 ${
                 pagesData.isLastPage
-                  ? "cursor-not-allowed text-gray-400"
-                  : "text-gray-700 hover:bg-gray-100"
+                  ? "cursor-not-allowed text-slate-300"
+                  : "text-slate-700 hover:bg-slate-100"
               }`}
+              aria-label="Next page"
             >
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-5 w-5" />
             </button>
           </div>
         </div>
@@ -538,10 +511,13 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
                           {tabTypeOptions.map((option) => (
                             <button
                               key={option.id}
-                              className="flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-black hover:text-white"
-                              onClick={() => openTabConfigDialog(option)}
+                              className="group flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-black hover:text-white"
+                              onClick={() => {
+                                setSelectedTabType(option); // Set the selected tab type
+                                setIsConfigDialogOpen(true); // Open the configuration dialog
+                              }}
                             >
-                              <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black">
+                              <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black group-hover:text-white">
                                 {option.icon}
                               </span>
                               <span>{option.label}</span>
@@ -554,11 +530,14 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
                 </TooltipProvider>
               </div>
               <Button
-                onClick={() => setIsSideBarToggled((prevState) => !prevState)}
-                className="bg-slate-200"
+                onClick={() => {
+                  setIsSideBarToggled((prevState) => !prevState);
+                  setIsFilterOpen((prevState) => !prevState);
+                }}
+                className={`group ${filterOpen ? "bg-black" : "bg-slate-200"} hover:bg-black`}
               >
                 <Filter
-                  className={`${isSideBarToggled ? "fill-black" : "text-black hover:bg-gray-200 hover:text-white"} h-6 w-4`}
+                  className={`text-${filterOpen ? "white" : "black"} h-4 w-4 group-hover:stroke-white ${isSideBarToggled && "fill-black"}`}
                 />
               </Button>
 
@@ -579,7 +558,11 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className={`px-4 py-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-100 font-bold" : "text-black"}`}
+                      className={`px-4 py-2 text-sm transition-all duration-150 ${
+                        activeTabActive === tab.id
+                          ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
+                          : "text-black"
+                      }`}
                       onDoubleClick={() => renameTab(tab.id)}
                     >
                       {tab.label}
@@ -595,126 +578,94 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
                     key={tab.id}
                     value={tab.id}
                     className="mt-2 space-y-2 transition-all duration-150"
-                    forceMount={true}
                   >
-                    <div className="w-full">
-                      <div className="flex flex-col">
-                        <div className="pagination-container">
-                          <Pagination />
-                        </div>
-                        {isLoading ? (
-                          <div>Loading...</div>
-                        ) : (
-                          <>
-                            {filterPagesByType(pagesData?.items, tab.id)?.map(
-                              (page: PageListItem) => (
-                                <div
-                                  key={page.id}
-                                  className="itemCard cursor-pointer"
-                                  onClick={() => handleNavigateToPage(page)}
-                                >
+                    {isLoading ? (
+                      <div className="flex items-center justify-center py-8">
+                        <div className="text-sm text-slate-600">Loading...</div>
+                      </div>
+                    ) : (
+                      <>
+                        {/* Add pagination at the top of content */}
+                        {pagesData?.items && pagesData.items.length > 0 && renderPagination()}
+
+                        <div className="w-full">
+                          <div className="flex flex-col">
+                            {pagesData?.items
+                              .filter((page) => (tab.id === "all" ? true : tab.id === page.type))
+                              .map((page) => (
+                                <div key={page.id} className="itemCard">
                                   <div className="innerCardMain bg-white">
-                                    <input
-                                      type="checkbox"
-                                      checked={selectedItems.has(page.id)}
-                                      onChange={(e) => handleSelectItem(page.id, e)}
-                                      className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                    <Checkbox
                                       id={`card-${page.id}`}
+                                      checked={selectedItems.has(page.id)}
+                                      onCheckedChange={(checked) =>
+                                        handleSelectItem(page.id, checked as boolean)
+                                      }
+                                      className="innerCardCheckbox"
                                     />
                                     <div className="innerCardContent">
                                       <div className="innerCardContent__Detail">
                                         <div className="flex flex-col">
-                                          <h3 className="text-md overflow-hidden text-ellipsis py-0 font-bold text-black">
+                                          <h3 className="text-md overflow-hidden text-ellipsis py-0 text-sm font-bold text-black">
                                             {page.title}
                                           </h3>
                                         </div>
                                         <div className="innerCardContent__Links">
                                           <ul className="linkedCounts flex flex-wrap gap-2">
-                                            {page.linkedCounts && (
-                                              <>
-                                                {page.linkedCounts.documentCount > 0 && (
-                                                  <li
-                                                    className="linkedCounts__item documentCount"
-                                                    data-state="closed"
-                                                  >
-                                                    <FontAwesomeIcon
-                                                      icon={faFile}
-                                                      className="h-4 w-4"
-                                                    />
-                                                    {page.linkedCounts.documentCount}
-                                                  </li>
-                                                )}
-                                                {page.linkedCounts.studyCount > 0 && (
-                                                  <li
-                                                    className="linkedCounts__item studyCount"
-                                                    data-state="closed"
-                                                  >
-                                                    <FontAwesomeIcon
-                                                      icon={faBook}
-                                                      className="h-4 w-4"
-                                                    />
-                                                    {page.linkedCounts.studyCount}
-                                                  </li>
-                                                )}
-                                                {page.linkedCounts.entityCount > 0 && (
-                                                  <li
-                                                    className="linkedCounts__item entityCount"
-                                                    data-state="closed"
-                                                  >
-                                                    <FontAwesomeIcon
-                                                      icon={faCube}
-                                                      className="h-4 w-4"
-                                                    />
-                                                    {page.linkedCounts.entityCount}
-                                                  </li>
-                                                )}
-                                              </>
-                                            )}
+                                            <li className="linkedCounts__item documentCount">
+                                              <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="16"
+                                                height="16"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                className="lucide lucide-book-open-check"
+                                              >
+                                                <path d="M12 21V7"></path>
+                                                <path d="m16 12 2 2 4-4"></path>
+                                                <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
+                                              </svg>
+                                              {page.linkedCounts.documentCount}
+                                            </li>
+                                            <li className="linkedCounts__item studyCount">
+                                              <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="16"
+                                                height="16"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                className="lucide lucide-book-open-check"
+                                              >
+                                                <path d="M12 21V7"></path>
+                                                <path d="m16 12 2 2 4-4"></path>
+                                                <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
+                                              </svg>
+                                              {page.linkedCounts.studyCount}
+                                            </li>
                                           </ul>
                                         </div>
                                       </div>
                                       <div className="flex flex-row items-start gap-2">
                                         <div className="flex flex-row items-center gap-4">
                                           <div className="time">{formatDate(page.dateAdded)}</div>
-                                          <div className="text-xs text-gray-500">
-                                            by {page.createdByUsername}
-                                          </div>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
-                                  {page.isConnected && (
-                                    <div className="relative flex h-auto w-[25px]">
-                                      <div className="links">
-                                        <div className="linkToItem">
-                                          <a href="#" className="linkedStudy">
-                                            <svg
-                                              xmlns="http://www.w3.org/2000/svg"
-                                              width="14"
-                                              height="14"
-                                              viewBox="0 0 24 24"
-                                              fill="none"
-                                              stroke="currentColor"
-                                              strokeWidth="2"
-                                              strokeLinecap="round"
-                                              strokeLinejoin="round"
-                                              className="lucide lucide-link"
-                                            >
-                                              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                                              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-                                            </svg>
-                                          </a>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  )}
                                 </div>
-                              ),
-                            )}
-                          </>
-                        )}
-                      </div>
-                    </div>
+                              ))}
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </TabsContent>
                 ))}
               </div>

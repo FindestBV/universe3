@@ -20,6 +20,7 @@ import {
   Link,
   Link2,
   Network,
+  Pin,
   Plus,
   Search,
   SearchIcon,
@@ -319,12 +320,13 @@ export const Dashboard = () => {
 
                   {/* Project Structure Section */}
                   <div className="p-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="mb-4 transform-none text-xs font-bold tracking-tight">
+                    <div className="mb-4 flex items-center justify-between">
+                      <h3 className="transform-none text-xs font-bold tracking-tight">
                         Project structure
                       </h3>
                       <div>
                         <span className="ml-auto flex items-center gap-2">
+                          <Pin className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
                           <Network className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
                           <Plus className="rounded-sm bg-gray-100 p-1 text-gray-600 hover:bg-gray-200" />
                         </span>

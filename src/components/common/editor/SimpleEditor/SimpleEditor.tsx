@@ -1,4 +1,5 @@
 import { RootState, useAppSelector } from "@/store";
+import { WebSocketStatus } from "@hocuspocus/provider";
 import Highlight from "@tiptap/extension-highlight";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
@@ -35,6 +36,8 @@ interface SimpleEditorProps {
   onUpdate?: (content: any) => void;
   editable?: boolean;
   documentId?: string;
+  readOnly?: boolean;
+  hideMenus?: boolean;
 }
 
 const SimpleToolbarButton = ({
@@ -56,8 +59,16 @@ const SimpleToolbarButton = ({
   </button>
 );
 
-export const SimpleEditor = ({ content, onUpdate, documentId }: SimpleEditorProps) => {
-  const isEditing = useAppSelector((state: RootState) => state.document.isEditing);
+export const SimpleEditor = ({
+  content,
+  onUpdate,
+  documentId,
+  readOnly,
+  hideMenus,
+}: SimpleEditorProps) => {
+  const isEditing = readOnly
+    ? false
+    : useAppSelector((state: RootState) => state.document.isEditing);
   console.log("isEditing", isEditing);
   const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
@@ -78,7 +89,7 @@ export const SimpleEditor = ({ content, onUpdate, documentId }: SimpleEditorProp
       TableHeader,
     ],
     content: typeof content === "string" ? (content ? JSON.parse(content) : null) : content,
-    editable: isEditing,
+    editable: readOnly ? false : isEditing,
     onUpdate: ({ editor }) => {
       const json = editor.getJSON();
       onUpdate?.(json);
@@ -120,16 +131,18 @@ export const SimpleEditor = ({ content, onUpdate, documentId }: SimpleEditorProp
       className={`mainEditor h-full w-full rounded-md ${isEditing ? "prose-editor shadow-md" : ""}`}
     >
       <div className="relative flex min-h-[200px] flex-col">
-        <div className="h-[60px] border-b border-gray-200">
-          <div className="mx-12 flex flex-col py-2">
-            <EditorHeader
-              editor={editor}
-              documentId={documentId}
-              collabState="connected"
-              users={[]}
-            />
+        {!hideMenus && (
+          <div className="h-[60px] border-b border-gray-200">
+            <div className="mx-12 flex flex-col py-2">
+              <EditorHeader
+                editor={editor}
+                documentId={documentId}
+                collabState={WebSocketStatus.Connected}
+                users={[]}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         <EditorContent
           editor={editor}
