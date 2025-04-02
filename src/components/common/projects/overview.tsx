@@ -57,6 +57,7 @@ import {
   Telescope,
   Waves,
 } from "lucide-react";
+import { useFeature } from "use-feature";
 
 import { useCallback, useRef, useState } from "react";
 import { useEffect } from "react";
@@ -95,10 +96,20 @@ const ActivityItem = ({ title }: { title: string }) => (
     <div className="flex flex-col">
       <h3 className="text-sm font-semibold">{title}</h3>
     </div>
-    <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+    <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-100" />
   </div>
 );
+export const Flag = () => {
+  const flag = import.meta.env.VITE_POWER_USER_ONLY_FLAG;
+  const mast = import.meta.env.VITE_MY_FEATURE;
+  // console.log('mast', mast);
+  const showFeature = useFeature(flag, mast); // either pass a boolean as a second value or set an environment variable `MY_FEATURE=true`
 
+  console.log("flag", flag);
+  return showFeature ? (
+    <div className="h-auto w-full bg-blue-100 px-8 py-2 font-bold">{flag}</div>
+  ) : null;
+};
 /**
  * PresetButton component renders a button with a title and description.
  */
@@ -490,6 +501,8 @@ export const ProjectOverView = () => {
     >
       <div className="projects-overview min-h-full w-full" id="projects-overview">
         {isProjectsDashboard && <DevBanner />}
+        {/* 
+        <Flag /> */}
         <div className="mx-auto w-full p-8">
           <Tabs
             defaultValue={defaultTab}

@@ -5,6 +5,7 @@ import {
 } from "@/api/documents/documentApi";
 import { useGetProjectOverviewQuery } from "@/api/projects/projectApi";
 import { setCurrentProject, setTabs } from "@/api/projects/projectSlice";
+import DevBanner from "@/components/common/layout/dev-banner";
 import DocumentSkeleton from "@/components/common/loaders/document-skeleton";
 // Import TipTap Editor
 import { Dashboard } from "@/components/common/projects/dashboard";

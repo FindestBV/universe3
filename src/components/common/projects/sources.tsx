@@ -8,6 +8,7 @@
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
 import { useGetProjectSavedSourcesQuery } from "@/api/projects/projectApi";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -33,14 +34,15 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { Filter, List, ListFilter, Plus, RadarIcon, Search, Star } from "lucide-react";
+import { Filter, List, ListFilter, Plus, RadarIcon, Star } from "lucide-react";
 
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
 import AskIgorModal from "../dialogs/ask-igor";
-import FilterSheet from "../dialogs/filter-sheet";
+import FilterOptions from "../layout/filter-options";
+// import FilterSheet from "../dialogs/filter-sheet";
 import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
 import ResultsOverview from "./config/results-overview";
@@ -212,6 +214,7 @@ const defaultTabs: TabDefinition[] = [
 
 export const ProjectSources = () => {
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
+  const [isSideBarToggled, setIsSideBarToggled] = useState(false);
   const currentProject = useSelector((state: RootState) => state.project.currentProject);
   const [tabs, setTabs] = useState<TabDefinition[]>(defaultTabs);
 
@@ -331,23 +334,26 @@ export const ProjectSources = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
-      <div className="min-h-full" id="project-sources">
-        <div className="mx-auto max-w-full p-8">
+      <div className="flex min-h-full" id="project-sources">
+        <div
+          className={`${isSideBarToggled ? "w-3/4" : "w-full"} h-full p-8 transition-all duration-150 ease-in-out`}
+        >
           <div className="overviewHeader flex justify-between">
             <h1 className="mb-2 text-2xl font-bold">Sources</h1>
 
             <div className="project-controls flex items-center gap-4">
               <AdvancedSearchModal />
-              <FilterSheet />
+
               <div className="flex items-center gap-2">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <button
-                        className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
+                        className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 p-2 text-sm text-black transition-colors duration-200 hover:bg-black hover:text-white"
+                        // className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
                         id="addNewTabButton"
                       >
-                        <Plus className="h-5 w-5" />
+                        <Plus className="h-5 w-5" /> Add source
                       </button>
                     </TooltipTrigger>
                     <TooltipContent className="w-72 p-0" align="end">
@@ -372,7 +378,13 @@ export const ProjectSources = () => {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <AskIgorModal />
+              <Button onClick={() => setIsSideBarToggled((prevState) => !prevState)}>
+                <Filter
+                  className={`${isSideBarToggled ? "fill-black" : "bg-white text-black"} h-8 w-4`}
+                />
+              </Button>
+
+              <AskIgorModal iconOnly />
             </div>
           </div>
           <div className="mt-0">
@@ -383,7 +395,7 @@ export const ProjectSources = () => {
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className={`p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-50 font-bold" : "text-black"}`}
+                      className={`p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-100 font-bold" : "text-black"}`}
                       onDoubleClick={() => renameTab(tab.id)}
                     >
                       {tab.label}
@@ -574,6 +586,11 @@ export const ProjectSources = () => {
               </div>
             </Tabs>
           </div>
+        </div>
+        <div
+          className={`${isSideBarToggled ? "right-0 flex min-h-screen w-1/4 flex-col justify-between p-4" : "hidden w-0 p-0"} bg-slate-150 top-4 transition-all duration-150 ease-in-out`}
+        >
+          <FilterOptions />
         </div>
       </div>
 

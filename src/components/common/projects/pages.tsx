@@ -10,6 +10,7 @@
 import { useGetProjectPagesQuery } from "@/api/projects/projectApi";
 import { setError, setLoading, setPages } from "@/api/projects/projectSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -34,12 +35,23 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, List, ListFilter, Plus, RadarIcon, Star } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Filter,
+  List,
+  ListFilter,
+  Plus,
+  RadarIcon,
+  Star,
+} from "lucide-react";
 
 import { useEffect, useState } from "react";
 
 import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
 import FilterSheet from "../dialogs/filter-sheet";
+import ReferencesSidebar from "../editor/BlockEditor/components/ReferencesSidebar";
+import FilterOptions from "../layout/filter-options";
 import MaturityRadar from "./config/maturity-radar";
 import RequirementsTable from "./config/requirements-table";
 import ResultsOverview from "./config/results-overview";
@@ -109,7 +121,7 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
   return (
     <div>
       <DialogHeader className="pb-4">
-        <DialogTitle className="flex items-center gap-2 text-lg">
+        <DialogTitle className="flex items-center gap-2 text-sm">
           <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 text-blue-700">
             {selectedTabType.icon}
           </span>
@@ -196,8 +208,10 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
   const dispatch = useAppDispatch();
   const navigateWithTransition = useNavigateWithTransition();
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
+  const [isSideBarToggled, setIsSideBarToggled] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const itemsPerPage = 100;
 
   console.log("projectId", projectId);
 
@@ -214,9 +228,22 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
     { skip: !projectId },
   );
 
+  // Debug logs for API call
+  useEffect(() => {
+    console.log("API call status:", {
+      projectId,
+      hasData: !!pagesData,
+      isLoading,
+      error,
+      currentPage,
+      itemsPerPage,
+    });
+  }, [pagesData, isLoading, error, projectId, currentPage, itemsPerPage]);
+
   // Update store when data changes
   useEffect(() => {
     if (pagesData?.items) {
+      console.log("Updating store with items:", pagesData.items.length);
       dispatch(setPages(pagesData.items));
     }
   }, [pagesData, dispatch]);
@@ -377,45 +404,93 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
     }
   };
 
-  // Pagination component
-  const Pagination = () => {
-    if (!pagesData || pagesData.totalItemCount === 0) return null;
+  // Add select all handler
+  const handleSelectAll = () => {
+    if (pagesData?.items) {
+      if (selectedItems.size === pagesData.items.length) {
+        // If all items are selected, unselect all
+        setSelectedItems(new Set());
+      } else {
+        // Otherwise, select all items
+        setSelectedItems(new Set(pagesData.items.map((item) => item.id)));
+      }
+    }
+  };
 
-    const totalPages = Math.ceil(pagesData.totalItemCount / itemsPerPage);
+  // Add individual item selection handler
+  const handleSelectItem = (
+    id: string,
+    event: React.MouseEvent | React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    event.stopPropagation(); // Prevent navigation when clicking checkbox
+    setSelectedItems((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
+
+  // Update the Pagination component
+  const Pagination = () => {
+    console.log("Pagination render:", { pagesData, isLoading, currentPage, itemsPerPage });
+
+    // Show loading state
+    if (isLoading) {
+      return null;
+    }
+
+    // Don't render if no data
+    if (!pagesData?.items || pagesData.totalItemCount === 0) {
+      console.log("No data to render pagination");
+      return null;
+    }
+
+    const totalItems = pagesData.totalItemCount;
     const startItem = (currentPage - 1) * itemsPerPage + 1;
-    const endItem = Math.min(currentPage * itemsPerPage, pagesData.totalItemCount);
 
     return (
-      <div className="mt-4 flex items-center justify-end gap-4 px-4">
-        <span className="text-sm text-gray-600">
-          {startItem}-{endItem} of {pagesData.totalItemCount} items
-        </span>
+      <div className="mb-4 flex items-center justify-between border-b border-gray-200 pb-4">
         <div className="flex items-center gap-2">
-          <button
-            onClick={handlePrevPage}
-            disabled={currentPage === 1}
-            className={`rounded-md p-2 ${
-              currentPage === 1
-                ? "cursor-not-allowed text-gray-400"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <span className="text-sm font-medium">
-            Page {currentPage} of {totalPages}
+          <input
+            type="checkbox"
+            checked={pagesData.items && selectedItems.size === pagesData.items.length}
+            onChange={handleSelectAll}
+            className="h-4 w-4 rounded-sm border border-gray-300"
+          />
+          <span className="text-sm text-gray-600">Select all</span>
+        </div>
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-gray-600">
+            {startItem} out of {totalItems}
           </span>
-          <button
-            onClick={handleNextPage}
-            disabled={pagesData.isLastPage}
-            className={`rounded-md p-2 ${
-              pagesData.isLastPage
-                ? "cursor-not-allowed text-gray-400"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+              className={`rounded-md p-1 ${
+                currentPage === 1
+                  ? "cursor-not-allowed text-gray-400"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              onClick={handleNextPage}
+              disabled={pagesData.isLastPage}
+              className={`rounded-md p-1 ${
+                pagesData.isLastPage
+                  ? "cursor-not-allowed text-gray-400"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -436,23 +511,24 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
     >
-      <div className="min-h-full" id="projects-pages">
-        <div className="mx-auto w-full p-8">
+      <div className="flex min-h-full" id="projects-pages">
+        <div
+          className={`${isSideBarToggled ? "w-3/4" : "w-full"} h-full p-8 transition-all duration-150 ease-in-out`}
+        >
           <div className="overviewHeader flex justify-between">
-            <h1 className="mb-2 text-2xl font-bold">Pages11</h1>
+            <h1 className="mb-2 text-2xl font-bold">Pages</h1>
 
-            <div className="project-controls flex items-center gap-4">
+            <div className="project-controls flex items-center gap-2">
               <AdvancedSearchModal />
-              <FilterSheet />
               <div className="flex items-center gap-2">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <button
-                        className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
+                        className="flex items-center gap-1 rounded bg-slate-200 p-2 text-sm text-black transition-colors duration-150 hover:border-black hover:bg-black hover:text-white"
                         id="addNewTabButton"
                       >
-                        <Plus className="h-5 w-5" />
+                        <Plus className="h-4 w-4" /> Add page
                       </button>
                     </TooltipTrigger>
                     <TooltipContent className="w-72 p-0" align="end">
@@ -462,7 +538,7 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
                           {tabTypeOptions.map((option) => (
                             <button
                               key={option.id}
-                              className="flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-slate-100"
+                              className="flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-black hover:text-white"
                               onClick={() => openTabConfigDialog(option)}
                             >
                               <span className="flex h-6 w-6 items-center justify-center rounded-md fill-current text-black">
@@ -477,18 +553,33 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <AskIgorModal />
+              <Button
+                onClick={() => setIsSideBarToggled((prevState) => !prevState)}
+                className="bg-slate-200"
+              >
+                <Filter
+                  className={`${isSideBarToggled ? "fill-black" : "text-black hover:bg-gray-200 hover:text-white"} h-6 w-4`}
+                />
+              </Button>
+
+              <AskIgorModal iconOnly />
             </div>
           </div>
+
           <div className="mt-0">
-            <Tabs defaultValue="all" className="pb-4" onValueChange={setIsActiveTabActive}>
+            <Tabs
+              value={activeTabActive}
+              defaultValue="all"
+              className="pb-4"
+              onValueChange={setIsActiveTabActive}
+            >
               <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
                 <div className="flex gap-2">
                   {tabs.map((tab) => (
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className={`px-4 py-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-50 font-bold" : "text-black"}`}
+                      className={`px-4 py-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-100 font-bold" : "text-black"}`}
                       onDoubleClick={() => renameTab(tab.id)}
                     >
                       {tab.label}
@@ -504,9 +595,13 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
                     key={tab.id}
                     value={tab.id}
                     className="mt-2 space-y-2 transition-all duration-150"
+                    forceMount={true}
                   >
                     <div className="w-full">
                       <div className="flex flex-col">
+                        <div className="pagination-container">
+                          <Pagination />
+                        </div>
                         {isLoading ? (
                           <div>Loading...</div>
                         ) : (
@@ -519,12 +614,10 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
                                   onClick={() => handleNavigateToPage(page)}
                                 >
                                   <div className="innerCardMain bg-white">
-                                    <button
-                                      type="button"
-                                      role="checkbox"
-                                      aria-checked="false"
-                                      data-state="unchecked"
-                                      value="on"
+                                    <input
+                                      type="checkbox"
+                                      checked={selectedItems.has(page.id)}
+                                      onChange={(e) => handleSelectItem(page.id, e)}
                                       className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                                       id={`card-${page.id}`}
                                     />
@@ -618,7 +711,6 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
                                 </div>
                               ),
                             )}
-                            <Pagination />
                           </>
                         )}
                       </div>
@@ -628,6 +720,11 @@ export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
               </div>
             </Tabs>
           </div>
+        </div>
+        <div
+          className={`${isSideBarToggled ? "right-0 flex min-h-screen w-1/4 flex-col justify-between p-4" : "hidden w-0 p-0"} bg-slate-150 top-4 transition-all duration-150 ease-in-out`}
+        >
+          <FilterOptions />
         </div>
       </div>
     </motion.div>
