@@ -180,12 +180,13 @@ export const EditorInfo = memo(({ id, editor }: EditorInfoProps) => {
 
   return (
     <div className="flex w-full items-center justify-between">
-      <div className="mr-4 flex flex-row items-center justify-center gap-2 text-right dark:border-neutral-200">
+      <div className="mr-4 flex flex-row items-center justify-center gap-2 text-right">
         <ViewEditSwitch id={id} />
         {/* <AskIgorModal isToolbar={true} iconOnly /> */}
         {isEditing && !isLocked ? (
           <>
             <AskIgorModal isToolbar={true} iconOnly />
+            <span className="mx-4 h-6 border-l border-gray-300"></span>
             <div className="flex items-center justify-between">
               <DropdownMenu onOpenChange={(open) => setIsDropdownOpen(open)} className="ml-4">
                 <DropdownMenuTrigger asChild>

@@ -537,7 +537,7 @@ export const BlockEditor = ({
               className={`mainEditor h-full w-full rounded-md bg-white shadow-md ${isEditing ? "prose-editor" : ""}`}
               id="mainEditorStart"
             >
-              <div className="mx-12 flex flex-col pt-10">
+              <div className="mx-12 flex flex-col pt-7">
                 <EditorHeader
                   editor={editor}
                   collabState={collabState}
