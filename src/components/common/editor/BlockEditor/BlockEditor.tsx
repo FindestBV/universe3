@@ -25,6 +25,7 @@ import {
   Network,
   Pin,
   Plus,
+  Search,
   SearchIcon,
   Settings,
   Telescope,
@@ -560,7 +561,15 @@ export const BlockEditor = ({
                       ? title
                       : "CN109368873A - 一种风电互补海水淡化系统 <br /> - Google Patents."}
                   </h1>
+
+                  {/* ENTIRE BUTTON SECTION NEEDS TO BE REFATORED AS DIALOGS */}
                   <div className="flex items-center gap-2 text-sm text-gray-500 max-sm:flex-col max-sm:items-start">
+                    <button
+                      className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-1 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
+                      onClick={() => navigateWithTransition("/projects/dashboard")}
+                    >
+                      <Search className="p-1" /> Find papers
+                    </button>
                     <button
                       className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-1 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
                       onClick={() => navigateWithTransition("/projects/dashboard")}
