@@ -2,7 +2,7 @@
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
 // import LockPageConfirm from "@/components/common/dialogs/lock-page-confirm";
 import { Button } from "@/components/ui/button";
-import { RootState } from "@/store";
+import { RootState, useAppSelector } from "@/store";
 import { WebSocketStatus } from "@hocuspocus/provider";
 import {
   DropdownMenu,
@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
+import { Editor } from "@tiptap/react";
 import {
   Bold,
   ChevronDown,
@@ -48,7 +49,7 @@ export type EditorInfoProps = {
 export const EditorInfo = memo(({ id, editor }: EditorInfoProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isPinned, setIsPinned] = useState<boolean>(false);
-  const isEditing = useSelector((state: RootState) => state.document.isEditing);
+  const isEditing = useAppSelector((state: RootState) => state.document.isEditing);
   const isLocked = useSelector((state: RootState) => state.document.isLocked);
   // const dispatch = useDispatch();
 
@@ -91,32 +92,42 @@ export const EditorInfo = memo(({ id, editor }: EditorInfoProps) => {
   const formattingButtons = [
     {
       label: "Link",
-      command: () => editor.chain().focus().toggleBold().run(),
+      command: () => {
+        const url = window.prompt("Enter link URL:");
+        if (url) {
+          editor.chain().focus().setLink({ href: url }).run();
+        }
+      },
       isActive: editor.isActive("link"),
       icon: <Link size={16} />,
     },
     {
       label: "Image",
-      command: () => editor.chain().focus().toggleImage().run(),
+      command: () => {
+        const url = window.prompt("Enter image URL:");
+        if (url) {
+          editor.chain().focus().setImage({ src: url }).run();
+        }
+      },
       isActive: editor.isActive("image"),
       icon: <ImagePlus size={16} />,
     },
     {
-      label: "File",
-      command: () => editor.chain().focus().toggleFile().run(),
-      isActive: editor.isActive("file"),
-      icon: <Paperclip size={16} />,
-    },
-    {
       label: "Table",
-      command: () => editor.chain().focus().toggleTable().run(),
+      command: () => {
+        editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+      },
       isActive: editor.isActive("table"),
       icon: <Grid2x2 size={16} />,
     },
     {
       label: "Advanced",
-      command: () => editor.chain().focus().toggleTable().run(),
-      isActive: editor.isActive("advanced"),
+      command: () => {
+        // Add your advanced formatting options here
+        const json = editor.getJSON();
+        console.log("Current editor content:", json);
+      },
+      isActive: false,
       icon: <SquarePlus size={16} />,
     },
   ];
@@ -174,7 +185,7 @@ export const EditorInfo = memo(({ id, editor }: EditorInfoProps) => {
     },
   ];
 
-  const togglePin = (id) => {
+  const togglePin = (pinId: string) => {
     setIsPinned(!isPinned);
   };
 

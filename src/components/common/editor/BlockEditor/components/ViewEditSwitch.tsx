@@ -3,36 +3,38 @@ import { RootState } from "@/store";
 import { Eye, Pen } from "lucide-react";
 
 import { useState } from "react";
-// Replace with the actual imports if different
 import { useDispatch, useSelector } from "react-redux";
 
-const ViewEditSwitch = ({ id }) => {
+interface ViewEditSwitchProps {
+  id?: string;
+  editor?: Editor;
+}
+
+const ViewEditSwitch = ({ id, editor }: ViewEditSwitchProps) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
-
   const dispatch = useDispatch();
 
   const handleEditStart = () => {
-    setIsEditMode((prev) => !prev);
-    // Validate `id`
     if (!id || typeof id !== "string") {
       console.error("Invalid document ID provided:", id);
       return;
     }
 
-    // Dispatch with the correct payload
+    setIsEditMode(true);
     dispatch(setEditingState({ isEditing: true, documentId: id }));
+    editor?.setEditable(true);
   };
 
   const handleStopEditing = () => {
-    setIsEditMode((prev) => !prev);
-    // Validate `id`
     if (!id || typeof id !== "string") {
       console.error("Invalid document ID provided:", id);
       return;
     }
 
+    setIsEditMode(false);
     dispatch(setEditingState({ isEditing: false, documentId: id }));
+    editor?.setEditable(false);
   };
 
   return (

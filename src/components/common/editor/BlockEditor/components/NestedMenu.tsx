@@ -1,12 +1,16 @@
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
+import type { GraphNode } from "@/types/types";
 import { ChevronDown, ChevronRight, Circle } from "lucide-react";
 
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface MenuItem {
   label: string;
   children?: MenuItem[];
+  id?: string;
+  objectType?: number;
 }
 
 interface MenuItemProps {
@@ -14,15 +18,34 @@ interface MenuItemProps {
   level?: number;
 }
 
+interface NestedMenuProps {
+  projectStructure?: GraphNode[];
+}
+
 const MenuItemComponent: React.FC<MenuItemProps> = ({ item, level = 0 }) => {
   const [isOpen, setIsOpen] = useState(true);
   const hasChildren = item.children && item.children.length > 0;
+  const navigate = useNavigate();
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (item.id && item.objectType) {
+      if (item.objectType === 4) {
+        navigate(`/pages/studies/${item.id}`);
+      } else if (item.objectType === 1) {
+        navigate(`/pages/entities/${item.id}`);
+      }
+    }
+  };
 
   return (
     <li className="relative">
       {level > 0 && <div className="absolute left-[-20px] top-0 h-full w-[2px] bg-gray-200" />}
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <CollapsibleTrigger className="relative flex w-full items-center gap-1 rounded-md py-2 transition-colors hover:bg-black hover:text-white">
+        <CollapsibleTrigger
+          className="relative flex w-full items-center gap-1 rounded-md py-2 transition-colors hover:bg-black hover:text-white"
+          onClick={handleClick}
+        >
           {level > 0 && (
             <div className="absolute left-[-20px] top-1/2 h-[2px] w-[20px] bg-gray-200" />
           )}
@@ -39,7 +62,7 @@ const MenuItemComponent: React.FC<MenuItemProps> = ({ item, level = 0 }) => {
           </div>
           <span className="text-sm font-medium">{item.label}</span>
         </CollapsibleTrigger>
-        {hasChildren && (
+        {hasChildren && item.children && (
           <CollapsibleContent>
             <ul className="relative ml-6">
               {item.children.map((child, index) => (
@@ -53,54 +76,23 @@ const MenuItemComponent: React.FC<MenuItemProps> = ({ item, level = 0 }) => {
   );
 };
 
-export const NestedMenu = () => {
-  const menuItems: MenuItem[] = [
-    {
-      label: "Carbon Capture Overview",
-      children: [
-        { label: "Introduction to Carbon Capture" },
-        { label: "Historical Development" },
-        {
-          label: "Types of Carbon Capture",
-          children: [{ label: "Post-combustion Capture" }, { label: "Oxy-fuel Combustion" }],
-        },
-      ],
-    },
-    {
-      label: "Direct Air Capture (DAC)",
-      children: [
-        { label: "DAC Technology Fundamentals" },
-        { label: "Current DAC Projects" },
-        {
-          label: "DAC Methods",
-          children: [
-            { label: "Liquid Solvent Systems" },
-            { label: "Solid Sorbent Systems" },
-            { label: "Membrane Separation" },
-          ],
-        },
-      ],
-    },
-    {
-      label: "Carbon Storage",
-      children: [{ label: "Ocean Storage" }, { label: "Mineral Carbonation" }],
-    },
-    {
-      label: "Environmental Impact",
-      children: [
-        { label: "Ecological Considerations" },
-        { label: "Carbon Footprint Analysis" },
-        {
-          label: "Risk Assessment",
-          children: [
-            { label: "Leakage Risks" },
-            { label: "Monitoring Methods" },
-            { label: "Safety Protocols" },
-          ],
-        },
-      ],
-    },
-  ];
+export const NestedMenu: React.FC<NestedMenuProps> = ({ projectStructure = [] }) => {
+  // Convert GraphNode[] to MenuItem[]
+  const convertGraphNodeToMenuItem = (node: GraphNode): MenuItem => {
+    const children: MenuItem[] = [
+      ...(node.lowerLevelNodes || []).map(convertGraphNodeToMenuItem),
+      ...(node.otherUpperLevelNodes || []).map(convertGraphNodeToMenuItem),
+    ];
+
+    return {
+      label: `${node.name}${node.customTypeName ? ` (${node.customTypeName})` : ""}`,
+      children: children.length > 0 ? children : undefined,
+      id: node.id,
+      objectType: node.objectType,
+    };
+  };
+
+  const menuItems: MenuItem[] = projectStructure.map(convertGraphNodeToMenuItem);
 
   return (
     <div className="w-full">

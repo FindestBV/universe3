@@ -1,8 +1,9 @@
 import ItemCard from "@/components/common/cards/item-card";
 import DocumentsSkeleton from "@/components/common/loaders/documents-skeleton";
 import { CardContent } from "@/components/ui/card";
+import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import { useGetEntitiesQuery, useGetStudiesQuery } from "../api/documents/documentApi";
@@ -10,6 +11,7 @@ import { useGetEntitiesQuery, useGetStudiesQuery } from "../api/documents/docume
 export const Pages = () => {
   const location = useLocation();
   const pageType = location.pathname.split("/").pop() || "entities";
+  const navigateWithTransition = useNavigateWithTransition();
 
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,6 +32,26 @@ export const Pages = () => {
 
   const { data, isLoading, isError, error, refetch } =
     pageType === "entities" ? entitiesQuery : studiesQuery;
+
+  const handleNavigateToEntities = useCallback(
+    (type: string, id: string) => {
+      let route = "/projects";
+
+      switch (type.toLowerCase()) {
+        case "entity":
+          route = `/pages/entities/${id}`;
+          break;
+        case "study":
+          route = `/pages/studies/${id}`;
+          break;
+        default:
+          route = `/projects/${id}`;
+      }
+
+      navigateWithTransition(route);
+    },
+    [navigateWithTransition],
+  );
 
   const handleSelectItem = (id: string, checked: boolean) => {
     const newSelected = new Set(selectedItems);
@@ -89,6 +111,9 @@ export const Pages = () => {
                   {...item}
                   isSelected={selectedItems.has(item.id)}
                   onSelect={handleSelectItem}
+                  onClick={() =>
+                    handleNavigateToEntities(pageType === "entities" ? "entity" : "study", item.id)
+                  }
                 />
               ))}
           </div>

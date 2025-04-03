@@ -5,9 +5,17 @@
  */
 import { useGetLinkingQuery, useGetMyRecentActivityQuery } from "@/api/activity/activityApi";
 import { useGetStudyByIdQuery } from "@/api/documents/documentApi";
+import {
+  useGetProjectRecentActivitiesQuery,
+  useUpdateProjectMutation,
+  useUpdateTabContentMutation,
+} from "@/api/projects/projectApi";
+import { setRecentActivities } from "@/api/projects/projectSlice";
 import ConnectQuery from "@/components/common/dialogs/connect-query";
 import CreateItemModal from "@/components/common/dialogs/create-item-dialog";
 import CreateProjectDialog from "@/components/common/dialogs/create-project-dialog";
+import { EditorHeader } from "@/components/common/editor/BlockEditor/components/EditorHeader";
+import { SimpleEditor } from "@/components/common/editor/SimpleEditor/SimpleEditor";
 import { DevBanner } from "@/components/common/layout/dev-banner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -18,12 +26,16 @@ import { Input } from "@/components/ui/input";
 // import ResultsOverview from "./config/results-overview";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { faPenToSquare } from "@fortawesome/pro-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
 import { ChevronRight, Hand, List, ListFilter, Loader, Plus, RadarIcon, Star } from "lucide-react";
 import { useFeature } from "use-feature";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 
 import VotingCard from "../cards/voting-card";
@@ -62,102 +74,6 @@ const ActivityItem = ({ title }: { title: string }) => (
     <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-100" />
   </div>
 );
-
-const dummyData = [
-  {
-    customTypeName: null,
-    dateAdded: "2022-11-07T09:15:31.335927",
-    id: "1",
-    lowerLevelNodes: [
-      {
-        customTypeName: null,
-        dateAdded: "2022-11-07T09:15:31.335927",
-        id: "2",
-        lowerLevelNodes: [{ id: 4 }, { id: 5 }],
-        name: "Child A",
-        objectType: 1,
-        otherUpperLevelNodes: [],
-        type: "Technology",
-      },
-      {
-        customTypeName: null,
-        dateAdded: "2022-11-07T09:15:31.335927",
-        id: "3",
-        lowerLevelNodes: [],
-        name: "Child B",
-        objectType: 1,
-        otherUpperLevelNodes: [],
-        type: "Technology",
-      },
-    ],
-    name: "Root",
-    objectType: 1,
-    otherUpperLevelNodes: [],
-    type: "Technology",
-  },
-  {
-    customTypeName: null,
-    dateAdded: "2022-11-07T09:15:31.335927",
-    id: "2",
-    lowerLevelNodes: [
-      {
-        customTypeName: null,
-        dateAdded: "2022-11-07T09:15:31.335927",
-        id: "4",
-        lowerLevelNodes: [],
-        name: "Leaf A1",
-        objectType: 1,
-        otherUpperLevelNodes: [],
-        type: "Technology",
-      },
-      {
-        customTypeName: null,
-        dateAdded: "2022-11-07T09:15:31.335927",
-        id: "5",
-        lowerLevelNodes: [],
-        name: "Leaf A2",
-        objectType: 1,
-        otherUpperLevelNodes: [],
-        type: "Technology",
-      },
-    ],
-    name: "Child A",
-    objectType: 1,
-    otherUpperLevelNodes: [],
-    type: "Technology",
-  },
-  {
-    customTypeName: null,
-    dateAdded: "2022-11-07T09:15:31.335927",
-    id: "3",
-    lowerLevelNodes: [],
-    name: "Child B",
-    objectType: 1,
-    otherUpperLevelNodes: [],
-    type: "Technology",
-  },
-  {
-    customTypeName: null,
-    dateAdded: "2022-11-07T09:15:31.335927",
-    id: "4",
-    lowerLevelNodes: [],
-    name: "Leaf A1",
-    objectType: 1,
-    otherUpperLevelNodes: [],
-    type: "Technology",
-  },
-  {
-    customTypeName: null,
-    dateAdded: "2022-11-07T09:15:31.335927",
-    id: "5",
-    lowerLevelNodes: [],
-    name: "Leaf A2",
-    objectType: 1,
-    otherUpperLevelNodes: [],
-    type: "Technology",
-  },
-];
-
 export const Flag = () => {
   const flag = import.meta.env.VITE_POWER_USER_ONLY_FLAG;
   const mast = import.meta.env.VITE_MY_FEATURE;
@@ -169,7 +85,6 @@ export const Flag = () => {
     <div className="h-auto w-full bg-blue-100 px-8 py-2 font-bold">{flag}</div>
   ) : null;
 };
-
 /**
  * PresetButton component renders a button with a title and description.
  */
@@ -198,7 +113,12 @@ function PresetButton({
 }
 
 // Tab type options
-type TabOptionType = "technologies" | "results" | "requirements" | "maturity";
+type TabOptionType =
+  | "OVERVIEW"
+  | "TECHNOLOGY_LIST"
+  | "RESULT_OVERVIEW_TABLE"
+  | "REQUIREMENTS_TABLE"
+  | "MATURITY_RADAR";
 
 // Configuration for each tab type
 interface TabTypeConfig {
@@ -206,29 +126,36 @@ interface TabTypeConfig {
   label: string;
   icon: React.ReactNode;
   description: string;
+  type?: string;
 }
 
 const tabTypeOptions: TabTypeConfig[] = [
   {
-    id: "technologies",
+    id: "OVERVIEW",
+    label: "Overview",
+    icon: <List className="h-4 w-4" />,
+    description: "Project overview and general information.",
+  },
+  {
+    id: "TECHNOLOGY_LIST",
     label: "List of technologies",
     icon: <List className="h-4 w-4" />,
     description: "Create a comprehensive list of technologies related to your project.",
   },
   {
-    id: "results",
+    id: "RESULT_OVERVIEW_TABLE",
     label: "Results overview table",
     icon: <Star className="h-4 w-4" />,
     description: "Generate a table summarizing key results and findings.",
   },
   {
-    id: "requirements",
+    id: "REQUIREMENTS_TABLE",
     label: "Requirements table",
     icon: <ListFilter className="h-4 w-4" />,
     description: "Create a structured table of project requirements.",
   },
   {
-    id: "maturity",
+    id: "MATURITY_RADAR",
     label: "Maturity radar",
     icon: <RadarIcon className="h-4 w-4" />,
     description: "Visualize the maturity levels across different dimensions.",
@@ -276,9 +203,13 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
             onChange={(e) => handleInputChange("tabName", e.target.value)}
           />
         </div>
-        {/* Additional fields based on selected tab type */}
-        {selectedTabType.id === "technologies" && (
-          <div className="flex items-center gap-4">
+
+        {/* Dynamic form fields based on the selected tab type */}
+        {selectedTabType.id === "TECHNOLOGY_LIST" && (
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="techKeywords" className="text-right text-sm font-medium text-slate-700">
+              Keywords
+            </Label>
             <Input
               id="technologyDescription"
               placeholder="Enter a description for the technology"
@@ -288,7 +219,60 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
             />
           </div>
         )}
-        {/* Add more fields for other tab types as needed */}
+
+        {selectedTabType.id === "RESULT_OVERVIEW_TABLE" && (
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label
+              htmlFor="resultColumns"
+              className="text-right text-sm font-medium text-slate-700"
+            >
+              Columns
+            </Label>
+            <Input
+              id="resultColumns"
+              placeholder="Enter column names separated by commas"
+              className="col-span-3 rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm"
+              value={formData.resultColumns || ""}
+              onChange={(e) => handleInputChange("resultColumns", e.target.value)}
+            />
+          </div>
+        )}
+
+        {selectedTabType.id === "REQUIREMENTS_TABLE" && (
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label
+              htmlFor="reqCategories"
+              className="text-right text-sm font-medium text-slate-700"
+            >
+              Categories
+            </Label>
+            <Input
+              id="reqCategories"
+              placeholder="Enter requirement categories"
+              className="col-span-3 rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm"
+              value={formData.reqCategories || ""}
+              onChange={(e) => handleInputChange("reqCategories", e.target.value)}
+            />
+          </div>
+        )}
+
+        {selectedTabType.id === "MATURITY_RADAR" && (
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label
+              htmlFor="maturityDimensions"
+              className="text-right text-sm font-medium text-slate-700"
+            >
+              Dimensions
+            </Label>
+            <Input
+              id="maturityDimensions"
+              placeholder="Enter maturity dimensions"
+              className="col-span-3 rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm"
+              value={formData.maturityDimensions || ""}
+              onChange={(e) => handleInputChange("maturityDimensions", e.target.value)}
+            />
+          </div>
+        )}
       </div>
       <div className="flex justify-end gap-2 border-t border-slate-200 pt-4">
         <Button
@@ -311,24 +295,39 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
 
 export const ProjectOverView = () => {
   const { id } = useParams<{ id: string }>();
-  const [tabs, setTabs] = useState([
-    { id: "overview", label: "Overview" },
-    { id: "technologies", label: "Technologies" },
-    // { id: "queries", label: "Queries" },
-  ]);
+  const dispatch = useAppDispatch();
+  const [updateTabContent] = useUpdateTabContentMutation();
 
-  const [activeTabActive, setIsActiveTabActive] = useState<string>("overview");
+  // Get project data from Redux store
+  const { currentProject, pages, tabs, activeTabId, isLoading, error, recentActivities } =
+    useAppSelector((state) => state.project);
+
+  // Fetch recent activities
+  const { data: projectRecentActivities, isLoading: activitiesLoading } =
+    useGetProjectRecentActivitiesQuery(id || "");
+
+  useEffect(() => {
+    if (projectRecentActivities) {
+      dispatch(setRecentActivities(projectRecentActivities));
+    }
+  }, [projectRecentActivities]);
+
+  // Sort tabs by order and find default tab
+  const sortedTabs = [...(tabs || [])].sort((a, b) => a.order - b.order);
+  const defaultTab = sortedTabs.find((tab) => tab.isDefault)?.id || sortedTabs[0]?.id || "OVERVIEW";
+  const [activeTabActive, setIsActiveTabActive] = useState<string>(defaultTab);
   const [activeSubTabActive, setIsActiveSubTabActive] = useState<string>("pages");
   const location = useLocation();
   const currentPath = location.pathname;
   const navigateWithTransition = useNavigateWithTransition();
-
-  const { data: activityData, isLoading: activityDataIsLoading } = useGetMyRecentActivityQuery();
   const { data: linkingData } = useGetLinkingQuery();
-  const { data: pageData } = useGetStudyByIdQuery(id);
   const isProjectsDashboard = currentPath.includes("/projects/dashboard");
+
+  // State for the configuration dialog
   const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
   const [selectedTabType, setSelectedTabType] = useState<TabTypeConfig | null>(null);
+  const menuContainerRef = useRef<HTMLDivElement>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   // Function to handle configuration form submission
   const handleConfigSubmit = (formData: Record<string, string>) => {
@@ -338,7 +337,7 @@ export const ProjectOverView = () => {
     const newId = selectedTabType.id + "-" + Date.now();
     const newLabel = formData.tabName || selectedTabType.label;
 
-    setTabs([...tabs, { id: newId, label: newLabel }]);
+    // setTabs([...tabs, { id: newId, label: newLabel }]);
     setIsActiveTabActive(newId);
 
     setIsConfigDialogOpen(false);
@@ -347,6 +346,16 @@ export const ProjectOverView = () => {
   // Function to handle dialog cancellation
   const handleDialogCancel = () => {
     setIsConfigDialogOpen(false);
+  };
+
+  // Function to rename an existing tab
+  const renameTab = (id: string) => {
+    const newLabel = window.prompt("Rename this tab:");
+    if (!newLabel) return;
+
+    // setTabs((prevTabs) =>
+    //   prevTabs.map((tab) => (tab.id === id ? { ...tab, label: newLabel } : tab)),
+    // );
   };
 
   // Function to navigate to entities with view transitions - optimized with useCallback
@@ -383,8 +392,8 @@ export const ProjectOverView = () => {
   const TabConfigurationDialog = () => {
     if (!selectedTabType) return null;
 
-    // If the selected type is "requirements", render the RequirementsTable component
-    if (selectedTabType.id === "requirements") {
+    // If the selected type is "REQUIREMENTS_TABLE", render the RequirementsTable component
+    if (selectedTabType.type === "REQUIREMENTS_TABLE") {
       return (
         <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
           <DialogContent className="flex h-screen max-h-full w-screen max-w-full flex-col border-0 bg-transparent p-0 shadow-none">
@@ -397,7 +406,7 @@ export const ProjectOverView = () => {
       );
     }
 
-    if (selectedTabType.id === "maturity") {
+    if (selectedTabType.type === "MATURITY_RADAR") {
       return (
         <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
           <DialogContent className="flex h-screen max-h-full w-screen max-w-full flex-col border-0 bg-transparent p-0 shadow-none">
@@ -410,7 +419,7 @@ export const ProjectOverView = () => {
       );
     }
 
-    if (selectedTabType.id === "results") {
+    if (selectedTabType.type === "RESULT_OVERVIEW_TABLE") {
       return (
         <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
           <DialogContent className="flex h-screen max-h-full w-screen max-w-full flex-col border-0 bg-transparent p-0 shadow-none">
@@ -450,20 +459,21 @@ export const ProjectOverView = () => {
         <Flag /> */}
         <div className="mx-auto w-full p-8">
           <Tabs
-            defaultValue="overview"
+            defaultValue={defaultTab}
+            value={activeTabActive}
             className="w-full pb-4"
             onValueChange={setIsActiveTabActive}
           >
             <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
               <div className="flex gap-2">
-                {tabs.map((tab) => (
+                {sortedTabs.map((tab) => (
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
                     className={`p-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-100 font-bold" : "text-black"}`}
-                    onDoubleClick={() => renameTab(tab.id)} // Double-click to rename
+                    onDoubleClick={() => renameTab(tab.id)}
                   >
-                    {tab.label}
+                    {tab.name}
                   </TabsTrigger>
                 ))}
               </div>
@@ -509,259 +519,242 @@ export const ProjectOverView = () => {
               </div>
             </TabsList>
 
-            <TabsContent value="overview" className="mt-2 space-y-2 transition-all duration-150">
-              <>
-                <div className="flex items-start gap-2">
-                  <div className="w-1/2">
-                    <div className="overviewHeader py-4">
-                      <h1 className="mb-4 max-w-2xl text-4xl font-bold">
-                        {isProjectsDashboard ? "Your Universe Projects" : pageData?.title}
-                      </h1>
+            {/* Content sections for each tab */}
+            {sortedTabs.map((tab) => (
+              <TabsContent
+                key={tab.id}
+                value={tab.id}
+                className="mt-2 space-y-2 transition-all duration-150"
+              >
+                {tab.type === "OVERVIEW" && (
+                  // Overview tab content
+                  <>
+                    <div className="flex items-start gap-2">
+                      <div className="w-1/2">
+                        <div className="overviewHeader py-4">
+                          <h1 className="mb-4 max-w-2xl text-4xl font-bold">
+                            {isProjectsDashboard ? "Your Universe Projects" : currentProject?.name}
+                          </h1>
 
-                      {!isProjectsDashboard && (
-                        <div className="flex items-center gap-12 py-8">
-                          <div className="flex items-center gap-2">
-                            <h4 className="text-sm font-semibold">Owner</h4>
-                            <Avatar>
-                              <AvatarImage src="https://github.com/shadcn.png" />
-                              <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            <h4 className="text-sm font-semibold">Contributors</h4>
-                            <Avatar>
-                              <AvatarImage src="https://github.com/shadcn.png" />
-                              <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                            <Avatar>
-                              <AvatarImage src="https://github.com/shadcn.png" />
-                              <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                            <Avatar>
-                              <AvatarImage src="https://github.com/shadcn.png" />
-                              <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                            <Avatar>
-                              <AvatarImage src="https://github.com/shadcn.png" />
-                              <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                            <div className="hoveborder flex items-center gap-2 rounded-full bg-gray-100 p-3">
-                              <Plus className="h-5 w-5" />
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {!isProjectsDashboard ? (
-                      <>
-                        <p className="text-md mb-4">
-                          {pageData?.description
-                            ? pageData.title
-                            : `Cross regeneration is a sophisticated technique employed to <br />
-                          enhance the elution of macromolecules during the production process of
-                          specialized ion exchange resins, specifically fro 'Gent production'...`}
-                        </p>
-                        <div className="flex gap-2">
-                          <AskIgorModal />
-                          <button
-                            className="flex items-center gap-2 rounded border border-slate-300 bg-slate-100 px-4 py-1 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
-                            onClick={() => navigateWithTransition("/projects/dashboard")}
-                          >
-                            <Hand className="h-4 w-4" /> Easy Flows
-                          </button>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="flex flex-col gap-2">
-                          <CreateProjectDialog title={"Create a scientific landscape"} />
-                          <CreateItemModal title={"Create a technology overview"} />
-                        </div>
-                      </>
-                    )}
-                    <div className="recent_projects">
-                      <h3 className="title">Recent pages</h3>
-                      <div className="projects_container">
-                        {activityDataIsLoading ? (
-                          <div className="activity_loader">
-                            <Loader className="animate-spin text-gray-600" />
-                            <p className="loadingText">Loading Activity Data...</p>
-                          </div>
-                        ) : (
-                          activityData?.slice(0, 3).map((activity: ActivityData) => (
-                            <div
-                              key={activity.id}
-                              className="activity_list"
-                              onClick={() => handleNavigateToEntities(activity.type, activity.id)}
-                            >
-                              <div className="item">
-                                <h3 className="text-sm font-semibold">
-                                  {activity.name && activity?.name.length > 80
-                                    ? `${activity.name.slice(0, 80)}...`
-                                    : activity.name}
-                                </h3>
+                          {!isProjectsDashboard && (
+                            <div className="flex items-center gap-12">
+                              <div className="flex items-center gap-2">
+                                <h4 className="text-sm font-semibold">Owner</h4>
+                                <Avatar>
+                                  <AvatarImage src="https://github.com/shadcn.png" />
+                                  <AvatarFallback>
+                                    {currentProject?.owner?.email.charAt(0).toUpperCase()}
+                                  </AvatarFallback>
+                                </Avatar>
                               </div>
-                              <ChevronRight className="icon" />
                             </div>
-                          ))
+                          )}
+                        </div>
+
+                        {!isProjectsDashboard ? (
+                          <>
+                            <div className="relative" ref={menuContainerRef}>
+                              <div className="blockEditor_mainContent flex rounded-md">
+                                <div
+                                  className={`mainEditor h-full w-full rounded-md ${isEditing ? "prose-editor bg-white shadow-md" : ""}`}
+                                >
+                                  <SimpleEditor
+                                    content={currentProject?.tabs[0]?.content || null}
+                                    editable={false}
+                                    documentId={id}
+                                    readOnly={true}
+                                    hideMenus={true}
+                                    onUpdate={(json) => {
+                                      if (currentProject?.tabs[0]) {
+                                        updateTabContent({
+                                          projectId: currentProject.id,
+                                          tabId: currentProject.tabs[0].id,
+                                          content: JSON.stringify(json),
+                                        });
+                                        console.log("Editor content updated:", json);
+                                      }
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="flex gap-2">
+                              <AskIgorModal />
+                              <button
+                                className="flex items-center gap-2 rounded border border-slate-300 bg-slate-100 px-4 py-1 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
+                                onClick={() => navigateWithTransition("/projects/dashboard")}
+                              >
+                                <Hand className="h-4 w-4" /> Easy Flows
+                              </button>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="flex flex-col gap-2">
+                              <CreateProjectDialog title={"Create a scientific landscape"} />
+                              <CreateItemModal title={"Create a technology overview"} />
+                            </div>
+                          </>
                         )}
+
+                        {/* Recent Activity Tabs */}
+                        <div className="mt-6">
+                          <h3 className="text-md my-2 font-semibold">Recent activity</h3>
+                          <Tabs
+                            defaultValue="pages"
+                            className="pb-4"
+                            onValueChange={setIsActiveSubTabActive}
+                          >
+                            <TabsList className="flex justify-start space-x-4 border-b border-slate-200 bg-transparent">
+                              <TabsTrigger
+                                value="pages"
+                                className={`linear px-4 py-2 text-sm transition-all duration-150 ${
+                                  activeSubTabActive === "pages"
+                                    ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
+                                    : "text-gray-500"
+                                }`}
+                              >
+                                Pages
+                              </TabsTrigger>
+                              <TabsTrigger
+                                value="sources"
+                                className={`linear px-4 py-2 text-sm transition-all duration-150 ${
+                                  activeSubTabActive === "sources"
+                                    ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
+                                    : "text-gray-500"
+                                }`}
+                              >
+                                Sources
+                              </TabsTrigger>
+                            </TabsList>
+
+                            {/* Activity Content */}
+                            <TabsContent value="pages" className="py-4 text-sm">
+                              {activitiesLoading ? (
+                                <div className="flex items-center justify-center py-4">
+                                  <Loader className="h-6 w-6 animate-spin text-gray-600" />
+                                </div>
+                              ) : recentActivities?.recentPages?.length ? (
+                                recentActivities.recentPages.map((page) => (
+                                  <div
+                                    key={page.id}
+                                    onClick={() => handleNavigateToEntities(page.type, page.id)}
+                                    className="mb-2 flex w-full cursor-pointer flex-row items-center justify-between rounded-md bg-white p-4 hover:bg-gray-200"
+                                  >
+                                    <div className="flex flex-col">
+                                      <h3 className="text-sm font-semibold">{page.title}</h3>
+                                    </div>
+                                    <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                                  </div>
+                                ))
+                              ) : (
+                                <div className="flex flex-col items-center justify-center py-8 text-center">
+                                  <p className="text-gray-500">No recent pages found</p>
+                                  <div className="mt-4 flex w-full max-w-md gap-2">
+                                    <button className="h-8 flex-1 rounded bg-[#0A0C12] px-4 text-sm font-medium text-white hover:bg-black">
+                                      Create new page
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        navigateWithTransition(`/projects/${id}/search`)
+                                      }
+                                      className="h-8 flex-1 rounded bg-[#DDD7CE] px-4 text-sm font-medium text-black hover:bg-gray-200"
+                                    >
+                                      Add existing page
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
+                            </TabsContent>
+
+                            <TabsContent value="sources" className="py-4 text-sm">
+                              {activitiesLoading ? (
+                                <div className="flex items-center justify-center py-4">
+                                  <Loader className="h-6 w-6 animate-spin text-gray-600" />
+                                </div>
+                              ) : recentActivities?.recentSavedSources?.length ? (
+                                recentActivities.recentSavedSources.map((source) => (
+                                  <div
+                                    key={source.id}
+                                    onClick={() => handleNavigateToEntities("source", source.id)}
+                                    className="mb-2 flex w-full cursor-pointer flex-row items-center justify-between rounded-md bg-white p-4 hover:bg-gray-200"
+                                  >
+                                    <div className="flex flex-col">
+                                      <h3 className="text-sm font-semibold">{source.title}</h3>
+                                    </div>
+                                    <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 hover:bg-blue-200" />
+                                  </div>
+                                ))
+                              ) : (
+                                <div className="flex flex-col items-center justify-center py-8 text-center">
+                                  <p className="text-gray-500">No recent sources found</p>
+                                  <div className="mt-4 flex w-full max-w-md">
+                                    <button
+                                      onClick={() =>
+                                        navigateWithTransition(`/projects/${id}/search`)
+                                      }
+                                      className="h-8 w-full rounded bg-[#0A0C12] px-4 text-sm font-medium text-white hover:bg-black"
+                                    >
+                                      Find external sources
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
+                            </TabsContent>
+                          </Tabs>
+                        </div>
+
+                        {/* <br />
+                        <div className="flex flex-col gap-2">
+                          {dialogs.map((d) => (
+                            <ProjectSearchDialog key={d.id} dialogTitle={d.title} />
+                          ))}
+                        </div> */}
+                      </div>
+
+                      <div className="h-[800px] w-1/2">
+                        <h3 className="text-md mb-2 pt-3 font-semibold">Pages graph</h3>
+
+                        <ForceDirectedGraphView
+                          linkingData={linkingData}
+                          id="overviewForceDirectedGraph"
+                        />
                       </div>
                     </div>
+                  </>
+                )}
 
-                    {/* Recent Activity Tabs */}
-                    <div className="mt-6">
-                      <h3 className="text-md my-2 font-semibold">Recent activity</h3>
-                      <Tabs
-                        defaultValue="pages"
-                        className="pb-4"
-                        onValueChange={setIsActiveSubTabActive}
-                      >
-                        <TabsList className="flex justify-start space-x-4 border-b border-slate-200 bg-transparent">
-                          <TabsTrigger
-                            value="pages"
-                            className={`linear px-4 py-2 text-sm transition-all duration-150 ${
-                              activeSubTabActive === "pages"
-                                ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
-                                : "text-gray-500"
-                            }`}
-                          >
-                            Pages
-                          </TabsTrigger>
-                          <TabsTrigger
-                            value="sources"
-                            className={`linear px-4 py-2 text-sm transition-all duration-150 ${
-                              activeSubTabActive === "sources"
-                                ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
-                                : "text-gray-500"
-                            }`}
-                          >
-                            Sources
-                          </TabsTrigger>
-                          <TabsTrigger
-                            value="team"
-                            className={`linear px-4 py-2 text-sm transition-all duration-150 ${
-                              activeSubTabActive === "team"
-                                ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
-                                : "text-gray-500"
-                            }`}
-                          >
-                            Team
-                          </TabsTrigger>
-                        </TabsList>
-
-                        {/* Activity Content */}
-                        <TabsContent value="pages" className="py-4 text-sm">
-                          <ActivityItem title="Alternatives to PPE" />
-                          <ActivityItem title="Cross regeneration to maximimise macromolecule effusion." />
-                          <ActivityItem title="Get Weld Soon" />
-                        </TabsContent>
-
-                        <TabsContent value="sources" className="py-4 text-sm">
-                          <ActivityItem title="Activity 3" />
-                          <ActivityItem title="Activity 4" />
-                        </TabsContent>
-
-                        <TabsContent value="team" className="py-4 text-sm">
-                          <ActivityItem title="Team 1" />
-                        </TabsContent>
-                      </Tabs>
+                {tab.id === "TECHNOLOGY_LIST" && (
+                  <div className="flex w-full flex-col">
+                    {/* Header Row */}
+                    <div className="mb-2 flex w-full px-4 py-2 font-semibold">
+                      <div className="w-auto min-w-[200px]">Rating</div>
+                      <div className="flex-grow">Page Titles</div>
                     </div>
 
-                    {/* <br />
-                    <div className="flex flex-col gap-2">
-                      {dialogs.map((d) => (
-                        <ProjectSearchDialog key={d.id} dialogTitle={d.title} />
-                      ))}
-                    </div> */}
+                    {/* List of Voting Cards */}
+                    <div className="flex w-full flex-col gap-2 py-2">
+                      <VotingCard star={4} />
+                      <VotingCard star={4} />
+                      <VotingCard star={3} />
+                      <VotingCard star={3} />
+                      <VotingCard star={2} />
+                      <VotingCard star={1} />
+                    </div>
                   </div>
+                )}
 
-                  <div className="h-[800px] w-1/2">
-                    <h3 className="text-md mb-2 pt-3 font-semibold">Pages graph</h3>
+                {tab.id === "RESULT_OVERVIEW_TABLE" && (
+                  <ResultsOverview isOpen={true} onClose={() => {}} />
+                )}
 
-                    <ForceDirectedGraphView
-                      linkingData={linkingData}
-                      id="overviewForceDirectedGraph"
-                    />
-                  </div>
-                </div>
-              </>
-            </TabsContent>
-            <TabsContent
-              value="technologies"
-              className="mt-2 w-full flex-grow space-y-2 transition-all duration-150"
-            >
-              <div className="flex w-full flex-col">
-                {/* Header Row */}
-                <div className="flex w-full justify-between py-2 font-semibold">
-                  <div className="flex items-center">
-                    <div className="w-auto min-w-[200px]">Rating</div>
-                    <div className="flex-grow">Page Titles</div>
-                  </div>
-                  <AskIgorModal iconOnly />
-                </div>
+                {tab.id === "REQUIREMENTS_TABLE" && (
+                  <RequirementsTable isOpen={true} onClose={() => {}} />
+                )}
 
-                {/* List of Voting Cards */}
-
-                <div className="flex w-full flex-col gap-2 py-2">
-                  <VotingCard star={4} />
-                  <VotingCard star={4} />
-                  <VotingCard star={3} />
-                  <VotingCard star={3} />
-                  <VotingCard star={2} />
-                  <VotingCard star={1} />
-                </div>
-              </div>
-            </TabsContent>
-            <TabsContent
-              value="queries"
-              className="mt-2 space-y-2 py-4 transition-all duration-150"
-            >
-              <h3 className="py-4 font-bold">Active Queries</h3>
-              <PresetButton
-                title="Other general keyword"
-                description="Either based on general knowledge or the sources linked."
-                className="bg-slate-100"
-              />
-              <PresetButton
-                title="General description"
-                description="Either based on general knowledge or the sources linked."
-                className="bg-slate-100"
-              />
-              <PresetButton
-                title="Other general keyword"
-                description="Either based on general knowledge or the sources linked."
-                className="bg-slate-100"
-              />
-              <PresetButton
-                title="General description"
-                description="Either based on general knowledge or the sources linked."
-                className="bg-slate-100"
-              />
-              <PresetButton
-                title="Waterboarding"
-                description="Either based on general knowledge or the sources linked."
-                className="bg-slate-100"
-              />
-              <h3 className="py-4 font-bold">Other Queries</h3>
-              <PresetButton
-                title="Sleep deprevation"
-                description="Either based on general knowledge or the sources linked."
-                className="bg-slate-100"
-              />
-              <PresetButton
-                title="Constant Annoyance"
-                description="Either based on general knowledge or the sources linked."
-                className="bg-slate-100"
-              />
-              <PresetButton
-                title="Drilling noises"
-                description="Either based on general knowledge or the sources linked."
-                className="bg-slate-100"
-              />
-              <ConnectQuery className="mt-2" />
-            </TabsContent>
+                {tab.id === "MATURITY_RADAR" && <MaturityRadar isOpen={true} onClose={() => {}} />}
+              </TabsContent>
+            ))}
           </Tabs>
         </div>
       </div>

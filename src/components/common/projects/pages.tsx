@@ -7,6 +7,8 @@
  *
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
+import { useGetProjectPagesQuery } from "@/api/projects/projectApi";
+import { setError, setLoading, setPages } from "@/api/projects/projectSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -20,11 +22,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
+import { useAppDispatch, useAppSelector } from "@/store";
+import type { PageListItem } from "@/types/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
 import { Filter, List, ListFilter, Plus, RadarIcon, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import AdvancedSearchModal from "../dialogs/advanced-search-dialog";
 import FilterOptions from "../layout/filter-options";
@@ -175,7 +181,38 @@ const TabConfigForm = ({ selectedTabType, onSubmit, onCancel }: TabConfigFormPro
   );
 };
 
-export const ProjectPages = () => {
+export type ProjectPagesProps = {
+  projectId: string;
+};
+
+export const ProjectPages = ({ projectId }: ProjectPagesProps) => {
+  const dispatch = useAppDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const itemsPerPage = 20;
+
+  const { data: pagesData, isLoading } = useGetProjectPagesQuery({
+    projectId,
+    skip: (currentPage - 1) * itemsPerPage,
+    limit: itemsPerPage,
+  });
+
+  // Update Redux store when data changes
+  useEffect(() => {
+    if (pagesData?.items) {
+      dispatch(setPages(pagesData.items));
+      dispatch(setLoading(false));
+    }
+  }, [pagesData, dispatch]);
+
+  // Handle error state
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(setLoading(true));
+    }
+  }, [isLoading, dispatch]);
+
+  const navigateWithTransition = useNavigateWithTransition();
   const [activeTabActive, setIsActiveTabActive] = useState<string>("all");
   const [isSideBarToggled, setIsSideBarToggled] = useState<boolean>(false);
   const [filterOpen, setIsFilterOpen] = useState<boolean>(false);
@@ -183,13 +220,33 @@ export const ProjectPages = () => {
 
   const [tabs, setTabs] = useState([
     { id: "all", label: "All Page Types" },
-    { id: "studies", label: "Studies" },
-    { id: "entities", label: "Entities" },
+    { id: "STUDY", label: "Studies" },
+    { id: "ENTITY", label: "Entities" },
   ]);
 
   // State for the configuration dialog
   const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
   const [selectedTabType, setSelectedTabType] = useState<TabTypeConfig | null>(null);
+
+  // Helper function to format date
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    return `${months[date.getMonth()]} ${date.getDate()}`;
+  };
 
   // Function to open the configuration dialog for a specific tab type
   const openTabConfigDialog = (tabType: TabTypeConfig) => {
@@ -236,6 +293,31 @@ export const ProjectPages = () => {
       newSelected.delete(id);
     }
     setSelectedDocs(newSelected);
+  };
+
+  const handleSelectItem = (id: string, event: React.ChangeEvent<HTMLInputElement> | boolean) => {
+    if (typeof event === "boolean") {
+      setSelectedItems((prev) => {
+        const newSet = new Set(prev);
+        if (event) {
+          newSet.add(id);
+        } else {
+          newSet.delete(id);
+        }
+        return newSet;
+      });
+    } else {
+      event.stopPropagation(); // Prevent navigation when clicking checkbox
+      setSelectedItems((prev) => {
+        const newSet = new Set(prev);
+        if (newSet.has(id)) {
+          newSet.delete(id);
+        } else {
+          newSet.add(id);
+        }
+        return newSet;
+      });
+    }
   };
 
   // Configuration Dialog Component
@@ -296,6 +378,105 @@ export const ProjectPages = () => {
     );
   };
 
+  // Add this helper function near the top of the file, after imports
+  const filterPagesByType = (pages: PageListItem[] | undefined, type: string | null) => {
+    if (!pages || !type || type === "all") return pages;
+    return pages.filter((page) => page.type.toUpperCase() === type.toUpperCase());
+  };
+
+  // Pagination handlers
+  const handleNextPage = () => {
+    if (pagesData && !pagesData.isLastPage) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+  // Add a handler for select all
+  const handleSelectAll = () => {
+    if (pagesData?.items) {
+      if (selectedItems.size === pagesData.items.length) {
+        // If all items are selected, unselect all
+        setSelectedItems(new Set());
+      } else {
+        // Otherwise, select all items
+        setSelectedItems(new Set(pagesData.items.map((item) => item.id)));
+      }
+    }
+  };
+
+  // Inside the ProjectPages component
+  const renderPagination = () => {
+    if (!pagesData?.items || pagesData.items.length === 0) {
+      return null;
+    }
+
+    const pageNumber = currentPage;
+
+    return (
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Checkbox
+            id="select-all"
+            checked={selectedItems.size > 0}
+            className="ml-4 h-4 w-4"
+            onCheckedChange={handleSelectAll}
+          />
+          <Label htmlFor="select-all" className="text-md">
+            Select all
+          </Label>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <div className="text-sm text-slate-600">
+            {itemsPerPage * (currentPage - 1) + 1} -{" "}
+            {Math.min(itemsPerPage * currentPage, pagesData.totalItemCount)} of{" "}
+            {pagesData.totalItemCount}
+          </div>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+              className={`rounded-md p-1 ${
+                currentPage === 1
+                  ? "cursor-not-allowed text-slate-300"
+                  : "text-slate-700 hover:bg-slate-100"
+              }`}
+              aria-label="Previous page"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              onClick={handleNextPage}
+              disabled={pagesData.isLastPage}
+              className={`rounded-md p-1 ${
+                pagesData.isLastPage
+                  ? "cursor-not-allowed text-slate-300"
+                  : "text-slate-700 hover:bg-slate-100"
+              }`}
+              aria-label="Next page"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const handleNavigateToPage = (page: PageListItem) => {
+    const route =
+      page.type.toLowerCase() === "entity"
+        ? `/pages/entities/${page.id}`
+        : `/pages/studies/${page.id}`;
+    navigateWithTransition(route);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -318,7 +499,6 @@ export const ProjectPages = () => {
                     <TooltipTrigger asChild>
                       <button
                         className="flex items-center gap-1 rounded bg-slate-200 p-2 text-sm text-black transition-colors duration-150 hover:border-black hover:bg-black hover:text-white"
-                        // className="flex items-center rounded-md p-2 text-gray-600 hover:bg-black hover:text-white"
                         id="addNewTabButton"
                       >
                         <Plus className="h-4 w-4" /> Add page
@@ -366,14 +546,23 @@ export const ProjectPages = () => {
           </div>
 
           <div className="mt-0">
-            <Tabs defaultValue="all" className="pb-4" onValueChange={setIsActiveTabActive}>
+            <Tabs
+              value={activeTabActive}
+              defaultValue="all"
+              className="pb-4"
+              onValueChange={setIsActiveTabActive}
+            >
               <TabsList className="flex w-full items-center justify-between border-b border-slate-300 bg-transparent">
                 <div className="flex gap-2">
                   {tabs.map((tab) => (
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className={`px-4 py-2 text-sm transition-all duration-150 ${activeTabActive === tab.id ? "border-b-2 border-blue-800 bg-blue-100 font-bold" : "text-black"}`}
+                      className={`px-4 py-2 text-sm transition-all duration-150 ${
+                        activeTabActive === tab.id
+                          ? "border-b-2 border-blue-800 bg-blue-100 font-bold"
+                          : "text-black"
+                      }`}
                       onDoubleClick={() => renameTab(tab.id)}
                     >
                       {tab.label}
@@ -390,225 +579,92 @@ export const ProjectPages = () => {
                     value={tab.id}
                     className="mt-2 space-y-2 transition-all duration-150"
                   >
-                    {tab.id === "all" && (
-                      <div className="w-full">
-                        <div className="flex flex-col">
-                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_, index) => (
-                            <div key={index} className="itemCard">
-                              <div className="innerCardMain bg-white">
-                                <Checkbox
-                                  id={`card-${index}`}
-                                  // onCheckedChange={(checked) => handleSelectDoc(checked as boolean)}
-                                  className="innerCardCheckbox"
-                                />
-                                <div className="innerCardContent">
-                                  <div className="innerCardContent__Detail">
-                                    <div className="flex flex-col">
-                                      <h3 className="text-md overflow-hidden text-ellipsis py-0 text-sm font-bold text-black">
-                                        Radiomics and Machine Learning in Medical Imaging
-                                      </h3>
-                                      <div>
-                                        <p className="!important text-xs"></p>
+                    {isLoading ? (
+                      <div className="flex items-center justify-center py-8">
+                        <div className="text-sm text-slate-600">Loading...</div>
+                      </div>
+                    ) : (
+                      <>
+                        {/* Add pagination at the top of content */}
+                        {pagesData?.items && pagesData.items.length > 0 && renderPagination()}
+
+                        <div className="w-full">
+                          <div className="flex flex-col">
+                            {pagesData?.items
+                              .filter((page) => (tab.id === "all" ? true : tab.id === page.type))
+                              .map((page) => (
+                                <div key={page.id} className="itemCard">
+                                  <div className="innerCardMain bg-white">
+                                    <Checkbox
+                                      id={`card-${page.id}`}
+                                      checked={selectedItems.has(page.id)}
+                                      onCheckedChange={(checked) =>
+                                        handleSelectItem(page.id, checked as boolean)
+                                      }
+                                      className="innerCardCheckbox"
+                                    />
+                                    <div className="innerCardContent">
+                                      <div className="innerCardContent__Detail">
+                                        <div className="flex flex-col">
+                                          <h3 className="text-md overflow-hidden text-ellipsis py-0 text-sm font-bold text-black">
+                                            {page.title}
+                                          </h3>
+                                        </div>
+                                        <div className="innerCardContent__Links">
+                                          <ul className="linkedCounts flex flex-wrap gap-2">
+                                            <li className="linkedCounts__item documentCount">
+                                              <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="16"
+                                                height="16"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                className="lucide lucide-book-open-check"
+                                              >
+                                                <path d="M12 21V7"></path>
+                                                <path d="m16 12 2 2 4-4"></path>
+                                                <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
+                                              </svg>
+                                              {page.linkedCounts.documentCount}
+                                            </li>
+                                            <li className="linkedCounts__item studyCount">
+                                              <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="16"
+                                                height="16"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                className="lucide lucide-book-open-check"
+                                              >
+                                                <path d="M12 21V7"></path>
+                                                <path d="m16 12 2 2 4-4"></path>
+                                                <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
+                                              </svg>
+                                              {page.linkedCounts.studyCount}
+                                            </li>
+                                          </ul>
+                                        </div>
                                       </div>
-                                    </div>
-                                    <div className="innerCardContent__Links">
-                                      <ul className="linkedCounts flex flex-wrap gap-2">
-                                        <li
-                                          className="linkedCounts__item documentCount"
-                                          data-state="closed"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="lucide lucide-book-open-check"
-                                          >
-                                            <path d="M12 21V7"></path>
-                                            <path d="m16 12 2 2 4-4"></path>
-                                            <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
-                                          </svg>
-                                          5
-                                        </li>
-                                        <li
-                                          className="linkedCounts__item studyCount"
-                                          data-state="closed"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="lucide lucide-book-open-check"
-                                          >
-                                            <path d="M12 21V7"></path>
-                                            <path d="m16 12 2 2 4-4"></path>
-                                            <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
-                                          </svg>
-                                          1
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                  <div className="flex flex-row items-start gap-2">
-                                    <div className="flex flex-row items-center gap-4">
-                                      <div className="time">Feb 12</div>
+                                      <div className="flex flex-row items-start gap-2">
+                                        <div className="flex flex-row items-center gap-4">
+                                          <div className="time">{formatDate(page.dateAdded)}</div>
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            </div>
-                          ))}
+                              ))}
+                          </div>
                         </div>
-                      </div>
-                    )}
-
-                    {/* Content for studies tab */}
-                    {tab.id === "studies" && (
-                      <div className="w-full">
-                        <div className="flex flex-col">
-                          {[1, 2, 3].map((_, index) => (
-                            <div key={index} className="itemCard">
-                              <div className="innerCardMain bg-white">
-                                <Checkbox
-                                  id={`studies-card-${index}`}
-                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                                />
-                                <div className="innerCardContent">
-                                  <div className="innerCardContent__Detail">
-                                    <div className="flex flex-col">
-                                      <h3 className="overflow-hidden text-ellipsis py-0 text-sm font-bold text-black">
-                                        Clinical Study {index + 1}
-                                      </h3>
-                                      <div>
-                                        <p className="text-sm text-gray-600">
-                                          Research study on medical imaging applications
-                                        </p>
-                                      </div>
-                                    </div>
-                                    <div className="innerCardContent__Links">
-                                      <ul className="linkedCounts flex flex-wrap gap-2">
-                                        <li
-                                          className="linkedCounts__item documentCount"
-                                          data-state="closed"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="lucide lucide-book-open-check"
-                                          >
-                                            <path d="M12 21V7"></path>
-                                            <path d="m16 12 2 2 4-4"></path>
-                                            <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
-                                          </svg>
-                                          3
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                  <div className="flex flex-row items-start gap-2">
-                                    <div className="flex flex-row items-center gap-4">
-                                      <div className="time">Mar 15</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Content for entities tab */}
-                    {tab.id === "entities" && (
-                      <div className="w-full">
-                        <div className="flex flex-col">
-                          {[1, 2, 3, 4].map((_, index) => (
-                            <div key={index} className="itemCard">
-                              <div className="innerCardMain bg-white">
-                                <Checkbox
-                                  id={`entities-card-${index}`}
-                                  className="innerCardCheckbox peer h-4 w-4 shrink-0 rounded-sm border border-secondary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                                />
-                                <div className="innerCardContent">
-                                  <div className="innerCardContent__Detail">
-                                    <div className="flex flex-col">
-                                      <h3 className="overflow-hidden text-ellipsis py-0 text-sm font-bold text-black">
-                                        Entity {index + 1}
-                                      </h3>
-                                      <div>
-                                        <p className="text-xs text-gray-600">
-                                          Project entity with associated metadata
-                                        </p>
-                                      </div>
-                                    </div>
-                                    <div className="innerCardContent__Links">
-                                      <ul className="linkedCounts flex flex-wrap gap-2">
-                                        <li
-                                          className="linkedCounts__item documentCount"
-                                          data-state="closed"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="lucide lucide-book-open-check"
-                                          >
-                                            <path d="M12 21V7"></path>
-                                            <path d="m16 12 2 2 4-4"></path>
-                                            <path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"></path>
-                                          </svg>
-                                          2
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                  <div className="flex flex-row items-start gap-2">
-                                    <div className="flex flex-row items-center gap-4">
-                                      <div className="time">Apr 1</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Content for dynamically added tabs */}
-                    {!["all", "studies", "entities"].includes(tab.id) && (
-                      <div className="w-full">
-                        <div className="overviewHeader py-4">
-                          <h1 className="mb-2 text-4xl font-bold">{tab.label}</h1>
-                          <p className="mb-4 text-sm">
-                            Content for {tab.label} will be displayed here.
-                          </p>
-                        </div>
-                      </div>
+                      </>
                     )}
                   </TabsContent>
                 ))}
@@ -622,11 +678,7 @@ export const ProjectPages = () => {
           <FilterOptions />
         </div>
       </div>
-
-      {/* Render the configuration dialog */}
-      <TabConfigurationDialog />
     </motion.div>
   );
 };
-
 export default ProjectPages;

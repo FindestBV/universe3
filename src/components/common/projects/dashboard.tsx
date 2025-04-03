@@ -7,10 +7,11 @@ import ProjectSearch from "@/components/common/projects/search";
 import ProjectSources from "@/components/common/projects/sources";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
-import { RootState } from "@/store";
+import { useAppSelector } from "@/store";
+import type { RootState } from "@/store";
+import type { Project } from "@/types/types";
 import {
   ArrowLeft,
-  ChevronDown,
   ChevronRight,
   ChevronsUpDown,
   Eye,
@@ -29,39 +30,18 @@ import {
 
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
+import { useLocation, useParams } from "react-router-dom";
 
 import NestedMenu from "../editor/BlockEditor/components/NestedMenu";
 
-export const Dashboard = ({
-  type,
-  id,
-  content,
-  title,
-  connectedDocs,
-  connectedInbox,
-  connectedObjects,
-  connectedQueries,
-  connectedComments,
-  connectedEntities,
-  isSelected,
-}: {
-  type?: string;
-  id?: string;
-  content?: string;
-  title?: string;
-  connectedDocs?: string;
-  connectedInbox?: string;
-  connectedObjects?: string;
-  connectedQueries?: string;
-  connectedComments?: string;
-  connectedStudies?: string;
-  connectedEntities?: string;
-}) => {
-  // const { id } = useParams<{ id: string }>();
+export const Dashboard = () => {
+  const { id } = useParams<{ id: string }>();
   const menuContainerRef = useRef(null);
   const [isTitleExpanded, setIsTitleExpanded] = useState<boolean>(false);
   const navigateWithTransition = useNavigateWithTransition();
+
+  const project = useAppSelector((state: RootState) => state.project);
+  const { recentProjects } = useAppSelector((state: RootState) => state.project);
 
   const isEditing = useSelector((state: RootState) => state.document.isEditing);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
@@ -86,21 +66,6 @@ export const Dashboard = ({
     setIsTitleExpanded(!isTitleExpanded);
   };
 
-  const projectStructure = [
-    {
-      title: "Description",
-      references: ["Reference 1", "Reference 2"],
-    },
-    {
-      title: "Images",
-      references: ["Image 1", "Image 2", "Image 3"],
-    },
-    {
-      title: "Suppliers",
-      references: ["Supplier A", "Supplier B"],
-    },
-  ];
-
   useEffect(() => {}, [currentView]);
 
   return (
@@ -120,7 +85,9 @@ export const Dashboard = ({
                     <div className="flex flex-col">
                       <small className="text-xs font-bold text-white">Project</small>
                       <p className="text-xs font-bold text-white">
-                        {isProjectDashboard ? "Your Universe Projects" : pageData?.title}
+                        {isProjectDashboard
+                          ? "Your Universe Projects"
+                          : project.currentProject?.name}
                       </p>
                     </div>
                     <div className="flex items-center gap-4">
@@ -138,54 +105,52 @@ export const Dashboard = ({
                   {/* Expandable Content */}
                   <div
                     className={`transform-gpu overflow-hidden bg-white transition-all duration-300 ease-in-out ${
-                      isTitleExpanded ? "h-[250px] w-[200%] opacity-100" : "h-0 w-full opacity-0"
+                      isTitleExpanded
+                        ? "h-auto max-h-[19rem] w-[200%] opacity-100"
+                        : "h-0 w-full opacity-0"
                     } rounded-br-lg border shadow-md`}
                   >
                     <div
-                      className={`transition-transform duration-300 ${
+                      className={`flex h-full flex-col justify-between transition-transform duration-300 ${
                         isTitleExpanded ? "translate-y-0" : "-translate-y-4"
                       }`}
                     >
-                      <ul className="border-b border-gray-200">
-                        <li className="flex w-full items-center gap-2 p-4 transition-colors duration-200 hover:bg-blue-100">
-                          <span className="text-sm font-semibold text-gray-600">
-                            Alternative to PFTE
-                          </span>
-                          <span className="ml-auto flex gap-2">
-                            <Eye className="rounded p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
-                            <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
-                          </span>
-                        </li>
-                        <li className="flex w-full items-center gap-2 p-4 transition-colors duration-200 hover:bg-blue-100">
-                          <span className="text-sm font-semibold text-gray-600">
-                            Cross regeneration to maximise macromolecules elution for 'Gent
-                            production' ion gas resins
-                          </span>
-                          <span className="ml-auto flex gap-2">
-                            <Eye className="rounded p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
-                            <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
-                          </span>
-                        </li>
-                        <li className="flex w-full items-center gap-2 p-4 transition-colors duration-200 hover:bg-blue-100">
-                          <span className="text-sm font-semibold text-gray-600">Get Weld Soon</span>
-                          <span className="ml-auto flex gap-2">
-                            <Eye className="rounded p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
-                            <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
-                          </span>
-                        </li>
-                      </ul>
-                      <div className="flex w-full gap-1 border p-2">
+                      {/* Recent Projects List */}
+                      {recentProjects?.length > 0 && (
+                        <ul className="flex-1 overflow-y-auto border-b border-gray-200">
+                          {recentProjects
+                            .filter((project: Project) => project.id !== id) // Exclude current project
+                            .slice(0, 3) // Show maximum 3 items
+                            .map((project: Project) => (
+                              <li
+                                key={project.id}
+                                onClick={() => navigateWithTransition(`/projects/${project.id}`)}
+                                className="flex h-16 w-full cursor-pointer items-center gap-2 p-4 transition-colors duration-200 hover:bg-blue-100"
+                              >
+                                <span className="truncate text-sm font-semibold text-gray-600">
+                                  {project.name}
+                                </span>
+                                <span className="ml-auto flex shrink-0 gap-2">
+                                  <Eye className="rounded p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                                  <ChevronRight className="rounded bg-gray-100 p-1 text-gray-600 transition-colors duration-200 hover:bg-blue-200" />
+                                </span>
+                              </li>
+                            ))}
+                        </ul>
+                      )}
+                      <div className="flex w-full gap-1 border-t p-2">
                         <button
-                          className="flex items-center gap-2 rounded border border-slate-300 bg-slate-100 px-4 py-2 text-black transition-colors duration-200 hover:bg-slate-200"
+                          className="flex items-center gap-2 rounded-sm px-2 py-1 text-sm text-gray-600 hover:bg-gray-100"
                           onClick={() => navigateWithTransition("/projects/dashboard")}
                         >
-                          <ArrowLeft /> Back to the Universe
+                          <ArrowLeft className="h-4 w-4" /> Back to the Universe
                         </button>
                         <CreateProjectDialog type="findest-button" />
                       </div>
                     </div>
                   </div>
                 </div>
+
                 {/* Navigation Links */}
                 <div className="flex-1 overflow-y-auto">
                   <nav className="border-b border-gray-200">
@@ -266,7 +231,6 @@ export const Dashboard = ({
                         </TooltipProvider>
                       </span>
                     </div>
-
                     <div
                       className={`group m-2 flex max-w-full items-center gap-2 rounded-sm px-4 py-1 transition-all duration-150 ease-linear ${
                         currentView === "sources" ? "bg-black" : "bg-white hover:bg-gray-100"
@@ -354,7 +318,7 @@ export const Dashboard = ({
                     </div>
                   </nav>
 
-                  {/* Table of Contents */}
+                  {/* Project Structure Section */}
                   <div className="p-4">
                     <div className="mb-4 flex items-center justify-between">
                       <h3 className="transform-none text-xs font-bold tracking-tight">
@@ -368,38 +332,9 @@ export const Dashboard = ({
                         </span>
                       </div>
                     </div>
-                    <NestedMenu />
+                    <NestedMenu projectStructure={project.currentProject?.projectStructure} />
                     <nav className="space-y-2">
-                      <ul className="refs">
-                        {projectStructure.map((section) => (
-                          <li key={section.title}>
-                            <button
-                              onClick={() => toggleSection(section.title)}
-                              className="flex max-w-full items-center gap-2 rounded-md py-2 text-left text-sm font-medium text-gray-700"
-                            >
-                              {openSections[section.title] ? (
-                                <ChevronDown className="rounded-sm bg-gray-100 p-1 text-gray-500" />
-                              ) : (
-                                <ChevronRight className="rounded-sm bg-gray-100 p-1 text-gray-500" />
-                              )}
-                              {section.title}
-                              <Pin className="p-1 text-gray-500" fill="#000000" />
-                            </button>
-                            {openSections[section.title] && (
-                              <ul className="ml-4 mt-2 space-y-1 border-l-2 border-gray-300 pl-3">
-                                {section.references.map((ref, index) => (
-                                  <li
-                                    key={index}
-                                    className="text-sm text-gray-500 hover:text-gray-800"
-                                  >
-                                    {ref}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
+                      <ul className="refs" />
                     </nav>
                   </div>
                 </div>
@@ -427,13 +362,9 @@ export const Dashboard = ({
                 <div>
                   <ProjectOverView />
                 </div>
-              ) : // ) : currentView === "search" ? (
-              //   <div>
-              //     <ProjectSearch />
-              //   </div>
-              currentView === "pages" ? (
+              ) : currentView === "pages" ? (
                 <div>
-                  <ProjectPages />
+                  <ProjectPages projectId={id || ""} />
                 </div>
               ) : currentView === "find" ? (
                 <div>

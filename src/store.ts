@@ -1,15 +1,16 @@
 // Slices
 import { activityApi } from "@/api/activity/activityApi";
+import { api } from "@/api/api";
 import { authApi } from "@/api/auth/authApi";
 import authSlice from "@/api/auth/authSlice";
 import { documentApi } from "@/api/documents/documentApi";
 import documentSlice from "@/api/documents/documentSlice";
 import { projectApi } from "@/api/projects/projectApi";
+import projectSlice from "@/api/projects/projectSlice";
 import { searchApi } from "@/api/search/searchApi";
 import { treeApi } from "@/api/tree/treeApi";
 import languageReducer from "@/api/utilities/languageSlice";
 import sidebarReducer from "@/api/utilities/sidebarSlice";
-// Import new API slice
 // Configure Store and Persistance
 import { configureStore, Reducer } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
@@ -33,24 +34,22 @@ const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHisto
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "language", "sidebar", "document"], // Add "document"
+  whitelist: ["auth", "language", "sidebar", "document", "project"], // Added project to whitelist
 };
 
 // Combine reducers
 export const rootReducer = combineReducers({
   router: routerReducer,
   auth: authSlice,
-  activities: activityApi,
-  projects: projectApi,
-  search: searchApi,
-  advancedSearch: advancedSearchSlice,
+  project: projectSlice,
   document: documentSlice,
   language: languageReducer,
   sidebar: sidebarReducer,
-  [authApi.reducerPath]: authApi.reducer,
-  [documentApi.reducerPath]: documentApi.reducer,
-  [treeApi.reducerPath]: treeApi.reducer, // Add tree API reducer
+  advancedSearch: advancedSearchSlice,
+  // API reducer
+  api: api.reducer,
 }) as Reducer;
+
 // Persist the combined reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -69,7 +68,7 @@ export const store = configureStore({
       activityApi.middleware,
       searchApi.middleware,
       projectApi.middleware,
-      treeApi.middleware, // Add tree API middleware
+      treeApi.middleware,
       routerMiddleware,
     ),
 });
@@ -81,9 +80,10 @@ export type AppDispatch = typeof store.dispatch;
 // Setup RTK Query listeners
 setupListeners(store.dispatch);
 
-// Persistor and History
+// Create history after store is created
+export const history = createReduxHistory(store);
+// Create persistor after store is created
 export const persistor = persistStore(store);
-export const history = createReduxHistory(persistor);
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

@@ -1,10 +1,11 @@
+import { RootState } from "@/store";
 import { WebSocketStatus } from "@hocuspocus/provider";
 import { Editor } from "@tiptap/core";
 import { useEditorState } from "@tiptap/react";
 
-// import { List } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { useSelector } from "react-redux";
+// import { List } from "lucide-react";
 
 // import { Toolbar } from "../../ui/Toolbar";
 import { EditorUser } from "../types";
@@ -28,7 +29,6 @@ export const EditorHeader = ({ editor, collabState, users, documentId }: EditorH
       return { characters: characters(), words: words() };
     },
   });
-  const isEditing = useSelector((state: RootState) => state.document.isEditing);
 
   return (
     <div className="editorHeader">

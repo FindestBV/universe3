@@ -223,17 +223,11 @@ export const documentApi = api.injectEndpoints({
       Here, we're using OnQueryStarted to dispatch the subsequent queries, which hiterto returned an object via a separate cal.     
     */
 
-    getEntityById: builder.query<Entity, void>({
-      // Main request. Gets the Entity by Id
-
+    getEntityById: builder.query<Entity, string>({
       query: (id) => ({
         url: `entity/${id}`,
         providesTags: (result, error, id) => [{ type: "Entity", id }],
       }),
-
-      // onQuery started:
-      // Dispatches the other queries
-      // Note: ".unwrap" - this will return a new promise which contains the *actual* action to be executed.
 
       async onQueryStarted(id, { dispatch }) {
         try {
@@ -257,13 +251,6 @@ export const documentApi = api.injectEndpoints({
           )
             .unwrap()
             .catch(() => null);
-
-          /* 
-            upDateQueryData will then take the result of the initial query and appends the result of the actual actions.
-            Result (in case of Entities ) - an object 'fetchedEntity' is then returned with the additional keys which can be accessed in 
-            the component like: fetchedEntity.connectedDocs, fetchedEntity.connectedQueries
-            Essentially, this removes the need for repeated calls to be made from the Frontend to hydrate associated objects. 
-          */
 
           dispatch(
             api.util.updateQueryData("getEntityById", id, (draft) => {
@@ -356,7 +343,7 @@ export const documentApi = api.injectEndpoints({
       Here, we're using OnQueryStarted to dispatch the subsequent queries, which hiterto returned an object via a separate cal.     
     */
 
-    getStudyById: builder.query<Study, void>({
+    getStudyById: builder.query<Study, string>({
       query: (id) => ({
         url: `study/${id}`,
         providesTags: (result, error, id) => [{ type: "Study", id }],
@@ -396,7 +383,7 @@ export const documentApi = api.injectEndpoints({
                 draft.connectedStudies = connectedStudies ?? [];
                 draft.connectedDocs = connectedDocs ?? [];
                 draft.connectedComments = connectedComments ?? [];
-                draft.maturityRadar = maturityRadar ?? null; // Merging Maturity Radar here
+                draft.maturityRadar = maturityRadar ?? null;
               }),
             );
           } catch (relatedDataError) {
