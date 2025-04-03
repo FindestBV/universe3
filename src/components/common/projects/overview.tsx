@@ -448,6 +448,13 @@ export const ProjectOverView = () => {
         {isProjectsDashboard && <DevBanner />}
         {/* 
         <Flag /> */}
+        <button
+          onClick={() => {
+            throw new Error("This is your first error!");
+          }}
+        >
+          Break the world
+        </button>
         <div className="mx-auto w-full p-8">
           <Tabs
             defaultValue="overview"

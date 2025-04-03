@@ -1,3 +1,4 @@
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import react from "@vitejs/plugin-react";
 import { resolve } from "path";
 import { fileURLToPath } from "url";
@@ -10,7 +11,14 @@ export default ({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "VITE_");
 
   return defineConfig({
-    plugins: [react()],
+    plugins: [
+      react(),
+      sentryVitePlugin({
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        org: "findest",
+        project: "universe3",
+      }),
+    ],
     resolve: {
       alias: {
         "@": resolve(__dirname, "./src"),
@@ -28,6 +36,7 @@ export default ({ mode }) => {
       global: {},
     },
     build: {
+      sourcemap: true, // Source map generation must be turned on
       rollupOptions: {
         // Remove external if you want it bundled
         // external: ["y-prosemirror"],
