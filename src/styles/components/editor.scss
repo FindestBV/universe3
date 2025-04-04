@@ -13,6 +13,10 @@
 .simple > .tiptap.ProseMirror{
   padding-left: 0;
   padding-right: 0;
+  
+  > p{
+    @apply text-sm;
+  }
 }
 
 .tiptap {
