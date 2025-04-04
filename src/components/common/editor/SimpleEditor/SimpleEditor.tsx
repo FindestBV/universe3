@@ -146,7 +146,7 @@ export const SimpleEditor = ({
 
         <EditorContent
           editor={editor}
-          className={`prose simple max-w-none flex-1 py-6 focus:outline-none ${
+          className={`prose simple max-w-none flex-1 pb-6 focus:outline-none ${
             isEditing ? "prose-editor" : ""
           }`}
         />
