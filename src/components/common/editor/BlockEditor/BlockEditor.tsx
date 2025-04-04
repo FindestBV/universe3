@@ -33,7 +33,7 @@ import {
 } from "lucide-react";
 
 // import * as YProsemirror from "../../../../../../node_modules/y-prosemirror";
-
+import { Suspense } from "react";
 import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -118,16 +118,16 @@ export const BlockEditor = ({
   const saveContent = useCallback(
     async (content: any) => {
       if (JSON.stringify(content) === lastSavedContent) {
-        // console.log("No changes detected.");
+        console.log("No changes detected.");
         return;
       }
 
       try {
         if (currentId) {
-          // await updateDraft({
-          //   id: currentId,
-          //   content,
-          // });
+          await updateDraft({
+            id: currentId,
+            content,
+          });
         }
         setLastSavedContent(JSON.stringify(content));
       } catch (error) {
@@ -190,7 +190,10 @@ export const BlockEditor = ({
 
   useEffect(() => {
     console.log("currentView", currentView);
-  }, [currentView]);
+    console.log("active default", activeTab);
+    console.log("sources", connectedObjects);
+    console.log("connectedQueries", connectedQueries);
+  }, [currentView, activeTab, connectedObjects, connectedQueries]);
 
   useEffect(() => {
     const handleScrollToTab = (e: CustomEvent) => {
@@ -538,7 +541,7 @@ export const BlockEditor = ({
               className={`mainEditor h-full w-full rounded-md bg-white shadow-md ${isEditing ? "prose-editor" : ""}`}
               id="mainEditorStart"
             >
-              <div className="mx-12 flex flex-col pt-10">
+              <div className="mx-12 flex flex-col pt-8">
                 <EditorHeader
                   editor={editor}
                   collabState={collabState}
@@ -608,7 +611,7 @@ export const BlockEditor = ({
               <ImageBlockMenu editor={editor} containerRef={menuContainerRef} />
 
               <Tabs
-                defaultValue="all"
+                defaultValue="connectedSources"
                 className="mb-12 mt-10 px-28"
                 onValueChange={setActiveTab}
                 id="linkedDocuments"
@@ -635,76 +638,82 @@ export const BlockEditor = ({
                       className="mt-2 space-y-2 transition-all duration-150"
                     >
                       {tab.id === "connectedSources" && (
-                        <div className="w-full">
-                          {connectedObjects?.documents && connectedObjects.documents.length > 0
-                            ? connectedObjects.documents.map(
-                                (doc: { title: Key | null | undefined; id: string }) => (
-                                  <div key={doc.title}>
-                                    <SimilarDocumentModal
-                                      title={doc.title}
-                                      id={doc.id}
-                                      type="linkedObjects"
-                                    />
-                                  </div>
-                                ),
-                              )
-                            : "no connected objects"}
+                        <div className="w-full" id="connectedSources">
+                          <Suspense fallback={<p>Loading connected sources...</p>}>
+                            {connectedObjects?.documents && connectedObjects.documents.length > 0
+                              ? connectedObjects.documents.map(
+                                  (doc: { title: Key | null | undefined; id: string }) => (
+                                    <div key={doc.title}>
+                                      <SimilarDocumentModal
+                                        title={doc.title}
+                                        id={doc.id}
+                                        type="linkedObjects"
+                                      />
+                                    </div>
+                                  ),
+                                )
+                              : "no connected objects"}
+                          </Suspense>
                         </div>
                       )}
 
                       {tab.id === "connectedQueries" && (
                         <div className="w-full" id="connectedQueries">
-                          {connectedQueries &&
-                            (connectedQueries[0]?.connectedObjects &&
-                            connectedQueries[0].connectedObjects.length > 0 ? (
-                              connectedQueries[0].connectedObjects.map(
-                                (obj: {
-                                  id: Key | null | undefined;
-                                  name: string;
-                                  mainContents: unknown;
-                                  searchInformation: unknown;
-                                }) => (
-                                  <SimilarDocumentModal
-                                    key={obj.id}
-                                    id={obj.id}
-                                    title={obj.name}
-                                    mainContents={obj.mainContents}
-                                    searchInformation={obj.searchInformation}
-                                    type="entity"
+                          <Suspense fallback={<p>Loading connected queries...</p>}>
+                            {connectedQueries &&
+                              (connectedQueries[0]?.connectedObjects &&
+                              connectedQueries[0].connectedObjects.length > 0 ? (
+                                connectedQueries[0].connectedObjects.map(
+                                  (obj: {
+                                    id: Key | null | undefined;
+                                    name: string;
+                                    mainContents: unknown;
+                                    searchInformation: unknown;
+                                  }) => (
+                                    <SimilarDocumentModal
+                                      key={obj.id}
+                                      id={obj.id}
+                                      title={obj.name}
+                                      mainContents={obj.mainContents}
+                                      searchInformation={obj.searchInformation}
+                                      type="entity"
+                                    />
+                                  ),
+                                )
+                              ) : (
+                                <div className="flex flex-row-reverse items-center gap-4">
+                                  <Button variant="outline">ADD QUERY</Button>
+                                  <ConnectQuery
+                                    attachToItem={function (id: string): void {
+                                      throw new Error("Function not implemented.");
+                                    }}
+                                    parentId={""}
+                                    parentTitle={""}
                                   />
-                                ),
-                              )
-                            ) : (
-                              <div className="flex flex-row-reverse items-center gap-4">
-                                <Button variant="outline">ADD QUERY</Button>
-                                <ConnectQuery
-                                  attachToItem={function (id: string): void {
-                                    throw new Error("Function not implemented.");
-                                  }}
-                                  parentId={""}
-                                  parentTitle={""}
-                                />
-                                <p className="text-gray-500">No connected objects</p>
-                              </div>
-                            ))}
+                                  <p className="text-gray-500">No connected objects</p>
+                                </div>
+                              ))}
+                          </Suspense>
                         </div>
                       )}
 
                       {tab.id === "connectedPages" && (
-                        <div className="w-full">
-                          {connectedObjects?.documents && connectedObjects.documents.length > 0
-                            ? connectedObjects.documents.map(
-                                (doc: { title: Key | null | undefined; id: string }) => (
-                                  <div key={doc.title}>
-                                    <SimilarDocumentModal
-                                      title={doc.title}
-                                      id={doc.id}
-                                      type="linkedObjects"
-                                    />
-                                  </div>
-                                ),
-                              )
-                            : "no connected objects"}
+                        <div className="w-full" id="connectedPages">
+                          <Suspense fallback={<p>Loading connected pages...</p>}>
+                            {connectedObjects?.documents && connectedObjects.documents.length > 0
+                              ? connectedObjects.documents.map(
+                                  (doc: { title: Key | null | undefined; id: string }) => (
+                                    <div key={doc.title}>
+                                      <SimilarDocumentModal
+                                        title={doc.title}
+                                        id={doc.id}
+                                        type="linkedObjects"
+                                      />
+                                    </div>
+                                  ),
+                                )
+                              : "no connected objects"}
+                          </Suspense>
                         </div>
                       )}
 

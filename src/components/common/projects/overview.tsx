@@ -499,7 +499,7 @@ export const ProjectOverView = () => {
                           {tabTypeOptions.map((option) => (
                             <button
                               key={option.id}
-                              className="group flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-black hover:text-white"
+                              className="group flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 transition-all duration-150 hover:bg-black hover:text-white"
                               onClick={() => {
                                 setSelectedTabType(option); // Set the selected tab type
                                 setIsConfigDialogOpen(true); // Open the configuration dialog
@@ -532,7 +532,7 @@ export const ProjectOverView = () => {
                     <div className="flex items-start gap-2">
                       <div className="w-1/2">
                         <div className="overviewHeader py-4">
-                          <h1 className="mb-4 max-w-2xl text-4xl font-bold">
+                          <h1 className="my-2 max-w-2xl text-4xl font-bold">
                             {isProjectsDashboard ? "Your Universe Projects" : currentProject?.name}
                           </h1>
 
@@ -598,7 +598,7 @@ export const ProjectOverView = () => {
                         )}
 
                         {/* Recent Activity Tabs */}
-                        <div className="mt-6">
+                        <div className="my-8">
                           <h3 className="text-md my-2 font-semibold">Recent activity</h3>
                           <Tabs
                             defaultValue="pages"
@@ -629,7 +629,10 @@ export const ProjectOverView = () => {
                             </TabsList>
 
                             {/* Activity Content */}
-                            <TabsContent value="pages" className="py-4 text-sm">
+                            <TabsContent
+                              value="pages"
+                              className="py-4 text-sm transition-all duration-150"
+                            >
                               {activitiesLoading ? (
                                 <div className="flex items-center justify-center py-4">
                                   <Loader className="h-6 w-6 animate-spin text-gray-600" />
@@ -667,7 +670,10 @@ export const ProjectOverView = () => {
                               )}
                             </TabsContent>
 
-                            <TabsContent value="sources" className="py-4 text-sm">
+                            <TabsContent
+                              value="sources"
+                              className="py-4 text-sm transition-all duration-150"
+                            >
                               {activitiesLoading ? (
                                 <div className="flex items-center justify-center py-4">
                                   <Loader className="h-6 w-6 animate-spin text-gray-600" />

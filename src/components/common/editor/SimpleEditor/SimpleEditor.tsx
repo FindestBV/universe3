@@ -130,7 +130,7 @@ export const SimpleEditor = ({
     <div
       className={`mainEditor h-full w-full rounded-md ${isEditing ? "prose-editor shadow-md" : ""}`}
     >
-      <div className="relative flex min-h-[200px] flex-col">
+      <div className="relative flex flex-col">
         {!hideMenus && (
           <div className="h-[60px] border-b border-gray-200">
             <div className="mx-12 flex flex-col py-2">
@@ -146,7 +146,7 @@ export const SimpleEditor = ({
 
         <EditorContent
           editor={editor}
-          className={`prose max-w-none flex-1 p-6 focus:outline-none ${
+          className={`prose simple max-w-none flex-1 py-6 focus:outline-none ${
             isEditing ? "prose-editor" : ""
           }`}
         />

@@ -300,15 +300,15 @@ export const documentApi = api.injectEndpoints({
 
     // Connected Inbox Items
     getConnectedInboxItems: builder.query<Entity[], void>({
-      query: (id) => ({
-        url: `reference/inbox?connectedToObjectId=${id}`,
+      query: () => ({
+        url: `Reference/inbox?doOnlyGetConnectedToObjectId=false`,
       }),
     }),
 
     // Sidebar Document List
     getSideBarDocuments: builder.query<SavedDocumentResponse[], void>({
       query: (id) => ({
-        url: `reference/documents?connectedToObjectId=${id}`,
+        url: `Reference/inbox?doOnlyGetConnectedToObjectId=false`,
         params: {
           doOnlyGetConnectedToObjectId: true,
         },
@@ -417,13 +417,13 @@ export const documentApi = api.injectEndpoints({
     // Connected Study Queries (linked to id)
     getStudyConnectedQueries: builder.query<Study[], void>({
       query: (id) => ({
-        url: `Study/${id}/queries`,
+        url: `study/${id}/queries`,
       }),
     }),
 
     getStudyConnectedDocs: builder.query<Entity[], void>({
       query: (id) => ({
-        url: `Study/${id}/saveddocuments?orderBy=2&doIncludePatents=true&doIncludeScienceArticles=true&doIncludeWeblinks=true`,
+        url: `Study/${id}/saveddocuments`,
       }),
     }),
 

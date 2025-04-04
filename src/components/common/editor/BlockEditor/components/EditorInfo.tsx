@@ -197,6 +197,7 @@ export const EditorInfo = memo(({ id, editor }: EditorInfoProps) => {
         {isEditing && !isLocked ? (
           <>
             <AskIgorModal isToolbar={true} iconOnly />
+            <span className="mx-4 h-6 border-l border-gray-300"></span>
             <div className="flex items-center justify-between">
               <DropdownMenu onOpenChange={(open) => setIsDropdownOpen(open)} className="ml-4">
                 <DropdownMenuTrigger asChild>

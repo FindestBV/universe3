@@ -66,6 +66,8 @@ import {
 
 import { useState } from "react";
 
+import AskIgorLogo from "./ask-igor-logo";
+
 // import { toast } from "react-hot-toast";
 // import LinkedCounts from "../cards/linked-counts";
 
@@ -164,8 +166,8 @@ const AskIgorModal: React.FC<AskIgorModalProps> = ({
               {/* Left Column - Input Section */}
               <div className="flex flex-col justify-between gap-12 p-6">
                 <div>
-                  <h1 className="mb-8 flex items-center gap-2 text-4xl font-black">
-                    <Bot size={36} className="font-black" /> IGOR
+                  <h1 className="mb-8 flex items-center gap-2 text-2xl font-black">
+                    <AskIgorLogo className={`mt-2 h-8 w-8`} /> Ask IGOR
                   </h1>
                   <p className="iconText py-2 font-black">Linked sources</p>
 
