@@ -46,9 +46,15 @@
   } 
 }
 
+.tiptap.ProseMirror{
+  max-width: 1024px!important;
+  width: 100%;
+}
+
 .tiptap.ProseMirror > * {
   margin-left: 0 !important;
   margin-right: 0 !important;
+
 }
 
 @layer utilities {

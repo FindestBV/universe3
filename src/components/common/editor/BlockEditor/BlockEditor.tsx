@@ -1,8 +1,10 @@
 // import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
+import { userEmail } from "@/api/auth/authSlice";
 import ConnectQuery from "@/components/common/dialogs/connect-query";
+import { LinkedDocumentsAndPapers } from "@/components/common/dialogs/link-documents-and-papers";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
 import Comments from "@/components/common/layout/comments";
-import { Checkbox } from "@/components/ui/checkbox";
+// import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
@@ -25,17 +27,18 @@ import {
   Network,
   Pin,
   Plus,
+  Search,
   SearchIcon,
   Settings,
   Telescope,
-  Zap,
 } from "lucide-react";
 
 // import * as YProsemirror from "../../../../../../node_modules/y-prosemirror";
-
+import { Suspense } from "react";
 import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
+import AskIgorModal from "../../dialogs/ask-igor";
 import CreateProjectDialog from "../../dialogs/create-project-dialog";
 import { LinkMenu } from "../menus";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
@@ -76,7 +79,10 @@ export const BlockEditor = ({
   const [currentId, setCurrentId] = useState<string | null>(null);
   const [lastSavedContent, setLastSavedContent] = useState<string | null>(null); // To track changes
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
+  const useremail = useSelector(userEmail);
   const navigateWithTransition = useNavigateWithTransition();
+
+  console.log("user", useremail);
 
   const [tabs, setTabs] = useState([
     { id: "connectedSources", label: "Connected sources" },
@@ -85,7 +91,7 @@ export const BlockEditor = ({
     { id: "comments", label: "Comments" },
   ]);
 
-  // console.log("block editor type", type);
+  console.log("block editor type", content);
 
   const parsedContent = useMemo(() => {
     try {
@@ -117,16 +123,16 @@ export const BlockEditor = ({
   const saveContent = useCallback(
     async (content: any) => {
       if (JSON.stringify(content) === lastSavedContent) {
-        // console.log("No changes detected.");
+        console.log("No changes detected.");
         return;
       }
 
       try {
         if (currentId) {
-          // await updateDraft({
-          //   id: currentId,
-          //   content,
-          // });
+          await updateDraft({
+            id: currentId,
+            content,
+          });
         }
         setLastSavedContent(JSON.stringify(content));
       } catch (error) {
@@ -189,7 +195,10 @@ export const BlockEditor = ({
 
   useEffect(() => {
     console.log("currentView", currentView);
-  }, [currentView]);
+    console.log("active default", activeTab);
+    console.log("sources", connectedObjects);
+    console.log("connectedQueries", connectedQueries);
+  }, [currentView, activeTab, connectedObjects, connectedQueries]);
 
   useEffect(() => {
     const handleScrollToTab = (e: CustomEvent) => {
@@ -537,7 +546,7 @@ export const BlockEditor = ({
               className={`mainEditor h-full w-full rounded-md bg-white shadow-md ${isEditing ? "prose-editor" : ""}`}
               id="mainEditorStart"
             >
-              <div className="mx-12 flex flex-col pt-10">
+              <div className="mx-12 flex flex-col pt-8">
                 <EditorHeader
                   editor={editor}
                   collabState={collabState}
@@ -560,20 +569,39 @@ export const BlockEditor = ({
                       ? title
                       : "CN109368873A - 一种风电互补海水淡化系统 <br /> - Google Patents."}
                   </h1>
+
+                  {/* ENTIRE BUTTON SECTION NEEDS TO BE REFATORED AS DIALOGS */}
                   <div className="flex items-center gap-2 text-sm text-gray-500 max-sm:flex-col max-sm:items-start">
-                    <button
-                      className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-1 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
-                      onClick={() => navigateWithTransition("/projects/dashboard")}
-                    >
-                      <Link className="p-1" /> Link sources
-                    </button>
-                    <button
-                      className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-1 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
+                    <LinkedDocumentsAndPapers
+                      triggerButton={
+                        <button className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-2 font-bold text-black transition-colors duration-200 hover:bg-slate-200">
+                          <Search className="p-1" /> Find papers
+                        </button>
+                      }
+                      dialogType={"Find Papers"}
+                      dialogContent={`Dialog options for Find Papers`}
+                    />
+
+                    <LinkedDocumentsAndPapers
+                      triggerButton={
+                        <button className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-2 font-bold text-black transition-colors duration-200 hover:bg-slate-200">
+                          <Link className="p-1" /> Link Documents
+                        </button>
+                      }
+                      dialogType={"Add Link"}
+                      dialogContent={`Dialog options for Link Documents`}
+                    />
+                    {/* <button
+                      className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-2 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
                       onClick={() => navigateWithTransition("/projects/dashboard")}
                     >
                       <Zap className="fill-black p-1" /> Write introduction based on general
                       knowledge
-                    </button>
+                    </button> */}
+                    <AskIgorModal
+                      label="Write introduction based on general"
+                      isOnBlockEditor={true}
+                    />
                   </div>
                 </div>
 
@@ -583,7 +611,7 @@ export const BlockEditor = ({
                     S
                   </div>
                   <div className="flex w-full justify-between text-sm">
-                    <div>Created by sander.vanderwoude@findest.eu</div>
+                    <div>Created by {useremail ? useremail : "orhun.begendi@findest.eu"}</div>
                     <div className="mr-32 text-gray-500">26 June 2024</div>
                   </div>
                 </div>
@@ -599,7 +627,7 @@ export const BlockEditor = ({
               <ImageBlockMenu editor={editor} containerRef={menuContainerRef} />
 
               <Tabs
-                defaultValue="all"
+                defaultValue="connectedSources"
                 className="mb-12 mt-10 px-28"
                 onValueChange={setActiveTab}
                 id="linkedDocuments"
@@ -626,76 +654,82 @@ export const BlockEditor = ({
                       className="mt-2 space-y-2 transition-all duration-150"
                     >
                       {tab.id === "connectedSources" && (
-                        <div className="w-full">
-                          {connectedObjects?.documents && connectedObjects.documents.length > 0
-                            ? connectedObjects.documents.map(
-                                (doc: { title: Key | null | undefined; id: string }) => (
-                                  <div key={doc.title}>
-                                    <SimilarDocumentModal
-                                      title={doc.title}
-                                      id={doc.id}
-                                      type="linkedObjects"
-                                    />
-                                  </div>
-                                ),
-                              )
-                            : "no connected objects"}
+                        <div className="w-full" id="connectedSources">
+                          <Suspense fallback={<p>Loading connected sources...</p>}>
+                            {connectedObjects?.documents && connectedObjects.documents.length > 0
+                              ? connectedObjects.documents.map(
+                                  (doc: { title: Key | null | undefined; id: string }) => (
+                                    <div key={doc.title}>
+                                      <SimilarDocumentModal
+                                        title={doc.title}
+                                        id={doc.id}
+                                        type="linkedObjects"
+                                      />
+                                    </div>
+                                  ),
+                                )
+                              : "no connected objects"}
+                          </Suspense>
                         </div>
                       )}
 
                       {tab.id === "connectedQueries" && (
                         <div className="w-full" id="connectedQueries">
-                          {connectedQueries &&
-                            (connectedQueries[0]?.connectedObjects &&
-                            connectedQueries[0].connectedObjects.length > 0 ? (
-                              connectedQueries[0].connectedObjects.map(
-                                (obj: {
-                                  id: Key | null | undefined;
-                                  name: string;
-                                  mainContents: unknown;
-                                  searchInformation: unknown;
-                                }) => (
-                                  <SimilarDocumentModal
-                                    key={obj.id}
-                                    id={obj.id}
-                                    title={obj.name}
-                                    mainContents={obj.mainContents}
-                                    searchInformation={obj.searchInformation}
-                                    type="entity"
+                          <Suspense fallback={<p>Loading connected queries...</p>}>
+                            {connectedQueries &&
+                              (connectedQueries[0]?.connectedObjects &&
+                              connectedQueries[0].connectedObjects.length > 0 ? (
+                                connectedQueries[0].connectedObjects.map(
+                                  (obj: {
+                                    id: Key | null | undefined;
+                                    name: string;
+                                    mainContents: unknown;
+                                    searchInformation: unknown;
+                                  }) => (
+                                    <SimilarDocumentModal
+                                      key={obj.id}
+                                      id={obj.id}
+                                      title={obj.name}
+                                      mainContents={obj.mainContents}
+                                      searchInformation={obj.searchInformation}
+                                      type="entity"
+                                    />
+                                  ),
+                                )
+                              ) : (
+                                <div className="flex flex-row-reverse items-center gap-4">
+                                  <Button variant="outline">ADD QUERY</Button>
+                                  <ConnectQuery
+                                    attachToItem={function (id: string): void {
+                                      throw new Error("Function not implemented.");
+                                    }}
+                                    parentId={""}
+                                    parentTitle={""}
                                   />
-                                ),
-                              )
-                            ) : (
-                              <div className="flex flex-row-reverse items-center gap-4">
-                                <Button variant="outline">ADD QUERY</Button>
-                                <ConnectQuery
-                                  attachToItem={function (id: string): void {
-                                    throw new Error("Function not implemented.");
-                                  }}
-                                  parentId={""}
-                                  parentTitle={""}
-                                />
-                                <p className="text-gray-500">No connected objects</p>
-                              </div>
-                            ))}
+                                  <p className="text-gray-500">No connected objects</p>
+                                </div>
+                              ))}
+                          </Suspense>
                         </div>
                       )}
 
                       {tab.id === "connectedPages" && (
-                        <div className="w-full">
-                          {connectedObjects?.documents && connectedObjects.documents.length > 0
-                            ? connectedObjects.documents.map(
-                                (doc: { title: Key | null | undefined; id: string }) => (
-                                  <div key={doc.title}>
-                                    <SimilarDocumentModal
-                                      title={doc.title}
-                                      id={doc.id}
-                                      type="linkedObjects"
-                                    />
-                                  </div>
-                                ),
-                              )
-                            : "no connected objects"}
+                        <div className="w-full" id="connectedPages">
+                          <Suspense fallback={<p>Loading connected pages...</p>}>
+                            {connectedObjects?.documents && connectedObjects.documents.length > 0
+                              ? connectedObjects.documents.map(
+                                  (doc: { title: Key | null | undefined; id: string }) => (
+                                    <div key={doc.title}>
+                                      <SimilarDocumentModal
+                                        title={doc.title}
+                                        id={doc.id}
+                                        type="linkedObjects"
+                                      />
+                                    </div>
+                                  ),
+                                )
+                              : "no connected objects"}
+                          </Suspense>
                         </div>
                       )}
 

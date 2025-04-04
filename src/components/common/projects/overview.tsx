@@ -4,6 +4,7 @@
  * @returns {JSX.Element} A project overview component with dynamic tab functionality.
  */
 import { useGetLinkingQuery, useGetMyRecentActivityQuery } from "@/api/activity/activityApi";
+import { currentUser } from "@/api/auth/authSlice";
 import { useGetStudyByIdQuery } from "@/api/documents/documentApi";
 import {
   useGetProjectRecentActivitiesQuery,
@@ -11,24 +12,21 @@ import {
   useUpdateTabContentMutation,
 } from "@/api/projects/projectApi";
 import { setRecentActivities } from "@/api/projects/projectSlice";
-import ConnectQuery from "@/components/common/dialogs/connect-query";
 import CreateItemModal from "@/components/common/dialogs/create-item-dialog";
 import CreateProjectDialog from "@/components/common/dialogs/create-project-dialog";
-import { EditorHeader } from "@/components/common/editor/BlockEditor/components/EditorHeader";
 import { SimpleEditor } from "@/components/common/editor/SimpleEditor/SimpleEditor";
 import { DevBanner } from "@/components/common/layout/dev-banner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 // import MaturityRadar from "./config/maturity-radar";
 // import RequirementsTable from "./config/requirements-table";
 // import ResultsOverview from "./config/results-overview";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { useAppDispatch, useAppSelector } from "@/store";
-import { faPenToSquare } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
 import { ChevronRight, Hand, List, ListFilter, Loader, Plus, RadarIcon, Star } from "lucide-react";
@@ -36,6 +34,7 @@ import { useFeature } from "use-feature";
 
 import { useCallback, useRef, useState } from "react";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 
 import VotingCard from "../cards/voting-card";
@@ -297,7 +296,9 @@ export const ProjectOverView = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const [updateTabContent] = useUpdateTabContentMutation();
+  const username = useSelector(currentUser); // Get user from Redux
 
+  console.log("user", username);
   // Get project data from Redux store
   const { currentProject, pages, tabs, activeTabId, isLoading, error, recentActivities } =
     useAppSelector((state) => state.project);
@@ -499,7 +500,7 @@ export const ProjectOverView = () => {
                           {tabTypeOptions.map((option) => (
                             <button
                               key={option.id}
-                              className="group flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 hover:bg-black hover:text-white"
+                              className="group flex items-center gap-2 rounded-md p-2 text-left text-sm text-slate-700 transition-all duration-150 hover:bg-black hover:text-white"
                               onClick={() => {
                                 setSelectedTabType(option); // Set the selected tab type
                                 setIsConfigDialogOpen(true); // Open the configuration dialog
@@ -532,14 +533,14 @@ export const ProjectOverView = () => {
                     <div className="flex items-start gap-2">
                       <div className="w-1/2">
                         <div className="overviewHeader py-4">
-                          <h1 className="mb-4 max-w-2xl text-4xl font-bold">
+                          <h1 className="my-2 max-w-2xl text-4xl font-bold">
                             {isProjectsDashboard ? "Your Universe Projects" : currentProject?.name}
                           </h1>
 
                           {!isProjectsDashboard && (
                             <div className="flex items-center gap-12">
-                              <div className="flex items-center gap-2">
-                                <h4 className="text-sm font-semibold">Owner</h4>
+                              <div className="my-2 flex items-center gap-2">
+                                <h4 className="text-sm font-semibold">{username}</h4>
                                 <Avatar>
                                   <AvatarImage src="https://github.com/shadcn.png" />
                                   <AvatarFallback>
@@ -598,7 +599,7 @@ export const ProjectOverView = () => {
                         )}
 
                         {/* Recent Activity Tabs */}
-                        <div className="mt-6">
+                        <div className="my-8">
                           <h3 className="text-md my-2 font-semibold">Recent activity</h3>
                           <Tabs
                             defaultValue="pages"
@@ -629,7 +630,10 @@ export const ProjectOverView = () => {
                             </TabsList>
 
                             {/* Activity Content */}
-                            <TabsContent value="pages" className="py-4 text-sm">
+                            <TabsContent
+                              value="pages"
+                              className="py-4 text-sm transition-all duration-150"
+                            >
                               {activitiesLoading ? (
                                 <div className="flex items-center justify-center py-4">
                                   <Loader className="h-6 w-6 animate-spin text-gray-600" />
@@ -667,7 +671,10 @@ export const ProjectOverView = () => {
                               )}
                             </TabsContent>
 
-                            <TabsContent value="sources" className="py-4 text-sm">
+                            <TabsContent
+                              value="sources"
+                              className="py-4 text-sm transition-all duration-150"
+                            >
                               {activitiesLoading ? (
                                 <div className="flex items-center justify-center py-4">
                                   <Loader className="h-6 w-6 animate-spin text-gray-600" />

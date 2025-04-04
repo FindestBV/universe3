@@ -205,7 +205,7 @@ export const documentApi = api.injectEndpoints({
     // Get Entities: gets all entities for display on Entities index
     getEntities: builder.query<Entity[], void>({
       query: () => ({
-        url: "entity",
+        url: "Entity",
         params: {
           orderBy: 2,
           createdByMe: false,
@@ -214,10 +214,10 @@ export const documentApi = api.injectEndpoints({
     }),
 
     /* 
-      Get Entity By Id: gets a specific entity by Id and chain subsequent queries, appending to the main query. 
+      Get Entity By Id: gets a specific Entity by Id and chain subsequent queries, appending to the main query. 
 
       What is happening here ?
-      Entities are hydrated by a range of builder queries, which are each dispatched with a common parameter - the entity id. 
+      Entities are hydrated by a range of builder queries, which are each dispatched with a common parameter - the Entity id. 
       On the Entity.tsx component, as single call is made to the getEntityById query, 
     
       Here, we're using OnQueryStarted to dispatch the subsequent queries, which hiterto returned an object via a separate cal.     
@@ -225,7 +225,7 @@ export const documentApi = api.injectEndpoints({
 
     getEntityById: builder.query<Entity, string>({
       query: (id) => ({
-        url: `entity/${id}`,
+        url: `Entity/${id}`,
         providesTags: (result, error, id) => [{ type: "Entity", id }],
       }),
 
@@ -280,35 +280,35 @@ export const documentApi = api.injectEndpoints({
     // TODO: generalise type to merge this with Study
     getEntityConnectedDocs: builder.query<Entity[], void>({
       query: (id) => ({
-        url: `entity/${id}/saveddocuments?orderBy=2&doIncludePatents=true&doIncludeScienceArticles=true&doIncludeWeblinks=true`,
+        url: `Entity/${id}/saveddocuments?orderBy=2&doIncludePatents=true&doIncludeScienceArticles=true&doIncludeWeblinks=true`,
       }),
     }),
 
     // Connected Entity Queries (linked to id)
     getEntityConnectedQueries: builder.query<Entity[], void>({
       query: (id) => ({
-        url: `entity/${id}/queries`,
+        url: `Entity/${id}/queries`,
       }),
     }),
 
     // Connected Comments (linked to id)
     getEntityConnectedComments: builder.query<Entity[], void>({
       query: (id) => ({
-        url: `v2/comment/1/${id}`,
+        url: `Comment/1/${id}`,
       }),
     }),
 
     // Connected Inbox Items
     getConnectedInboxItems: builder.query<Entity[], void>({
-      query: (id) => ({
-        url: `reference/inbox?connectedToObjectId=${id}`,
+      query: () => ({
+        url: `Reference/inbox?doOnlyGetConnectedToObjectId=false`,
       }),
     }),
 
     // Sidebar Document List
     getSideBarDocuments: builder.query<SavedDocumentResponse[], void>({
       query: (id) => ({
-        url: `reference/documents?connectedToObjectId=${id}`,
+        url: `Reference/inbox?doOnlyGetConnectedToObjectId=false`,
         params: {
           doOnlyGetConnectedToObjectId: true,
         },
@@ -323,7 +323,7 @@ export const documentApi = api.injectEndpoints({
       { page?: number; limit?: number }
     >({
       query: ({ page = 1, limit = 10 }) => ({
-        url: "study",
+        url: "Study",
         params: {
           orderBy: 2,
           createdByMe: false,
@@ -334,7 +334,7 @@ export const documentApi = api.injectEndpoints({
     }),
 
     /* 
-      Get Study By Id: gets a specific entity by Id and chain subsequent queries, appending to the main query. 
+      Get Study By Id: gets a specific Entity by Id and chain subsequent queries, appending to the main query. 
 
       What is happening here ?
       Entities are hydrated by a range of builder queries, which are each dispatched with a common parameter - the study id. 
@@ -345,7 +345,7 @@ export const documentApi = api.injectEndpoints({
 
     getStudyById: builder.query<Study, string>({
       query: (id) => ({
-        url: `study/${id}`,
+        url: `Study/${id}`,
         providesTags: (result, error, id) => [{ type: "Study", id }],
       }),
 
@@ -423,7 +423,7 @@ export const documentApi = api.injectEndpoints({
 
     getStudyConnectedDocs: builder.query<Entity[], void>({
       query: (id) => ({
-        url: `study/${id}/saveddocuments?orderBy=2&doIncludePatents=true&doIncludeScienceArticles=true&doIncludeWeblinks=true`,
+        url: `Study/${id}/saveddocuments`,
       }),
     }),
 

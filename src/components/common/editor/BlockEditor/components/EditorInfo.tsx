@@ -1,4 +1,4 @@
-// import { setLockPage } from "@/api/documents/documentSlice";
+import { setLockPage } from "@/api/documents/documentSlice";
 import AskIgorModal from "@/components/common/dialogs/ask-igor";
 // import LockPageConfirm from "@/components/common/dialogs/lock-page-confirm";
 import { Button } from "@/components/ui/button";
@@ -20,11 +20,9 @@ import {
   ImagePlus,
   Italic,
   Link,
-  Paperclip,
+  Lock,
   Pilcrow,
   Redo2,
-  RotateCcw,
-  RotateCw,
   SquarePlus,
   Subscript,
   Superscript,
@@ -51,7 +49,7 @@ export const EditorInfo = memo(({ id, editor }: EditorInfoProps) => {
   const [isPinned, setIsPinned] = useState<boolean>(false);
   const isEditing = useAppSelector((state: RootState) => state.document.isEditing);
   const isLocked = useSelector((state: RootState) => state.document.isLocked);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   if (!editor) return null;
 
@@ -189,6 +187,13 @@ export const EditorInfo = memo(({ id, editor }: EditorInfoProps) => {
     setIsPinned(!isPinned);
   };
 
+  const lockPage = (parentId: number) => {
+    console.log(`clicked to lock ${parentId}`, isLocked);
+    dispatch(setLockPage({ isLocked: !isLocked, documentId: parentId }));
+  };
+
+  console.log("lock page", isLocked);
+
   return (
     <div className="flex w-full items-center justify-between">
       <div className="mr-4 flex flex-row items-center justify-center gap-2 text-right dark:border-neutral-200">
@@ -197,6 +202,7 @@ export const EditorInfo = memo(({ id, editor }: EditorInfoProps) => {
         {isEditing && !isLocked ? (
           <>
             <AskIgorModal isToolbar={true} iconOnly />
+            <span className="mx-4 h-6 border-l border-gray-300"></span>
             <div className="flex items-center justify-between">
               <DropdownMenu onOpenChange={(open) => setIsDropdownOpen(open)} className="ml-4">
                 <DropdownMenuTrigger asChild>
@@ -268,6 +274,11 @@ export const EditorInfo = memo(({ id, editor }: EditorInfoProps) => {
           </>
         ) : null}
       </div>
+      {isLocked && (
+        <Button className="group hover:bg-red-500" onClick={lockPage}>
+          <Lock size={24} className="text-red-600 group-hover:text-white" />
+        </Button>
+      )}
     </div>
   );
 });

@@ -49,7 +49,7 @@ const MenuItemComponent: React.FC<MenuItemProps> = ({ item, level = 0 }) => {
           {level > 0 && (
             <div className="absolute left-[-20px] top-1/2 h-[2px] w-[20px] bg-gray-200" />
           )}
-          <div className="rounded-full p-1 transition-colors">
+          <div className="p-1 transition-colors">
             {hasChildren ? (
               isOpen ? (
                 <ChevronDown className="h-4 w-4" />
@@ -60,7 +60,7 @@ const MenuItemComponent: React.FC<MenuItemProps> = ({ item, level = 0 }) => {
               <Circle className="h-2 w-2 fill-current" />
             )}
           </div>
-          <span className="text-sm font-medium">{item.label}</span>
+          <span className="text-left text-sm">{item.label}</span>
         </CollapsibleTrigger>
         {hasChildren && item.children && (
           <CollapsibleContent>

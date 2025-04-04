@@ -66,11 +66,14 @@ import {
 
 import { useState } from "react";
 
+import AskIgorLogo from "./ask-igor-logo";
+
 // import { toast } from "react-hot-toast";
 // import LinkedCounts from "../cards/linked-counts";
 
 interface AskIgorModalProps {
   isToolbar?: boolean;
+  isOnBlockEditor?: boolean;
   iconOnly?: boolean;
   label?: string;
   preloadedQueries?: Array<{ id: number; question: string }>;
@@ -105,6 +108,7 @@ function PresetButton({
 
 const AskIgorModal: React.FC<AskIgorModalProps> = ({
   isToolbar = false,
+  isOnBlockEditor = false,
   iconOnly = false,
   label,
   preloadedQueries = [],
@@ -144,16 +148,22 @@ const AskIgorModal: React.FC<AskIgorModalProps> = ({
         {/* Trigger to Open Dialog */}
         <DialogTrigger asChild>
           <div>
-            <button
-              className={`summonIgorBtn p-1`}
-              onClick={() => {
-                setIsMinimized(false);
-                setIsOpen(true);
-              }}
-            >
-              <Zap size={18} className="zppr" />
-              {iconOnly ? null : label ? label : "Ask IGOR"}
-            </button>
+            {isOnBlockEditor ? (
+              <Button className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 font-bold text-black transition-colors duration-200 hover:bg-slate-200">
+                <Link /> {iconOnly ? null : label ? label : "Ask IGOR"}
+              </Button>
+            ) : (
+              <button
+                className={`summonIgorBtn p-1`}
+                onClick={() => {
+                  setIsMinimized(false);
+                  setIsOpen(true);
+                }}
+              >
+                <Zap size={18} className="zppr" />
+                {iconOnly ? null : label ? label : "Ask IGOR"}
+              </button>
+            )}
           </div>
         </DialogTrigger>
         {/* Dialog Content */}
@@ -164,8 +174,8 @@ const AskIgorModal: React.FC<AskIgorModalProps> = ({
               {/* Left Column - Input Section */}
               <div className="flex flex-col justify-between gap-12 p-6">
                 <div>
-                  <h1 className="mb-8 flex items-center gap-2 text-4xl font-black">
-                    <Bot size={36} className="font-black" /> IGOR
+                  <h1 className="mb-8 flex items-center gap-2 text-2xl font-black">
+                    <AskIgorLogo className={`mt-2 h-8 w-8`} /> Ask IGOR
                   </h1>
                   <p className="iconText py-2 font-black">Linked sources</p>
 

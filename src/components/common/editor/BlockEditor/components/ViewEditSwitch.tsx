@@ -48,7 +48,7 @@ const ViewEditSwitch = ({ id, editor }: ViewEditSwitchProps) => {
         }`}
         aria-label="Switch to View Mode"
       >
-        <Eye size={16} />
+        <Eye size={24} />
       </button>
 
       <button
@@ -58,7 +58,7 @@ const ViewEditSwitch = ({ id, editor }: ViewEditSwitchProps) => {
         }`}
         aria-label="Switch to Edit Mode"
       >
-        <Pen size={16} />
+        <Pen size={24} />
       </button>
     </div>
   );
