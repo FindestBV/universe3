@@ -1,8 +1,9 @@
 // import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
 import ConnectQuery from "@/components/common/dialogs/connect-query";
+import { LinkedDocumentsAndPapers } from "@/components/common/dialogs/link-documents-and-papers";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
 import Comments from "@/components/common/layout/comments";
-import { Checkbox } from "@/components/ui/checkbox";
+// import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import ImageBlockMenu from "@/extensions/ImageBlock/components/ImageBlockMenu";
 import { ColumnsMenu } from "@/extensions/MultiColumn/menus";
@@ -567,20 +568,27 @@ export const BlockEditor = ({
 
                   {/* ENTIRE BUTTON SECTION NEEDS TO BE REFATORED AS DIALOGS */}
                   <div className="flex items-center gap-2 text-sm text-gray-500 max-sm:flex-col max-sm:items-start">
+                    <LinkedDocumentsAndPapers
+                      triggerButton={
+                        <button className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-2 font-bold text-black transition-colors duration-200 hover:bg-slate-200">
+                          <Search className="p-1" /> Find papers
+                        </button>
+                      }
+                      dialogType={"Find Papers"}
+                      dialogContent={`Monstrous load of bollocks`}
+                    />
+
+                    <LinkedDocumentsAndPapers
+                      triggerButton={
+                        <button className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-2 font-bold text-black transition-colors duration-200 hover:bg-slate-200">
+                          <Link className="p-1" /> Link Documents
+                        </button>
+                      }
+                      dialogType={"Add Link"}
+                      dialogContent={`Blah blah blah`}
+                    />
                     <button
-                      className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-1 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
-                      onClick={() => navigateWithTransition("/projects/dashboard")}
-                    >
-                      <Search className="p-1" /> Find papers
-                    </button>
-                    <button
-                      className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-1 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
-                      onClick={() => navigateWithTransition("/projects/dashboard")}
-                    >
-                      <Link className="p-1" /> Link sources
-                    </button>
-                    <button
-                      className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-1 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
+                      className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-2 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
                       onClick={() => navigateWithTransition("/projects/dashboard")}
                     >
                       <Zap className="fill-black p-1" /> Write introduction based on general
