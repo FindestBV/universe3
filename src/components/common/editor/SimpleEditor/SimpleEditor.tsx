@@ -143,7 +143,6 @@ export const SimpleEditor = ({
             </div>
           </div>
         )}
-
         <EditorContent
           editor={editor}
           className={`prose simple max-w-none flex-1 pb-6 focus:outline-none ${
