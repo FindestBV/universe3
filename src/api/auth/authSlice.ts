@@ -5,9 +5,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthResponse, AuthState } from "../types/types";
 
 const initialState: AuthState = {
-  user: null,
+  user: "Orhun",
   token: null,
-  email: null,
+  email: "orhun.begendi@findest.eu",
   isLoading: false,
   error: null,
 };

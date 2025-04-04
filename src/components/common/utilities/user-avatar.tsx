@@ -3,9 +3,10 @@ import React from "react";
 export type UserAvatarProps = {
   username?: string;
   name?: string;
+  email?: string;
 };
 
-export const UserAvatar = React.forwardRef(({ username }: UserAvatarProps, ref) => {
+export const UserAvatar = React.forwardRef(({ username, email }: UserAvatarProps, ref) => {
   const getFirstLetter = (name: string | undefined) => {
     return name ? name.charAt(0).toUpperCase() : "?";
   };

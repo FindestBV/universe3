@@ -1,4 +1,5 @@
 // import { useCreateDraftMutation, useUpdateDraftMutation } from "@/api/documents/documentApi";
+import { userEmail } from "@/api/auth/authSlice";
 import ConnectQuery from "@/components/common/dialogs/connect-query";
 import { LinkedDocumentsAndPapers } from "@/components/common/dialogs/link-documents-and-papers";
 import { SimilarDocumentModal } from "@/components/common/dialogs/similar-document-modal";
@@ -30,7 +31,6 @@ import {
   SearchIcon,
   Settings,
   Telescope,
-  Zap,
 } from "lucide-react";
 
 // import * as YProsemirror from "../../../../../../node_modules/y-prosemirror";
@@ -38,6 +38,7 @@ import { Suspense } from "react";
 import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
+import AskIgorModal from "../../dialogs/ask-igor";
 import CreateProjectDialog from "../../dialogs/create-project-dialog";
 import { LinkMenu } from "../menus";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
@@ -78,7 +79,10 @@ export const BlockEditor = ({
   const [currentId, setCurrentId] = useState<string | null>(null);
   const [lastSavedContent, setLastSavedContent] = useState<string | null>(null); // To track changes
   const autoSaveInterval = useRef<NodeJS.Timeout | null>(null);
+  const useremail = useSelector(userEmail);
   const navigateWithTransition = useNavigateWithTransition();
+
+  console.log("user", useremail);
 
   const [tabs, setTabs] = useState([
     { id: "connectedSources", label: "Connected sources" },
@@ -87,7 +91,7 @@ export const BlockEditor = ({
     { id: "comments", label: "Comments" },
   ]);
 
-  // console.log("block editor type", type);
+  console.log("block editor type", content);
 
   const parsedContent = useMemo(() => {
     try {
@@ -575,7 +579,7 @@ export const BlockEditor = ({
                         </button>
                       }
                       dialogType={"Find Papers"}
-                      dialogContent={`Monstrous load of bollocks`}
+                      dialogContent={`Dialog options for Find Papers`}
                     />
 
                     <LinkedDocumentsAndPapers
@@ -585,15 +589,19 @@ export const BlockEditor = ({
                         </button>
                       }
                       dialogType={"Add Link"}
-                      dialogContent={`Blah blah blah`}
+                      dialogContent={`Dialog options for Link Documents`}
                     />
-                    <button
+                    {/* <button
                       className="flex items-center gap-1 rounded border border-slate-300 bg-slate-100 px-4 py-2 font-bold text-black transition-colors duration-200 hover:bg-slate-200"
                       onClick={() => navigateWithTransition("/projects/dashboard")}
                     >
                       <Zap className="fill-black p-1" /> Write introduction based on general
                       knowledge
-                    </button>
+                    </button> */}
+                    <AskIgorModal
+                      label="Write introduction based on general"
+                      isOnBlockEditor={true}
+                    />
                   </div>
                 </div>
 
@@ -603,7 +611,7 @@ export const BlockEditor = ({
                     S
                   </div>
                   <div className="flex w-full justify-between text-sm">
-                    <div>Created by sander.vanderwoude@findest.eu</div>
+                    <div>Created by {useremail ? useremail : "orhun.begendi@findest.eu"}</div>
                     <div className="mr-32 text-gray-500">26 June 2024</div>
                   </div>
                 </div>
