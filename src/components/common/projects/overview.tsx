@@ -12,10 +12,8 @@ import {
   useUpdateTabContentMutation,
 } from "@/api/projects/projectApi";
 import { setRecentActivities } from "@/api/projects/projectSlice";
-import ConnectQuery from "@/components/common/dialogs/connect-query";
 import CreateItemModal from "@/components/common/dialogs/create-item-dialog";
 import CreateProjectDialog from "@/components/common/dialogs/create-project-dialog";
-import { EditorHeader } from "@/components/common/editor/BlockEditor/components/EditorHeader";
 import { SimpleEditor } from "@/components/common/editor/SimpleEditor/SimpleEditor";
 import { DevBanner } from "@/components/common/layout/dev-banner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -29,8 +27,6 @@ import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNavigateWithTransition } from "@/hooks/use-navigate-with-transition";
 import { useAppDispatch, useAppSelector } from "@/store";
-import { faPenToSquare } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
 import { ChevronRight, Hand, List, ListFilter, Loader, Plus, RadarIcon, Star } from "lucide-react";

@@ -22,25 +22,20 @@ import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { RootState } from "@/store";
 import { SavedDocumentListItem } from "@/types/types";
-import {
-  faBook,
-  faCube,
-  faFile,
-  faFileLines,
-  faFolder,
-  faHighlighter,
-  faImage,
-  faPaperclip,
-} from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
 import {
-  ChevronLeft,
+  Book,
   ChevronRight,
+  File,
   Filter,
+  Folder,
+  Highlighter,
+  Images,
   List,
   ListFilter,
+  ListFilterIcon,
+  Paperclip,
   Plus,
   RadarIcon,
   Star,
@@ -620,10 +615,7 @@ export const ProjectSources = () => {
                                                     className="linkedCounts__item documentCount"
                                                     data-state="closed"
                                                   >
-                                                    <FontAwesomeIcon
-                                                      icon={faFile}
-                                                      className="h-4 w-4"
-                                                    />
+                                                    <File className="h-4 w-4" />
                                                     {source.linkedObjectCounts.documentCount}
                                                   </li>
                                                 )}
@@ -633,8 +625,8 @@ export const ProjectSources = () => {
                                                     className="linkedCounts__item entityCount"
                                                     data-state="closed"
                                                   >
-                                                    <FontAwesomeIcon
-                                                      icon={faCube}
+                                                    <Cube
+                                                      // icon={faCube}
                                                       className="h-4 w-4"
                                                     />
                                                     {source.linkedObjectCounts.entityCount}
@@ -646,8 +638,8 @@ export const ProjectSources = () => {
                                                     className="linkedCounts__item studyCount"
                                                     data-state="closed"
                                                   >
-                                                    <FontAwesomeIcon
-                                                      icon={faBook}
+                                                    <Book
+                                                      // icon={faBook}
                                                       className="h-4 w-4"
                                                     />
                                                     {source.linkedObjectCounts.studyCount}
@@ -659,8 +651,8 @@ export const ProjectSources = () => {
                                                     className="linkedCounts__item projectCount"
                                                     data-state="closed"
                                                   >
-                                                    <FontAwesomeIcon
-                                                      icon={faFolder}
+                                                    <Folder
+                                                      // icon={faFolder}
                                                       className="h-4 w-4"
                                                     />
                                                     {source.linkedObjectCounts.projectCount}
@@ -672,8 +664,8 @@ export const ProjectSources = () => {
                                                     className="linkedCounts__item highlightCount"
                                                     data-state="closed"
                                                   >
-                                                    <FontAwesomeIcon
-                                                      icon={faHighlighter}
+                                                    <Highlighter
+                                                      // icon={faHighlighter}
                                                       className="h-4 w-4"
                                                     />
                                                     {source.linkedObjectCounts.highlightCount}
@@ -685,8 +677,8 @@ export const ProjectSources = () => {
                                                     className="linkedCounts__item imageCount"
                                                     data-state="closed"
                                                   >
-                                                    <FontAwesomeIcon
-                                                      icon={faImage}
+                                                    <Images
+                                                      // icon={faImage}
                                                       className="h-4 w-4"
                                                     />
                                                     {source.linkedObjectCounts.imageCount}
@@ -698,8 +690,8 @@ export const ProjectSources = () => {
                                                     className="linkedCounts__item fileCount"
                                                     data-state="closed"
                                                   >
-                                                    <FontAwesomeIcon
-                                                      icon={faPaperclip}
+                                                    <Paperclip
+                                                      // icon={faPaperclip}
                                                       className="h-4 w-4"
                                                     />
                                                     {source.linkedObjectCounts.fileCount}
@@ -711,8 +703,8 @@ export const ProjectSources = () => {
                                                     className="linkedCounts__item commentCount"
                                                     data-state="closed"
                                                   >
-                                                    <FontAwesomeIcon
-                                                      icon={faFileLines}
+                                                    <ListFilterIcon
+                                                      // icon={faFileLines}
                                                       className="h-4 w-4"
                                                     />
                                                     {source.linkedObjectCounts.commentCount}
